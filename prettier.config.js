@@ -4,7 +4,7 @@ module.exports = {
 	printWidth: 80,
 	tabWidth: 2,
 	useTabs: true,
-	trailingComma: "all",
+	trailingComma: "es5",
 	bracketSpacing: true,
 	plugins: ["prettier-plugin-tailwindcss"],
 	proseWrap: "always",
