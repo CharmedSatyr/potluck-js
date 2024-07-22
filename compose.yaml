@@ -1,9 +1,11 @@
 services:
   db:
+    env_file:
+      - ./.env
     image: postgres:latest
     environment:
-      - POSTGRES_USER=potluck
-      - POSTGRES_PASSWORD=potluck
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - potluck-pgdata:/var/lib/postgresql/data
     ports:

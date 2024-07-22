@@ -3,3 +3,6 @@ db-generate-migrations:
 
 db-migrate:
 	npm run db:migrate
+
+db-start:
+	docker compose up --build -d
