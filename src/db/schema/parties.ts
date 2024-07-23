@@ -9,6 +9,7 @@ export const parties = pgTable("parties", {
 		.defaultNow(),
 	createdBy: varchar("created_by", { length: 256 }).notNull(),
 	description: text("description"),
+	end: timestamp("end", { withTimezone: true }).notNull(),
 	hosts: varchar("hosts", { length: 256 }).notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	name: varchar("name", { length: 256 }).notNull(),
@@ -16,6 +17,7 @@ export const parties = pgTable("parties", {
 		.notNull()
 		.unique()
 		.$default(createShortId),
+	start: timestamp("start", { withTimezone: true }).notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
