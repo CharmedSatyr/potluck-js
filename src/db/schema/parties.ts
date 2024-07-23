@@ -1,21 +1,9 @@
 import { uuid, varchar, text, timestamp, pgTable } from "drizzle-orm/pg-core";
 
-type ShortId = string & { length: 5 };
+const createShortId = (): string =>
+	Math.random().toString(36).substring(2, 7).toUpperCase();
 
-const isShortId = (value: unknown): value is ShortId =>
-	typeof value === "string" && value.length === 5;
-
-const createShortId = (): ShortId => {
-	const value = Math.random().toString(36).substring(2, 7).toUpperCase();
-
-	if (isShortId(value)) {
-		return value;
-	}
-
-	throw new Error(`Invalid shortId generated: ${value}`);
-};
-
-export const party = pgTable("party", {
+export const parties = pgTable("parties", {
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
@@ -24,8 +12,7 @@ export const party = pgTable("party", {
 	hosts: varchar("hosts", { length: 256 }).notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	name: varchar("name", { length: 256 }).notNull(),
-	shortId: text("short_id")
-		.$type<ShortId>()
+	shortId: varchar("short_id", { length: 5 })
 		.notNull()
 		.unique()
 		.$default(createShortId),
@@ -34,4 +21,4 @@ export const party = pgTable("party", {
 		.defaultNow(),
 });
 
-export type Party = typeof party.$inferSelect;
+export type Party = typeof parties.$inferSelect;

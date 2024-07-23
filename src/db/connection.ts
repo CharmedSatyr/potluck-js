@@ -1,14 +1,14 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { dish } from "@/db/schema/dish";
-import { party } from "@/db/schema/party";
+import { dishes } from "@/db/schema/dishes";
+import { parties } from "@/db/schema/parties";
 import { config } from "@/db/config";
 
 const pool = new Pool(config);
 
 const schema = {
-	dish,
-	party,
+	dishes,
+	parties,
 };
 
 const db = drizzle(pool, { schema });

@@ -1,7 +1,7 @@
 import { uuid, varchar, text, timestamp, pgTable } from "drizzle-orm/pg-core";
-import { party } from "./party";
+import { parties } from "./parties";
 
-export const dish = pgTable("dish", {
+export const dishes = pgTable("dishes", {
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
@@ -10,7 +10,7 @@ export const dish = pgTable("dish", {
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	name: varchar("name", { length: 256 }).notNull(),
 	partyId: uuid("party_id")
-		.references(() => party.id, { onDelete: "cascade" })
+		.references(() => parties.id, { onDelete: "cascade" })
 		.notNull()
 		.unique(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
@@ -18,4 +18,4 @@ export const dish = pgTable("dish", {
 		.defaultNow(),
 });
 
-export type Dish = typeof dish.$inferSelect;
+export type Dish = typeof dishes.$inferSelect;
