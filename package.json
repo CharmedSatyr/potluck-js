@@ -12,8 +12,8 @@
 		"start": "next start",
 		"lint": "next lint",
 		"prettier": "npx prettier --write .",
-		"generate": "npx drizzle-kit generate",
-		"migrate": "npx drizzle-kit migrate"
+		"db:generate": "npx drizzle-kit generate",
+		"db:migrate": "npx drizzle-kit migrate"
 	},
 	"dependencies": {
 		"dotenv": "^16.4.5",
