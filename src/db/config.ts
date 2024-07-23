@@ -4,6 +4,5 @@ export const config = {
 	host: process.env.DATABASE_HOST!,
 	port: Number(process.env.DATABASE_PORT!),
 	database: process.env.DATABASE_NAME!,
+	ssl: process.env.NODE_ENV !== "development",
 };
-
-export const connectionString = `postgres://${config.user}:${config.password}@${config.host}:${config.port}/${config.database}`;
