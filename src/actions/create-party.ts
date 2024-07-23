@@ -11,9 +11,9 @@ interface NewParty {
 }
 
 const createParty = async (info: NewParty) => {
-	console.log("Creating party...");
-	const result = await db.insert(party).values(info);
-	console.log(result);
+	const result = await db.insert(party).values(info).returning();
+
+	return result[0].shortId;
 };
 
 export default createParty;

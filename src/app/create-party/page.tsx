@@ -2,7 +2,8 @@
 
 import createParty from "@/actions/create-party";
 import { type Party } from "@/db/schema/party";
-import { ChangeEvent, useState } from "react";
+import { redirect } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 
 const CreatePartyPage = () => {
 	const [createdBy, setCreatedBy] = useState<string>("");
@@ -10,13 +11,24 @@ const CreatePartyPage = () => {
 	const [hosts, setHosts] = useState<string>("");
 	const [name, setName] = useState<string>("");
 
+	const [shortId, setShortId] = useState();
+
 	const onSubmit = (e: any) => {
 		e?.preventDefault();
 
 		console.log("Submitting...");
 
-		createParty({ createdBy, description, hosts, name });
+		const result = createParty({ createdBy, description, hosts, name });
+		result.then((r) => setShortId(r as any));
 	};
+
+	useEffect(() => {
+		if (!shortId) {
+			return;
+		}
+
+		redirect(`/party/${shortId}/`);
+	}, [shortId]);
 
 	return (
 		<form
