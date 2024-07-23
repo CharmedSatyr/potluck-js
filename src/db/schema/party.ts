@@ -6,7 +6,8 @@ const isShortId = (value: unknown): value is ShortId =>
 	typeof value === "string" && value.length === 5;
 
 const createShortId = (): ShortId => {
-	const value = Math.random().toString(36).substring(2, 7);
+	const value = Math.random().toString(36).substring(2, 7).toUpperCase();
+
 	if (isShortId(value)) {
 		return value;
 	}
