@@ -1,7 +1,7 @@
 "use server";
 
 import db from "@/db/connection";
-import { Party, party } from "@/db/schema/party";
+import { Party, parties } from "@/db/schema/parties";
 
 interface NewParty {
 	createdBy: Party["createdBy"];
@@ -11,7 +11,7 @@ interface NewParty {
 }
 
 const createParty = async (info: NewParty) => {
-	const result = await db.insert(party).values(info).returning();
+	const result = await db.insert(parties).values(info).returning();
 
 	return result[0].shortId;
 };
