@@ -1,9 +1,8 @@
 import findPartyWithDishes from "@/actions/find-party-with-dishes";
-import DishForm from "./DishForm";
 import { redirect } from "next/navigation";
 import createDish from "@/actions/create-dish";
 import { revalidatePath } from "next/cache";
-import { FormInput } from "@/app/party/[id]/types";
+import DishForm, { FormInput } from "@/app/party/[id]/DishForm";
 
 interface Props {
 	params: {

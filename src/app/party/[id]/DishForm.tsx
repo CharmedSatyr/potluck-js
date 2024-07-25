@@ -3,10 +3,16 @@
 import { useParams } from "next/navigation";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { FormInput } from "@/app/party/[id]/types";
 
 interface Props {
 	action: any;
+}
+
+export interface FormInput {
+	createdBy: string;
+	description: string;
+	name: string;
+	shortId: string;
 }
 
 const DishForm = ({ action }: Props) => {

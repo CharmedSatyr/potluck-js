@@ -2,7 +2,6 @@
 
 import db from "@/db/connection";
 import { Party, parties } from "@/db/schema/parties";
-import { redirect } from "next/navigation";
 
 interface NewParty {
 	createdBy: Party["createdBy"];
@@ -13,10 +12,10 @@ interface NewParty {
 	start: Party["start"];
 }
 
-const createParty = async (info: NewParty) => {
+const createParty = async (info: NewParty): Promise<string> => {
 	const result = await db.insert(parties).values(info).returning();
 
-	redirect(`/party/${result[0].shortId}`);
+	return result[0].shortId;
 };
 
 export default createParty;

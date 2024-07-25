@@ -25,14 +25,12 @@ const createDish = async ({
 
 	const partyId = ids[0].id;
 
-	await db
-		.insert(dishes)
-		.values({
-			createdBy,
-			description,
-			name,
-			partyId,
-		});
+	await db.insert(dishes).values({
+		createdBy,
+		description,
+		name,
+		partyId,
+	});
 };
 
 export default createDish;

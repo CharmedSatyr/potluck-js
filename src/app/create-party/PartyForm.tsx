@@ -4,6 +4,10 @@ import createParty from "@/actions/create-party";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+interface Props {
+	action: any;
+}
+
 export interface FormInput {
 	createdBy: "Auth value";
 	description: string;
@@ -13,14 +17,14 @@ export interface FormInput {
 	name: string;
 }
 
-const PartyForm = () => {
+const PartyForm = ({ action }: Props) => {
 	const onSubmit: SubmitHandler<FormInput> = async (data) =>
 		startTransition(() => {
 			if (Object.keys(errors).length > 0) {
 				return;
 			}
 
-			createParty({ ...data, createdBy: "Auth value" });
+			action({ ...data, createdBy: "Auth value" });
 		});
 
 	const {
