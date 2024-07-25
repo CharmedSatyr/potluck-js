@@ -17,6 +17,12 @@ export interface FormInput {
 }
 
 const PartyForm = ({ action }: Props) => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<FormInput>();
+
 	const onSubmit: SubmitHandler<FormInput> = async (data) =>
 		startTransition(() => {
 			if (Object.keys(errors).length > 0) {
@@ -25,12 +31,6 @@ const PartyForm = ({ action }: Props) => {
 
 			action({ ...data, createdBy: "Auth value" });
 		});
-
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FormInput>();
 
 	return (
 		<form className="m-20 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
