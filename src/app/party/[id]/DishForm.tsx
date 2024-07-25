@@ -1,35 +1,30 @@
 "use client";
 
-import createDish from "@/actions/create-dish";
-import { revalidatePath } from "next/cache";
 import { useParams } from "next/navigation";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { FormInput } from "@/app/party/[id]/types";
 
-export interface FormInput {
-	createdBy: string;
-	description: string;
-	name: string;
-	shortId: string;
+interface Props {
+	action: any;
 }
 
-const DishForm = () => {
+const DishForm = ({ action }: Props) => {
 	const { id: shortId } = useParams<{ id: string }>();
-
-	const onSubmit: SubmitHandler<FormInput> = async (data) =>
-		startTransition(() => {
-			if (Object.keys(errors).length > 0) {
-				return;
-			}
-
-			createDish({ ...data, shortId });
-		});
-
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormInput>();
+
+	const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) =>
+		startTransition(() => {
+			if (Object.keys(errors).length > 0) {
+				return;
+			}
+
+			action({ ...data, shortId });
+		});
 
 	return (
 		<form className="m-20 flex flex-col" onSubmit={handleSubmit(onSubmit)}>

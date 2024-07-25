@@ -1,12 +1,23 @@
 import findPartyWithDishes from "@/actions/find-party-with-dishes";
 import DishForm from "./DishForm";
 import { redirect } from "next/navigation";
+import createDish from "@/actions/create-dish";
+import { revalidatePath } from "next/cache";
+import { FormInput } from "@/app/party/[id]/types";
 
 interface Props {
 	params: {
 		id: string;
 	};
 }
+
+const createDishAndRefresh = async (data: FormInput) => {
+	"use server";
+
+	await createDish(data);
+
+	revalidatePath(`/party/${data.shortId}`, "page");
+};
 
 const PartyPage = async ({ params }: Props) => {
 	const data = await findPartyWithDishes(params.id);
@@ -24,7 +35,7 @@ const PartyPage = async ({ params }: Props) => {
 
 			<br />
 			<h2>Sign up to bring a dish!</h2>
-			<DishForm />
+			<DishForm action={createDishAndRefresh} />
 		</>
 	);
 };

@@ -14,8 +14,6 @@ interface NewParty {
 }
 
 const createParty = async (info: NewParty) => {
-	console.log("info!", info);
-
 	const result = await db.insert(parties).values(info).returning();
 
 	redirect(`/party/${result[0].shortId}`);
