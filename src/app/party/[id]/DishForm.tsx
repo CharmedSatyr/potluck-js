@@ -5,7 +5,7 @@ import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
-	action: any;
+	action: (data: FormInput) => Promise<void>;
 }
 
 export interface FormInput {

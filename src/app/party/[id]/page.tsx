@@ -1,7 +1,7 @@
-import findPartyWithDishes from "@/actions/find-party-with-dishes";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import createDish from "@/actions/create-dish";
-import { revalidatePath } from "next/cache";
+import findPartyWithDishes from "@/actions/find-party-with-dishes";
 import DishForm, { FormInput } from "@/app/party/[id]/DishForm";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 	};
 }
 
-const createDishAndRefresh = async (data: FormInput) => {
+const createDishAndRefresh = async (data: FormInput): Promise<void> => {
 	"use server";
 
 	await createDish(data);
