@@ -1,26 +1,28 @@
 "use client";
 
-import createParty from "@/actions/create-party";
+import createDish from "@/actions/create-dish";
+import { revalidatePath } from "next/cache";
+import { useParams } from "next/navigation";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 export interface FormInput {
-	createdBy: "Auth value";
+	createdBy: string;
 	description: string;
-	end: Date;
-	start: Date;
-	hosts: string;
 	name: string;
+	shortId: string;
 }
 
-const PartyForm = () => {
+const DishForm = () => {
+	const { id: shortId } = useParams<{ id: string }>();
+
 	const onSubmit: SubmitHandler<FormInput> = async (data) =>
 		startTransition(() => {
 			if (Object.keys(errors).length > 0) {
 				return;
 			}
 
-			createParty({ ...data, createdBy: "Auth value" });
+			createDish({ ...data, shortId });
 		});
 
 	const {
@@ -31,21 +33,21 @@ const PartyForm = () => {
 
 	return (
 		<form className="m-20 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-			<label htmlFor="hosts">Hosts</label>
+			<label htmlFor="createdBy">What Is Your Name</label>
 			<input
 				className="mb-4 text-slate-900"
-				id="hosts"
+				id="createdBy"
 				type="text"
-				{...register("hosts", {
+				{...register("createdBy", {
 					required: "This field is required",
 					maxLength: 256,
 				})}
 			/>
-			{errors.hosts && (
-				<span className="-mt-2 text-red-500">{errors.hosts.message}</span>
+			{errors.name && (
+				<span className="-mt-2 text-red-500">{errors.name.message}</span>
 			)}
 
-			<label htmlFor="name">Party Name</label>
+			<label htmlFor="name">What are you bringing?</label>
 			<input
 				className="mb-4 text-slate-900"
 				id="name"
@@ -59,40 +61,15 @@ const PartyForm = () => {
 				<span className="-mt-2 text-red-500">{errors.name.message}</span>
 			)}
 
-			<label htmlFor="start">Start</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="start"
-				type="datetime-local"
-				{...register("start", {
-					required: "This field is required",
-					valueAsDate: true,
-				})}
-			/>
-			{errors.start && (
-				<span className="-mt-2 text-red-500">{errors.start.message}</span>
-			)}
-
-			<label htmlFor="end">End</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="end"
-				type="datetime-local"
-				{...register("end", {
-					required: "This field is required",
-					valueAsDate: true,
-				})}
-			/>
-			{errors.end && (
-				<span className="-mt-2 text-red-500">{errors.end.message}</span>
-			)}
-
-			<label htmlFor="description">Description</label>
+			<label htmlFor="description">Describe your dish</label>
 			<input
 				className="mb-4 text-slate-900"
 				id="description"
 				type="text"
-				{...register("description", { required: false })}
+				{...register("description", {
+					required: "This field is required",
+					maxLength: 256,
+				})}
 			/>
 			{errors.description && (
 				<span className="-mt-2 text-red-500">{errors.description.message}</span>
@@ -106,4 +83,4 @@ const PartyForm = () => {
 	);
 };
 
-export default PartyForm;
+export default DishForm;

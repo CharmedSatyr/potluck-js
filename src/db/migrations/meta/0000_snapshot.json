@@ -1,5 +1,5 @@
 {
-	"id": "953b3882-7c3c-44a4-904a-50b57c9bed2a",
+	"id": "9921f7a8-98ae-48f2-973d-2416a8d31c1f",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"version": "7",
 	"dialect": "postgresql",
@@ -67,13 +67,7 @@
 				}
 			},
 			"compositePrimaryKeys": {},
-			"uniqueConstraints": {
-				"dishes_party_id_unique": {
-					"name": "dishes_party_id_unique",
-					"nullsNotDistinct": false,
-					"columns": ["party_id"]
-				}
-			}
+			"uniqueConstraints": {}
 		},
 		"public.parties": {
 			"name": "parties",
@@ -98,6 +92,12 @@
 					"primaryKey": false,
 					"notNull": false
 				},
+				"end": {
+					"name": "end",
+					"type": "timestamp with time zone",
+					"primaryKey": false,
+					"notNull": true
+				},
 				"hosts": {
 					"name": "hosts",
 					"type": "varchar(256)",
@@ -120,6 +120,12 @@
 				"short_id": {
 					"name": "short_id",
 					"type": "varchar(5)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"start": {
+					"name": "start",
+					"type": "timestamp with time zone",
 					"primaryKey": false,
 					"notNull": true
 				},

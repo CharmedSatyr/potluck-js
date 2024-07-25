@@ -1,5 +1,5 @@
 import { uuid, varchar, text, timestamp, pgTable } from "drizzle-orm/pg-core";
-import { parties } from "./parties";
+import { parties } from "@/db/schema/parties";
 
 export const dishes = pgTable("dishes", {
 	createdAt: timestamp("created_at", { withTimezone: true })
@@ -11,8 +11,7 @@ export const dishes = pgTable("dishes", {
 	name: varchar("name", { length: 256 }).notNull(),
 	partyId: uuid("party_id")
 		.references(() => parties.id, { onDelete: "cascade" })
-		.notNull()
-		.unique(),
+		.notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
