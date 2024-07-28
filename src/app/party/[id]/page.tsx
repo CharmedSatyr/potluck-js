@@ -48,8 +48,8 @@ const PartyPage = async ({ params }: Props) => {
 
 			<br />
 			<h2>Dishes</h2>
-			{dishes.map((dish) => (
-				<div>
+			{dishes.map((dish, index) => (
+				<div key={`dish-${index}`}>
 					<div>{dish.name}</div>
 					<div>{dish.description}</div>
 					<div>{dish.createdBy}</div>
