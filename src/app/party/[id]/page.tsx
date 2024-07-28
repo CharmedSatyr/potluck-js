@@ -4,7 +4,6 @@ import createDish from "@/actions/create-dish";
 import findPartyByShortId from "@/actions/find-party-by-shortid";
 import findDishesByShortId from "@/actions/find-dishes-by-shortid";
 import DishForm, { FormInput } from "@/app/party/[id]/DishForm";
-import { useMemo, useState } from "react";
 
 interface Props {
 	params: {
@@ -23,12 +22,12 @@ const createDishAndRefresh = async (data: FormInput): Promise<void> => {
 
 const PartyPage = async ({ params }: Props) => {
 	const partyData = await findPartyByShortId(params.id);
-	const party = partyData.shift()!;
 
 	if (!partyData.length) {
 		redirect("/create-party");
 	}
 
+	const party = partyData[0];
 	const dishes = await findDishesByShortId(params.id);
 
 	return (
