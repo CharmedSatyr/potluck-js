@@ -1,10 +1,11 @@
 "use client";
 
+import { NewParty } from "@/actions/create-party";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
-	action: (data: FormInput) => Promise<void>;
+	action: (data: NewParty) => Promise<void>;
 }
 
 export interface FormInput {
@@ -21,7 +22,15 @@ const PartyForm = ({ action }: Props) => {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<FormInput>();
+	} = useForm<FormInput>({
+		defaultValues: {
+			description: "A day to celebrate farmers and farmers markets",
+			end: "2024-09-28T00:00" as unknown as Date, // Automatically converted by valueAsDate
+			hosts: "Joseph & Inga Wolfe",
+			name: "Vegetable Monday",
+			start: "2024-09-30T00:00" as unknown as Date, // Automatically converted by valueAsDate
+		},
+	});
 
 	const onSubmit: SubmitHandler<FormInput> = async (data) =>
 		startTransition(() => {

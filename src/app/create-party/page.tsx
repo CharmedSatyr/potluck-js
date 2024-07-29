@@ -1,8 +1,8 @@
-import createParty from "@/actions/create-party";
-import PartyForm, { FormInput } from "@/app/create-party/PartyForm";
+import createParty, { NewParty } from "@/actions/create-party";
+import PartyForm from "@/app/create-party/PartyForm";
 import { redirect } from "next/navigation";
 
-const createPartyAndRedirect = async (data: FormInput): Promise<void> => {
+const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
 	"use server";
 
 	const shortId = await createParty(data);

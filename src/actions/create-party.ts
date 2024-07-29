@@ -3,7 +3,7 @@
 import db from "@/db/connection";
 import { Party, parties } from "@/db/schema/parties";
 
-interface NewParty {
+export interface NewParty {
 	createdBy: Party["createdBy"];
 	description: Party["description"];
 	end: Party["end"];
