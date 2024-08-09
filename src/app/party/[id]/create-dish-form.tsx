@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { NewDish } from "@/actions/create-dish";
+import { NewDish } from "@/actions/db/create-dish";
 
 interface Props {
 	handleCreate: (data: FormInput) => Promise<void>;

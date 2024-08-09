@@ -2,7 +2,7 @@
 
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { UpdatedDish } from "@/actions/update-dish";
+import { UpdatedDish } from "@/actions/db/update-dish";
 import { Dish } from "@/db/schema/dishes";
 
 interface Props {

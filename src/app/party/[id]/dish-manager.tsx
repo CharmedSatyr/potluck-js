@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import Dish from "@/app/party/[id]/dish";
 import { type Dish as DishType } from "@/db/schema/dishes";
-import createDish from "@/actions/create-dish";
-import deleteDish from "@/actions/delete-dish";
+import createDish from "@/actions/db/create-dish";
+import deleteDish from "@/actions/db/delete-dish";
 import CreateDishForm, {
 	FormInput as CreateDishFormInput,
 } from "@/app/party/[id]/create-dish-form";
-import updateDish from "@/actions/update-dish";
+import updateDish from "@/actions/db/update-dish";
 import { FormInput as UpdateDishFormInput } from "./update-dish-form";
 
 interface Props {

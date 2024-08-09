@@ -1,5 +1,5 @@
 import Link from "next/link";
-import findPartyByShortId from "@/actions/find-party-by-shortid";
+import findPartyByShortId from "@/actions/db/find-party-by-shortid";
 import { Party } from "@/db/schema/parties";
 import GotoPartyForm from "@/components/goto-party-form";
 

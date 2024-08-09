@@ -1,6 +1,6 @@
 "use client";
 
-import { NewParty } from "@/actions/create-party";
+import { NewParty } from "@/actions/db/create-party";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 

@@ -1,4 +1,4 @@
-import createParty, { NewParty } from "@/actions/create-party";
+import createParty, { NewParty } from "@/actions/db/create-party";
 import PartyForm from "@/app/create-party/party-form";
 import { redirect } from "next/navigation";
 

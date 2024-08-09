@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import findPartyByShortId from "@/actions/find-party-by-shortid";
-import findDishesByShortId from "@/actions/find-dishes-by-shortid";
+import findPartyByShortId from "@/actions/db/find-party-by-shortid";
+import findDishesByShortId from "@/actions/db/find-dishes-by-shortid";
 import DishManager from "@/app/party/[id]/dish-manager";
 
 interface Props {
