@@ -42,78 +42,88 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 		});
 
 	return (
-		<form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-			<label htmlFor="hosts">Hosts</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="hosts"
-				type="text"
-				{...register("hosts", {
-					required: "This field is required",
-					maxLength: 256,
-				})}
-			/>
-			{errors.hosts && (
-				<span className="-mt-2 text-red-500">{errors.hosts.message}</span>
-			)}
+		<form className="form-control" onSubmit={handleSubmit(onSubmit)}>
+			<div className="my-2">
+				<label htmlFor="hosts" className="label label-text">
+					Hosts
+				</label>
+				<input
+					className="form-control input input-bordered w-full"
+					id="hosts"
+					type="text"
+					{...register("hosts", {
+						required: "This field is required",
+						maxLength: 256,
+					})}
+				/>
+				<span className="text-error">{errors.hosts?.message}</span>
+			</div>
 
-			<label htmlFor="name">Party Name</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="name"
-				type="text"
-				{...register("name", {
-					required: "This field is required",
-					maxLength: 256,
-				})}
-			/>
-			{errors.name && (
-				<span className="-mt-2 text-red-500">{errors.name.message}</span>
-			)}
+			<div className="my-2">
+				<label htmlFor="name" className="label label-text">
+					Party Name
+				</label>
+				<input
+					className="input input-bordered w-full"
+					id="name"
+					type="text"
+					{...register("name", {
+						required: "This field is required",
+						maxLength: 256,
+					})}
+				/>
+				<span className="text-error">{errors.name?.message}</span>
+			</div>
 
-			<label htmlFor="start">Start</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="start"
-				type="datetime-local"
-				{...register("start", {
-					required: "This field is required",
-					valueAsDate: true,
-				})}
-			/>
-			{errors.start && (
-				<span className="-mt-2 text-red-500">{errors.start.message}</span>
-			)}
+			<div className="my-2">
+				<label htmlFor="start" className="label label-text">
+					Start
+				</label>
+				<input
+					className="input input-bordered w-full"
+					id="start"
+					type="datetime-local"
+					{...register("start", {
+						required: "This field is required",
+						valueAsDate: true,
+					})}
+				/>
+				<span className="text-error">{errors.start?.message}</span>
+			</div>
 
-			<label htmlFor="end">End</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="end"
-				type="datetime-local"
-				{...register("end", {
-					required: "This field is required",
-					valueAsDate: true,
-				})}
-			/>
-			{errors.end && (
-				<span className="-mt-2 text-red-500">{errors.end.message}</span>
-			)}
+			<div className="my-2">
+				<label htmlFor="end" className="label label-text">
+					End
+				</label>
+				<input
+					className="input input-bordered w-full"
+					id="end"
+					type="datetime-local"
+					{...register("end", {
+						required: "This field is required",
+						valueAsDate: true,
+					})}
+				/>
+				<span className="text-error">{errors.end?.message}</span>
+			</div>
 
-			<label htmlFor="description">Description</label>
-			<input
-				className="mb-4 text-slate-900"
-				id="description"
-				type="text"
-				{...register("description", { required: false })}
-			/>
-			{errors.description && (
-				<span className="-mt-2 text-red-500">{errors.description.message}</span>
-			)}
+			<div className="my-2">
+				<label htmlFor="description" className="label label-text">
+					Description{" "}
+				</label>
+				<div className="input input-bordered flex items-center gap-2">
+					<input
+						className="grow"
+						id="description"
+						type="text"
+						{...register("description", { required: false })}
+					/>
+					<span className="badge badge-accent">Optional</span>
+				</div>
+				<span className="error">{errors.description?.message}</span>
+			</div>
 
-			<input
-				type="submit"
-				className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-			/>
+			<input type="submit" className="btn btn-primary my-8" />
 		</form>
 	);
 };
