@@ -17,7 +17,7 @@ const createDish = async ({
 	description,
 	name,
 	shortId,
-}: NewDish): Promise<void> => {
+}: NewDish): Promise<Dish[]> => {
 	const ids = await db
 		.select({ id: parties.id })
 		.from(parties)
@@ -25,12 +25,15 @@ const createDish = async ({
 
 	const partyId = ids[0].id;
 
-	await db.insert(dishes).values({
-		createdBy,
-		description,
-		name,
-		partyId,
-	});
+	return await db
+		.insert(dishes)
+		.values({
+			createdBy,
+			description,
+			name,
+			partyId,
+		})
+		.returning();
 };
 
 export default createDish;
