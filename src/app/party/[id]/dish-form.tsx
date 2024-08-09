@@ -38,64 +38,73 @@ const DishForm = ({ handleCreate, close }: Props) => {
 
 	return (
 		<dialog className="modal" id="dish_modal">
-			<div className="modal-action">
+			<div className="modal-action w-1/2">
 				<form
 					method="dialog"
-					className="modal-box flex flex-col"
+					className="form-control modal-box w-full max-w-none"
 					onSubmit={handleSubmit(onSubmit)}
 				>
-					<h3 className="mb-4 text-lg font-bold">Bring a Dish</h3>
-					<label htmlFor="createdBy" className="mb-2">
-						Your Name
-					</label>
-					<input
-						className="mb-4 text-slate-900"
-						id="createdBy"
-						type="text"
-						{...register("createdBy", {
-							required: "This field is required",
-							maxLength: 256,
-						})}
-					/>
-					{errors.name && (
-						<span className="-mt-2 text-red-500">{errors.name.message}</span>
-					)}
+					<button
+						className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+						onClick={(e) => {
+							e.preventDefault();
+							close();
+						}}
+					>
+						✕
+					</button>
 
-					<label htmlFor="name" className="mb-2">
-						What are you bringing?
-					</label>
-					<input
-						className="mb-4 text-slate-900"
-						id="name"
-						type="text"
-						{...register("name", {
-							required: "This field is required",
-							maxLength: 256,
-						})}
-					/>
-					{errors.name && (
-						<span className="-mt-2 text-red-500">{errors.name.message}</span>
-					)}
+					<h2>Sign Up to Bring a Dish</h2>
 
-					<label htmlFor="description" className="mb-2">
-						Notes
-					</label>
-					<input
-						className="mb-4 text-slate-900"
-						id="description"
-						type="text"
-						{...register("description", {
-							required: "This field is required",
-							maxLength: 256,
-						})}
-					/>
-					{errors.description && (
-						<span className="-mt-2 text-red-500">
-							{errors.description.message}
-						</span>
-					)}
+					<div className="my-2">
+						<label htmlFor="createdBy" className="label label-text">
+							Your Name
+						</label>
+						<input
+							className="input input-bordered w-full"
+							id="createdBy"
+							type="text"
+							{...register("createdBy", {
+								required: "This field is required",
+								maxLength: 256,
+							})}
+						/>
+						<span className="text-error">{errors.createdBy?.message}</span>
+					</div>
 
-					<input type="submit" className="btn" />
+					<div className="my-2">
+						<label htmlFor="name" className="label label-text">
+							What are you bringing?
+						</label>
+						<input
+							className="input input-bordered w-full"
+							id="name"
+							type="text"
+							{...register("name", {
+								required: "This field is required",
+								maxLength: 256,
+							})}
+						/>
+						<span className="text-error">{errors.name?.message}</span>
+					</div>
+
+					<div className="my-2">
+						<label htmlFor="description" className="label label-text">
+							Notes
+						</label>
+						<input
+							className="input input-bordered w-full"
+							id="description"
+							type="text"
+							{...register("description", {
+								required: "This field is required",
+								maxLength: 256,
+							})}
+						/>
+						<span className="text-error">{errors.description?.message}</span>
+					</div>
+
+					<input type="submit" className="btn btn-secondary mt-6" />
 				</form>
 			</div>
 		</dialog>
