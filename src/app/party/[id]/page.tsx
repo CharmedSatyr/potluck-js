@@ -1,24 +1,13 @@
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import createDish from "@/actions/create-dish";
 import findPartyByShortId from "@/actions/find-party-by-shortid";
 import findDishesByShortId from "@/actions/find-dishes-by-shortid";
-import DishForm, { FormInput } from "@/app/party/[id]/DishForm";
+import DishManager from "@/app/party/[id]/dish-manager";
 
 interface Props {
 	params: {
 		id: string;
 	};
 }
-
-const createDishAndRefresh = async (data: FormInput): Promise<void> => {
-	"use server";
-
-	await createDish(data);
-
-	// TODO: Prevent full-page re-render when submitting new dish.
-	revalidatePath(`/party/${data.shortId}`, "page");
-};
 
 const PartyPage = async ({ params }: Props) => {
 	const partyData = await findPartyByShortId(params.id);
@@ -31,7 +20,7 @@ const PartyPage = async ({ params }: Props) => {
 	const dishes = await findDishesByShortId(params.id);
 
 	return (
-		<>
+		<div className="m-16 border-2 border-rose-500">
 			<div>I am the party page for party {params.id}</div>
 			<br />
 			<div>I have so much info! Check it out:</div>
@@ -46,20 +35,8 @@ const PartyPage = async ({ params }: Props) => {
 			<div>Description: {party.description}</div>
 			<div>Updated: {party.updatedAt.toDateString()}</div>
 
-			<br />
-			<h2>Dishes</h2>
-			{dishes.map((dish) => (
-				<div key={`${dish.name}-${dish.createdAt}`}>
-					<div>{dish.name}</div>
-					<div>{dish.description}</div>
-					<div>{dish.createdBy}</div>
-				</div>
-			))}
-
-			<br />
-			<h2>Sign up to bring a dish!</h2>
-			<DishForm action={createDishAndRefresh} />
-		</>
+			<DishManager dishes={dishes} />
+		</div>
 	);
 };
 

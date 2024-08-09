@@ -1,5 +1,5 @@
 import createParty, { NewParty } from "@/actions/create-party";
-import PartyForm from "@/app/create-party/PartyForm";
+import PartyForm from "@/app/create-party/party-form";
 import { redirect } from "next/navigation";
 
 const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
