@@ -25,9 +25,7 @@ const PartyPage = async ({ params }: Props) => {
 				Party Code: <span className="text-secondary">{party.shortId}</span>
 			</h1>
 			<h1 className="text-primary">{party.name}</h1>
-			<h2 className="mt-0">
-				{party.location}
-			</h2>
+			<h2 className="mt-0">{party.location}</h2>
 			<h2 className="mt-0 font-normal text-neutral">
 				<time dateTime={party.start.toISOString()}>
 					{party.start.toLocaleDateString()}

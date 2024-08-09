@@ -7,6 +7,7 @@ const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
 
 	const shortId = await createParty(data);
 
+	// This is not quite right. Don't want a 303/307 code.
 	redirect(`/party/${shortId}`);
 };
 

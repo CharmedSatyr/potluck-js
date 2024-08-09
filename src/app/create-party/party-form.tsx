@@ -8,7 +8,7 @@ interface Props {
 	handleCreateParty: (data: NewParty) => Promise<void>;
 }
 
-export type FormInput = NewParty;
+export type FormInput = Omit<NewParty, "createdBy">;
 
 const PartyForm = ({ handleCreateParty }: Props) => {
 	const {
@@ -26,7 +26,7 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<FormInput> = async (data) =>
+	const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) =>
 		startTransition(() => {
 			if (Object.keys(errors).length > 0) {
 				return;
