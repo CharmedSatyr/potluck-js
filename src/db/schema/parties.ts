@@ -7,8 +7,10 @@ import {
 	index,
 } from "drizzle-orm/pg-core";
 
+const SHORT_ID_LENGTH = 5;
+
 const createShortId = (): string =>
-	Math.random().toString(36).substring(2, 8).toUpperCase();
+	Math.random().toString(36).substring(2, 2 + SHORT_ID_LENGTH).toUpperCase();
 
 export const parties = pgTable(
 	"parties",
@@ -28,7 +30,7 @@ export const parties = pgTable(
 		// TODO: Location
 		name: varchar("name", { length: 256 }).notNull(),
 		// TODO: RSVP options
-		shortId: varchar("short_id", { length: 6 })
+		shortId: varchar("short_id", { length: SHORT_ID_LENGTH })
 			.notNull()
 			.unique()
 			.$default(createShortId),
