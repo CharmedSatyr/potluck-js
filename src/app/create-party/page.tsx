@@ -11,7 +11,7 @@ const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
 };
 
 const CreatePartyPage = async () => {
-	return <PartyForm action={createPartyAndRedirect} />;
+	return <PartyForm handleCreateParty={createPartyAndRedirect} />;
 };
 
 export default CreatePartyPage;

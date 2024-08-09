@@ -5,7 +5,7 @@ import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
-	action: (data: NewParty) => Promise<void>;
+	handleCreateParty: (data: NewParty) => Promise<void>;
 }
 
 export interface FormInput {
@@ -17,7 +17,7 @@ export interface FormInput {
 	name: NewParty["name"];
 }
 
-const PartyForm = ({ action }: Props) => {
+const PartyForm = ({ handleCreateParty }: Props) => {
 	const {
 		register,
 		handleSubmit,
@@ -38,11 +38,11 @@ const PartyForm = ({ action }: Props) => {
 				return;
 			}
 
-			action({ ...data, createdBy: "Auth value" });
+			handleCreateParty({ ...data, createdBy: "Auth value" });
 		});
 
 	return (
-		<form className="m-20 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+		<form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
 			<label htmlFor="hosts">Hosts</label>
 			<input
 				className="mb-4 text-slate-900"
