@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721939524691,
-      "tag": "0000_goofy_toro",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1722173343413,
-      "tag": "0001_smooth_ezekiel_stane",
+      "when": 1723211923706,
+      "tag": "0000_stiff_fabian_cortez",
       "breakpoints": true
     }
   ]

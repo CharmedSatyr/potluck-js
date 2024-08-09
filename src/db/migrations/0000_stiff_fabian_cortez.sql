@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS "parties" (
 	"end" timestamp with time zone NOT NULL,
 	"hosts" varchar(256) NOT NULL,
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"location" varchar(256) NOT NULL,
 	"name" varchar(256) NOT NULL,
 	"short_id" varchar(5) NOT NULL,
 	"start" timestamp with time zone NOT NULL,
@@ -27,3 +28,5 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "short_id_idx" ON "parties" USING btree ("short_id");

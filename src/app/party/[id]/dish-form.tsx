@@ -3,18 +3,14 @@
 import { useParams } from "next/navigation";
 import { startTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { NewDish } from "@/actions/create-dish";
 
 interface Props {
 	handleCreate: (data: FormInput) => Promise<void>;
 	close: () => void;
 }
 
-export interface FormInput {
-	createdBy: string;
-	description: string;
-	name: string;
-	shortId: string;
-}
+export type FormInput = NewDish;
 
 const DishForm = ({ handleCreate, close }: Props) => {
 	const { id: shortId } = useParams<{ id: string }>();
@@ -24,8 +20,8 @@ const DishForm = ({ handleCreate, close }: Props) => {
 		formState: { errors },
 	} = useForm<FormInput>({
 		defaultValues: {
-			createdBy: "Jesse Royal",
-			description: "Beef birria with cheese",
+			createdBy: "Jesse Royalty",
+			description: "Mushroom birria with cheese",
 			name: "Vegetable Monday",
 		},
 	});

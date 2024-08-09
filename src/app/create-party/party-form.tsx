@@ -8,14 +8,7 @@ interface Props {
 	handleCreateParty: (data: NewParty) => Promise<void>;
 }
 
-export interface FormInput {
-	createdBy: NewParty["createdBy"];
-	description: NewParty["description"];
-	end: NewParty["end"];
-	start: NewParty["start"];
-	hosts: NewParty["hosts"];
-	name: NewParty["name"];
-}
+export type FormInput = NewParty;
 
 const PartyForm = ({ handleCreateParty }: Props) => {
 	const {
@@ -24,9 +17,10 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 		formState: { errors },
 	} = useForm<FormInput>({
 		defaultValues: {
-			description: "A day to celebrate farmers and farmers markets",
+			description: "A day to celebrate farmers and farmers markets!",
 			end: "2024-09-28T00:00" as unknown as Date, // Automatically converted by valueAsDate
 			hosts: "Joseph & Inga Wolfe",
+			location: "100 Rue de Boeuf, Paris, France 1000",
 			name: "Vegetable Monday",
 			start: "2024-09-30T00:00" as unknown as Date, // Automatically converted by valueAsDate
 		},
@@ -73,6 +67,22 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 					})}
 				/>
 				<span className="text-error">{errors.name?.message}</span>
+			</div>
+
+			<div className="my-2">
+				<label htmlFor="location" className="label label-text">
+					Location{" "}
+				</label>
+				<input
+					className="input input-bordered w-full"
+					id="description"
+					type="text"
+					{...register("location", {
+						required: "This field is required",
+						maxLength: 256,
+					})}
+				/>
+				<span className="error">{errors.location?.message}</span>
 			</div>
 
 			<div className="my-2">

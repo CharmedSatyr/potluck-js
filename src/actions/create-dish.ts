@@ -2,15 +2,12 @@
 
 import db from "@/db/connection";
 import { Dish, dishes } from "@/db/schema/dishes";
+import { Party } from "@/db/schema/parties";
 import { parties } from "@/db/schema/parties";
 import { eq } from "drizzle-orm";
 
-interface NewDish {
-	createdBy: Dish["createdBy"];
-	description: Dish["description"];
-	name: Dish["name"];
-	shortId: Dish["partyId"];
-}
+export type NewDish = Omit<Dish, "createdAt" | "id" | "updatedAt"> &
+	Pick<Party, "shortId">;
 
 const createDish = async ({
 	createdBy,

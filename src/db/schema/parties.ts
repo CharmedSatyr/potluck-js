@@ -30,9 +30,9 @@ export const parties = pgTable(
 		end: timestamp("end", { withTimezone: true }).notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
-		// TODO: Location
+		location: varchar("location", { length: 256 }).notNull(),
 		name: varchar("name", { length: 256 }).notNull(),
-		// TODO: RSVP options
+		// TODO: RSVP options (yes, maybe, no)
 		shortId: varchar("short_id", { length: SHORT_ID_LENGTH })
 			.notNull()
 			.unique()
