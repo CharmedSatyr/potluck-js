@@ -21,20 +21,26 @@ const PartyPage = async ({ params }: Props) => {
 
 	return (
 		<div>
-			<h1>Hi</h1>
-			<div>I am the party page for party {params.id}</div>
-			<br />
-			<div>I have so much info! Check it out:</div>
-			<br />
-			<div>Created at: {party.createdAt.toDateString()}</div>
-			<div>Created by: {party.createdBy}</div>
-			<div>Name: {party.name}</div>
-			<div>Hosts: {party.hosts}</div>
-			<div>
-				Time: {party.start.toDateString()} - {party.end.toDateString()}
-			</div>
-			<div>Description: {party.description}</div>
-			<div>Updated: {party.updatedAt.toDateString()}</div>
+			<h1>
+				Party Code: <span className="text-secondary">{party.shortId}</span>
+			</h1>
+			<h1 className="mb-2 text-primary">{party.name}</h1>
+			<h2 className="mt-0 font-normal text-neutral">
+				<time dateTime={party.start.toISOString()}>
+					{party.start.toLocaleDateString()}
+				</time>{" "}
+				-{" "}
+				<time dateTime={party.end.toISOString()}>
+					{party.end.toLocaleDateString()}
+				</time>
+				<br />
+				<span className="text-neutral">
+					<time>{party.start.toLocaleTimeString()}</time> -{" "}
+					<time>{party.end.toLocaleTimeString()}</time>
+				</span>
+			</h2>
+			<h3>Hosted by {party.hosts}</h3>
+			<div>{party.description}</div>
 
 			<DishManager dishes={dishes} />
 		</div>

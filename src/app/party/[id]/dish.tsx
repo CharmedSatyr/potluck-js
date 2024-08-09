@@ -7,7 +7,7 @@ interface Props {
 
 const Dish = ({ dish, handleDelete }: Props) => {
 	return (
-		<div className="m-2 flex justify-between border-2 border-teal-500 p-2">
+		<div className="flex justify-between">
 			<div>
 				<h3 className="text-2xl">{dish.name}</h3>
 				<div>{dish.description}</div>

@@ -60,8 +60,8 @@ const Dishes = (props: Props) => {
 	};
 
 	return (
-		<div className="my-6">
-			<h2 className="text-2xl">Dishes</h2>
+		<div>
+			<h2>Dishes</h2>
 
 			<button className="btn btn-primary" onClick={toggleModal}>
 				Bring a dish!

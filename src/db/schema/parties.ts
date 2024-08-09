@@ -10,7 +10,10 @@ import {
 const SHORT_ID_LENGTH = 5;
 
 const createShortId = (): string =>
-	Math.random().toString(36).substring(2, 2 + SHORT_ID_LENGTH).toUpperCase();
+	Math.random()
+		.toString(36)
+		.substring(2, 2 + SHORT_ID_LENGTH)
+		.toUpperCase();
 
 export const parties = pgTable(
 	"parties",
