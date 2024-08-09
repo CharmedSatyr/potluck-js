@@ -9,12 +9,12 @@ interface Props {
 }
 
 export interface FormInput {
-	createdBy: "Auth value";
-	description: string;
-	end: Date;
-	start: Date;
-	hosts: string;
-	name: string;
+	createdBy: NewParty["createdBy"];
+	description: NewParty["description"];
+	end: NewParty["end"];
+	start: NewParty["start"];
+	hosts: NewParty["hosts"];
+	name: NewParty["name"];
 }
 
 const PartyForm = ({ action }: Props) => {
