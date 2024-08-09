@@ -13,15 +13,21 @@ const createShortId = (): string =>
 export const parties = pgTable(
 	"parties",
 	{
+		// TODO: Capacity
+		// TODO: Cost per person
+		// TODO: Cover image ()
 		createdAt: timestamp("created_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
 		createdBy: varchar("created_by", { length: 256 }).notNull(),
+		// TODO: Add custom field (link or text)
 		description: text("description"),
 		end: timestamp("end", { withTimezone: true }).notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
+		// TODO: Location
 		name: varchar("name", { length: 256 }).notNull(),
+		// TODO: RSVP options
 		shortId: varchar("short_id", { length: 6 })
 			.notNull()
 			.unique()
