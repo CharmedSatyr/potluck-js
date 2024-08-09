@@ -20,7 +20,8 @@ const PartyPage = async ({ params }: Props) => {
 	const dishes = await findDishesByShortId(params.id);
 
 	return (
-		<div className="m-16 border-2 border-rose-500">
+		<div>
+			<h1>Hi</h1>
 			<div>I am the party page for party {params.id}</div>
 			<br />
 			<div>I have so much info! Check it out:</div>
