@@ -18,7 +18,7 @@ const config: Config = {
 		},
 	},
 	daisyui: {
-		themes: ["retro"],
+		themes: ["cupcake"],
 	},
 	plugins: [typography, daisyui],
 };
