@@ -1,26 +1,47 @@
 import { type Dish } from "@/db/schema/dishes";
+import UpdateDishForm, {
+	FormInput as UpdateDishFormInput,
+} from "@/app/party/[id]/update-dish-form";
 
 interface Props {
 	dish: Dish;
-	handleDelete: (id: string) => Promise<void>;
+	handleDelete: (id: Dish["id"]) => Promise<void>;
+	handleUpdate: (data: UpdateDishFormInput) => Promise<void>;
+	toggleModal: () => void;
 }
 
-const Dish = ({ dish, handleDelete }: Props) => {
+const Dish = ({ dish, handleDelete, handleUpdate, toggleModal }: Props) => {
 	return (
-		<div className="flex justify-between">
-			<div>
-				<h3 className="text-2xl">{dish.name}</h3>
-				<div>{dish.description}</div>
-				<div>{dish.createdBy}</div>
-				<div>Last modified: {dish.createdAt.toDateString()}</div>
-			</div>
-			<button
-				onClick={async () => await handleDelete(dish.id)}
-				className="border-2 border-rose-500 p-4"
-			>
-				Delete
-			</button>
-		</div>
+		<>
+			<tr>
+				<th></th>
+				<td>{dish.name}</td>
+				<td>{dish.description}</td>
+				<td>{dish.createdBy}</td>
+				<td></td>
+				<td></td>
+				<td>
+					<button className="btn btn-secondary" onClick={toggleModal}>
+						Update
+					</button>
+				</td>
+
+				<td>
+					<button
+						className="btn btn-accent"
+						onClick={async () => await handleDelete(dish.id)}
+					>
+						Delete
+					</button>
+				</td>
+			</tr>
+
+			<UpdateDishForm
+				close={toggleModal}
+				handleUpdate={handleUpdate}
+				id={dish.id}
+			/>
+		</>
 	);
 };
 

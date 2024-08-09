@@ -18,11 +18,11 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 	} = useForm<FormInput>({
 		defaultValues: {
 			description: "A day to celebrate farmers and farmers markets!",
-			end: "2024-09-28T00:00" as unknown as Date, // Automatically converted by valueAsDate
+			end: "2025-01-09T12:00" as unknown as Date, // Automatically converted by valueAsDate
 			hosts: "Joseph & Inga Wolfe",
 			location: "100 Rue de Boeuf, Paris, France 1000",
 			name: "Vegetable Monday",
-			start: "2024-09-30T00:00" as unknown as Date, // Automatically converted by valueAsDate
+			start: "2025-01-09T15:00" as unknown as Date, // Automatically converted by valueAsDate
 		},
 	});
 
@@ -75,7 +75,7 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 				</label>
 				<input
 					className="input input-bordered w-full"
-					id="description"
+					id="location"
 					type="text"
 					{...register("location", {
 						required: "This field is required",
@@ -126,7 +126,7 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 						className="grow"
 						id="description"
 						type="text"
-						{...register("description", { required: false })}
+						{...register("description", { required: false, maxLength: 256 })}
 					/>
 					<span className="badge badge-accent">Optional</span>
 				</div>

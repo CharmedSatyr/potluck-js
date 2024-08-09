@@ -12,7 +12,7 @@ interface Props {
 
 export type FormInput = NewDish;
 
-const DishForm = ({ handleCreate, close }: Props) => {
+const CreateDishForm = ({ handleCreate, close }: Props) => {
 	const { id: shortId } = useParams<{ id: string }>();
 	const {
 		register,
@@ -22,7 +22,7 @@ const DishForm = ({ handleCreate, close }: Props) => {
 		defaultValues: {
 			createdBy: "Jesse Royalty",
 			description: "Mushroom birria with cheese",
-			name: "Vegetable Monday",
+			name: "Tacos",
 		},
 	});
 
@@ -37,7 +37,7 @@ const DishForm = ({ handleCreate, close }: Props) => {
 		});
 
 	return (
-		<dialog className="modal" id="dish_modal">
+		<dialog className="modal" id="create_dish_modal">
 			<div className="modal-action w-1/2">
 				<form
 					method="dialog"
@@ -54,7 +54,7 @@ const DishForm = ({ handleCreate, close }: Props) => {
 						✕
 					</button>
 
-					<h2>Sign Up to Bring a Dish</h2>
+					<h2 className="mt-0">Sign Up to Bring a Dish</h2>
 
 					<div className="my-2">
 						<label htmlFor="createdBy" className="label label-text">
@@ -111,4 +111,4 @@ const DishForm = ({ handleCreate, close }: Props) => {
 	);
 };
 
-export default DishForm;
+export default CreateDishForm;

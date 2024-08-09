@@ -19,7 +19,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inter.className} prose m-20`}>{children}</body>
+			<body className={`${inter.className} prose max-w-none p-20`}>
+				{children}
+			</body>
 		</html>
 	);
 }

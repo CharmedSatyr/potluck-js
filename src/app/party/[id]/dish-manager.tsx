@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Dish from "./dish";
+import Dish from "@/app/party/[id]/dish";
 import { type Dish as DishType } from "@/db/schema/dishes";
-import deleteDish from "@/actions/delete-dish";
-import DishForm, { FormInput } from "./dish-form";
 import createDish from "@/actions/create-dish";
+import deleteDish from "@/actions/delete-dish";
+import CreateDishForm, {
+	FormInput as CreateDishFormInput,
+} from "@/app/party/[id]/create-dish-form";
+import updateDish from "@/actions/update-dish";
+import { FormInput as UpdateDishFormInput } from "./update-dish-form";
 
 interface Props {
 	dishes: DishType[];
@@ -19,7 +23,7 @@ const Dishes = (props: Props) => {
 	}, [props.dishes]);
 
 	// create
-	const handleCreate = async (data: FormInput): Promise<void> => {
+	const handleCreate = async (data: CreateDishFormInput): Promise<void> => {
 		const result = await createDish(data);
 		if (!result.length) {
 			console.error("Failed to create dish");
@@ -29,8 +33,35 @@ const Dishes = (props: Props) => {
 		setDishes(newDishes);
 	};
 
+	// update
+	const handleUpdate = async (data: UpdateDishFormInput): Promise<void> => {
+		if (!data.id) {
+			return;
+		}
+
+		if (!data.description && !data.name) {
+			return;
+		}
+
+		const result = await updateDish({
+			description: data.description,
+			id: data.id,
+			name: data.name,
+		});
+
+		if (!result.length) {
+			console.error("Failed to update dish");
+			return;
+		}
+
+		const index = dishes.findIndex((dish) => dish.id === data.id);
+		const updatedDishes = dishes.toSpliced(index, 1, result[0]);
+
+		setDishes(updatedDishes);
+	};
+
 	// delete
-	const handleDelete = async (id: string) => {
+	const handleDelete = async (id: Dish["id"]) => {
 		const result = await deleteDish(id);
 
 		if (!result.length) {
@@ -42,9 +73,26 @@ const Dishes = (props: Props) => {
 		setDishes(newDishes);
 	};
 
-	const toggleModal = () => {
+	const toggleCreateDishModal = () => {
 		const modal = document.getElementById(
-			"dish_modal"
+			"create_dish_modal"
+		) as HTMLDialogElement | null;
+
+		if (!modal) {
+			return;
+		}
+
+		if (!modal.open) {
+			modal.showModal();
+			return;
+		}
+
+		modal.close();
+	};
+
+	const toggleUpdateDishModal = () => {
+		const modal = document.getElementById(
+			"update_dish_modal"
 		) as HTMLDialogElement | null;
 
 		if (!modal) {
@@ -61,22 +109,45 @@ const Dishes = (props: Props) => {
 
 	return (
 		<div>
-			<h2>Dishes</h2>
-
-			<button className="btn btn-primary" onClick={toggleModal}>
-				Bring a dish!
+			{dishes.length > 0 ? <h2>On the Table</h2> : <h2>Nothing here yet...</h2>}
+			<button className="btn btn-primary" onClick={toggleCreateDishModal}>
+				Sign up to bring a dish!
 			</button>
-			<DishForm handleCreate={handleCreate} close={toggleModal} />
 
-			<div>
-				{dishes.map((dish) => (
-					<Dish
-						key={`${dish.name}-${dish.createdBy}`}
-						dish={dish}
-						handleDelete={handleDelete}
-					/>
-				))}
-			</div>
+			{dishes.length > 0 && (
+				<div className="overflow-x-auto">
+					<table className="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Description</th>
+								<th>Brought by</th>
+								<th>Serves</th>
+								<th>Tags</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{dishes.map((dish) => (
+								<Dish
+									key={dish.id}
+									dish={dish}
+									handleDelete={handleDelete}
+									handleUpdate={handleUpdate}
+									toggleModal={toggleUpdateDishModal}
+								/>
+							))}
+						</tbody>
+					</table>
+				</div>
+			)}
+
+			<CreateDishForm
+				handleCreate={handleCreate}
+				close={toggleCreateDishModal}
+			/>
 		</div>
 	);
 };
