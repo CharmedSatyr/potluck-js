@@ -53,7 +53,7 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 			/>
 			<input
 				{...register("partyId", {
-					required: "This field is required",
+					required: `Enter a ${SHORT_ID_LENGTH}-character party code`,
 					minLength: {
 						value: SHORT_ID_LENGTH,
 						message: `Code must be ${SHORT_ID_LENGTH} alphanumeric characters`,
@@ -62,6 +62,7 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 						value: SHORT_ID_LENGTH,
 						message: `Code must be ${SHORT_ID_LENGTH} alphanumeric characters`,
 					},
+					setValueAs: (id: string) => id.toUpperCase(),
 				})}
 				type="text"
 				className="input input-bordered w-full"

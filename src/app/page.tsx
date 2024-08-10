@@ -17,14 +17,14 @@ const Home = () => {
 			<h1 className="mb-2">13 Potato Salads</h1>
 			<h2 className="mt-0 text-secondary">a potluck planning app</h2>
 
-			<div className="flex w-full">
-				<div className="card grid flex-grow place-items-center rounded-box bg-base-200">
+			<div className="mt-20 flex min-h-60 w-full justify-center">
+				<div className="divider divider-start divider-horizontal w-fit">
 					<Link href="/create-party" className="btn btn-primary text-2xl">
 						Start a Party
 					</Link>
 				</div>
 				<div className="divider divider-horizontal">OR</div>
-				<div className="card grid flex-grow place-items-center rounded-box bg-base-200 py-8">
+				<div className="divider divider-end divider-horizontal w-fit">
 					<GotoPartyForm findPartyAction={findParty} />
 				</div>
 			</div>
