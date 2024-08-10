@@ -10,7 +10,7 @@ interface Props {
 	close: () => void;
 }
 
-export type FormInput = NewDish;
+export type FormInput = Omit<NewDish, "createdBy">;
 
 const CreateDishForm = ({ handleCreate, close }: Props) => {
 	const { id: shortId } = useParams<{ id: string }>();
@@ -20,7 +20,6 @@ const CreateDishForm = ({ handleCreate, close }: Props) => {
 		formState: { errors },
 	} = useForm<FormInput>({
 		defaultValues: {
-			createdBy: "Jesse Royalty",
 			description: "Mushroom birria with cheese",
 			name: "Tacos",
 		},
@@ -55,22 +54,6 @@ const CreateDishForm = ({ handleCreate, close }: Props) => {
 					</button>
 
 					<h2 className="mt-0">Sign Up to Bring a Dish</h2>
-
-					<div className="my-2">
-						<label htmlFor="createdBy" className="label label-text">
-							Your Name
-						</label>
-						<input
-							className="input input-bordered w-full"
-							id="createdBy"
-							type="text"
-							{...register("createdBy", {
-								required: "This field is required",
-								maxLength: 256,
-							})}
-						/>
-						<span className="text-error">{errors.createdBy?.message}</span>
-					</div>
 
 					<div className="my-2">
 						<label htmlFor="name" className="label label-text">

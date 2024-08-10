@@ -1,16 +1,22 @@
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 
-const SignIn = () => {
+const SignIn = async () => {
+	const session = await auth();
+
+	if (session?.user) {
+		return null;
+	}
+
 	return (
 		<form
 			action={async () => {
 				"use server";
-
-				const result = await signIn("discord");
-				console.log("Login result: ", result);
+				await signIn("discord");
 			}}
 		>
-			<button className="btn btn-primary" type="submit">Signin with Discord</button>
+			<button className="btn btn-accent" type="submit">
+				Sign In with Discord
+			</button>
 		</form>
 	);
 };

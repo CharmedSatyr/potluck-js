@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import findPartyByShortId from "@/actions/db/find-party-by-shortid";
 import findDishesByShortId from "@/actions/db/find-dishes-by-shortid";
 import DishManager from "@/app/party/[id]/dish-manager";
+import { auth } from "@/auth";
 
 interface Props {
 	params: {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const PartyPage = async ({ params }: Props) => {
+	const session = await auth();
 	const partyData = await findPartyByShortId(params.id);
 
 	if (!partyData.length) {
@@ -43,7 +45,10 @@ const PartyPage = async ({ params }: Props) => {
 			<h3>Hosted by {party.hosts}</h3>
 			<div>{party.description}</div>
 
-			<DishManager dishes={dishes} />
+			<DishManager
+				dishes={dishes}
+				username={session?.user?.name ?? "Discord user"}
+			/>
 		</div>
 	);
 };

@@ -1,5 +1,6 @@
 import createParty, { NewParty } from "@/actions/db/create-party";
 import PartyForm from "@/app/create-party/party-form";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
@@ -12,10 +13,15 @@ const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
 };
 
 const CreatePartyPage = async () => {
+	const session = await auth();
+
 	return (
 		<>
 			<h1>Start a Party</h1>
-			<PartyForm handleCreateParty={createPartyAndRedirect} />
+			<PartyForm
+				handleCreateParty={createPartyAndRedirect}
+				username={session?.user?.name ?? "Discord user"}
+			/>
 		</>
 	);
 };

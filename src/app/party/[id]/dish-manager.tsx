@@ -13,6 +13,7 @@ import { FormInput as UpdateDishFormInput } from "./update-dish-form";
 
 interface Props {
 	dishes: DishType[];
+	username: string;
 }
 
 const Dishes = (props: Props) => {
@@ -24,7 +25,11 @@ const Dishes = (props: Props) => {
 
 	// create
 	const handleCreate = async (data: CreateDishFormInput): Promise<void> => {
-		const result = await createDish(data);
+		const result = await createDish({
+			...data,
+			createdBy: props.username,
+		});
+
 		if (!result.length) {
 			console.error("Failed to create dish");
 			return;

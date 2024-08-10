@@ -6,11 +6,12 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
 	handleCreateParty: (data: NewParty) => Promise<void>;
+	username: string;
 }
 
 export type FormInput = Omit<NewParty, "createdBy">;
 
-const PartyForm = ({ handleCreateParty }: Props) => {
+const PartyForm = ({ handleCreateParty, username }: Props) => {
 	const {
 		register,
 		handleSubmit,
@@ -32,7 +33,7 @@ const PartyForm = ({ handleCreateParty }: Props) => {
 				return;
 			}
 
-			handleCreateParty({ ...data, createdBy: "Auth value" });
+			handleCreateParty({ ...data, createdBy: username });
 		});
 
 	return (

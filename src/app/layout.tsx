@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import * as dotenv from "dotenv";
+import NavBar from "@/components/nav-bar";
 dotenv.config();
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,8 +20,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inter.className} prose max-w-none p-20`}>
-				{children}
+			<body className={`${inter.className} prose max-w-none`}>
+				<NavBar />
+				<div className="container p-10">{children}</div>
 			</body>
 		</html>
 	);
