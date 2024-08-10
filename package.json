@@ -16,11 +16,11 @@
 		"db:migrate": "npx drizzle-kit migrate"
 	},
 	"dependencies": {
+		"@neondatabase/serverless": "^0.9.4",
 		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.33.0",
 		"next": "14.2.5",
 		"next-auth": "^5.0.0-beta.20",
-		"pg": "^8.12.0",
 		"react": "^18",
 		"react-dom": "^18",
 		"react-hook-form": "^7.52.2"
@@ -28,7 +28,6 @@
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.14",
 		"@types/node": "^22.2.0",
-		"@types/pg": "^8.11.6",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"daisyui": "^4.12.10",

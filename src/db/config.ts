@@ -1,8 +1,16 @@
+const {
+	DATABASE_HOST,
+	DATABASE_NAME,
+	DATABASE_PASSWORD,
+	DATABASE_URL,
+	DATABASE_USER,
+} = process.env;
+
 export const config = {
-	user: process.env.DATABASE_USER!,
-	password: process.env.DATABASE_PASSWORD!,
-	host: process.env.DATABASE_HOST!,
-	port: Number(process.env.DATABASE_PORT!),
-	database: process.env.DATABASE_NAME!,
-	ssl: process.env.NODE_ENV ? process.env.NODE_ENV !== "development" : false,
+	connectionString: DATABASE_URL!,
+	database: DATABASE_NAME!,
+	host: DATABASE_HOST!,
+	password: DATABASE_PASSWORD!,
+	ssl: true,
+	user: DATABASE_USER!,
 };
