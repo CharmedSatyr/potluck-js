@@ -12,6 +12,8 @@ interface Props {
 
 const PartyPage = async ({ params }: Props) => {
 	const session = await auth();
+	const loggedIn = Boolean(session?.user?.id);
+
 	const partyData = await findPartyByShortId(params.id);
 
 	if (!partyData.length) {
@@ -47,6 +49,7 @@ const PartyPage = async ({ params }: Props) => {
 
 			<DishManager
 				dishes={dishes}
+				loggedIn={loggedIn}
 				username={session?.user?.name ?? "Discord user"}
 			/>
 		</div>

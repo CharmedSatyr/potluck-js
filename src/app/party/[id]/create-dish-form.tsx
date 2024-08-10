@@ -7,12 +7,13 @@ import { NewDish } from "@/actions/db/create-dish";
 
 interface Props {
 	handleCreate: (data: FormInput) => Promise<void>;
+	loggedIn: boolean;
 	close: () => void;
 }
 
 export type FormInput = Omit<NewDish, "createdBy">;
 
-const CreateDishForm = ({ handleCreate, close }: Props) => {
+const CreateDishForm = ({ close, handleCreate, loggedIn }: Props) => {
 	const { id: shortId } = useParams<{ id: string }>();
 	const {
 		register,
@@ -25,7 +26,12 @@ const CreateDishForm = ({ handleCreate, close }: Props) => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) =>
+	const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) => {
+		if (!loggedIn) {
+			alert("Log in first!");
+			return;
+		}
+
 		startTransition(() => {
 			if (Object.keys(errors).length > 0) {
 				return;
@@ -34,6 +40,7 @@ const CreateDishForm = ({ handleCreate, close }: Props) => {
 			handleCreate({ ...data, shortId });
 			close();
 		});
+	};
 
 	return (
 		<dialog className="modal" id="create_dish_modal">

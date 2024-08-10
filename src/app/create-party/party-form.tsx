@@ -6,12 +6,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
 	handleCreateParty: (data: NewParty) => Promise<void>;
+	loggedIn: boolean;
 	username: string;
 }
 
 export type FormInput = Omit<NewParty, "createdBy">;
 
-const PartyForm = ({ handleCreateParty, username }: Props) => {
+const PartyForm = ({ handleCreateParty, loggedIn, username }: Props) => {
 	const {
 		register,
 		handleSubmit,
@@ -27,7 +28,12 @@ const PartyForm = ({ handleCreateParty, username }: Props) => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) =>
+	const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) => {
+		if (!loggedIn) {
+			alert("Log in first!");
+			return;
+		}
+
 		startTransition(() => {
 			if (Object.keys(errors).length > 0) {
 				return;
@@ -35,6 +41,7 @@ const PartyForm = ({ handleCreateParty, username }: Props) => {
 
 			handleCreateParty({ ...data, createdBy: username });
 		});
+	};
 
 	return (
 		<form className="form-control" onSubmit={handleSubmit(onSubmit)}>

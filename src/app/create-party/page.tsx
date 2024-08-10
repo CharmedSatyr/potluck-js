@@ -14,12 +14,14 @@ const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
 
 const CreatePartyPage = async () => {
 	const session = await auth();
+	const loggedIn = Boolean(session?.user?.id);
 
 	return (
 		<>
 			<h1>Start a Party</h1>
 			<PartyForm
 				handleCreateParty={createPartyAndRedirect}
+				loggedIn={loggedIn}
 				username={session?.user?.name ?? "Discord user"}
 			/>
 		</>
