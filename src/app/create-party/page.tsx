@@ -14,7 +14,7 @@ const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
 
 const CreatePartyPage = async () => {
 	const session = await auth();
-	const loggedIn = Boolean(session?.user?.id);
+	const loggedIn = Boolean(session?.user);
 
 	return (
 		<>

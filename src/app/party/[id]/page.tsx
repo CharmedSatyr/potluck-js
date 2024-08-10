@@ -12,7 +12,7 @@ interface Props {
 
 const PartyPage = async ({ params }: Props) => {
 	const session = await auth();
-	const loggedIn = Boolean(session?.user?.id);
+	const loggedIn = Boolean(session?.user);
 
 	const partyData = await findPartyByShortId(params.id);
 
