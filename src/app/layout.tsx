@@ -20,9 +20,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inter.className} prose max-w-none`}>
+			<body
+				className={`${inter.className} prose flex max-w-none flex-col items-center`}
+			>
 				<NavBar />
-				<div className="container p-10">{children}</div>
+				<div className="container w-3/4 px-20 pt-12">{children}</div>
 			</body>
 		</html>
 	);

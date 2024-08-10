@@ -46,10 +46,11 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 
 	return (
 		<form className="form-control" onSubmit={handleSubmit(onSubmit)}>
-			<h2 className="mb-0 text-accent">Find a party</h2>
-			<label className="label label-text" htmlFor="partyId">
-				Enter a code for an existing party
-			</label>
+			<input
+				type="submit"
+				className="btn btn-secondary mb-2 text-2xl"
+				value="Find a Party"
+			/>
 			<input
 				{...register("partyId", {
 					required: "This field is required",
@@ -68,11 +69,6 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 				placeholder="238JK"
 			/>
 			<span className="text-error">{errors.partyId?.message}</span>
-			<input
-				type="submit"
-				className="btn btn-secondary mt-2 text-2xl"
-				value="Find a Party"
-			/>
 		</form>
 	);
 };
