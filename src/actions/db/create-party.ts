@@ -9,7 +9,10 @@ export type NewParty = Omit<
 >;
 
 const createParty = async (info: NewParty): Promise<string> => {
-	const result = await db.insert(parties).values(info).returning();
+	const result = await db
+		.insert(parties)
+		.values(info)
+		.returning({ shortId: parties.shortId });
 
 	return result[0].shortId;
 };
