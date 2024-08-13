@@ -1,31 +1,10 @@
-import createParty, { NewParty } from "@/actions/db/create-party";
-import PartyForm from "@/app/create-party/party-form";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { NewParty } from "@/actions/db/create-party";
 
-const createPartyAndRedirect = async (data: NewParty): Promise<void> => {
-	"use server";
-
-	const shortId = await createParty(data);
-
-	// This is not quite right. Don't want a 303/307 code.
-	redirect(`/party/${shortId}`);
-};
+export type FormInput = Omit<NewParty, "createdBy">;
 
 const CreatePartyPage = async () => {
-	const session = await auth();
-	const loggedIn = Boolean(session?.user);
-
-	return (
-		<>
-			<h1>Start a Party</h1>
-			<PartyForm
-				handleCreateParty={createPartyAndRedirect}
-				loggedIn={loggedIn}
-				username={session?.user?.name ?? "Discord user"}
-			/>
-		</>
-	);
+	redirect("/create-party/step-one");
 };
 
 export default CreatePartyPage;
