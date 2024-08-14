@@ -1,7 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import SignIn from "./sign-in";
-import SignOut from "./sign-out";
 import { auth } from "@/auth";
+import SignIn from "@/components/sign-in";
+import SignOut from "@/components/sign-out";
 
 const NavBar = async () => {
 	const session = await auth();
@@ -32,10 +33,13 @@ const NavBar = async () => {
 			<div className="gap-2">
 				<div>Welcome, {session.user.name}</div>
 				<div className="avatar w-12">
-					<img
+					<Image
+						width={128}
+						height={128}
 						className="my-0 rounded-full"
 						src={session.user.image ?? ""}
 						alt="User Avatar"
+						priority
 					/>
 				</div>
 				<SignOut />
