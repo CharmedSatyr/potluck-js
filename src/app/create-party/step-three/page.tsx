@@ -5,8 +5,10 @@ import { useFormContext } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import createParty from "@/actions/db/create-party";
 import { FormInput } from "@/app/create-party/page";
+import { useSession } from "next-auth/react";
 
 const StepThree = () => {
+	const session = useSession();
 	const { push } = useRouter();
 	const {
 		formState: { errors },
@@ -15,12 +17,21 @@ const StepThree = () => {
 	} = useFormContext<FormInput>();
 
 	const submit = (data: FormInput) => {
+		if (session.status !== "authenticated") {
+			return;
+		}
+
+		const createdBy = session.data?.user?.name;
+		if (!createdBy) {
+			return;
+		}
+
 		startTransition(async () => {
 			if (Object.keys(errors).length > 0) {
 				return;
 			}
 
-			const shortId = await createParty({ ...data, createdBy: "User" });
+			const shortId = await createParty({ ...data, createdBy });
 			if (!shortId) {
 				console.error("Failed to create event");
 				return;
