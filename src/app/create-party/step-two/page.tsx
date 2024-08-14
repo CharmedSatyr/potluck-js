@@ -13,8 +13,7 @@ const StepTwo = () => {
 		register,
 	} = useFormContext<FormInput>();
 
-	const submit = (data: Partial<NewParty>) => {
-		console.log(data);
+	const submit = (_: Partial<NewParty>) => {
 		push(`/create-party/step-three`);
 	};
 

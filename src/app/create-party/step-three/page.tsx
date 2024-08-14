@@ -8,7 +8,7 @@ import { FormInput } from "@/app/create-party/page";
 import { useSession } from "next-auth/react";
 
 const StepThree = () => {
-	const session = useSession();
+	const { status } = useSession();
 	const { push } = useRouter();
 	const {
 		formState: { errors },
@@ -17,12 +17,7 @@ const StepThree = () => {
 	} = useFormContext<FormInput>();
 
 	const submit = (data: FormInput) => {
-		if (session.status !== "authenticated") {
-			return;
-		}
-
-		const createdBy = session.data?.user?.name;
-		if (!createdBy) {
+		if (status !== "authenticated") {
 			return;
 		}
 
@@ -31,13 +26,16 @@ const StepThree = () => {
 				return;
 			}
 
-			const shortId = await createParty({ ...data, createdBy });
-			if (!shortId) {
-				console.error("Failed to create event");
-				return;
-			}
+			try {
+				const shortId = await createParty({ ...data });
+				if (!shortId) {
+					throw new Error("Failed to create event");
+				}
 
-			push(`/party/${shortId}`);
+				push(`/party/${shortId}`);
+			} catch (err) {
+				console.error(err);
+			}
 		});
 	};
 

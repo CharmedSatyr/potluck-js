@@ -13,8 +13,7 @@ const StepOne = () => {
 		register,
 	} = useFormContext<FormInput>();
 
-	const submit = (data: Partial<NewParty>) => {
-		console.log(data);
+	const submit = (_: Partial<NewParty>) => {
 		push(`/create-party/step-two`);
 	};
 
@@ -62,7 +61,6 @@ const StepOne = () => {
 					<label htmlFor="start" className="label label-text">
 						Start
 					</label>
-
 					<input
 						className="input input-bordered w-full"
 						id="start"

@@ -6,19 +6,19 @@ import { FormProvider, useForm } from "react-hook-form";
 
 const defaultValues = {
 	description: "A day to celebrate farmers and farmers markets!",
-	end: "2025-01-09T15:00", // Automatically converted by valueAsDate
+	end: "2025-01-09T15:00",
 	hosts: "Joseph & Inga Wolfe",
 	location: "100 Rue de Boeuf, Paris, France 1000",
 	name: "Vegetable Monday",
-	start: "2025-01-09T12:00", // Automatically converted by valueAsDate
+	start: "2025-01-09T12:00",
 };
 
 const FormWrapper = ({ children }: PropsWithChildren) => {
 	const { back } = useRouter();
 
-	const methods = useForm({
-		defaultValues,
-	});
+	const methods = useForm(
+		process.env.NODE_ENV === "development" ? { defaultValues } : undefined
+	);
 
 	return (
 		<FormProvider {...methods}>
