@@ -35,7 +35,7 @@ const createParty = async (info: NewParty): Promise<string> => {
 		throw new Error("Not authenticated");
 	}
 
-	const createdBy = session.user.name;
+	const createdBy = session.user.email;
 	if (!createdBy) {
 		console.error(
 			"Missing user name in session for user:",
