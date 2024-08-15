@@ -58,36 +58,31 @@ const StepOne = () => {
 				</div>
 
 				<div className="my-2">
-					<label htmlFor="start" className="label label-text">
-						Start
+					<label htmlFor="time" className="label label-text">
+						Time
 					</label>
-					<input
-						className="input input-bordered w-full"
-						id="start"
-						type="datetime-local"
-						{...register("start", {
-							required: "This field is required",
-							valueAsDate: true,
-						})}
-					/>
-					<span className="text-error">{errors.start?.message}</span>
-				</div>
-
-				<div className="my-2">
-					<label htmlFor="end" className="label label-text">
-						End
-					</label>
-
-					<input
-						className="input input-bordered w-full"
-						id="end"
-						type="datetime-local"
-						{...register("end", {
-							required: "This field is required",
-							valueAsDate: true,
-						})}
-					/>
-					<span className="text-error">{errors.end?.message}</span>
+					<div className="flex w-full justify-between">
+						<input
+							className="input input-bordered w-7/12"
+							id="time"
+							type="date"
+							{...register("startDate", {
+								required: "This field is required",
+							})}
+						/>
+						<input
+							className="input input-bordered w-4/12"
+							id="time"
+							type="time"
+							step={60}
+							{...register("startTime", {
+								required: "This field is required",
+								setValueAs: (time: string) => time.concat(":00"),
+							})}
+						/>
+					</div>
+					<span className="text-error">{errors.startDate?.message}</span>
+					<span className="text-error">{errors.startTime?.message}</span>
 				</div>
 
 				<input

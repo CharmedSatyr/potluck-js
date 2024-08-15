@@ -1,6 +1,6 @@
 "use server";
 
-import { JTDSchemaType } from "ajv/dist/jtd";
+import { JSONSchemaType } from "ajv";
 import ajv from "@/actions/ajv";
 import db from "@/db/connection";
 import { Party, parties } from "@/db/schema/parties";
@@ -13,16 +13,25 @@ export type NewParty = Omit<
 
 type NewPartyWithUser = NewParty & Pick<Party, "createdBy">;
 
-const schema: JTDSchemaType<NewPartyWithUser> = {
+const schema: JSONSchemaType<NewPartyWithUser> = {
+	type: "object",
 	properties: {
-		createdBy: { type: "string" },
-		description: { type: "string", nullable: true },
+		createdBy: { type: "string", format: "email" },
+		description: { type: "string" },
 		hosts: { type: "string" },
-		end: { type: "timestamp" },
 		location: { type: "string" },
 		name: { type: "string" },
-		start: { type: "timestamp" },
+		startDate: { type: "string", format: "date" },
+		startTime: { type: "string", format: "iso-time" },
 	},
+	required: [
+		"createdBy",
+		"hosts",
+		"location",
+		"name",
+		"startDate",
+		"startTime",
+	],
 	additionalProperties: false,
 };
 
@@ -31,19 +40,14 @@ const validate = ajv.compile(schema);
 const createParty = async (info: NewParty): Promise<string> => {
 	const session = await auth();
 
-	if (!session?.user) {
+	if (!session?.user?.email) {
 		throw new Error("Not authenticated");
 	}
 
-	const createdBy = session.user.email;
-	if (!createdBy) {
-		console.error(
-			"Missing user name in session for user:",
-			JSON.stringify(session.user)
-		);
-	}
-
-	const values = { ...info, createdBy: createdBy ?? "Auth user" };
+	const values: NewPartyWithUser = {
+		...info,
+		createdBy: session.user.email,
+	};
 
 	if (!validate(values)) {
 		throw new Error(JSON.stringify(validate.errors));

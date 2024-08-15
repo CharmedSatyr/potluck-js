@@ -27,7 +27,8 @@ const StepThree = () => {
 			}
 
 			try {
-				const shortId = await createParty({ ...data });
+				const shortId = await createParty(data);
+
 				if (!shortId) {
 					throw new Error("Failed to create event");
 				}

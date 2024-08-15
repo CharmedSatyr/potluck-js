@@ -23,6 +23,25 @@ const PartyPage = async ({ params }: Props) => {
 	const party = partyData[0];
 	const dishes = await findDishesByShortId(params.id);
 
+	const options: Intl.DateTimeFormatOptions = {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	};
+
+	const formatStartTime = (startTime: string) => {
+		const time = startTime.split(":");
+		const hours = parseInt(time[0]);
+		const minutes = time[1].padStart(2, "0");
+
+		if (hours > 12) {
+			return `${hours - 12}:${minutes} PM`;
+		}
+
+		return `${hours}:${minutes} AM`;
+	};
+
 	return (
 		<div>
 			<h1>
@@ -31,18 +50,13 @@ const PartyPage = async ({ params }: Props) => {
 			<h1 className="text-primary">{party.name}</h1>
 			<h2 className="mt-0">{party.location}</h2>
 			<h2 className="mt-0 font-normal text-neutral">
-				<time dateTime={party.start.toISOString()}>
-					{party.start.toLocaleDateString()}
+				<time className="font-bold" dateTime={party.startDate}>
+					{new Date(party.startDate).toLocaleDateString("en-US", options)}
 				</time>{" "}
-				-{" "}
-				<time dateTime={party.end.toISOString()}>
-					{party.end.toLocaleDateString()}
+				at{" "}
+				<time className="font-bold" dateTime={party.startTime}>
+					{formatStartTime(party.startTime)}
 				</time>
-				<br />
-				<span className="text-neutral">
-					<time>{party.start.toLocaleTimeString()}</time> -{" "}
-					<time>{party.end.toLocaleTimeString()}</time>
-				</span>
 			</h2>
 			<h3>Hosted by {party.hosts}</h3>
 			<div>{party.description}</div>

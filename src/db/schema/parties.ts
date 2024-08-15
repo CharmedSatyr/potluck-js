@@ -1,10 +1,12 @@
 import {
-	uuid,
-	varchar,
+	date,
+	index,
+	pgTable,
 	text,
 	timestamp,
-	pgTable,
-	index,
+	time,
+	uuid,
+	varchar,
 } from "drizzle-orm/pg-core";
 
 export const SHORT_ID_LENGTH = 5;
@@ -27,7 +29,6 @@ export const parties = pgTable(
 		createdBy: varchar("created_by", { length: 256 }).notNull(),
 		// TODO: Add custom field (link or text)
 		description: text("description"),
-		end: timestamp("end", { withTimezone: true }).notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 256 }).notNull(),
@@ -37,7 +38,8 @@ export const parties = pgTable(
 			.notNull()
 			.unique()
 			.$default(createShortId),
-		start: timestamp("start", { withTimezone: true }).notNull(),
+		startDate: date("startDate").notNull(),
+		startTime: time("startTime", { withTimezone: false }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),

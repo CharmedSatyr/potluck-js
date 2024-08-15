@@ -12,13 +12,13 @@ CREATE TABLE IF NOT EXISTS "parties" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_by" varchar(256) NOT NULL,
 	"description" text,
-	"end" timestamp with time zone NOT NULL,
 	"hosts" varchar(256) NOT NULL,
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"location" varchar(256) NOT NULL,
 	"name" varchar(256) NOT NULL,
 	"short_id" varchar(5) NOT NULL,
-	"start" timestamp with time zone NOT NULL,
+	"startDate" date NOT NULL,
+	"startTime" time NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "parties_short_id_unique" UNIQUE("short_id")
 );

@@ -1,5 +1,5 @@
 {
-  "id": "fd0706d7-ca8e-4531-b51a-8dd36ddee5db",
+  "id": "f11a4ff5-e3d8-465e-a1a5-e40c2a8362d0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -96,12 +96,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "end": {
-          "name": "end",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
         "hosts": {
           "name": "hosts",
           "type": "varchar(256)",
@@ -133,9 +127,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "start": {
-          "name": "start",
-          "type": "timestamp with time zone",
+        "startDate": {
+          "name": "startDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "startTime": {
+          "name": "startTime",
+          "type": "time",
           "primaryKey": false,
           "notNull": true
         },
