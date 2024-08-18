@@ -2,8 +2,7 @@
 
 import db from "@/db/connection";
 import { Dish, dishes } from "@/db/schema/dishes";
-import { Party } from "@/db/schema/parties";
-import { parties } from "@/db/schema/parties";
+import { Party, parties } from "@/db/schema/parties";
 import { eq } from "drizzle-orm";
 
 export type NewDish = Omit<Dish, "createdAt" | "id" | "updatedAt"> &
