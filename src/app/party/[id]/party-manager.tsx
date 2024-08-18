@@ -80,7 +80,7 @@ const PartyManager = ({ dishes, party, session }: Props) => {
 				onSubmit={handleSubmit(async (data: FormInput) => {
 					try {
 						setEditing(false);
-						const modifiedValues = _.pickBy(
+						const modifiedValues = _.pickBy<UpdateValues>(
 							data,
 							(_value, key) => getFieldState(key as keyof UpdateValues).isDirty
 						);
