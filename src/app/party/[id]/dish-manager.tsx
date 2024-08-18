@@ -10,7 +10,6 @@ import CreateDishForm, {
 } from "@/app/party/[id]/create-dish-form";
 import updateDish from "@/actions/db/update-dish";
 import { FormInput as UpdateDishFormInput } from "./update-dish-form";
-import { auth } from "@/auth";
 
 interface Props {
 	dishes: DishType[];
