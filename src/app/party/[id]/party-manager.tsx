@@ -6,9 +6,7 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { SessionProvider } from "next-auth/react";
 import DishManager from "./dish-manager";
 import { Session } from "next-auth";
-import updateParty, {
-	UpdateValues,
-} from "@/actions/db/update-party";
+import updateParty, { UpdateValues } from "@/actions/db/update-party";
 import { useForm } from "react-hook-form";
 import formatIsoTime from "@/utilities/format-iso-time";
 import _ from "lodash";

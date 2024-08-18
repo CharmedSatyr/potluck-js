@@ -1,6 +1,5 @@
 # TODO
 
-
 - Dishes:
   `In HTML, <dialog> cannot be a child of <tbody>. This will cause a hydration error.`
 - Login page/modal for when you try to do something that needs auth.
@@ -9,6 +8,5 @@
 - Should probably have a Date library
 - Fix Logout
 - Add user table (if necessary) - UUID instead of email.
-
 
 - ~~Host should be able to edit party~~
