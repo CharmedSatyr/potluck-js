@@ -1,4 +1,5 @@
-import { auth, signIn } from "@/auth";
+import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
+import { auth } from "@/auth";
 
 const SignIn = async () => {
 	const session = await auth();
@@ -8,12 +9,7 @@ const SignIn = async () => {
 	}
 
 	return (
-		<form
-			action={async () => {
-				"use server";
-				await signIn("discord");
-			}}
-		>
+		<form action={signInWithDiscord}>
 			<button className="btn btn-accent" type="submit">
 				Sign In with Discord
 			</button>

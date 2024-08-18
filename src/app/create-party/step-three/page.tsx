@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import createParty from "@/actions/db/create-party";
 import { FormInput } from "@/app/create-party/page";
 import { useSession } from "next-auth/react";
+import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
 
 const StepThree = () => {
 	const { status } = useSession();
@@ -17,12 +18,17 @@ const StepThree = () => {
 		reset,
 	} = useFormContext<FormInput>();
 
+	const loggedIn = status === "authenticated";
+
 	const submit = (data: FormInput) => {
-		if (status !== "authenticated") {
-			return;
-		}
+		console.log("The data:", data);
 
 		startTransition(async () => {
+			if (!loggedIn) {
+				await signInWithDiscord();
+				return;
+			}
+
 			if (Object.keys(errors).length > 0) {
 				return;
 			}
@@ -62,7 +68,11 @@ const StepThree = () => {
 					<span className="error">{errors.description?.message}</span>
 				</div>
 
-				<input type="submit" className="btn btn-primary my-8 w-full" />
+				<input
+					type="submit"
+					className="btn btn-primary my-8 w-full"
+					value={loggedIn ? "Create Party!" : "Sign in to Continue"}
+				/>
 			</form>
 
 			<ul className="steps w-full">
