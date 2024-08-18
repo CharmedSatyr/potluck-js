@@ -4,13 +4,14 @@ import "./globals.css";
 
 import * as dotenv from "dotenv";
 import NavBar from "@/components/nav-bar";
+import siteMetadata from "@/data/site-metadata";
 dotenv.config();
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "13 Potato Salads",
-	description: "A Potluck Organizer",
+	title: siteMetadata.title,
+	description: siteMetadata.description,
 };
 
 export default function RootLayout({
