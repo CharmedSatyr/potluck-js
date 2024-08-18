@@ -10,14 +10,14 @@ import CreateDishForm, {
 } from "@/app/party/[id]/create-dish-form";
 import updateDish from "@/actions/db/update-dish";
 import { FormInput as UpdateDishFormInput } from "./update-dish-form";
+import { useSession } from "next-auth/react";
 
 interface Props {
 	dishes: DishType[];
-	loggedIn: boolean;
-	username: string;
 }
 
 const Dishes = (props: Props) => {
+	const session = useSession();
 	const [dishes, setDishes] = useState<DishType[]>([]);
 
 	useEffect(() => {
@@ -28,7 +28,7 @@ const Dishes = (props: Props) => {
 	const handleCreate = async (data: CreateDishFormInput): Promise<void> => {
 		const result = await createDish({
 			...data,
-			createdBy: props.username,
+			createdBy: session?.data?.user?.name ?? "Unknown",
 		});
 
 		if (!result.length) {
@@ -152,7 +152,7 @@ const Dishes = (props: Props) => {
 
 			<CreateDishForm
 				handleCreate={handleCreate}
-				loggedIn={props.loggedIn}
+				loggedIn={Boolean(session?.data?.user)}
 				close={toggleCreateDishModal}
 			/>
 		</div>

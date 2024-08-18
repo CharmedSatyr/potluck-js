@@ -8,7 +8,7 @@ import db from "@/db/connection";
 import { Party, parties } from "@/db/schema/parties";
 import validateCtx from "@/actions/validate-ctx";
 
-interface UpdateValues {
+export interface UpdateValues {
 	description?: string;
 	hosts?: string;
 	location?: string;
@@ -20,24 +20,27 @@ interface UpdateValues {
 export type UpdatedParty = Partial<UpdateValues> &
 	Required<Pick<Party, "shortId">>;
 
-const schema: JSONSchemaType<UpdatedParty> = {
+const schema: JSONSchemaType<UpdateValues> = {
 	type: "object",
 	properties: {
 		description: { type: "string", nullable: true },
 		hosts: { type: "string", nullable: true },
 		location: { type: "string", nullable: true },
 		name: { type: "string", nullable: true },
-		shortId: { type: "string" },
 		startDate: { type: "string", format: "date", nullable: true },
 		startTime: { type: "string", format: "iso-time", nullable: true },
 	},
-	required: ["shortId"],
+	required: [],
 	additionalProperties: false,
 };
 
 const validate = ajv.compile(schema);
 
 const updateParty = async (updatedParty: UpdatedParty): Promise<Party[]> => {
+	if (Object.keys(updatedParty).length <= 1) {
+		return [];
+	}
+
 	const id = await validateCtx(updatedParty.shortId);
 
 	const values: UpdateValues = _.omit(updatedParty, ["shortId"]);
