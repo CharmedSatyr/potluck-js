@@ -4,6 +4,7 @@ import { NewParty } from "@/actions/db/create-party";
 import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import { FormInput } from "@/app/create-party/page";
+import formatIsoTime from "@/utilities/format-iso-time";
 
 const StepOne = () => {
 	const { push } = useRouter();
@@ -77,7 +78,7 @@ const StepOne = () => {
 							step={60}
 							{...register("startTime", {
 								required: "This field is required",
-								setValueAs: (time: string) => time.concat(":00"),
+								setValueAs: formatIsoTime,
 							})}
 						/>
 					</div>
