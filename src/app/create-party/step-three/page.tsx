@@ -14,6 +14,7 @@ const StepThree = () => {
 		formState: { errors },
 		handleSubmit,
 		register,
+		reset,
 	} = useFormContext<FormInput>();
 
 	const submit = (data: FormInput) => {
@@ -32,6 +33,8 @@ const StepThree = () => {
 				if (!shortId) {
 					throw new Error("Failed to create event");
 				}
+
+				reset();
 
 				push(`/party/${shortId}`);
 			} catch (err) {
