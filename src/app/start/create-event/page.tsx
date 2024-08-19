@@ -1,14 +1,14 @@
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
-import CreatePartyForm from "@/components/create-party-form";
+import CreateEventForm from "@/app/start/create-event/create-event-form";
 
-const CreatePartyPage = async () => {
+const CreateEventPage = async () => {
 	const session = await auth();
 
 	return (
 		<SessionProvider session={session}>
 			<div className="flex flex-col items-center justify-items-center">
-				<CreatePartyForm />
+				<CreateEventForm />
 				<ul className="steps w-full">
 					<li className="step step-secondary">Create an Event</li>
 					<li className="step">Plan the Food</li>
@@ -18,4 +18,4 @@ const CreatePartyPage = async () => {
 	);
 };
 
-export default CreatePartyPage;
+export default CreateEventPage;

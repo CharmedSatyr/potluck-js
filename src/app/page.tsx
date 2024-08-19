@@ -3,7 +3,7 @@ import findPartyByShortId from "@/actions/db/find-party-by-shortid";
 import { Party } from "@/db/schema/parties";
 import GotoPartyForm from "@/components/goto-party-form";
 import siteMetadata from "@/data/site-metadata";
-import CreatePartyButton from "@/components/create-party-button";
+import CreateEventButton from "@/components/create-event-button";
 
 const findParty = async (shortId: Party["shortId"]): Promise<boolean> => {
 	"use server";
@@ -21,8 +21,8 @@ const Home = () => {
 
 			<div className="mt-20 flex min-h-60 w-full justify-center">
 				<div className="divider divider-start divider-horizontal w-fit">
-					<Link href="/create-party" className="btn btn-primary text-2xl">
-						<CreatePartyButton />
+					<Link href="/start" className="btn btn-primary text-2xl">
+						<CreateEventButton />
 					</Link>
 				</div>
 				<div className="divider divider-horizontal">OR</div>

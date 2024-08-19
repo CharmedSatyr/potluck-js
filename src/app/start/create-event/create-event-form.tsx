@@ -63,7 +63,7 @@ const CreatePartyForm = () => {
 
 			removeStorageValues();
 
-			push(`/party/${shortId}`);
+			push(`/start/plan-food?event=${shortId}`);
 		} catch (err) {
 			console.error(err);
 		}
