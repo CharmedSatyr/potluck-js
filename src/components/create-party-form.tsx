@@ -41,6 +41,8 @@ const CreatePartyForm = () => {
 				{ shouldValidate: true }
 			);
 		}
+
+		return () => reset();
 	}, []);
 
 	const onSubmit = async (data: FormInput) => {
@@ -59,7 +61,6 @@ const CreatePartyForm = () => {
 
 			const shortId = await createParty(data);
 
-			reset();
 			removeStorageValues();
 
 			push(`/party/${shortId}`);
