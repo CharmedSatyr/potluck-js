@@ -37,6 +37,8 @@ const schema: JSONSchemaType<NewPartyWithUser> = {
 
 const validate = ajv.compile(schema);
 
+export const isNewParty = (data: unknown): data is NewParty => validate(data);
+
 const createParty = async (info: NewParty): Promise<string> => {
 	const session = await auth();
 
