@@ -1,10 +1,21 @@
-import { redirect } from "next/navigation";
-import { NewParty } from "@/actions/db/create-party";
-
-export type FormInput = Omit<NewParty, "createdBy">;
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
+import CreatePartyForm from "@/components/create-party-form";
 
 const CreatePartyPage = async () => {
-	redirect("/create-party/step-one");
+	const session = await auth();
+
+	return (
+		<SessionProvider session={session}>
+			<div className="flex flex-col items-center justify-items-center">
+				<CreatePartyForm />
+				<ul className="steps w-full">
+					<li className="step step-secondary">Create an Event</li>
+					<li className="step">Plan the Food</li>
+				</ul>
+			</div>
+		</SessionProvider>
+	);
 };
 
 export default CreatePartyPage;
