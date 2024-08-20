@@ -15,7 +15,12 @@ const PlanFoodPage = () => {
 	return (
 		<div>
 			<div>TODO: Plan the Food!</div>
-			<button className="btn btn-primary" onClick={() => push(`/party/${shortId}`)}>Submit</button>
+			<button
+				className="btn btn-primary"
+				onClick={() => push(`/party/${shortId}`)}
+			>
+				Submit
+			</button>
 		</div>
 	);
 };
