@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
-import CreateEventForm from "@/app/start/create-event/create-event-form";
+import CreateEventManager from "@/app/start/create-event/create-event-manager";
 
 const CreateEventPage = async () => {
 	const session = await auth();
@@ -8,7 +8,7 @@ const CreateEventPage = async () => {
 	return (
 		<SessionProvider session={session}>
 			<div className="flex flex-col items-center justify-items-center">
-				<CreateEventForm />
+				<CreateEventManager />
 				<ul className="steps w-full">
 					<li className="step step-secondary">Create an Event</li>
 					<li className="step">Plan the Food</li>
