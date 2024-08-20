@@ -16,7 +16,7 @@ interface Props {
 	dishes: DishType[];
 }
 
-const Dishes = (props: Props) => {
+const DishManager = (props: Props) => {
 	const session = useSession();
 	const [dishes, setDishes] = useState<DishType[]>([]);
 
@@ -159,4 +159,4 @@ const Dishes = (props: Props) => {
 	);
 };
 
-export default Dishes;
+export default DishManager;
