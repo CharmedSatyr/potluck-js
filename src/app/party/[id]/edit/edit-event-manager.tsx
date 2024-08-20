@@ -4,9 +4,10 @@ import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import updateParty, {
+import {
 	isUpdatedParty,
 	UpdatedParty,
+	updatePartyAndRevalidate,
 } from "@/actions/db/update-party";
 import { Party } from "@/db/schema/parties";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
@@ -17,13 +18,13 @@ type FormInput = UpdatedParty;
 
 const EditEventManager = ({
 	createdBy,
+	description,
+	hosts,
+	location,
 	name,
 	shortId,
 	startDate,
 	startTime,
-	location,
-	hosts,
-	description,
 }: EditEventManagerProps) => {
 	const session = useSession();
 	const { push, replace } = useRouter();
@@ -56,7 +57,11 @@ const EditEventManager = ({
 				throw new Error("Update event form values invalid");
 			}
 
-			await updateParty(updatedParty);
+			const result = await updatePartyAndRevalidate(updatedParty);
+
+			if (result.length) {
+				console.error("Failed to update event");
+			}
 
 			push(`/party/${shortId}`);
 		} catch (err) {

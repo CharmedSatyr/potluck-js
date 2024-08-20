@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import _ from "lodash";
 import { JSONSchemaType } from "ajv";
 import { eq } from "drizzle-orm";
@@ -49,6 +50,14 @@ const updateParty = async (updatedParty: UpdatedParty): Promise<Party[]> => {
 		.set(values)
 		.where(eq(parties.id, id))
 		.returning();
+};
+
+export const updatePartyAndRevalidate = async (
+	updatedParty: UpdatedParty
+): Promise<Party[]> => {
+	revalidatePath(`/party/${updatedParty.shortId}`, "page");
+
+	return await updateParty(updatedParty);
 };
 
 export default updateParty;
