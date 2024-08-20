@@ -1,21 +1,13 @@
 "use client";
 
 import _ from "lodash";
-import { FieldErrors, Form, UseFormRegister } from "react-hook-form";
-import formatIsoTime from "@/utilities/format-iso-time";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { useSession } from "next-auth/react";
-
-interface EditableEventValues {
-	name: string;
-	startDate: string;
-	startTime: string;
-	location: string;
-	hosts: string;
-	description: string;
-}
+import { ModifiablePartyValues } from "@/db/schema/parties";
+import formatIsoTime from "@/utilities/format-iso-time";
 
 interface CustomizeEventSkeletonProps {
-	errors: FieldErrors<Partial<EditableEventValues>>;
+	errors: FieldErrors<Partial<ModifiablePartyValues>>;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
 	register: UseFormRegister<any>; // TODO: Clarify this type.
 	shortId?: string;

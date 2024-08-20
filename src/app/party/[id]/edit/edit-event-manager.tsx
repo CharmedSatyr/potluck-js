@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import updateParty, {
+	isUpdatedParty,
 	UpdatedParty,
-	UpdateValues,
 } from "@/actions/db/update-party";
 import { Party } from "@/db/schema/parties";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
@@ -45,12 +45,18 @@ const EditEventManager = ({
 
 	const onSubmit = handleSubmit(async (data: FormInput) => {
 		try {
-			const modifiedValues = _.pickBy<UpdateValues>( // TODO: What is this type?
+			const modifiedValues = _.pickBy<UpdatedParty>( // TODO: What is this type?
 				data,
-				(_value, key) => getFieldState(key as keyof UpdateValues).isDirty
+				(_value, key) => getFieldState(key as keyof UpdatedParty).isDirty
 			);
 
-			await updateParty({ ...modifiedValues, shortId });
+			const updatedParty = { ...modifiedValues, shortId };
+
+			if (!isUpdatedParty(updatedParty)) {
+				throw new Error("Update event form values invalid");
+			}
+
+			await updateParty(updatedParty);
 
 			push(`/party/${shortId}`);
 		} catch (err) {

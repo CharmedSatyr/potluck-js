@@ -35,15 +35,18 @@ const CreateEventManager = () => {
 		}
 
 		for (const property in storageValues) {
-			setValue(
-				property as keyof FormInput,
-				storageValues[property as keyof FormInput] ?? null,
-				{ shouldValidate: true }
-			);
+			const key = property as keyof FormInput;
+			const value = storageValues[key];
+
+			if (value === undefined) {
+				continue;
+			}
+
+			setValue(key, value, { shouldValidate: true });
 		}
 
 		return () => reset();
-	}, []);
+	}, [reset, setValue, storageValues]);
 
 	const onSubmit = handleSubmit(async (data: FormInput) => {
 		setStorageValues(data);
@@ -60,7 +63,7 @@ const CreateEventManager = () => {
 			}
 
 			if (!isNewParty(data)) {
-				return;
+				throw new Error("New event form values invalid");
 			}
 
 			const shortId = await createParty(data);

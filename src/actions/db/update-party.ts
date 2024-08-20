@@ -5,49 +5,44 @@ import { JSONSchemaType } from "ajv";
 import { eq } from "drizzle-orm";
 import ajv from "@/actions/ajv";
 import db from "@/db/connection";
-import { Party, parties } from "@/db/schema/parties";
+import { Party, parties, ModifiablePartyValues } from "@/db/schema/parties";
 import validateCtx from "@/actions/validate-ctx";
 
-export interface UpdateValues {
-	description?: string;
-	hosts?: string;
-	location?: string;
-	name?: string;
-	startDate?: string;
-	startTime?: string;
-}
+export type UpdatedParty = Pick<Party, "shortId"> &
+	Partial<ModifiablePartyValues>;
 
-export type UpdatedParty = Partial<UpdateValues> &
-	Required<Pick<Party, "shortId">>;
-
-const schema: JSONSchemaType<UpdateValues> = {
+const schema: JSONSchemaType<UpdatedParty> = {
 	type: "object",
 	properties: {
 		description: { type: "string", nullable: true },
 		hosts: { type: "string", nullable: true },
 		location: { type: "string", nullable: true },
 		name: { type: "string", nullable: true },
+		shortId: { type: "string" },
 		startDate: { type: "string", format: "date", nullable: true },
 		startTime: { type: "string", format: "iso-time", nullable: true },
 	},
-	required: [],
+	required: ["shortId"],
 	additionalProperties: false,
 };
 
 const validate = ajv.compile(schema);
+
+export const isUpdatedParty = (data: unknown): data is UpdatedParty =>
+	validate(data);
 
 const updateParty = async (updatedParty: UpdatedParty): Promise<Party[]> => {
 	if (Object.keys(updatedParty).length <= 1) {
 		return [];
 	}
 
-	const id = await validateCtx(updatedParty.shortId);
-
-	const values: UpdateValues = _.omit(updatedParty, ["shortId"]);
-
-	if (!validate(values)) {
+	if (!isUpdatedParty(updatedParty)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
+
+	const id = await validateCtx(updatedParty.shortId);
+
+	const values = _.omit(updatedParty, ["shortId"]); // Never update shortId
 
 	return await db
 		.update(parties)

@@ -48,3 +48,8 @@ export const parties = pgTable(
 );
 
 export type Party = typeof parties.$inferSelect;
+
+export type ModifiablePartyValues = Pick<
+	Party,
+	"description" | "hosts" | "location" | "name" | "startDate" | "startTime"
+>;
