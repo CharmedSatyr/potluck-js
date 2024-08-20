@@ -10,7 +10,11 @@ const useSessionStorage = <T>(
 		try {
 			const currentValue = sessionStorage.getItem(key);
 
-			return currentValue ? JSON.parse(currentValue) : initialValue;
+			if (typeof currentValue !== "string") {
+				return initialValue;
+			}
+
+			return JSON.parse(currentValue);
 		} catch (error) {
 			console.warn(error);
 			return initialValue;
