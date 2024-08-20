@@ -5,32 +5,36 @@ import { UseFormRegister } from "react-hook-form";
 import formatIsoTime from "@/utilities/format-iso-time";
 import { useSession } from "next-auth/react";
 
-interface EditEventSkeletonProps {
+interface CustomizeEventSkeletonProps {
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	register: UseFormRegister<any>;
+	register: UseFormRegister<any>; // TODO: Clarify this type.
 	shortId?: string;
 }
 
-const ExistingEventManagement = ({ shortId }: { shortId: string }) => (
-	<>
+const TitleManagement = ({ shortId }: { shortId?: string }) => {
+	if (!shortId) {
+		return <h1>Create an Event</h1>;
+	}
+
+	return <>
 		<input className="btn btn-primary float-right" type="submit" value="Save" />
 		<h1>
 			Party Code: <span className="text-secondary">{shortId}</span>
 		</h1>
 	</>
-);
+}
 
-export const EditEventSkeleton = ({
+export const CustomizeEventSkeleton = ({
 	onSubmit,
 	register,
 	shortId,
-}: EditEventSkeletonProps) => {
+}: CustomizeEventSkeletonProps) => {
 	const { status } = useSession();
 	const loggedIn = status === "authenticated";
 
 	return (
 		<form className="w-4/6" onSubmit={onSubmit}>
-			{shortId && <ExistingEventManagement shortId={shortId} />}
+			<TitleManagement shortId={shortId} />
 
 			<input
 				className="-mt-1 mb-1 w-full text-6xl font-extrabold text-primary"
@@ -112,4 +116,4 @@ export const EditEventSkeleton = ({
 	);
 };
 
-export default EditEventSkeleton;
+export default CustomizeEventSkeleton;
