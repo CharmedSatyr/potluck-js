@@ -12,7 +12,7 @@ import useCreatePartySessionStorage from "@/hooks/use-create-party-session-stora
 type FormInput = NewParty;
 
 const CreateEventManager = () => {
-	const { status } = useSession();
+	const { data: authData, status } = useSession();
 	const loggedIn = status === "authenticated";
 
 	const { push } = useRouter();
@@ -55,6 +55,10 @@ const CreateEventManager = () => {
 		}
 
 		try {
+			if (!data.hosts && authData?.user?.name) {
+				data.hosts = authData.user.name;
+			}
+
 			if (!isNewParty(data)) {
 				return;
 			}

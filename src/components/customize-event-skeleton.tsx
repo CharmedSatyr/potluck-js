@@ -16,13 +16,19 @@ const TitleManagement = ({ shortId }: { shortId?: string }) => {
 		return <h1>Create an Event</h1>;
 	}
 
-	return <>
-		<input className="btn btn-primary float-right" type="submit" value="Save" />
-		<h1>
-			Party Code: <span className="text-secondary">{shortId}</span>
-		</h1>
-	</>
-}
+	return (
+		<>
+			<input
+				className="btn btn-primary float-right"
+				type="submit"
+				value="Save"
+			/>
+			<h1>
+				Party Code: <span className="text-secondary">{shortId}</span>
+			</h1>
+		</>
+	);
+};
 
 export const CustomizeEventSkeleton = ({
 	onSubmit,
