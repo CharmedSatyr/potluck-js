@@ -27,7 +27,12 @@ const EditEventManager = ({
 }: EditEventManagerProps) => {
 	const session = useSession();
 	const { push, replace } = useRouter();
-	const { getFieldState, handleSubmit, register } = useForm<FormInput>({
+	const {
+		formState: { errors },
+		getFieldState,
+		handleSubmit,
+		register,
+	} = useForm<FormInput>({
 		defaultValues: {
 			name,
 			startDate,
@@ -59,6 +64,7 @@ const EditEventManager = ({
 
 	return (
 		<CustomizeEventSkeleton
+			errors={errors}
 			onSubmit={onSubmit}
 			register={register}
 			shortId={shortId}

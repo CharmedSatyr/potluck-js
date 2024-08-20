@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
 import createParty, { isNewParty, NewParty } from "@/actions/db/create-party";
-import EditEventSkeleton from "@/components/customize-event-skeleton";
+import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import useCreatePartySessionStorage from "@/hooks/use-create-party-session-storage";
 
 type FormInput = NewParty;
@@ -73,7 +73,13 @@ const CreateEventManager = () => {
 		}
 	});
 
-	return <EditEventSkeleton onSubmit={onSubmit} register={register} />;
+	return (
+		<CustomizeEventSkeleton
+			errors={errors}
+			onSubmit={onSubmit}
+			register={register}
+		/>
+	);
 };
 
 export default CreateEventManager;

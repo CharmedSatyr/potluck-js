@@ -22,7 +22,7 @@ export const EventSkeleton = ({
 	isHost,
 }: EventSkeletonProps) => {
 	return (
-		<div className="w-4/6">
+		<div className="w-full lg:w-5/6 xl:w-2/3 2xl:w-1/2">
 			{isHost && (
 				<Link
 					className="btn btn-primary float-right"
