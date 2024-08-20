@@ -1,19 +1,19 @@
 import { Dispatch, useState, useEffect } from "react";
 
-type UseSessionStorageOutput<T> = [T, Dispatch<T>, () => void];
+type UseSessionStorageOutput<T> = readonly [T, Dispatch<T>, () => void];
 
-function useSessionStorage<T>(key: string): UseSessionStorageOutput<T> {
+const useSessionStorage = <T>(
+	key: string,
+	initialValue: T
+): UseSessionStorageOutput<T> => {
 	const [value, setValue] = useState<T>(() => {
 		try {
-			const currentValue: string | null = sessionStorage.getItem(key);
+			const currentValue = sessionStorage.getItem(key);
 
-			if (!currentValue) {
-				return;
-			}
-
-			return JSON.parse(currentValue);
+			return currentValue ? JSON.parse(currentValue) : initialValue;
 		} catch (error) {
-			console.error(error);
+			console.warn(error);
+			return initialValue;
 		}
 	});
 
@@ -23,7 +23,7 @@ function useSessionStorage<T>(key: string): UseSessionStorageOutput<T> {
 
 	const removeValue = () => sessionStorage.removeItem(key);
 
-	return [value, setValue, removeValue];
-}
+	return [value, setValue, removeValue] as const;
+};
 
 export default useSessionStorage;
