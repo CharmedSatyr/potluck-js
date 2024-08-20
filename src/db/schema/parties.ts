@@ -28,7 +28,7 @@ export const parties = pgTable(
 			.defaultNow(),
 		createdBy: varchar("created_by", { length: 256 }).notNull(),
 		// TODO: Add custom field (link or text)
-		description: text("description"),
+		description: text("description").notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 256 }).notNull(),

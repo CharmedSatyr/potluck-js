@@ -1,0 +1,1 @@
+ALTER TABLE "parties" ALTER COLUMN "description" SET NOT NULL;
