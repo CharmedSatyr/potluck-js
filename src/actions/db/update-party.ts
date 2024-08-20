@@ -6,11 +6,11 @@ import { JSONSchemaType } from "ajv";
 import { eq } from "drizzle-orm";
 import ajv from "@/actions/ajv";
 import db from "@/db/connection";
-import { Party, parties, ModifiablePartyValues } from "@/db/schema/parties";
+import { Party, parties, CustomizablePartyValues } from "@/db/schema/parties";
 import validateCtx from "@/actions/validate-ctx";
 
 export type UpdatedParty = Pick<Party, "shortId"> &
-	Partial<ModifiablePartyValues>;
+	Partial<CustomizablePartyValues>;
 
 const schema: JSONSchemaType<UpdatedParty> = {
 	type: "object",
