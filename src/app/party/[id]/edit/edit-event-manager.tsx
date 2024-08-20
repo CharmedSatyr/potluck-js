@@ -9,7 +9,7 @@ import updateParty, {
 	UpdateValues,
 } from "@/actions/db/update-party";
 import { Party } from "@/db/schema/parties";
-import EditEventSkeleton from "@/components/customize-event-skeleton";
+import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 
 type EditEventManagerProps = Party;
 
@@ -58,7 +58,7 @@ const EditEventManager = ({
 	}
 
 	return (
-		<EditEventSkeleton
+		<CustomizeEventSkeleton
 			onSubmit={onSubmit}
 			register={register}
 			shortId={shortId}
