@@ -51,6 +51,10 @@ const EditEventManager = ({
 				(_value, key) => getFieldState(key as keyof UpdatedParty).isDirty
 			);
 
+			if ((Object.keys(modifiedValues).length) === 0) {
+				push(`/party/${shortId}`);
+			}
+
 			const updatedParty = { ...modifiedValues, shortId };
 
 			if (!isUpdatedParty(updatedParty)) {
