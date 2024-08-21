@@ -53,6 +53,7 @@ const EditEventManager = ({
 
 			if ((Object.keys(modifiedValues).length) === 0) {
 				push(`/party/${shortId}`);
+				return;
 			}
 
 			const updatedParty = { ...modifiedValues, shortId };
