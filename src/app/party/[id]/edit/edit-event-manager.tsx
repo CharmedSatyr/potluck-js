@@ -46,7 +46,7 @@ const EditEventManager = ({
 
 	const onSubmit = handleSubmit(async (data: FormInput) => {
 		try {
-			const modifiedValues = _.pickBy<UpdatedParty>( // TODO: What is this type?
+			const modifiedValues = _.pickBy<UpdatedParty>(
 				data,
 				(_value, key) => getFieldState(key as keyof UpdatedParty).isDirty
 			);
