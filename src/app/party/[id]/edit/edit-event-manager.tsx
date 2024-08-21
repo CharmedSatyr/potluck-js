@@ -59,8 +59,8 @@ const EditEventManager = ({
 
 			const result = await updatePartyAndRevalidate(updatedParty);
 
-			if (result.length) {
-				console.error("Failed to update event");
+			if (!result.length) {
+				throw new Error("Failed to update event");
 			}
 
 			push(`/party/${shortId}`);
