@@ -40,7 +40,7 @@ const EditEventManager = ({
 			startTime,
 			location,
 			hosts,
-			description: description ?? undefined, // TODO: Fix this
+			description,
 		},
 	});
 
