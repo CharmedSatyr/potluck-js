@@ -22,7 +22,7 @@ const PartyPage = async ({ params }: Props) => {
 	const userIsHost = session?.user?.email === party.createdBy;
 
 	return (
-		<div className="flex justify-center">
+		<div className="flex w-full justify-center">
 			<EventSkeleton {...party} isHost={userIsHost} />
 		</div>
 	);

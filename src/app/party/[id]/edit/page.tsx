@@ -21,7 +21,7 @@ const EditEventPage = async ({ params }: Props) => {
 
 	return (
 		<SessionProvider session={session}>
-			<div className="flex justify-center">
+			<div className="flex w-full justify-center">
 				<EditEventManager {...party} />
 			</div>
 		</SessionProvider>
