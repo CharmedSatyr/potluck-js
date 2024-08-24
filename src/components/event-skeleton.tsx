@@ -38,17 +38,17 @@ export const EventSkeleton = ({
 				</h1>
 			)}
 
-			<h1 className="mb-3 w-full text-6xl text-primary">{name}</h1>
+			<h1 className="mb-6 w-full text-6xl text-primary">{name}</h1>
 
-			<h2 className="my-3">
+			<h2 className="my-7 font-normal">
 				{startDate} at {startTime}
 			</h2>
 
-			<h2 className="my-2">{location}</h2>
+			<h2 className="my-6 font-normal">{location}</h2>
 
-			<h3 className="my-2">Hosted by {hosts}</h3>
+			<h3 className="my-4 font-bold">Hosted by {hosts}</h3>
 
-			<div className="my-0">{description}</div>
+			<div className="my-4">{description}</div>
 		</div>
 	);
 };

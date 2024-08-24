@@ -47,7 +47,7 @@ export const CustomizeEventSkeleton = ({
 			<TitleManagement shortId={shortId} />
 
 			<input
-				className={`-mt-1 mb-1 w-full text-6xl font-extrabold text-primary ${errors.name && "input-secondary border"}`}
+				className={`input-text input input-lg -mt-1 mb-1 w-full px-0 text-6xl font-extrabold text-primary ${errors.name && "input-secondary border"}`}
 				placeholder="Untitled Event"
 				type="text"
 				{...register("name", {
@@ -58,9 +58,9 @@ export const CustomizeEventSkeleton = ({
 			<span className="mb-2 text-secondary">{errors.name?.message}</span>
 
 			<div className="my-1 flex flex-col">
-				<div className="flex justify-between">
+				<div className="flex items-center justify-between">
 					<input
-						className="text-2xl"
+						className="input px-0 text-2xl"
 						type="date"
 						{...register("startDate", {
 							required: "Date is required",
@@ -68,7 +68,7 @@ export const CustomizeEventSkeleton = ({
 					/>{" "}
 					<span className="text-2xl font-bold"> at </span>
 					<input
-						className="w-4/12 text-2xl"
+						className="input w-4/12 text-2xl"
 						step={60}
 						type="time"
 						{...register("startTime", {
@@ -87,27 +87,29 @@ export const CustomizeEventSkeleton = ({
 				</div>
 			</div>
 
-			<input
-				className="my-1 w-full text-2xl"
-				placeholder="Place name, address, or link"
-				type="text"
-				{...register("location", {
-					required: "Location is required",
-					maxLength: 256,
-				})}
-			/>
-			<span className="mb-2 text-secondary">{errors.location?.message}</span>
+			<div className="mt-1 mb-2">
+				<input
+					className="input-text input my-0 w-full px-0 text-2xl"
+					placeholder="Place name, address, or link"
+					type="text"
+					{...register("location", {
+						required: "Location is required",
+						maxLength: 256,
+					})}
+				/>
+				<span className="mb-0 text-secondary">{errors.location?.message}</span>
+			</div>
 
-			<div className="my-1 flex flex-col">
+			<div className="my-0 flex flex-col">
 				<div className="flex items-center justify-between">
-					<span className="w-3/12 text-xl font-bold">Hosted by</span>{" "}
+					<span className="w-3/12 text-xl font-bold -mr-5">Hosted by</span>{" "}
 					<input
-						className="w-9/12 text-xl"
-						placeholder={Boolean(username) ? "(optional) Nickname" : "Nickname"}
+						className="input-text input w-full px-0 py-0 text-xl"
+						placeholder={username ? "(optional) Nickname" : "Nickname"}
 						type="text"
 						{...register("hosts", {
 							maxLength: 256,
-							required: Boolean(username) ? false : "Host name is required",
+							required: username ? false : "Host name is required",
 						})}
 					/>
 				</div>
@@ -115,7 +117,7 @@ export const CustomizeEventSkeleton = ({
 			</div>
 
 			<textarea
-				className="mt-1 w-full"
+				className="input-text input mt-0 w-full px-0"
 				placeholder="(optional) Add a description of your event"
 				rows={3}
 				{...register("description", {
