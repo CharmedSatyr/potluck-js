@@ -87,7 +87,7 @@ export const CustomizeEventSkeleton = ({
 				</div>
 			</div>
 
-			<div className="mt-1 mb-2">
+			<div className="mb-2 mt-1">
 				<input
 					className="input-text input my-0 w-full px-0 text-2xl"
 					placeholder="Place name, address, or link"
@@ -102,7 +102,7 @@ export const CustomizeEventSkeleton = ({
 
 			<div className="my-0 flex flex-col">
 				<div className="flex items-center justify-between">
-					<span className="w-3/12 text-xl font-bold -mr-5">Hosted by</span>{" "}
+					<span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
 					<input
 						className="input-text input w-full px-0 py-0 text-xl"
 						placeholder={username ? "(optional) Nickname" : "Nickname"}
