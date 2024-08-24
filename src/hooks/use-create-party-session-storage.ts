@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import { NewParty } from "@/actions/db/create-party";
-import useSessionStorage from "./use-session-storage";
+import useSessionStorage from "@/hooks/use-session-storage";
 
 type useCreatePartySessionOut = readonly [
 	Partial<NewParty>,

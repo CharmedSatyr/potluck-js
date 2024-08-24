@@ -8,7 +8,7 @@ const useSessionStorage = <T>(
 ): UseSessionStorageOutput<T> => {
 	const [value, setValue] = useState<T>(() => {
 		try {
-			const currentValue = sessionStorage.getItem(key);
+			const currentValue = sessionStorage?.getItem(key);
 
 			if (typeof currentValue !== "string") {
 				return initialValue;
@@ -22,10 +22,10 @@ const useSessionStorage = <T>(
 	});
 
 	useEffect(() => {
-		sessionStorage.setItem(key, JSON.stringify(value));
+		sessionStorage?.setItem(key, JSON.stringify(value));
 	}, [value, key]);
 
-	const removeValue = () => sessionStorage.removeItem(key);
+	const removeValue = () => sessionStorage?.removeItem(key);
 
 	return [value, setValue, removeValue] as const;
 };
