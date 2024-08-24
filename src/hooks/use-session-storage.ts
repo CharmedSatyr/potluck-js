@@ -8,6 +8,10 @@ const useSessionStorage = <T>(
 ): UseSessionStorageOutput<T> => {
 	const [value, setValue] = useState<T>(() => {
 		try {
+			if (typeof window === "undefined") {
+				return initialValue;
+			}
+
 			const currentValue = sessionStorage?.getItem(key);
 
 			if (typeof currentValue !== "string") {
@@ -16,7 +20,6 @@ const useSessionStorage = <T>(
 
 			return JSON.parse(currentValue);
 		} catch (error) {
-			console.warn(error);
 			return initialValue;
 		}
 	});
