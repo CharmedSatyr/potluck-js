@@ -128,7 +128,6 @@ export const CustomizeEventSkeleton = ({
 			{!shortId && (
 				<input
 					className="btn btn-primary my-2 w-full"
-					disabled={false} // Object.keys(errors).length > 0
 					type="submit"
 					value={loggedIn ? "Create Party!" : "Sign in to Continue"}
 				/>
