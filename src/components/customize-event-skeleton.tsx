@@ -104,7 +104,7 @@ export const CustomizeEventSkeleton = ({
 				<div className="flex items-center justify-between">
 					<span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
 					<input
-						className="input-text input w-full px-0 py-0 text-xl"
+						className="input-text input w-8/12 px-0 py-0 text-xl"
 						placeholder={username ? "(optional) Nickname" : "Nickname"}
 						type="text"
 						{...register("hosts", {
