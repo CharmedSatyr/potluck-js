@@ -16,7 +16,7 @@ const FoodInput = ({ register, slot }: any) => {
 		<div className="flex w-full justify-between">
 			<div className="form-control w-2/3">
 				<label htmlFor="dish-name" className="label label-text">
-					What's Needed
+					What&apos;s Needed
 				</label>
 				<input
 					className="input-text input input-bordered"
