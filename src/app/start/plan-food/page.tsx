@@ -1,16 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormRegister } from "react-hook-form";
 
-interface FormInput {
-	dishName: string;
-	needed: number;
+const MAX_DISH_SLOTS = 20;
+
+type Enumerate<
+	N extends number,
+	Acc extends number[] = [],
+> = Acc["length"] extends N
+	? Acc[number]
+	: Enumerate<N, [...Acc, Acc["length"]]>;
+
+type Range<F extends number, T extends number> = Exclude<
+	Enumerate<T>,
+	Enumerate<F>
+>;
+
+type DishSlotRange = Range<0, typeof MAX_DISH_SLOTS>;
+
+type DishNameKey = `dishName-${DishSlotRange}`;
+type NeededKey = `needed-${DishSlotRange}`;
+
+type FormInput = Partial<Record<DishNameKey, string>> &
+	Partial<Record<NeededKey, string>>;
+
+interface DishInputProps {
+	register: UseFormRegister<FormInput>;
+	slot: DishSlotRange;
+	setValue: any;
 }
 
-const FoodInput = ({ register, slot }: any) => {
+const DishInput = ({ register, setValue, slot }: DishInputProps) => {
 	const [count, setCount] = useState<number>(1);
+
+	useEffect(() => {
+		setValue(`needed-${slot}`, count);
+	}, [count]);
 
 	return (
 		<div className="flex w-full justify-between">
@@ -22,7 +49,8 @@ const FoodInput = ({ register, slot }: any) => {
 					className="input-text input input-bordered"
 					id="dish-name"
 					type="text"
-					{...register("dishName", {
+					{...register(`dishName-${slot}`, {
+						maxLength: 256,
 						required: true,
 					})}
 				/>
@@ -54,18 +82,19 @@ const FoodInput = ({ register, slot }: any) => {
 							/>
 						</svg>
 					</button>
+
 					<input
 						type="text"
-						className="input join-item input-bordered w-12"
+						className="input join-item input-bordered w-14"
 						id="quantity-input"
-						placeholder="0"
 						value={count}
-						{...register("needed", {
-							required: true,
-						})}
+						readOnly
 					/>
+
 					<button
-						onClick={() => setCount(count + 1)}
+						onClick={() =>
+							setCount(count < MAX_DISH_SLOTS ? count + 1 : MAX_DISH_SLOTS)
+						}
 						type="button"
 						className="btn join-item input-bordered"
 					>
@@ -95,7 +124,12 @@ const PlanFoodPage = () => {
 	const { replace } = useRouter();
 	const searchParams = useSearchParams();
 	const [slots, setSlots] = useState<number>(1);
-	const { handleSubmit, register } = useForm<FormInput>({ defaultValues: {} });
+	const {
+		formState: { isDirty, isValid, errors },
+		handleSubmit,
+		register,
+		setValue,
+	} = useForm<FormInput>({ defaultValues: {} });
 
 	const shortId = searchParams.get("event");
 
@@ -118,19 +152,30 @@ const PlanFoodPage = () => {
 
 			{Array.from({ length: slots }, (_, index) => (
 				<div key={`slot-${index}`}>
-					<FoodInput register={register} slot={index} />
+					<DishInput
+						register={register}
+						slot={index as DishSlotRange}
+						setValue={setValue}
+					/>
 					<div className="divider mt-6" />
 				</div>
 			))}
 
 			<button
-				onClick={() => setSlots(slots < 20 ? slots + 1 : 20)}
+				disabled={slots >= MAX_DISH_SLOTS}
+				onClick={() =>
+					setSlots(slots < MAX_DISH_SLOTS ? slots + 1 : MAX_DISH_SLOTS)
+				}
 				className="btn btn-secondary w-1/4"
 			>
-				Add Slot
+				{slots < MAX_DISH_SLOTS ? "Add Slot" : "Limit Reached"}
 			</button>
 
-			<input className="btn btn-primary my-8" type="submit" />
+			<input
+				className="btn btn-primary my-8"
+				type="submit"
+				disabled={!isDirty || !isValid}
+			/>
 		</form>
 	);
 };
