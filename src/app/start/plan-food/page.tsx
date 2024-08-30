@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useForm, UseFormRegister } from "react-hook-form";
+import { useForm, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import createFoodPlan from "@/actions/db/create-food-plan";
 
 const MAX_DISH_SLOTS = 20;
 
@@ -20,23 +21,24 @@ type Range<F extends number, T extends number> = Exclude<
 
 type DishSlotRange = Range<0, typeof MAX_DISH_SLOTS>;
 
-type DishNameKey = `dishName-${DishSlotRange}`;
-type NeededKey = `needed-${DishSlotRange}`;
-
-type FormInput = Partial<Record<DishNameKey, string>> &
-	Partial<Record<NeededKey, string>>;
+type FormInput = {
+	[key in DishSlotRange as string]: {
+		course: string;
+		count: number;
+	};
+};
 
 interface DishInputProps {
 	register: UseFormRegister<FormInput>;
 	slot: DishSlotRange;
-	setValue: any;
+	setValue: UseFormSetValue<FormInput>;
 }
 
 const DishInput = ({ register, setValue, slot }: DishInputProps) => {
 	const [count, setCount] = useState<number>(1);
 
 	useEffect(() => {
-		setValue(`needed-${slot}`, count);
+		setValue(`${slot}.count`, count);
 	}, [count]);
 
 	return (
@@ -49,7 +51,7 @@ const DishInput = ({ register, setValue, slot }: DishInputProps) => {
 					className="input-text input input-bordered"
 					id="dish-name"
 					type="text"
-					{...register(`dishName-${slot}`, {
+					{...register(`${slot}.course`, {
 						maxLength: 256,
 						required: true,
 					})}
@@ -137,8 +139,16 @@ const PlanFoodPage = () => {
 		replace(`/start`);
 	}
 
-	const onSubmit = (data: FormInput) => {
+	const onSubmit = async (data: FormInput) => {
 		console.log("Submitting data:", data);
+
+		if (!shortId) {
+			return;
+		}
+
+		const response = await createFoodPlan({ plan: data, shortId });
+
+		console.log("Success:", response);
 	};
 
 	return (

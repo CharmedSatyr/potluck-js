@@ -8,10 +8,19 @@ CREATE TABLE IF NOT EXISTS "dishes" (
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "food_plan" (
+	"course" varchar(256) NOT NULL,
+	"count" integer NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"party_id" uuid NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "parties" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_by" varchar(256) NOT NULL,
-	"description" text,
+	"description" text NOT NULL,
 	"hosts" varchar(256) NOT NULL,
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"location" varchar(256) NOT NULL,
@@ -25,6 +34,12 @@ CREATE TABLE IF NOT EXISTS "parties" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "dishes" ADD CONSTRAINT "dishes_party_id_parties_id_fk" FOREIGN KEY ("party_id") REFERENCES "public"."parties"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "food_plan" ADD CONSTRAINT "food_plan_party_id_parties_id_fk" FOREIGN KEY ("party_id") REFERENCES "public"."parties"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

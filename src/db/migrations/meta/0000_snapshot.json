@@ -1,5 +1,5 @@
 {
-  "id": "f11a4ff5-e3d8-465e-a1a5-e40c2a8362d0",
+  "id": "c8522644-6ffb-4ae4-ae81-12c8d1dcb99c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -73,6 +73,69 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.food_plan": {
+      "name": "food_plan",
+      "schema": "",
+      "columns": {
+        "course": {
+          "name": "course",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "party_id": {
+          "name": "party_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "food_plan_party_id_parties_id_fk": {
+          "name": "food_plan_party_id_parties_id_fk",
+          "tableFrom": "food_plan",
+          "tableTo": "parties",
+          "columnsFrom": [
+            "party_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.parties": {
       "name": "parties",
       "schema": "",
@@ -94,7 +157,7 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "hosts": {
           "name": "hosts",
