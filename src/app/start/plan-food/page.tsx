@@ -1,16 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 interface FormInput {
 	name: string;
-	signups: number;
+	needed: number;
 }
 
 const PlanFoodPage = () => {
 	const { replace } = useRouter();
 	const searchParams = useSearchParams();
+	const [count, setCount] = useState<number>(0);
 
 	const shortId = searchParams.get("event");
 
@@ -18,7 +20,9 @@ const PlanFoodPage = () => {
 		replace(`/start`);
 	}
 
-	const onSubmit = () => {};
+	const onSubmit = (data: FormInput) => {
+		console.log("Submitting data:", data);
+	};
 
 	const { handleSubmit, register } = useForm<FormInput>({ defaultValues: {} });
 
@@ -29,11 +33,11 @@ const PlanFoodPage = () => {
 		>
 			<h1>Plan the Food</h1>
 
-			<div>Create Your Slots</div>
+			<h2>Create Your Slots</h2>
 
-			<div>
-				<div className="form-control">
-					<label htmlFor="dish-name" className="label-text">
+			<div className="flex w-full justify-between">
+				<div className="form-control w-2/3">
+					<label htmlFor="dish-name" className="label label-text">
 						What's Needed
 					</label>
 					<input
@@ -46,15 +50,14 @@ const PlanFoodPage = () => {
 					/>
 				</div>
 
-				<div className="form-control">
-					<label htmlFor="quantity-input" className="label-text">
-						Choose quantity:
+				<div className="form-control items-end">
+					<label htmlFor="quantity-input" className="label label-text">
+						Signups Needed
 					</label>
 					<div className="join">
 						<button
+							onClick={() => setCount(count > 0 ? count - 1 : 0)}
 							type="button"
-							id="decrement-button"
-							data-input-counter-decrement="quantity-input"
 							className="btn join-item input-bordered"
 						>
 							<svg
@@ -75,19 +78,16 @@ const PlanFoodPage = () => {
 						</button>
 						<input
 							type="text"
-							id="quantity-input"
-							data-input-counter
-							aria-describedby="helper-text-explanation"
-							className="input join-item input-bordered"
+							className="input join-item input-bordered w-12"
 							placeholder="0"
-							{...register("signups", {
+							value={count}
+							{...register("needed", {
 								required: true,
 							})}
 						/>
 						<button
+							onClick={() => setCount(count + 1)}
 							type="button"
-							id="increment-button "
-							data-input-counter-increment="quantity-input"
 							className="btn join-item input-bordered"
 						>
 							<svg
@@ -109,6 +109,7 @@ const PlanFoodPage = () => {
 					</div>
 				</div>
 			</div>
+			<input className="btn btn-primary my-12" type="submit" />
 		</form>
 	);
 };
