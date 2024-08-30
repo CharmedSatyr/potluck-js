@@ -123,7 +123,7 @@ const DishInput = ({ register, setValue, slot }: DishInputProps) => {
 };
 
 const PlanFoodPage = () => {
-	const { replace } = useRouter();
+	const { push, replace } = useRouter();
 	const searchParams = useSearchParams();
 	const [slots, setSlots] = useState<number>(1);
 	const {
@@ -137,18 +137,18 @@ const PlanFoodPage = () => {
 
 	if (!shortId) {
 		replace(`/start`);
+		return null;
 	}
 
 	const onSubmit = async (data: FormInput) => {
-		console.log("Submitting data:", data);
+		const response = await createFoodPlan({ plan: data, shortId });
 
-		if (!shortId) {
+		if (!response) {
+			console.warn("Failed to create food plan");
 			return;
 		}
 
-		const response = await createFoodPlan({ plan: data, shortId });
-
-		console.log("Success:", response);
+		push(`/party/${shortId}`);
 	};
 
 	return (
