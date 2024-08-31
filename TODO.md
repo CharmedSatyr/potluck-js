@@ -1,7 +1,11 @@
 # TODO
 
+## This Ticket
+- Delete food plan row during creation
+
 ## High Priority
-- Delete food plan
+- View food plan
+- Modify food plan
 - Move auth into middleware.
 - Don't send too much data to the client
 - Loading indicators
