@@ -3,13 +3,10 @@
 import { JSONSchemaType } from "ajv";
 import ajv from "@/actions/ajv";
 import db from "@/db/connection";
-import { Party, parties } from "@/db/schema/parties";
+import { CustomizablePartyValues, Party, parties } from "@/db/schema/parties";
 import { auth } from "@/auth";
 
-export type NewParty = Omit<
-	Party,
-	"createdAt" | "createdBy" | "id" | "shortId" | "updatedAt"
->;
+export type NewParty = CustomizablePartyValues;
 
 type NewPartyWithUser = NewParty & Pick<Party, "createdBy">;
 
