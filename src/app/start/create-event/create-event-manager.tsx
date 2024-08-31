@@ -62,9 +62,12 @@ const CreateEventManager = () => {
 				data.hosts = authData.user.name;
 			}
 
+			/*
+			TODO: This is just returning a Promise<pending>
 			if (!isNewParty(data)) {
 				throw new Error("New event form values invalid");
 			}
+			*/
 
 			const shortId = await createParty(data);
 

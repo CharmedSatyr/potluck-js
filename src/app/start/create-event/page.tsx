@@ -7,7 +7,7 @@ const CreateEventPage = async () => {
 
 	return (
 		<SessionProvider session={session}>
-			<div className="flex flex-col items-center justify-items-center">
+			<div className="flex w-full flex-col items-center justify-items-center">
 				<CreateEventManager />
 				<ul className="steps w-full">
 					<li className="step step-secondary">Create an Event</li>

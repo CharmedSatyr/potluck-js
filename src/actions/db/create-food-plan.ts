@@ -1,50 +1,69 @@
 "use server";
 
+import { JSONSchemaType } from "ajv";
+import ajv from "@/actions/ajv";
+import validateCtx from "@/actions/validate-ctx";
 import db from "@/db/connection";
-import { Dish, dishes } from "@/db/schema/dishes";
-import { foodPlan, FoodPlan } from "@/db/schema/food-plan";
-import { Party, parties } from "@/db/schema/parties";
-import { eq } from "drizzle-orm";
+import {
+	CustomizableFoodPlanValues,
+	foodPlan,
+	FoodPlan,
+} from "@/db/schema/food-plan";
+import { Party } from "@/db/schema/parties";
 
-interface Insertable {
-	course: string;
-	count: number;
-	partyId: string;
+interface NewFoodPlan {
+	courses: {
+		[key: string]: CustomizableFoodPlanValues;
+	};
+	shortId: Party["shortId"];
 }
 
-interface Plan {
-	course: string;
-	count: number;
-}
+const schema: JSONSchemaType<NewFoodPlan> = {
+	type: "object",
+	properties: {
+		shortId: { type: "string" },
+		courses: {
+			minProperties: 1,
+			type: "object",
+			properties: {
+				$ref: {
+					type: "object",
+					properties: {
+						course: { type: "string" },
+						count: { type: "number" },
+					},
+					required: ["count", "course"],
+					additionalProperties: false,
+				},
+			},
+			required: ["0"],
+			additionalProperties: true,
+		},
+	},
+	required: ["courses", "shortId"],
+	additionalProperties: false,
+};
 
-interface Plans {
-	[key: string]: Plan;
-}
+const validate = ajv.compile(schema);
 
-interface Data {
-	plan: Plans;
-	shortId: string;
-}
+export const isNewFoodPlan = (data: unknown): data is NewFoodPlan =>
+	validate(data);
 
-const createFoodPlan = async (data: Data): Promise<any> => {
-	const { plan, shortId } = data;
+const createFoodPlan = async (data: NewFoodPlan): Promise<FoodPlan[]> => {
+	if (!validate(data)) {
+		throw new Error(JSON.stringify(validate.errors));
+	}
 
-	console.log("plan:", data);
+	const { courses, shortId } = data;
 
-	const ids = await db
-		.select({ id: parties.id })
-		.from(parties)
-		.where(eq(parties.shortId, shortId));
+	const id = await validateCtx(shortId);
 
-	const partyId = ids[0].id;
+	const values = Object.values(courses).map((course) => ({
+		...course,
+		partyId: id,
+	}));
 
-	const insertable: Insertable[] = Object.values(plan).map(
-		(plan: Plan): Insertable => ({ ...plan, partyId })
-	);
-
-	console.log("insertable:", insertable);
-
-	return await db.insert(foodPlan).values(insertable).returning();
+	return await db.insert(foodPlan).values(values).returning();
 };
 
 export default createFoodPlan;

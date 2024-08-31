@@ -26,7 +26,6 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 	const onSubmit = async (data: FormInput) => {
 		startTransition(async () => {
 			if (Object.keys(errors).length > 0) {
-				console.log(errors);
 				return;
 			}
 

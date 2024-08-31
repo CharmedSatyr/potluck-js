@@ -23,3 +23,5 @@ export const foodPlan = pgTable("food_plan", {
 });
 
 export type FoodPlan = typeof foodPlan.$inferSelect;
+
+export type CustomizableFoodPlanValues = Pick<FoodPlan, "course" | "count">;

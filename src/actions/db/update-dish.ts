@@ -12,7 +12,6 @@ const updateDish = async ({
 	id,
 	name,
 }: UpdatedDish): Promise<Dish[]> => {
-	console.log("hi", id);
 	if (!id) {
 		return [];
 	}
@@ -29,8 +28,6 @@ const updateDish = async ({
 	if (name) {
 		values.name = name;
 	}
-
-	console.log("Hi, updating this thing", values);
 
 	return await db
 		.update(dishes)
