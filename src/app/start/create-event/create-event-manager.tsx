@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
-import createParty, { isNewParty, NewParty } from "@/actions/db/create-party";
+import createParty, { NewParty } from "@/actions/db/create-party";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import useCreatePartySessionStorage from "@/hooks/use-create-party-session-storage";
 
@@ -61,13 +61,6 @@ const CreateEventManager = () => {
 			if (!data.hosts && authData?.user?.name) {
 				data.hosts = authData.user.name;
 			}
-
-			/*
-			TODO: This is just returning a Promise<pending>
-			if (!isNewParty(data)) {
-				throw new Error("New event form values invalid");
-			}
-			*/
 
 			const shortId = await createParty(data);
 

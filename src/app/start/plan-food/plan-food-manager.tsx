@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import createFoodPlan, { isNewFoodPlan } from "@/actions/db/create-food-plan";
+import createFoodPlan from "@/actions/db/create-food-plan";
 import { CustomizableFoodPlanValues } from "@/db/schema/food-plan";
 import { useSession } from "next-auth/react";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
@@ -25,7 +25,7 @@ const CourseInput = ({ register, setValue, slot }: CourseInputProps) => {
 
 	useEffect(() => {
 		setValue(`${slot}.count`, count);
-	}, [count]);
+	}, [count, setValue, slot]);
 
 	return (
 		<div className="flex w-full justify-between">
@@ -138,12 +138,6 @@ const PlanFoodManager = () => {
 
 		try {
 			const plan = { courses: data, shortId };
-			/*
-			if (!(await isNewFoodPlan(data))) {
-				// await is needed. Look into this. Was trying to avoid a service call w/this.
-				throw new Error("New food plan values invalid");
-			}
-			*/
 
 			await createFoodPlan(plan);
 

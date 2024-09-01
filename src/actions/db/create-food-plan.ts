@@ -25,8 +25,8 @@ const schema: JSONSchemaType<NewFoodPlan> = {
 		courses: {
 			minProperties: 1,
 			type: "object",
-			properties: {
-				$ref: {
+			patternProperties: {
+				"^[0-9]{1,2}$": {
 					type: "object",
 					properties: {
 						course: { type: "string" },
@@ -36,8 +36,8 @@ const schema: JSONSchemaType<NewFoodPlan> = {
 					additionalProperties: false,
 				},
 			},
-			required: ["0"],
-			additionalProperties: true,
+			required: [],
+			additionalProperties: false,
 		},
 	},
 	required: ["courses", "shortId"],
@@ -45,9 +45,6 @@ const schema: JSONSchemaType<NewFoodPlan> = {
 };
 
 const validate = ajv.compile(schema);
-
-export const isNewFoodPlan = (data: unknown): data is NewFoodPlan =>
-	validate(data);
 
 const createFoodPlan = async (data: NewFoodPlan): Promise<FoodPlan[]> => {
 	if (!validate(data)) {
