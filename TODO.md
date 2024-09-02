@@ -2,7 +2,7 @@
 
 ## This Ticket
 
-- ~~Delete food plan row during creation~~
+- Fix Logout - auth state gets stale
 
 ## High Priority
 
@@ -11,7 +11,6 @@
 - Move auth into middleware.
 - Don't send too much data to the client
 - Loading indicators
-- Fix Logout - auth state gets stale
 - Everything responsive!
 
 ## Other Priority
@@ -21,3 +20,4 @@
   `In HTML, <dialog> cannot be a child of <tbody>. This will cause a hydration error.`
 - Should probably have a Date library
 - Add user table (if necessary) - UUID instead of email.
+- Add husky, import sorter, and other devex bonuses.

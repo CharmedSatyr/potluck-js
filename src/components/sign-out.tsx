@@ -1,4 +1,5 @@
-import { auth, signOut } from "@/auth";
+import signOutAndRevalidate from "@/actions/auth/sign-out-and-revalidate";
+import { auth } from "@/auth";
 
 const SignOut = async () => {
 	const session = await auth();
@@ -8,12 +9,7 @@ const SignOut = async () => {
 	}
 
 	return (
-		<form
-			action={async () => {
-				"use server";
-				await signOut();
-			}}
-		>
+		<form action={signOutAndRevalidate}>
 			<button className="btn btn-secondary" type="submit">
 				Sign Out
 			</button>
