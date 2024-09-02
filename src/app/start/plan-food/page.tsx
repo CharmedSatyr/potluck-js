@@ -1,20 +1,15 @@
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import PlanFoodManager from "@/app/start/plan-food/plan-food-manager";
 
 const PlanFoodPage = async () => {
-	const session = await auth();
-
 	return (
-		<SessionProvider session={session}>
-			<div className="flex w-full flex-col items-center justify-items-center">
-				<PlanFoodManager />
-				<ul className="steps w-full">
-					<li className="step step-secondary">Create an Event</li>
-					<li className="step step-secondary">Plan the Food</li>
-				</ul>
-			</div>
-		</SessionProvider>
+		<div className="flex w-full flex-col items-center justify-items-center">
+			<PlanFoodManager />
+
+			<ul className="steps w-full">
+				<li className="step step-secondary">Create an Event</li>
+				<li className="step step-secondary">Plan the Food</li>
+			</ul>
+		</div>
 	);
 };
 

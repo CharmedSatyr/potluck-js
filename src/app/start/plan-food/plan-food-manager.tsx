@@ -5,8 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
 import createFoodPlan from "@/actions/db/create-food-plan";
 import { CustomizableFoodPlanValues } from "@/db/schema/food-plan";
-import { useSession } from "next-auth/react";
-import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
 import CourseInput from "@/app/start/plan-food/course-input";
 
 export const MAX_DISH_SLOTS = 20;
@@ -28,13 +26,12 @@ const PlanFoodManager = () => {
 		append({ course: "", count: 1 });
 	}, [mounted]);
 
-	const { status } = useSession();
-	const loggedIn = status === "authenticated";
 	const { push, replace } = useRouter();
 	const searchParams = useSearchParams();
+
 	const {
 		control,
-		formState: { isDirty, isValid, errors },
+		formState: { isDirty, isValid },
 		handleSubmit,
 		register,
 		setValue,
@@ -60,12 +57,6 @@ const PlanFoodManager = () => {
 	};
 
 	const onSubmit = async (data: FormInput) => {
-		if (!loggedIn) {
-			await signInWithDiscord();
-
-			return;
-		}
-
 		try {
 			await createFoodPlan({ ...data, shortId });
 
