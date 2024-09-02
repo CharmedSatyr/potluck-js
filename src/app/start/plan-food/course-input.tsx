@@ -48,6 +48,7 @@ const CourseInput = ({
 				<label htmlFor={`dish-name-${index}`} className="label label-text">
 					What&apos;s Needed
 				</label>
+
 				<input
 					className="input-text input input-bordered"
 					id={`dish-name-${index}`}
@@ -63,6 +64,7 @@ const CourseInput = ({
 				<label htmlFor={`quantity-input-${index}`} className="label label-text">
 					Signups Needed
 				</label>
+
 				<div className="join">
 					<button
 						onClick={() => setCount(count > 1 ? count - 1 : 1)}

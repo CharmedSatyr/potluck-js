@@ -2,7 +2,7 @@
 
 ## This Ticket
 
-- Delete food plan row during creation
+- ~~Delete food plan row during creation~~
 
 ## High Priority
 
@@ -12,6 +12,7 @@
 - Don't send too much data to the client
 - Loading indicators
 - Fix Logout - auth state gets stale
+- Everything responsive!
 
 ## Other Priority
 
