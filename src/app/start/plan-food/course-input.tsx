@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-
-type Slot = { course: string; count: number };
-
-interface FormValues {
-	slots: Slot[];
-}
+import {
+	UseFieldArrayRemove,
+	UseFormRegister,
+	UseFormSetValue,
+} from "react-hook-form";
+import {
+	FormInput,
+	MAX_DISH_SLOTS,
+} from "@/app/start/plan-food/plan-food-manager";
 
 interface CourseInputProps {
 	index: number;
-	register: UseFormRegister<FormValues>;
-	remove: any;
-	setValue: UseFormSetValue<FormValues>;
+	register: UseFormRegister<FormInput>;
+	remove: UseFieldArrayRemove;
+	setValue: UseFormSetValue<FormInput>;
 }
 
-const MAX_DISH_SLOTS = 20;
-
 const CourseInput = ({
-	register,
-	setValue,
 	index,
+	register,
 	remove,
+	setValue,
 }: CourseInputProps) => {
 	const [count, setCount] = useState<number>(1);
 
@@ -29,18 +29,21 @@ const CourseInput = ({
 	}, [count, setValue, index]);
 
 	const removeSlot = () => {
-		remove(`slots.${index}`);
+		remove(index);
 	};
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			<button
-				onClick={removeSlot}
-				className="btn btn-circle btn-ghost btn-sm absolute -ml-10"
-				type="button"
-			>
-				✕
-			</button>
+			{index > 0 && (
+				<button
+					onClick={removeSlot}
+					className="btn btn-circle btn-ghost btn-sm absolute -ml-10"
+					type="button"
+				>
+					✕
+				</button>
+			)}
+
 			<div className="form-control w-2/3">
 				<label htmlFor={`dish-name-${index}`} className="label label-text">
 					What&apos;s Needed

@@ -12,9 +12,7 @@ import {
 import { Party } from "@/db/schema/parties";
 
 interface NewFoodPlan {
-	courses: {
-		[key: string]: CustomizableFoodPlanValues;
-	};
+	slots: CustomizableFoodPlanValues[];
 	shortId: Party["shortId"];
 }
 
@@ -22,25 +20,21 @@ const schema: JSONSchemaType<NewFoodPlan> = {
 	type: "object",
 	properties: {
 		shortId: { type: "string" },
-		courses: {
-			minProperties: 1,
-			type: "object",
-			patternProperties: {
-				"^[0-9]{1,2}$": {
-					type: "object",
-					properties: {
-						course: { type: "string" },
-						count: { type: "number" },
-					},
-					required: ["count", "course"],
-					additionalProperties: false,
+		slots: {
+			type: "array",
+			items: {
+				type: "object",
+				properties: {
+					count: { type: "number" },
+					course: { type: "string" },
 				},
+				required: ["count", "course"],
+				additionalProperties: false,
 			},
-			required: [],
-			additionalProperties: false,
+			minItems: 1,
 		},
 	},
-	required: ["courses", "shortId"],
+	required: ["shortId", "slots"],
 	additionalProperties: false,
 };
 
@@ -51,14 +45,11 @@ const createFoodPlan = async (data: NewFoodPlan): Promise<FoodPlan[]> => {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const { courses, shortId } = data;
+	const { slots, shortId } = data;
 
 	const id = await validateCtx(shortId);
 
-	const values = Object.values(courses).map((course) => ({
-		...course,
-		partyId: id,
-	}));
+	const values = slots.map((slot) => ({ ...slot, partyId: id }));
 
 	return await db.insert(foodPlan).values(values).returning();
 };
