@@ -19,7 +19,7 @@ const PlanFoodManager = () => {
 		if (!mounted) {
 			setMounted(true);
 		}
-	}, []);
+	}, [mounted]);
 
 	const { push, replace } = useRouter();
 	const searchParams = useSearchParams();
@@ -44,7 +44,7 @@ const PlanFoodManager = () => {
 		}
 
 		() => reset();
-	}, [mounted]);
+	}, [append, mounted, reset]);
 
 	const shortId = searchParams.get("event");
 

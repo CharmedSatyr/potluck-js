@@ -51,6 +51,7 @@ const CreateEventManager = () => {
 			}
 			reset();
 		};
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [reset, setValue]);
 
 	const onSubmit = handleSubmit(async (data: CustomizablePartyValues) => {
