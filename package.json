@@ -16,6 +16,7 @@
 		"db:migrate": "npx drizzle-kit migrate"
 	},
 	"dependencies": {
+		"@heroicons/react": "^2.1.5",
 		"@neondatabase/serverless": "^0.9.4",
 		"ajv": "^8.17.1",
 		"ajv-formats": "^3.0.1",
