@@ -3,7 +3,7 @@
 import siteMetadata from "@/data/site-metadata";
 import {
 	ClipboardDocumentCheckIcon,
-    ClipboardDocumentIcon
+	ClipboardDocumentIcon,
 } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 import { useState } from "react";

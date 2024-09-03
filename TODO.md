@@ -22,3 +22,5 @@
 - Should probably have a Date library
 - Add user table (if necessary) - UUID instead of email.
 - Add husky, import sorter, and other devex bonuses.
+- On Inga's computer, Plus and Minus signs on Signups Needed shows up as black.
+- Back button on 2nd page of wizard

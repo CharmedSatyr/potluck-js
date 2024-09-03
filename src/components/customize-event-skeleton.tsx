@@ -129,7 +129,7 @@ export const CustomizeEventSkeleton = ({
 				<input
 					className="btn btn-primary my-2 w-full"
 					type="submit"
-					value={loggedIn ? "Create Event!" : "Sign in to Continue"}
+					value={loggedIn ? "Continue" : "Sign in to Continue"}
 				/>
 			)}
 		</form>
