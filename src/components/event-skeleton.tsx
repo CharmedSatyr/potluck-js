@@ -26,7 +26,7 @@ export const EventSkeleton = ({
 			{isHost && (
 				<Link
 					className="btn btn-primary float-right"
-					href={`/party/${shortId}/edit`}
+					href={`/event/${shortId}/edit`}
 				>
 					Edit
 				</Link>
@@ -34,7 +34,7 @@ export const EventSkeleton = ({
 
 			{shortId && (
 				<h1>
-					Party Code: <span className="text-secondary">{shortId}</span>
+					Event Code: <span className="text-secondary">{shortId}</span>
 				</h1>
 			)}
 

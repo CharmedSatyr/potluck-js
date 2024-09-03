@@ -55,7 +55,7 @@ const updateParty = async (updatedParty: UpdatedParty): Promise<Party[]> => {
 export const updatePartyAndRevalidate = async (
 	updatedParty: UpdatedParty
 ): Promise<Party[]> => {
-	revalidatePath(`/party/${updatedParty.shortId}`, "page");
+	revalidatePath(`/event/${updatedParty.shortId}`, "page");
 
 	return await updateParty(updatedParty);
 };

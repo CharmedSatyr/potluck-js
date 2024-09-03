@@ -21,7 +21,7 @@ const TitleManagement = ({ shortId }: { shortId?: string }) => {
 	return (
 		<div className="flex justify-between">
 			<h1>
-				Party Code: <span className="text-secondary">{shortId}</span>
+				Event Code: <span className="text-secondary">{shortId}</span>
 			</h1>
 			<input className="btn btn-primary" type="submit" value="Save" />
 		</div>
@@ -129,7 +129,7 @@ export const CustomizeEventSkeleton = ({
 				<input
 					className="btn btn-primary my-2 w-full"
 					type="submit"
-					value={loggedIn ? "Create Party!" : "Sign in to Continue"}
+					value={loggedIn ? "Create Event!" : "Sign in to Continue"}
 				/>
 			)}
 		</form>

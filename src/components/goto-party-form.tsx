@@ -39,7 +39,7 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 				return;
 			}
 
-			push(`/party/${data.partyId}`);
+			push(`/event/${data.partyId}`);
 		});
 	};
 

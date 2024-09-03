@@ -1,7 +1,7 @@
 import findPartyByShortId from "@/actions/db/find-party-by-shortid";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import EditEventManager from "@/app/party/[id]/edit/edit-event-manager";
+import EditEventManager from "@/app/event/[id]/edit/edit-event-manager";
 
 interface Props {
 	params: {

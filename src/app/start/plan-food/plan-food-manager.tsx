@@ -55,7 +55,7 @@ const PlanFoodManager = () => {
 	}
 
 	const goToNextPage = () => {
-		push(`/party/${shortId}`);
+		push(`/event/${shortId}`);
 	};
 
 	const onSubmit = async (data: FormInput) => {

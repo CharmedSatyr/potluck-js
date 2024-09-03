@@ -51,7 +51,7 @@ const EditEventManager = ({
 			);
 
 			if (Object.keys(modifiedValues).length === 0) {
-				push(`/party/${shortId}`);
+				push(`/event/${shortId}`);
 				return;
 			}
 
@@ -67,14 +67,14 @@ const EditEventManager = ({
 				throw new Error("Failed to update event");
 			}
 
-			push(`/party/${shortId}`);
+			push(`/event/${shortId}`);
 		} catch (err) {
 			console.error(err);
 		}
 	});
 
 	if (session?.data?.user?.email !== createdBy) {
-		replace(`/party/${shortId}`);
+		replace(`/event/${shortId}`);
 	}
 
 	return (

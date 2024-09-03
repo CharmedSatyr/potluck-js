@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Dish from "@/app/party/[id]/dish";
+import Dish from "@/app/event/[id]/dish";
 import { type Dish as DishType } from "@/db/schema/dishes";
 import createDish from "@/actions/db/create-dish";
 import deleteDish from "@/actions/db/delete-dish";
 import CreateDishForm, {
 	FormInput as CreateDishFormInput,
-} from "@/app/party/[id]/create-dish-form";
+} from "@/app/event/[id]/create-dish-form";
 import updateDish from "@/actions/db/update-dish";
 import { FormInput as UpdateDishFormInput } from "./update-dish-form";
 import { useSession } from "next-auth/react";

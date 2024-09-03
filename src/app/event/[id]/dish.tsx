@@ -1,7 +1,7 @@
 import { type Dish } from "@/db/schema/dishes";
 import UpdateDishForm, {
 	FormInput as UpdateDishFormInput,
-} from "@/app/party/[id]/update-dish-form";
+} from "@/app/event/[id]/update-dish-form";
 
 interface Props {
 	dish: Dish;
