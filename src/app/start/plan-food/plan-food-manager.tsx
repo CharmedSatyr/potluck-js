@@ -14,8 +14,11 @@ export interface FormInput {
 }
 
 const PlanFoodManager = () => {
+	const [mounted, setMounted] = useState<boolean>(false);
 	useEffect(() => {
-		append({ course: "", count: 1 });
+		if (!mounted) {
+			setMounted(true);
+		}
 	}, []);
 
 	const { push, replace } = useRouter();
@@ -27,11 +30,21 @@ const PlanFoodManager = () => {
 		handleSubmit,
 		register,
 		setValue,
+		reset,
 	} = useForm<FormInput>();
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: "slots",
 	});
+
+	useEffect(() => {
+		console.log("Testing if this runs twice...");
+		if (mounted) {
+			append({ course: "", count: 1 });
+		}
+
+		() => reset();
+	}, [mounted]);
 
 	const shortId = searchParams.get("event");
 
