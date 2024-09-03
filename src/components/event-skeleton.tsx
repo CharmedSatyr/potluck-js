@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CopyLinkButton from "./copy-link-button";
 
 interface EventSkeletonProps {
 	name: string;
@@ -23,14 +24,15 @@ export const EventSkeleton = ({
 }: EventSkeletonProps) => {
 	return (
 		<div className="w-full lg:w-5/6 xl:w-2/3 2xl:w-1/2">
-			{isHost && (
-				<Link
-					className="btn btn-primary float-right"
-					href={`/event/${shortId}/edit`}
-				>
-					Edit
-				</Link>
-			)}
+			<div className="float-right flex w-36 flex-col">
+				{isHost && (
+					<Link className="btn btn-accent mb-2" href={`/event/${shortId}/edit`}>
+						Edit
+					</Link>
+				)}
+
+				{shortId && <CopyLinkButton className="" />}
+			</div>
 
 			{shortId && (
 				<h1>
