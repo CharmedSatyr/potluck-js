@@ -1,17 +1,20 @@
 import { Dispatch } from "react";
-import { NewParty } from "@/actions/db/create-party";
+import { CustomizablePartyValues } from "@/db/schema/parties";
 import useSessionStorage from "@/hooks/use-session-storage";
 
 type useCreatePartySessionOut = readonly [
-	Partial<NewParty>,
-	Dispatch<Partial<NewParty>>,
+	Partial<CustomizablePartyValues>,
+	Dispatch<Partial<CustomizablePartyValues>>,
 	() => void,
 ];
 
 const CREATE_PARTY_SESSION_KEY = "createPartySessionKey";
 
 const useCreatePartySession = (): useCreatePartySessionOut => {
-	return useSessionStorage<Partial<NewParty>>(CREATE_PARTY_SESSION_KEY, {});
+	return useSessionStorage<Partial<CustomizablePartyValues>>(
+		CREATE_PARTY_SESSION_KEY,
+		{}
+	);
 };
 
 export default useCreatePartySession;

@@ -9,12 +9,10 @@ import {
 	UpdatedParty,
 	updatePartyAndRevalidate,
 } from "@/actions/db/update-party";
-import { Party } from "@/db/schema/parties";
+import { CustomizablePartyValues, Party } from "@/db/schema/parties";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 
 type EditEventManagerProps = Party;
-
-type FormInput = UpdatedParty;
 
 const EditEventManager = ({
 	createdBy,
@@ -33,7 +31,7 @@ const EditEventManager = ({
 		getFieldState,
 		handleSubmit,
 		register,
-	} = useForm<FormInput>({
+	} = useForm<CustomizablePartyValues>({
 		defaultValues: {
 			name,
 			startDate,
@@ -44,11 +42,12 @@ const EditEventManager = ({
 		},
 	});
 
-	const onSubmit = handleSubmit(async (data: FormInput) => {
+	const onSubmit = handleSubmit(async (data: CustomizablePartyValues) => {
 		try {
 			const modifiedValues = _.pickBy<UpdatedParty>(
 				data,
-				(_value, key) => getFieldState(key as keyof UpdatedParty).isDirty
+				(_value, key) =>
+					getFieldState(key as keyof CustomizablePartyValues).isDirty
 			);
 
 			if (Object.keys(modifiedValues).length === 0) {
