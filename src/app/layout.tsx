@@ -25,7 +25,7 @@ export default function RootLayout({
 				className={`${inter.className} prose flex max-w-none flex-col items-center`}
 			>
 				<NavBar />
-				<div className="container flex w-full justify-center px-4 pt-12 md:w-3/4 md:px-10">
+				<div className="container flex w-full justify-center px-4 pt-12 md:w-10/12 md:px-10">
 					{children}
 				</div>
 			</body>
