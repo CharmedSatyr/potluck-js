@@ -12,7 +12,7 @@ const SignOut = async () => {
 		<form
 			action={async () => {
 				"use server";
-				
+
 				await signOutAndRevalidate();
 			}}
 		>

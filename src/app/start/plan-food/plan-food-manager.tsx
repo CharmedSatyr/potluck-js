@@ -38,13 +38,14 @@ const PlanFoodManager = () => {
 	});
 
 	useEffect(() => {
-		console.log("Testing if this runs twice...");
-		if (mounted) {
-			append({ course: "", count: 1 });
+		if (!mounted || fields.length > 0) {
+			return;
 		}
 
+		append({ course: "", count: 1 });
+
 		() => reset();
-	}, [append, mounted, reset]);
+	}, [append, mounted, fields.length, reset]);
 
 	const shortId = searchParams.get("event");
 
