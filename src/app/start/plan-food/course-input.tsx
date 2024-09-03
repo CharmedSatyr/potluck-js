@@ -10,6 +10,7 @@ import {
 } from "@/app/start/plan-food/plan-food-manager";
 
 interface CourseInputProps {
+	fieldCount: number;
 	index: number;
 	register: UseFormRegister<FormInput>;
 	remove: UseFieldArrayRemove;
@@ -17,6 +18,7 @@ interface CourseInputProps {
 }
 
 const CourseInput = ({
+	fieldCount,
 	index,
 	register,
 	remove,
@@ -34,7 +36,7 @@ const CourseInput = ({
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			{index > 0 && (
+			{fieldCount > 2 && (
 				<button
 					onClick={removeSlot}
 					className="btn btn-circle btn-ghost btn-sm absolute -ml-10"

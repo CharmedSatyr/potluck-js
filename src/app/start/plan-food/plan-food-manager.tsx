@@ -44,7 +44,7 @@ const PlanFoodManager = () => {
 
 		append({ course: "", count: 1 });
 
-		() => reset();
+		return () => reset();
 	}, [append, mounted, fields.length, reset]);
 
 	const shortId = searchParams.get("event");
@@ -80,6 +80,7 @@ const PlanFoodManager = () => {
 			{fields.map((field, index) => (
 				<div key={field.id}>
 					<CourseInput
+						fieldCount={fields.length + 1}
 						index={index}
 						register={register}
 						remove={remove}
