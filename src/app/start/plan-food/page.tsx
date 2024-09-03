@@ -1,9 +1,13 @@
+import { Suspense } from "react";
 import PlanFoodManager from "@/app/start/plan-food/plan-food-manager";
+import LoadingIndicator from "@/components/loading-indicator";
 
 const PlanFoodPage = async () => {
 	return (
 		<div className="flex w-full flex-col items-center justify-items-center">
-			<PlanFoodManager />
+			<Suspense fallback={<LoadingIndicator />}>
+				<PlanFoodManager />
+			</Suspense>
 
 			<ul className="steps w-full">
 				<li className="step step-secondary">Create an Event</li>

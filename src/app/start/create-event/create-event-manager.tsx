@@ -5,11 +5,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
-import createParty, { NewParty } from "@/actions/db/create-party";
+import createParty from "@/actions/db/create-party";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import useCreatePartySessionStorage from "@/hooks/use-create-party-session-storage";
-
-type FormInput = NewParty;
+import { CustomizablePartyValues } from "@/db/schema/parties";
 
 const CreateEventManager = () => {
 	const { data: authData, status } = useSession();
@@ -25,7 +24,8 @@ const CreateEventManager = () => {
 		register,
 		reset,
 		setValue,
-	} = useForm<FormInput>({
+		getValues,
+	} = useForm<CustomizablePartyValues>({
 		defaultValues: {},
 	});
 
@@ -35,7 +35,7 @@ const CreateEventManager = () => {
 		}
 
 		for (const property in storageValues) {
-			const key = property as keyof FormInput;
+			const key = property as keyof CustomizablePartyValues;
 			const value = storageValues[key];
 
 			if (value === undefined) {
@@ -45,12 +45,15 @@ const CreateEventManager = () => {
 			setValue(key, value, { shouldValidate: true });
 		}
 
-		return () => reset();
-	}, [reset, setValue, storageValues]);
+		return () => {
+			if (!loggedIn) {
+				setStorageValues(getValues());
+			}
+			reset();
+		};
+	}, [reset, setValue]);
 
-	const onSubmit = handleSubmit(async (data: FormInput) => {
-		setStorageValues(data);
-
+	const onSubmit = handleSubmit(async (data: CustomizablePartyValues) => {
 		if (!loggedIn) {
 			await signInWithDiscord();
 

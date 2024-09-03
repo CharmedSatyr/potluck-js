@@ -9,7 +9,7 @@ import formatIsoTime from "@/utilities/format-iso-time";
 interface CustomizeEventSkeletonProps {
 	errors: FieldErrors<Partial<CustomizablePartyValues>>;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	register: UseFormRegister<any>; // TODO: Clarify this type.
+	register: UseFormRegister<CustomizablePartyValues>;
 	shortId?: string;
 }
 

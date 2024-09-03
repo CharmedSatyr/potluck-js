@@ -14,17 +14,9 @@ export interface FormInput {
 }
 
 const PlanFoodManager = () => {
-	const [mounted, setMounted] = useState<boolean>(false);
 	useEffect(() => {
-		setMounted(true);
-	}, []);
-
-	useEffect(() => {
-		if (!mounted) {
-			return;
-		}
 		append({ course: "", count: 1 });
-	}, [mounted]);
+	}, []);
 
 	const { push, replace } = useRouter();
 	const searchParams = useSearchParams();
@@ -46,10 +38,6 @@ const PlanFoodManager = () => {
 	if (!shortId) {
 		replace(`/start`);
 		return null;
-	}
-
-	if (!mounted) {
-		return <span className="loading loading-ring loading-lg"></span>;
 	}
 
 	const goToNextPage = () => {

@@ -6,9 +6,7 @@ import db from "@/db/connection";
 import { CustomizablePartyValues, Party, parties } from "@/db/schema/parties";
 import { auth } from "@/auth";
 
-export type NewParty = CustomizablePartyValues;
-
-type NewPartyWithUser = NewParty & Pick<Party, "createdBy">;
+type NewPartyWithUser = CustomizablePartyValues & Pick<Party, "createdBy">;
 
 const schema: JSONSchemaType<NewPartyWithUser> = {
 	type: "object",
@@ -34,7 +32,7 @@ const schema: JSONSchemaType<NewPartyWithUser> = {
 
 const validate = ajv.compile(schema);
 
-const createParty = async (info: NewParty): Promise<string> => {
+const createParty = async (info: CustomizablePartyValues): Promise<string> => {
 	const session = await auth();
 
 	if (!session?.user?.email) {
