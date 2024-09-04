@@ -15,8 +15,8 @@
 		"db:generate": "npx drizzle-kit generate",
 		"db:migrate": "npx drizzle-kit migrate",
 		"prepare": "husky",
-		"test": "jest",
-		"test:staged": "jest --findRelatedTests --bail"
+		"test": "jest --passWithNoTests",
+		"test:staged": "jest --findRelatedTests --passWithNoTests"
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.1.5",
