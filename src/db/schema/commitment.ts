@@ -5,7 +5,7 @@ import {
 	pgTable,
 	integer,
 } from "drizzle-orm/pg-core";
-import { parties } from "@/db/schema/parties";
+import { foodPlan } from "./food-plan";
 
 export const Commitment = pgTable("commitment", {
 	createdAt: timestamp("created_at", { withTimezone: true })
@@ -13,10 +13,10 @@ export const Commitment = pgTable("commitment", {
 		.defaultNow(),
 	createdBy: varchar("created_by", { length: 256 }).notNull(),
 	description: varchar("description", { length: 256 }).notNull(),
-	id: uuid("id").primaryKey().notNull().defaultRandom(),
-	partyId: uuid("party_id")
-		.references(() => parties.id, { onDelete: "cascade" })
+	foodPlanId: uuid("food_plan_id")
+		.references(() => foodPlan.id, { onDelete: "cascade" })
 		.notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	quantity: integer("quantity").notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
