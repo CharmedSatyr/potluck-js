@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { foodPlan } from "./food-plan";
 
-export const Commitment = pgTable("commitment", {
+export const commitment = pgTable("commitment", {
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
@@ -23,4 +23,4 @@ export const Commitment = pgTable("commitment", {
 		.defaultNow(),
 });
 
-export type Commitment = typeof Commitment.$inferSelect;
+export type Commitment = typeof commitment.$inferSelect;
