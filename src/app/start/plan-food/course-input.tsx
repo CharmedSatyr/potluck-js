@@ -11,16 +11,16 @@ import {
 import QuantityInput from "@/components/quantity-input";
 
 interface CourseInputProps {
-	fieldCount: number;
 	index: number;
+	multipleFields: boolean;
 	register: UseFormRegister<FormInput>;
 	remove: UseFieldArrayRemove;
 	setValue: UseFormSetValue<FormInput>;
 }
 
 const CourseInput = ({
-	fieldCount,
 	index,
+	multipleFields,
 	register,
 	remove,
 	setValue,
@@ -28,7 +28,7 @@ const CourseInput = ({
 	const [count, setCount] = useState<number>(1);
 
 	useEffect(() => {
-		setValue(`slots.${index}.count`, count);
+		setValue(`slots.${index}.count` as const, count);
 	}, [count, setValue, index]);
 
 	const removeSlot = () => {
@@ -37,7 +37,7 @@ const CourseInput = ({
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			{fieldCount > 2 && (
+			{multipleFields && (
 				<button
 					onClick={removeSlot}
 					className="btn btn-circle btn-ghost btn-sm absolute -ml-10"
@@ -56,7 +56,7 @@ const CourseInput = ({
 					className="input-text input input-bordered"
 					id={`dish-name-${index}`}
 					type="text"
-					{...register(`slots.${index}.course`, {
+					{...register(`slots.${index}.course` as const, {
 						maxLength: 256,
 						required: "Slot name required",
 					})}

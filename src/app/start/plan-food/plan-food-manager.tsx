@@ -80,8 +80,8 @@ const PlanFoodManager = () => {
 			{fields.map((field, index) => (
 				<div key={field.id}>
 					<CourseInput
-						fieldCount={fields.length + 1}
 						index={index}
+						multipleFields={fields.length > 1}
 						register={register}
 						remove={remove}
 						setValue={setValue}
