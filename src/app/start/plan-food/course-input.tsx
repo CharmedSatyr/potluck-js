@@ -8,6 +8,7 @@ import {
 	FormInput,
 	MAX_DISH_SLOTS,
 } from "@/app/start/plan-food/plan-food-manager";
+import QuantityInput from "@/components/quantity-input";
 
 interface CourseInputProps {
 	fieldCount: number;
@@ -62,67 +63,14 @@ const CourseInput = ({
 				/>
 			</div>
 
-			<div className="form-control items-end">
-				<label htmlFor={`quantity-input-${index}`} className="label label-text">
-					Signups Needed
-				</label>
-
-				<div className="join">
-					<button
-						onClick={() => setCount(count > 1 ? count - 1 : 1)}
-						type="button"
-						className="btn join-item input-bordered"
-					>
-						<svg
-							className="h-3 w-3 text-gray-900 dark:text-white"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 18 2"
-						>
-							<path
-								stroke="currentColor"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M1 1h16"
-							/>
-						</svg>
-					</button>
-
-					<input
-						type="text"
-						className="input join-item input-bordered w-14"
-						id={`quantity-input-${index}`}
-						value={count}
-						readOnly
-					/>
-
-					<button
-						onClick={() =>
-							setCount(count < MAX_DISH_SLOTS ? count + 1 : MAX_DISH_SLOTS)
-						}
-						type="button"
-						className="btn join-item input-bordered"
-					>
-						<svg
-							className="h-3 w-3 text-gray-900 dark:text-white"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 18 18"
-						>
-							<path
-								stroke="currentColor"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M9 1v16M1 9h16"
-							/>
-						</svg>
-					</button>
-				</div>
-			</div>
+			<QuantityInput
+				index={index}
+				labelText="Signups Needed"
+				max={MAX_DISH_SLOTS}
+				min={1}
+				quantity={count}
+				setQuantity={setCount}
+			/>
 		</div>
 	);
 };
