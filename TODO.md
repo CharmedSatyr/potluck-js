@@ -24,3 +24,4 @@
 - Add husky, import sorter, and other devex bonuses.
 - On Inga's computer, Plus and Minus signs on Signups Needed shows up as black.
 - Back button on 2nd page of wizard
+- Remove lodash
