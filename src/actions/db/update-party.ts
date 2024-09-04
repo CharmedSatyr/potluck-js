@@ -41,7 +41,7 @@ const updateParty = async (updatedParty: UpdatedParty): Promise<Party[]> => {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const id = await validateCtx(updatedParty.shortId);
+	const { id } = await validateCtx(updatedParty.shortId);
 
 	const values = _.omit(updatedParty, ["shortId"]); // Never update shortId
 

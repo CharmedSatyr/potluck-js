@@ -28,7 +28,7 @@ const findFoodPlan = async (data: RequestData): Promise<FoodPlan[]> => {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const id = await validateCtx(data.shortId);
+	const { id } = await validateCtx(data.shortId);
 
 	return await db.select().from(foodPlan).where(eq(foodPlan.partyId, id));
 };

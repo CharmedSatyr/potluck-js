@@ -1,7 +1,12 @@
 import { auth } from "@/auth";
 import findPartyServerCtxByShortId from "@/actions/db/find-party-server-ctx-by-shortid";
 
-const validateCtx = async (shortId: string): Promise<string> => {
+interface Return {
+	id: string;
+	createdBy: string;
+}
+
+const validateCtx = async (shortId: string): Promise<Return> => {
 	if (!shortId) {
 		throw new Error("Missing shortId");
 	}
@@ -14,7 +19,7 @@ const validateCtx = async (shortId: string): Promise<string> => {
 		throw new Error("Not authenticated");
 	}
 
-	return id;
+	return { id, createdBy };
 };
 
 export default validateCtx;

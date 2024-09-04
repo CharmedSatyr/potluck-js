@@ -47,7 +47,7 @@ const createFoodPlan = async (data: NewFoodPlan): Promise<FoodPlan[]> => {
 
 	const { slots, shortId } = data;
 
-	const id = await validateCtx(shortId);
+	const { id } = await validateCtx(shortId);
 
 	const values = slots.map((slot) => ({ ...slot, partyId: id }));
 
