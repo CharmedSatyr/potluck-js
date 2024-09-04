@@ -23,7 +23,7 @@ const TitleManagement = ({ shortId }: { shortId?: string }) => {
 			<h1>
 				Event Code: <span className="text-secondary">{shortId}</span>
 			</h1>
-			<input className="btn btn-primary" type="submit" value="Save" />
+			<input className="btn btn-primary w-36" type="submit" value="Save" />
 		</div>
 	);
 };
@@ -40,10 +40,7 @@ export const CustomizeEventSkeleton = ({
 	const username = authData?.user?.name;
 
 	return (
-		<form
-			className="form-control w-full lg:w-5/6 xl:w-2/3 2xl:w-1/2"
-			onSubmit={onSubmit}
-		>
+		<form className="form-control w-full" onSubmit={onSubmit}>
 			<TitleManagement shortId={shortId} />
 
 			<input

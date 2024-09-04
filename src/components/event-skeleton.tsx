@@ -23,7 +23,7 @@ export const EventSkeleton = ({
 	isHost,
 }: EventSkeletonProps) => {
 	return (
-		<div className="w-full lg:w-5/6 xl:w-2/3 2xl:w-1/2">
+		<div className="w-full">
 			<div className="float-right flex w-36 flex-col">
 				{isHost && (
 					<Link className="btn btn-accent mb-2" href={`/event/${shortId}/edit`}>
@@ -31,7 +31,7 @@ export const EventSkeleton = ({
 					</Link>
 				)}
 
-				{shortId && <CopyLinkButton className="" />}
+				{shortId && <CopyLinkButton />}
 			</div>
 
 			{shortId && (
