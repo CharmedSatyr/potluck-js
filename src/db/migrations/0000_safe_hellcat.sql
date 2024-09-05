@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS "commitment" (
+	"avatar" varchar NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_by" varchar(256) NOT NULL,
 	"description" varchar(256) NOT NULL,

@@ -8,6 +8,7 @@ import {
 import { foodPlan } from "./food-plan";
 
 export const commitment = pgTable("commitment", {
+	avatar: varchar("avatar").notNull(), // TODO: THIS IS BAD! There should be a user table!
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),

@@ -1,5 +1,5 @@
 {
-  "id": "2c2c869a-881d-4e28-8e5b-25e5c11b3344",
+  "id": "94b1dfb8-d199-4c77-9174-ff560972c114",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8,6 +8,12 @@
       "name": "commitment",
       "schema": "",
       "columns": {
+        "avatar": {
+          "name": "avatar",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",

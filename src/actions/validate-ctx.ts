@@ -11,7 +11,12 @@ const validateCtx = async (shortId: string): Promise<Return> => {
 		throw new Error("Missing shortId");
 	}
 
-	const { id, createdBy } = await findPartyServerCtxByShortId(shortId);
+	const result = await findPartyServerCtxByShortId(shortId);
+	if (!result?.id || !result?.createdBy) {
+		throw new Error("Invalid shortId");
+	}
+
+	const { id, createdBy } = result;
 
 	const session = await auth();
 
