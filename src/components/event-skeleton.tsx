@@ -1,27 +1,24 @@
 import Link from "next/link";
-import CopyLinkButton from "./copy-link-button";
+import { useSession } from "next-auth/react";
+import CopyLinkButton from "@/components/copy-link-button";
+import { Party } from "@/db/schema/parties";
 
-interface EventSkeletonProps {
-	name: string;
-	shortId: string;
-	startDate: string;
-	startTime: string;
-	location: string;
-	hosts: string;
-	description: string | null;
-	isHost: boolean;
-}
+type EventSkeletonProps = Party;
 
 export const EventSkeleton = ({
+	createdBy,
+	description,
+	hosts,
+	location,
 	name,
 	shortId,
 	startDate,
 	startTime,
-	location,
-	hosts,
-	description,
-	isHost,
 }: EventSkeletonProps) => {
+	const session = useSession();
+
+	const isHost = session?.data?.user?.email === createdBy;
+
 	return (
 		<div className="w-full">
 			<div className="float-right flex w-36 flex-col">
