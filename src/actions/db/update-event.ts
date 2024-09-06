@@ -1,59 +1,57 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import _ from "lodash";
 import { JSONSchemaType } from "ajv";
 import { eq } from "drizzle-orm";
 import ajv from "@/actions/ajv";
 import db from "@/db/connection";
 import { Event, event, CustomizableEventValues } from "@/db/schema/event";
-import validateCtx from "@/actions/validate-ctx";
+import findEvent from "@/actions/db/find-event";
+import { auth } from "@/auth";
 
-export type UpdatedEvent = Pick<Event, "eventCode"> &
+export type UpdatedEvent = Pick<Event, "code"> &
 	Partial<CustomizableEventValues>;
 
+// TODO: Enforce that at least one updated property is included
 const schema: JSONSchemaType<UpdatedEvent> = {
 	type: "object",
 	properties: {
+		code: { type: "string" },
 		description: { type: "string", nullable: true },
-		eventCode: { type: "string" },
 		hosts: { type: "string", nullable: true },
 		location: { type: "string", nullable: true },
 		name: { type: "string", nullable: true },
 		startDate: { type: "string", format: "date", nullable: true },
 		startTime: { type: "string", format: "iso-time", nullable: true },
 	},
-	required: ["eventCode"],
+	required: ["code"],
 	additionalProperties: false,
 };
 
 const validate = ajv.compile(schema);
 
-export const isUpdatedEvent = (data: unknown): data is UpdatedEvent =>
-	validate(data);
-
-const updateEvent = async (updatedEvent: UpdatedEvent): Promise<Event[]> => {
-	if (Object.keys(updatedEvent).length <= 1) {
-		return [];
-	}
-
-	if (!isUpdatedEvent(updatedEvent)) {
+const updateEvent = async (updatedEvent: UpdatedEvent): Promise<any> => {
+	if (!validate(updatedEvent)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const { id } = await validateCtx(updatedEvent.eventCode);
+	const { code, ...values } = updatedEvent;
+	const eventToUpdate = await findEvent({ code });
 
-	const values = _.omit(updatedEvent, ["eventCode"]); // Never update eventCode
+	if (!eventToUpdate) {
+		throw new Error("Invalid code");
+	}
 
-	return await db.update(event).set(values).where(eq(event.id, id)).returning();
-};
+	const session = await auth();
 
-export const updateEventAndRevalidate = async (
-	updatedEvent: UpdatedEvent
-): Promise<Event[]> => {
-	revalidatePath(`/event/${updatedEvent.eventCode}`, "page");
+	if (!session?.user?.email) {
+		throw new Error("Not authenticated");
+	}
 
-	return await updateEvent(updatedEvent);
+	return await db
+		.update(event)
+		.set({ ...values })
+		.where(eq(event.id, eventToUpdate.id))
+		.returning({ code: event.code });
 };
 
 export default updateEvent;
