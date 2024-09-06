@@ -66,12 +66,13 @@ const CreateEventManager = () => {
 				data.hosts = authData.user.name;
 			}
 
-			const eventCode = await createEvent(data);
+			const result = await createEvent(data);
 
 			removeStorageValues();
 
-			push(`/start/plan-food?event=${eventCode}`);
+			push(`/start/plan-food?event=${result[0].eventCode}`);
 		} catch (err) {
+			// TODO: Handle error
 			console.error(err);
 		}
 	});
