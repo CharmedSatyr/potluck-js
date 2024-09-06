@@ -19,6 +19,7 @@
 		"test:staged": "jest --findRelatedTests --passWithNoTests"
 	},
 	"dependencies": {
+		"@auth/drizzle-adapter": "^1.4.2",
 		"@heroicons/react": "^2.1.5",
 		"@neondatabase/serverless": "^0.9.4",
 		"ajv": "^8.17.1",

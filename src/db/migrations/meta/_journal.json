@@ -22,6 +22,34 @@
       "when": 1725628729158,
       "tag": "0002_early_kid_colt",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1725665005431,
+      "tag": "0003_bumpy_charles_xavier",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1725665280136,
+      "tag": "0004_bouncy_maelstrom",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1725665807517,
+      "tag": "0005_daffy_wong",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1725665833275,
+      "tag": "0006_naive_stingray",
+      "breakpoints": true
     }
   ]
 }
