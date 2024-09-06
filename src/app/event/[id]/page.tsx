@@ -1,5 +1,5 @@
 import findRequest from "@/actions/db/find-request";
-import findEventByEventCode from "@/actions/db/find-event-by-event-code";
+import findEvent from "@/actions/db/find-event";
 import findCommitments from "@/actions/db/find-commitments";
 import RequestManager from "@/app/event/[id]/request-manager";
 import EventSkeleton from "@/components/event-skeleton";
@@ -11,14 +11,12 @@ interface Props {
 }
 
 const EventPage = async ({ params }: Props) => {
-	const eventData = (await findEventByEventCode(params.id)) ?? [];
+	const event = await findEvent(params.id);
 	const requests = (await findRequest({ eventCode: params.id })) ?? []; // TODO: Make consistent
 
-	if (!eventData.length) {
+	if (!event) {
 		return <div>Event not found</div>;
 	}
-
-	const event = eventData[0];
 
 	const commitments = await findCommitments(event.id);
 
