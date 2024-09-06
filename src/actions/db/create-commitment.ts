@@ -32,14 +32,15 @@ const createCommitment = async (data: NewCommitment): Promise<Commitment[]> => {
 		throw new Error("Not authenticated");
 	}
 
-	const values = {
-		createdBy: session.user.email,
-		description: data.description,
-		quantity: data.quantity,
-		requestId: data.requestId,
-	};
-
-	return await db.insert(commitment).values(values).returning();
+	return await db
+		.insert(commitment)
+		.values({
+			createdBy: session.user.email,
+			description: data.description,
+			quantity: data.quantity,
+			requestId: data.requestId,
+		})
+		.returning();
 };
 
 export default createCommitment;
