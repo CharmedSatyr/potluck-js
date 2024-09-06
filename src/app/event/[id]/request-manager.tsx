@@ -1,6 +1,6 @@
 import RequestDetails from "@/app/event/[id]/request-details";
 import { Commitment } from "@/db/schema/commitment";
-import { Request } from "@/db/schema/food-plan";
+import { Request } from "@/db/schema/request";
 
 interface Props {
 	commitments: Commitment[];
@@ -18,7 +18,7 @@ const RequestManager = ({ commitments, requests }: Props) => {
 						<div key={request.id} className="join-item border">
 							<RequestDetails
 								commitments={commitments.filter(
-									(c) => c.foodPlanId === request.id
+									(c) => c.requestId === request.id
 								)}
 								index={index}
 								request={request}

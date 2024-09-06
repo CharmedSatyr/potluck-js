@@ -6,17 +6,17 @@ import validateCtx from "@/actions/validate-ctx";
 import db from "@/db/connection";
 import {
 	CustomizableFoodPlanValues,
-	foodPlan,
+	request,
 	Request,
-} from "@/db/schema/food-plan";
+} from "@/db/schema/request";
 import { Party } from "@/db/schema/parties";
 
-interface NewFoodPlan {
+interface NewRequest {
 	slots: CustomizableFoodPlanValues[];
 	shortId: Party["shortId"];
 }
 
-const schema: JSONSchemaType<NewFoodPlan> = {
+const schema: JSONSchemaType<NewRequest> = {
 	type: "object",
 	properties: {
 		shortId: { type: "string" },
@@ -40,7 +40,7 @@ const schema: JSONSchemaType<NewFoodPlan> = {
 
 const validate = ajv.compile(schema);
 
-const createFoodPlan = async (data: NewFoodPlan): Promise<Request[]> => {
+const createRequest = async (data: NewRequest): Promise<Request[]> => {
 	if (!validate(data)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
@@ -51,7 +51,7 @@ const createFoodPlan = async (data: NewFoodPlan): Promise<Request[]> => {
 
 	const values = slots.map((slot) => ({ ...slot, partyId: id }));
 
-	return await db.insert(foodPlan).values(values).returning();
+	return await db.insert(request).values(values).returning();
 };
 
-export default createFoodPlan;
+export default createRequest;

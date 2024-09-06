@@ -1,4 +1,4 @@
-import findFoodPlan from "@/actions/db/find-food-plan";
+import findRequest from "@/actions/db/find-request";
 import findPartyByShortId from "@/actions/db/find-party-by-shortid";
 import findCommitments from "@/actions/db/find-commitments";
 import RequestManager from "@/app/event/[id]/request-manager";
@@ -12,7 +12,7 @@ interface Props {
 
 const PartyPage = async ({ params }: Props) => {
 	const partyData = (await findPartyByShortId(params.id)) ?? [];
-	const requests = (await findFoodPlan({ shortId: params.id })) ?? []; // TODO: Make consistent
+	const requests = (await findRequest({ shortId: params.id })) ?? []; // TODO: Make consistent
 
 	if (!partyData.length) {
 		return <div>Event not found</div>;

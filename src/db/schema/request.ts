@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { parties } from "@/db/schema/parties";
 
-export const foodPlan = pgTable("food_plan", {
+export const request = pgTable("request", {
 	course: varchar("course", { length: 256 }).notNull(),
 	count: integer("count").notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
@@ -22,6 +22,6 @@ export const foodPlan = pgTable("food_plan", {
 		.defaultNow(),
 });
 
-export type Request = typeof foodPlan.$inferSelect;
+export type Request = typeof request.$inferSelect;
 
 export type CustomizableFoodPlanValues = Pick<Request, "course" | "count">;

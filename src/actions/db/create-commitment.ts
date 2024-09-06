@@ -6,19 +6,16 @@ import { auth } from "@/auth";
 import db from "@/db/connection";
 import { Commitment, commitment } from "@/db/schema/commitment";
 
-type NewCommitment = Pick<
-	Commitment,
-	"description" | "quantity" | "foodPlanId"
->;
+type NewCommitment = Pick<Commitment, "description" | "quantity" | "requestId">;
 
 const schema: JSONSchemaType<NewCommitment> = {
 	type: "object",
 	properties: {
 		description: { type: "string" },
-		foodPlanId: { type: "string" },
 		quantity: { type: "number" },
+		requestId: { type: "string" },
 	},
-	required: ["description", "foodPlanId", "quantity"],
+	required: ["description", "quantity", "requestId"],
 	additionalProperties: false,
 };
 
@@ -40,7 +37,7 @@ const createCommitment = async (data: NewCommitment): Promise<Commitment[]> => {
 		createdBy: session.user.email,
 		description: data.description,
 		quantity: data.quantity,
-		foodPlanId: data.foodPlanId,
+		requestId: data.requestId,
 	};
 
 	return await db.insert(commitment).values(values).returning();

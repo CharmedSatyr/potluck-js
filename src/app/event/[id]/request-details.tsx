@@ -8,7 +8,7 @@ import createCommitment from "@/actions/db/create-commitment";
 import { revalidatePage } from "@/actions/revalidate-path";
 import QuantityInput from "@/components/quantity-input";
 import { Commitment } from "@/db/schema/commitment";
-import { Request } from "@/db/schema/food-plan";
+import { Request } from "@/db/schema/request";
 
 interface Props {
 	commitments: Commitment[];
@@ -43,8 +43,8 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 	const onSubmit = async ({ description, quantity }: FormInput) => {
 		const result = await createCommitment({
 			description,
-			foodPlanId: request.id,
 			quantity,
+			requestId: request.id,
 		});
 
 		if (result.length === 0) {

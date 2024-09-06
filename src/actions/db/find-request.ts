@@ -4,7 +4,7 @@ import { JSONSchemaType } from "ajv";
 import ajv from "@/actions/ajv";
 import validateCtx from "@/actions/validate-ctx";
 import db from "@/db/connection";
-import { foodPlan, Request } from "@/db/schema/food-plan";
+import { request, Request } from "@/db/schema/request";
 import { Party } from "@/db/schema/parties";
 import { eq } from "drizzle-orm";
 
@@ -30,7 +30,7 @@ const findFoodPlan = async (data: RequestData): Promise<Request[]> => {
 
 	const { id } = await validateCtx(data.shortId);
 
-	return await db.select().from(foodPlan).where(eq(foodPlan.partyId, id));
+	return await db.select().from(request).where(eq(request.partyId, id));
 };
 
 export default findFoodPlan;

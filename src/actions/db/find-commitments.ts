@@ -1,7 +1,7 @@
 "use server";
 
 import db from "@/db/connection";
-import { foodPlan } from "@/db/schema/food-plan";
+import { request } from "@/db/schema/request";
 import { eq } from "drizzle-orm";
 import { commitment, Commitment } from "@/db/schema/commitment";
 import { Party } from "@/db/schema/parties";
@@ -12,9 +12,9 @@ const findCommitments = async (partyId: Party["id"]): Promise<Commitment[]> => {
 		createdAt,
 		createdBy,
 		description,
-		foodPlanId,
 		id,
 		quantity,
+		requestId,
 		updatedAt,
 	} = commitment;
 
@@ -24,14 +24,14 @@ const findCommitments = async (partyId: Party["id"]): Promise<Commitment[]> => {
 			createdAt,
 			createdBy,
 			description,
-			foodPlanId,
 			id,
 			quantity,
+			requestId,
 			updatedAt,
 		})
-		.from(foodPlan)
-		.where(eq(foodPlan.partyId, partyId))
-		.innerJoin(commitment, eq(foodPlan.id, commitment.foodPlanId));
+		.from(request)
+		.where(eq(request.partyId, partyId))
+		.innerJoin(commitment, eq(request.id, commitment.requestId));
 };
 
 export default findCommitments;

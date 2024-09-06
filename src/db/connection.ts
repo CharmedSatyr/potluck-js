@@ -3,14 +3,14 @@ import { neon } from "@neondatabase/serverless";
 import { parties } from "@/db/schema/parties";
 import { config } from "@/db/config";
 import { commitment } from "./schema/commitment";
-import { foodPlan } from "./schema/food-plan";
+import { request } from "./schema/request";
 
 const sql = neon(config.connectionString);
 
 const schema = {
-	parties,
 	commitment,
-	foodPlan,
+	parties,
+	request,
 };
 
 const db = drizzle(sql, { schema });

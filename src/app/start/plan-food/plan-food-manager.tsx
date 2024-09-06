@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
-import createFoodPlan from "@/actions/db/create-food-plan";
-import { CustomizableFoodPlanValues } from "@/db/schema/food-plan";
+import createRequest from "@/actions/db/create-request";
+import { CustomizableRequestValues } from "@/db/schema/request";
 import CourseInput from "@/app/start/plan-food/course-input";
 
 export const MAX_DISH_SLOTS = 20;
 
 export interface FormInput {
-	slots: CustomizableFoodPlanValues[];
+	slots: CustomizableRequestValues[];
 }
 
 const PlanFoodManager = () => {
@@ -60,7 +60,7 @@ const PlanFoodManager = () => {
 
 	const onSubmit = async (data: FormInput) => {
 		try {
-			await createFoodPlan({ ...data, shortId });
+			await createRequest({ ...data, shortId });
 
 			goToNextPage();
 		} catch (err) {
