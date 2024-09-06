@@ -22,7 +22,7 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 	const pathName = usePathname();
 	const [expanded, setExpanded] = useState<boolean>(false);
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
-	const { handleSubmit, register, setValue } = useForm<FormInput>();
+	const { handleSubmit, register, reset, setValue } = useForm<FormInput>();
 
 	const totalCommitments: number = commitments.reduce(
 		(acc, curr) => acc + curr.quantity,
@@ -32,7 +32,7 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 	const placeholderImages = commitments.map((commitment) => (
 		<div
 			key={commitment.id}
-			className="skeleton h-12 w-12 rounded-full border"
+			className="skeleton mx-2 h-10 w-10 rounded-full border"
 		/>
 	));
 
@@ -51,6 +51,9 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 			return;
 		}
 
+		reset();
+		setCommitQuantity(0);
+
 		await revalidatePage(pathName);
 	};
 
@@ -63,7 +66,7 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 			/>
 
 			<div className="collapse-title flex w-full items-center justify-between">
-				<div className="w-8/12 text-2xl">{request.course}</div>
+				<div className="w-6/12 text-2xl">{request.course}</div>
 				{placeholderImages}
 				<div className="flex items-center justify-between">
 					{totalCommitments} of {request.count} filled
