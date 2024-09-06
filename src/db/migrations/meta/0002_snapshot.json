@@ -1,6 +1,6 @@
 {
-  "id": "c6d3e411-0306-43fa-b3a7-5dc627a22d6c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "b3a146a0-29e5-414d-adb7-dfc85eb1ed6e",
+  "prevId": "5587fbb1-026a-48d2-b551-5c66a62c0c46",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -8,12 +8,6 @@
       "name": "commitment",
       "schema": "",
       "columns": {
-        "avatar": {
-          "name": "avatar",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -102,8 +96,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "event_code": {
-          "name": "event_code",
+        "code": {
+          "name": "code",
           "type": "varchar(5)",
           "primaryKey": false,
           "notNull": true
@@ -154,11 +148,11 @@
         }
       },
       "indexes": {
-        "event_code_idx": {
-          "name": "event_code_idx",
+        "code_idx": {
+          "name": "code_idx",
           "columns": [
             {
-              "expression": "event_code",
+              "expression": "code",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -173,11 +167,11 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "event_event_code_unique": {
-          "name": "event_event_code_unique",
+        "event_code_unique": {
+          "name": "event_code_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "event_code"
+            "code"
           ]
         }
       }

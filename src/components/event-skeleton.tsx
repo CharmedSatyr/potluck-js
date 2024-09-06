@@ -1,42 +1,41 @@
-import Link from "next/link";
-import CopyLinkButton from "./copy-link-button";
+"use client";
 
-interface EventSkeletonProps {
-	name: string;
-	shortId: string;
-	startDate: string;
-	startTime: string;
-	location: string;
-	hosts: string;
-	description: string | null;
-	isHost: boolean;
-}
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import CopyLinkButton from "@/components/copy-link-button";
+import { Event } from "@/db/schema/event";
+
+type EventSkeletonProps = Event;
 
 export const EventSkeleton = ({
+	createdBy,
+	description,
+	hosts,
+	location,
 	name,
-	shortId,
+	code,
 	startDate,
 	startTime,
-	location,
-	hosts,
-	description,
-	isHost,
 }: EventSkeletonProps) => {
+	const session = useSession();
+
+	const isHost = session?.data?.user?.email === createdBy;
+
 	return (
 		<div className="w-full">
 			<div className="float-right flex w-36 flex-col">
 				{isHost && (
-					<Link className="btn btn-accent mb-2" href={`/event/${shortId}/edit`}>
+					<Link className="btn btn-accent mb-2" href={`/event/${code}/edit`}>
 						Edit
 					</Link>
 				)}
 
-				{shortId && <CopyLinkButton />}
+				{code && <CopyLinkButton />}
 			</div>
 
-			{shortId && (
+			{code && (
 				<h1>
-					Event Code: <span className="text-secondary">{shortId}</span>
+					Event Code: <span className="text-secondary">{code}</span>
 				</h1>
 			)}
 

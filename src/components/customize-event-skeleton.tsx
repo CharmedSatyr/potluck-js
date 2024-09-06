@@ -3,25 +3,25 @@
 import _ from "lodash";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { CustomizablePartyValues } from "@/db/schema/parties";
+import { CustomizableEventValues } from "@/db/schema/event";
 import formatIsoTime from "@/utilities/format-iso-time";
 
 interface CustomizeEventSkeletonProps {
-	errors: FieldErrors<Partial<CustomizablePartyValues>>;
+	code?: string;
+	errors: FieldErrors<Partial<CustomizableEventValues>>;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	register: UseFormRegister<CustomizablePartyValues>;
-	shortId?: string;
+	register: UseFormRegister<CustomizableEventValues>;
 }
 
-const TitleManagement = ({ shortId }: { shortId?: string }) => {
-	if (!shortId) {
+const TitleManagement = ({ code }: { code?: string }) => {
+	if (!code) {
 		return <h1>Create an Event</h1>;
 	}
 
 	return (
 		<div className="flex justify-between">
 			<h1>
-				Event Code: <span className="text-secondary">{shortId}</span>
+				Event Code: <span className="text-secondary">{code}</span>
 			</h1>
 			<input className="btn btn-primary w-36" type="submit" value="Save" />
 		</div>
@@ -29,10 +29,10 @@ const TitleManagement = ({ shortId }: { shortId?: string }) => {
 };
 
 export const CustomizeEventSkeleton = ({
+	code,
 	errors,
 	onSubmit,
 	register,
-	shortId,
 }: CustomizeEventSkeletonProps) => {
 	const { data: authData, status } = useSession();
 	const loggedIn = status === "authenticated";
@@ -41,7 +41,7 @@ export const CustomizeEventSkeleton = ({
 
 	return (
 		<form className="form-control w-full" onSubmit={onSubmit}>
-			<TitleManagement shortId={shortId} />
+			<TitleManagement code={code} />
 
 			<input
 				className={`input-text input input-lg -mt-1 mb-1 w-full px-0 text-6xl font-extrabold text-primary ${errors.name && "input-secondary border"}`}
@@ -122,7 +122,7 @@ export const CustomizeEventSkeleton = ({
 				})}
 			/>
 
-			{!shortId && (
+			{!code && (
 				<input
 					className="btn btn-primary my-2 w-full"
 					type="submit"

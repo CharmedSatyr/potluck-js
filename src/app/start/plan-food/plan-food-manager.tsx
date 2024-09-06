@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
-import createFoodPlan from "@/actions/db/create-food-plan";
-import { CustomizableFoodPlanValues } from "@/db/schema/food-plan";
+import createRequest from "@/actions/db/create-request";
+import { CustomizableRequestValues } from "@/db/schema/request";
 import CourseInput from "@/app/start/plan-food/course-input";
 
-export const MAX_DISH_SLOTS = 20;
+export const MAX_REQUESTS = 20;
 
 export interface FormInput {
-	slots: CustomizableFoodPlanValues[];
+	requests: CustomizableRequestValues[];
 }
 
 const PlanFoodManager = () => {
@@ -34,7 +34,7 @@ const PlanFoodManager = () => {
 	} = useForm<FormInput>();
 	const { fields, append, remove } = useFieldArray({
 		control,
-		name: "slots",
+		name: "requests",
 	});
 
 	useEffect(() => {
@@ -47,20 +47,20 @@ const PlanFoodManager = () => {
 		return () => reset();
 	}, [append, mounted, fields.length, reset]);
 
-	const shortId = searchParams.get("event");
+	const code = searchParams.get("event");
 
-	if (!shortId) {
+	if (!code) {
 		replace(`/start`);
 		return null;
 	}
 
 	const goToNextPage = () => {
-		push(`/event/${shortId}`);
+		push(`/event/${code}`);
 	};
 
 	const onSubmit = async (data: FormInput) => {
 		try {
-			await createFoodPlan({ ...data, shortId });
+			await createRequest({ ...data, code });
 
 			goToNextPage();
 		} catch (err) {
@@ -75,7 +75,7 @@ const PlanFoodManager = () => {
 		>
 			<h1>Plan the Food</h1>
 
-			<h2>Create Your Slots</h2>
+			<h2>Create Your Requests</h2>
 
 			{fields.map((field, index) => (
 				<div key={field.id}>
@@ -92,9 +92,9 @@ const PlanFoodManager = () => {
 
 			<div className="flex justify-between">
 				<button
-					disabled={fields.length >= MAX_DISH_SLOTS}
+					disabled={fields.length >= MAX_REQUESTS}
 					onClick={() => {
-						if (fields.length >= MAX_DISH_SLOTS) {
+						if (fields.length >= MAX_REQUESTS) {
 							return;
 						}
 
@@ -102,7 +102,7 @@ const PlanFoodManager = () => {
 					}}
 					className="btn btn-secondary w-1/4"
 				>
-					{fields.length < MAX_DISH_SLOTS ? "Add Slot" : "Limit Reached"}
+					{fields.length < MAX_REQUESTS ? "Add Request" : "Limit Reached"}
 				</button>
 
 				<button onClick={goToNextPage} className="btn btn-accent w-1/4">

@@ -1,14 +1,16 @@
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-import { dishes } from "@/db/schema/dishes";
-import { parties } from "@/db/schema/parties";
+import { event } from "@/db/schema/event";
 import { config } from "@/db/config";
+import { commitment } from "./schema/commitment";
+import { request } from "./schema/request";
 
 const sql = neon(config.connectionString);
 
 const schema = {
-	dishes,
-	parties,
+	commitment,
+	event,
+	request,
 };
 
 const db = drizzle(sql, { schema });

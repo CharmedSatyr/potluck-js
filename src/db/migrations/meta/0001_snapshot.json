@@ -1,6 +1,6 @@
 {
-  "id": "c6d3e411-0306-43fa-b3a7-5dc627a22d6c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5587fbb1-026a-48d2-b551-5c66a62c0c46",
+  "prevId": "c6d3e411-0306-43fa-b3a7-5dc627a22d6c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -8,12 +8,6 @@
       "name": "commitment",
       "schema": "",
       "columns": {
-        "avatar": {
-          "name": "avatar",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",

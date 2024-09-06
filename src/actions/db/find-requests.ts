@@ -3,11 +3,10 @@
 import { JSONSchemaType } from "ajv";
 import { eq } from "drizzle-orm";
 import ajv from "@/actions/ajv";
-import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
-import { commitment, Commitment } from "@/db/schema/commitment";
+import findEvent from "@/actions/db/find-event";
+import { request, Request } from "@/db/schema/request";
 import { Event } from "@/db/schema/event";
-import { request } from "@/db/schema/request";
 
 interface EventCode {
 	eventCode: Event["code"];
@@ -24,9 +23,7 @@ const schema: JSONSchemaType<EventCode> = {
 
 const validate = ajv.compile(schema);
 
-const findCommitments = async ({
-	eventCode,
-}: EventCode): Promise<Commitment[]> => {
+const findRequests = async ({ eventCode }: EventCode): Promise<Request[]> => {
 	if (!validate({ eventCode })) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
@@ -37,29 +34,7 @@ const findCommitments = async ({
 		throw new Error("Invalid event code");
 	}
 
-	const {
-		createdAt,
-		createdBy,
-		description,
-		id,
-		quantity,
-		requestId,
-		updatedAt,
-	} = commitment;
-
-	return await db
-		.select({
-			createdAt,
-			createdBy,
-			description,
-			id,
-			quantity,
-			requestId,
-			updatedAt,
-		})
-		.from(request)
-		.where(eq(request.eventId, event.id))
-		.innerJoin(commitment, eq(request.id, commitment.requestId));
+	return await db.select().from(request).where(eq(request.eventId, event.id));
 };
 
-export default findCommitments;
+export default findRequests;

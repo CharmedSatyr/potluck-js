@@ -5,7 +5,8 @@
 ## High Priority
 
 - !!!Tests!!!
-- Only party creator should be able to modify the food plan
+- Location always fails the first time on creating event.
+- Only event creator should be able to modify the food plan
 - Fix Logout - need server call
 - View food plan
 - Modify food plan

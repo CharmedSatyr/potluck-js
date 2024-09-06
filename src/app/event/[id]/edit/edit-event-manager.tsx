@@ -4,26 +4,23 @@ import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import {
-	isUpdatedParty,
-	UpdatedParty,
-	updatePartyAndRevalidate,
-} from "@/actions/db/update-party";
-import { CustomizablePartyValues, Party } from "@/db/schema/parties";
+import updateEvent, { UpdatedEvent } from "@/actions/db/update-event";
+import { CustomizableEventValues, Event } from "@/db/schema/event";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
+import { revalidatePage } from "@/actions/revalidate-path";
 
-type EditEventManagerProps = Party;
+type Props = Event;
 
 const EditEventManager = ({
+	code,
 	createdBy,
 	description,
 	hosts,
 	location,
 	name,
-	shortId,
 	startDate,
 	startTime,
-}: EditEventManagerProps) => {
+}: Props) => {
 	const session = useSession();
 	const { push, replace } = useRouter();
 	const {
@@ -31,7 +28,7 @@ const EditEventManager = ({
 		getFieldState,
 		handleSubmit,
 		register,
-	} = useForm<CustomizablePartyValues>({
+	} = useForm<CustomizableEventValues>({
 		defaultValues: {
 			name,
 			startDate,
@@ -42,47 +39,45 @@ const EditEventManager = ({
 		},
 	});
 
-	const onSubmit = handleSubmit(async (data: CustomizablePartyValues) => {
+	const onSubmit = handleSubmit(async (data: CustomizableEventValues) => {
 		try {
-			const modifiedValues = _.pickBy<UpdatedParty>(
+			const modifiedValues = _.pickBy<UpdatedEvent>(
 				data,
 				(_value, key) =>
-					getFieldState(key as keyof CustomizablePartyValues).isDirty
+					getFieldState(key as keyof CustomizableEventValues).isDirty
 			);
 
 			if (Object.keys(modifiedValues).length === 0) {
-				push(`/event/${shortId}`);
+				push(`/event/${code}`);
 				return;
 			}
 
-			const updatedParty = { ...modifiedValues, shortId };
+			const updatedEvent = { ...modifiedValues, code };
 
-			if (!isUpdatedParty(updatedParty)) {
-				throw new Error("Update event form values invalid");
-			}
-
-			const result = await updatePartyAndRevalidate(updatedParty);
+			const result = await updateEvent(updatedEvent);
 
 			if (!result.length) {
 				throw new Error("Failed to update event");
 			}
 
-			push(`/event/${shortId}`);
+			await revalidatePage(`/event/${code}`);
+
+			push(`/event/${code}`);
 		} catch (err) {
 			console.error(err);
 		}
 	});
 
 	if (session?.data?.user?.email !== createdBy) {
-		replace(`/event/${shortId}`);
+		replace(`/event/${code}`);
 	}
 
 	return (
 		<CustomizeEventSkeleton
+			code={code}
 			errors={errors}
 			onSubmit={onSubmit}
 			register={register}
-			shortId={shortId}
 		/>
 	);
 };
