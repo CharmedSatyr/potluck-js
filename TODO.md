@@ -6,10 +6,10 @@
 
 - !!!Tests!!!
 - Location always fails the first time on creating event.
-- Only event creator should be able to modify the food plan
+- Add user table and pipe in avatars and usernames to requests table.
+- Only event creator should be able to modify requests
 - Fix Logout - need server call
-- View food plan
-- Modify food plan
+- Host should be able to modify requests
 - Don't send too much data to the client
 - Loading indicators
 - Everything responsive!
@@ -18,10 +18,7 @@
 
 - Move auth into middleware.
 - Login page/modal for when you try to do something that needs auth.
-- Dishes:
-  `In HTML, <dialog> cannot be a child of <tbody>. This will cause a hydration error.`
 - Should probably have a Date library
-- Add user table (if necessary) - UUID instead of email.
 - Add husky, import sorter, and other devex bonuses.
 - On Inga's computer, Plus and Minus signs on Signups Needed shows up as black.
 - Back button on 2nd page of wizard
