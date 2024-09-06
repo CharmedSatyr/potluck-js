@@ -8,6 +8,13 @@
       "when": 1725588853608,
       "tag": "0000_little_brood",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1725589794038,
+      "tag": "0001_quiet_sumo",
+      "breakpoints": true
     }
   ]
 }

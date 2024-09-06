@@ -33,7 +33,6 @@ const createCommitment = async (data: NewCommitment): Promise<Commitment[]> => {
 	}
 
 	const values = {
-		avatar: session.user.image,
 		createdBy: session.user.email,
 		description: data.description,
 		quantity: data.quantity,

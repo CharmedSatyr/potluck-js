@@ -8,7 +8,6 @@ import { Event } from "@/db/schema/event";
 
 const findCommitments = async (eventId: Event["id"]): Promise<Commitment[]> => {
 	const {
-		avatar,
 		createdAt,
 		createdBy,
 		description,
@@ -20,7 +19,6 @@ const findCommitments = async (eventId: Event["id"]): Promise<Commitment[]> => {
 
 	return await db
 		.select({
-			avatar,
 			createdAt,
 			createdBy,
 			description,
