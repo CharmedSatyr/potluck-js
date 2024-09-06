@@ -13,14 +13,14 @@ import { Event } from "@/db/schema/event";
 
 interface NewRequest {
 	eventCode: Event["eventCode"];
-	slots: CustomizableRequestValues[];
+	requests: CustomizableRequestValues[];
 }
 
 const schema: JSONSchemaType<NewRequest> = {
 	type: "object",
 	properties: {
 		eventCode: { type: "string" },
-		slots: {
+		requests: {
 			type: "array",
 			items: {
 				type: "object",
@@ -34,7 +34,7 @@ const schema: JSONSchemaType<NewRequest> = {
 			minItems: 1,
 		},
 	},
-	required: ["eventCode", "slots"],
+	required: ["eventCode", "requests"],
 	additionalProperties: false,
 };
 
@@ -45,11 +45,11 @@ const createRequest = async (data: NewRequest): Promise<Request[]> => {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const { eventCode, slots } = data;
+	const { eventCode, requests } = data;
 
 	const { id } = await validateCtx(eventCode);
 
-	const values = slots.map((slot) => ({ ...slot, eventId: id }));
+	const values = requests.map((request) => ({ ...request, eventId: id }));
 
 	return await db.insert(request).values(values).returning();
 };

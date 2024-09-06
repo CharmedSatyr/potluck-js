@@ -6,7 +6,7 @@ import {
 } from "react-hook-form";
 import {
 	FormInput,
-	MAX_DISH_SLOTS,
+	MAX_REQUESTS,
 } from "@/app/start/plan-food/plan-food-manager";
 import QuantityInput from "@/components/quantity-input";
 
@@ -28,10 +28,10 @@ const CourseInput = ({
 	const [count, setCount] = useState<number>(1);
 
 	useEffect(() => {
-		setValue(`slots.${index}.count` as const, count);
+		setValue(`requests.${index}.count` as const, count);
 	}, [count, setValue, index]);
 
-	const removeSlot = () => {
+	const removeRequest = () => {
 		remove(index);
 	};
 
@@ -39,7 +39,7 @@ const CourseInput = ({
 		<div className="flex w-full items-center justify-between">
 			{multipleFields && (
 				<button
-					onClick={removeSlot}
+					onClick={removeRequest}
 					className="btn btn-circle btn-ghost btn-sm absolute -ml-10"
 					type="button"
 				>
@@ -56,9 +56,9 @@ const CourseInput = ({
 					className="input-text input input-bordered"
 					id={`dish-name-${index}`}
 					type="text"
-					{...register(`slots.${index}.course` as const, {
+					{...register(`requests.${index}.course` as const, {
 						maxLength: 256,
-						required: "Slot name required",
+						required: "Request name required",
 					})}
 				/>
 			</div>
@@ -66,7 +66,7 @@ const CourseInput = ({
 			<QuantityInput
 				index={index}
 				labelText="Signups Needed"
-				max={MAX_DISH_SLOTS}
+				max={MAX_REQUESTS}
 				min={1}
 				quantity={count}
 				setQuantity={setCount}
