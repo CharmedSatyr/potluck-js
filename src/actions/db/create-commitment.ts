@@ -30,17 +30,17 @@ const createCommitment = async (
 
 	const session = await auth();
 
-	if (!session?.user?.email || !session.user.image) {
+	if (!session?.user?.id) {
 		throw new Error("Not authenticated");
 	}
 
 	return await db
 		.insert(commitment)
 		.values({
-			createdBy: session.user.email,
 			description: data.description,
 			quantity: data.quantity,
 			requestId: data.requestId,
+			userId: session.user.id,
 		})
 		.returning({ id: commitment.id });
 };

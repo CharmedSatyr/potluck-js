@@ -4,14 +4,15 @@ import {
 	timestamp,
 	pgTable,
 	integer,
+	text,
 } from "drizzle-orm/pg-core";
 import { request } from "@/db/schema/request";
+import { user } from "./auth/user";
 
 export const commitment = pgTable("commitment", {
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
-	createdBy: varchar("created_by", { length: 256 }).notNull(),
 	description: varchar("description", { length: 256 }).notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	quantity: integer("quantity").notNull(),
@@ -21,6 +22,9 @@ export const commitment = pgTable("commitment", {
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
+	userId: text("user_id")
+		.references(() => user.id, { onDelete: "cascade" })
+		.notNull(),
 });
 
 export type Commitment = typeof commitment.$inferSelect;

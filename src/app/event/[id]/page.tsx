@@ -11,7 +11,6 @@ interface Props {
 }
 
 const EventPage = async ({ params }: Props) => {
-	// TODO: These could be combined.
 	const [event, requests, commitments] = await Promise.all([
 		findEvent({ code: params.id }),
 		findRequests({ eventCode: params.id }),
