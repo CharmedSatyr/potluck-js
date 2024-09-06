@@ -48,7 +48,7 @@ const GotoEventForm = ({ findEventAction }: Props) => {
 			<input
 				type="submit"
 				className="btn btn-secondary mb-2 text-2xl"
-				value="Find a Event"
+				value="Find an Event"
 			/>
 			<input
 				{...register("eventId", {
