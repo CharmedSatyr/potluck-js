@@ -17,10 +17,10 @@ type EditEventManagerProps = Event;
 const EditEventManager = ({
 	createdBy,
 	description,
+	eventCode,
 	hosts,
 	location,
 	name,
-	shortId,
 	startDate,
 	startTime,
 }: EditEventManagerProps) => {
@@ -51,11 +51,11 @@ const EditEventManager = ({
 			);
 
 			if (Object.keys(modifiedValues).length === 0) {
-				push(`/event/${shortId}`);
+				push(`/event/${eventCode}`);
 				return;
 			}
 
-			const updatedEvent = { ...modifiedValues, shortId };
+			const updatedEvent = { ...modifiedValues, eventCode };
 
 			if (!isUpdatedEvent(updatedEvent)) {
 				throw new Error("Update event form values invalid");
@@ -67,14 +67,14 @@ const EditEventManager = ({
 				throw new Error("Failed to update event");
 			}
 
-			push(`/event/${shortId}`);
+			push(`/event/${eventCode}`);
 		} catch (err) {
 			console.error(err);
 		}
 	});
 
 	if (session?.data?.user?.email !== createdBy) {
-		replace(`/event/${shortId}`);
+		replace(`/event/${eventCode}`);
 	}
 
 	return (
@@ -82,7 +82,7 @@ const EditEventManager = ({
 			errors={errors}
 			onSubmit={onSubmit}
 			register={register}
-			shortId={shortId}
+			eventCode={eventCode}
 		/>
 	);
 };

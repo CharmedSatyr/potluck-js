@@ -13,7 +13,7 @@ export const EventSkeleton = ({
 	hosts,
 	location,
 	name,
-	shortId,
+	eventCode,
 	startDate,
 	startTime,
 }: EventSkeletonProps) => {
@@ -25,17 +25,20 @@ export const EventSkeleton = ({
 		<div className="w-full">
 			<div className="float-right flex w-36 flex-col">
 				{isHost && (
-					<Link className="btn btn-accent mb-2" href={`/event/${shortId}/edit`}>
+					<Link
+						className="btn btn-accent mb-2"
+						href={`/event/${eventCode}/edit`}
+					>
 						Edit
 					</Link>
 				)}
 
-				{shortId && <CopyLinkButton />}
+				{eventCode && <CopyLinkButton />}
 			</div>
 
-			{shortId && (
+			{eventCode && (
 				<h1>
-					Event Code: <span className="text-secondary">{shortId}</span>
+					Event Code: <span className="text-secondary">{eventCode}</span>
 				</h1>
 			)}
 

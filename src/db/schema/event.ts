@@ -9,12 +9,12 @@ import {
 	varchar,
 } from "drizzle-orm/pg-core";
 
-export const SHORT_ID_LENGTH = 5;
+export const EVENT_CODE_LENGTH = 5;
 
-const createShortId = (): string =>
+const createEventCode = (): string =>
 	Math.random()
 		.toString(36)
-		.substring(2, 2 + SHORT_ID_LENGTH)
+		.substring(2, 2 + EVENT_CODE_LENGTH)
 		.toUpperCase();
 
 export const event = pgTable(
@@ -29,22 +29,23 @@ export const event = pgTable(
 		createdBy: varchar("created_by", { length: 256 }).notNull(),
 		// TODO: Add custom field (link or text)
 		description: text("description").notNull(),
+		eventCode: varchar("event_code", { length: EVENT_CODE_LENGTH })
+			.notNull()
+			.unique()
+			.$default(createEventCode),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 256 }).notNull(),
 		name: varchar("name", { length: 256 }).notNull(),
 		// TODO: RSVP options (yes, maybe, no)
-		shortId: varchar("short_id", { length: SHORT_ID_LENGTH })
-			.notNull()
-			.unique()
-			.$default(createShortId),
+
 		startDate: date("startDate").notNull(),
 		startTime: time("startTime", { withTimezone: false }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
 	},
-	(table) => ({ shortIdIdx: index("short_id_idx").on(table.shortId) })
+	(table) => ({ eventCodeIdx: index("event_code_idx").on(table.eventCode) })
 );
 
 export type Event = typeof event.$inferSelect;

@@ -9,15 +9,15 @@ import { Event } from "@/db/schema/event";
 import { eq } from "drizzle-orm";
 
 interface RequestData {
-	shortId: Event["shortId"];
+	eventCode: Event["eventCode"];
 }
 
 const schema: JSONSchemaType<RequestData> = {
 	type: "object",
 	properties: {
-		shortId: { type: "string" },
+		eventCode: { type: "string" },
 	},
-	required: ["shortId"],
+	required: ["eventCode"],
 	additionalProperties: false,
 };
 
@@ -28,7 +28,7 @@ const findFoodPlan = async (data: RequestData): Promise<Request[]> => {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const { id } = await validateCtx(data.shortId);
+	const { id } = await validateCtx(data.eventCode);
 
 	return await db.select().from(request).where(eq(request.eventId, id));
 };

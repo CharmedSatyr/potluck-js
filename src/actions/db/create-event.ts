@@ -51,9 +51,9 @@ const createEvent = async (info: CustomizableEventValues): Promise<string> => {
 	const result = await db
 		.insert(event)
 		.values(values)
-		.returning({ shortId: event.shortId });
+		.returning({ eventCode: event.eventCode });
 
-	return result[0].shortId;
+	return result[0].eventCode;
 };
 
 export default createEvent;

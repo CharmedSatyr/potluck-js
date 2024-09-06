@@ -1,14 +1,14 @@
 import Link from "next/link";
-import findEventByShortId from "@/actions/db/find-event-by-shortid";
+import findEventByEventCode from "@/actions/db/find-event-by-event-code";
 import { Event } from "@/db/schema/event";
 import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
 import CreateEventButton from "@/components/create-event-button";
 
-const findEvent = async (shortId: Event["shortId"]): Promise<boolean> => {
+const findEvent = async (eventCode: Event["eventCode"]): Promise<boolean> => {
 	"use server";
 
-	const event = await findEventByShortId(shortId);
+	const event = await findEventByEventCode(eventCode);
 
 	return event.length > 0;
 };

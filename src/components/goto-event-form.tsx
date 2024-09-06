@@ -3,10 +3,10 @@
 import { startTransition } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { Event, SHORT_ID_LENGTH } from "@/db/schema/event";
+import { Event, EVENT_CODE_LENGTH } from "@/db/schema/event";
 
 interface Props {
-	findEventAction: (eventId: Event["shortId"]) => Promise<boolean>;
+	findEventAction: (eventId: Event["eventCode"]) => Promise<boolean>;
 }
 
 interface FormInput {
@@ -52,14 +52,14 @@ const GotoEventForm = ({ findEventAction }: Props) => {
 			/>
 			<input
 				{...register("eventId", {
-					required: `Enter a ${SHORT_ID_LENGTH}-character event code`,
+					required: `Enter a ${EVENT_CODE_LENGTH}-character event code`,
 					minLength: {
-						value: SHORT_ID_LENGTH,
-						message: `Code must be ${SHORT_ID_LENGTH} alphanumeric characters`,
+						value: EVENT_CODE_LENGTH,
+						message: `Code must be ${EVENT_CODE_LENGTH} alphanumeric characters`,
 					},
 					maxLength: {
-						value: SHORT_ID_LENGTH,
-						message: `Code must be ${SHORT_ID_LENGTH} alphanumeric characters`,
+						value: EVENT_CODE_LENGTH,
+						message: `Code must be ${EVENT_CODE_LENGTH} alphanumeric characters`,
 					},
 					setValueAs: (id: string) => id.toUpperCase(),
 				})}

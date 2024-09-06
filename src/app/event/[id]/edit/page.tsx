@@ -1,4 +1,4 @@
-import findEventByShortId from "@/actions/db/find-event-by-shortid";
+import findEventByEventCode from "@/actions/db/find-event-by-event-code";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import EditEventManager from "@/app/event/[id]/edit/edit-event-manager";
@@ -12,7 +12,7 @@ interface Props {
 const EditEventPage = async ({ params }: Props) => {
 	const session = await auth();
 
-	const eventData = await findEventByShortId(params.id);
+	const eventData = await findEventByEventCode(params.id);
 
 	if (!eventData.length) {
 		return <div>Event not found</div>;

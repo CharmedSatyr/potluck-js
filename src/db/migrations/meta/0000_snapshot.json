@@ -1,5 +1,5 @@
 {
-  "id": "44a7548b-6b83-44ab-a8ed-b1f88cf2a8c9",
+  "id": "c6d3e411-0306-43fa-b3a7-5dc627a22d6c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -102,6 +102,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "event_code": {
+          "name": "event_code",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "hosts": {
           "name": "hosts",
           "type": "varchar(256)",
@@ -127,12 +133,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "short_id": {
-          "name": "short_id",
-          "type": "varchar(5)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "startDate": {
           "name": "startDate",
           "type": "date",
@@ -154,11 +154,11 @@
         }
       },
       "indexes": {
-        "short_id_idx": {
-          "name": "short_id_idx",
+        "event_code_idx": {
+          "name": "event_code_idx",
           "columns": [
             {
-              "expression": "short_id",
+              "expression": "event_code",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -173,11 +173,11 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "event_short_id_unique": {
-          "name": "event_short_id_unique",
+        "event_event_code_unique": {
+          "name": "event_event_code_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "short_id"
+            "event_code"
           ]
         }
       }

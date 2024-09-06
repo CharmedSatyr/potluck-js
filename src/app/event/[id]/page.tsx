@@ -1,5 +1,5 @@
 import findRequest from "@/actions/db/find-request";
-import findEventByShortId from "@/actions/db/find-event-by-shortid";
+import findEventByEventCode from "@/actions/db/find-event-by-event-code";
 import findCommitments from "@/actions/db/find-commitments";
 import RequestManager from "@/app/event/[id]/request-manager";
 import EventSkeleton from "@/components/event-skeleton";
@@ -11,8 +11,8 @@ interface Props {
 }
 
 const EventPage = async ({ params }: Props) => {
-	const eventData = (await findEventByShortId(params.id)) ?? [];
-	const requests = (await findRequest({ shortId: params.id })) ?? []; // TODO: Make consistent
+	const eventData = (await findEventByEventCode(params.id)) ?? [];
+	const requests = (await findRequest({ eventCode: params.id })) ?? []; // TODO: Make consistent
 
 	if (!eventData.length) {
 		return <div>Event not found</div>;

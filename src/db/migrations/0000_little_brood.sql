@@ -13,15 +13,15 @@ CREATE TABLE IF NOT EXISTS "event" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_by" varchar(256) NOT NULL,
 	"description" text NOT NULL,
+	"event_code" varchar(5) NOT NULL,
 	"hosts" varchar(256) NOT NULL,
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"location" varchar(256) NOT NULL,
 	"name" varchar(256) NOT NULL,
-	"short_id" varchar(5) NOT NULL,
 	"startDate" date NOT NULL,
 	"startTime" time NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "event_short_id_unique" UNIQUE("short_id")
+	CONSTRAINT "event_event_code_unique" UNIQUE("event_code")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "request" (
@@ -45,4 +45,4 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "short_id_idx" ON "event" USING btree ("short_id");
+CREATE INDEX IF NOT EXISTS "event_code_idx" ON "event" USING btree ("event_code");

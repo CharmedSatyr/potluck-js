@@ -47,20 +47,20 @@ const PlanFoodManager = () => {
 		return () => reset();
 	}, [append, mounted, fields.length, reset]);
 
-	const shortId = searchParams.get("event");
+	const eventCode = searchParams.get("event");
 
-	if (!shortId) {
+	if (!eventCode) {
 		replace(`/start`);
 		return null;
 	}
 
 	const goToNextPage = () => {
-		push(`/event/${shortId}`);
+		push(`/event/${eventCode}`);
 	};
 
 	const onSubmit = async (data: FormInput) => {
 		try {
-			await createRequest({ ...data, shortId });
+			await createRequest({ ...data, eventCode });
 
 			goToNextPage();
 		} catch (err) {
