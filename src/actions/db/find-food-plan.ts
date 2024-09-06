@@ -4,7 +4,7 @@ import { JSONSchemaType } from "ajv";
 import ajv from "@/actions/ajv";
 import validateCtx from "@/actions/validate-ctx";
 import db from "@/db/connection";
-import { foodPlan, FoodPlan } from "@/db/schema/food-plan";
+import { foodPlan, Request } from "@/db/schema/food-plan";
 import { Party } from "@/db/schema/parties";
 import { eq } from "drizzle-orm";
 
@@ -23,7 +23,7 @@ const schema: JSONSchemaType<RequestData> = {
 
 const validate = ajv.compile(schema);
 
-const findFoodPlan = async (data: RequestData): Promise<FoodPlan[]> => {
+const findFoodPlan = async (data: RequestData): Promise<Request[]> => {
 	if (!validate(data)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}

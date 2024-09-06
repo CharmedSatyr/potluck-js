@@ -7,7 +7,7 @@ import db from "@/db/connection";
 import {
 	CustomizableFoodPlanValues,
 	foodPlan,
-	FoodPlan,
+	Request,
 } from "@/db/schema/food-plan";
 import { Party } from "@/db/schema/parties";
 
@@ -40,7 +40,7 @@ const schema: JSONSchemaType<NewFoodPlan> = {
 
 const validate = ajv.compile(schema);
 
-const createFoodPlan = async (data: NewFoodPlan): Promise<FoodPlan[]> => {
+const createFoodPlan = async (data: NewFoodPlan): Promise<Request[]> => {
 	if (!validate(data)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
