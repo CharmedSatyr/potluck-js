@@ -2,7 +2,8 @@
 
 import { JSONSchemaType } from "ajv";
 import ajv from "@/actions/ajv";
-import validateCtx from "@/actions/validate-ctx";
+import findEvent from "@/actions/db/find-event";
+import { auth } from "@/auth";
 import db from "@/db/connection";
 import {
 	CustomizableRequestValues,
@@ -11,15 +12,15 @@ import {
 } from "@/db/schema/request";
 import { Event } from "@/db/schema/event";
 
-interface NewRequest {
-	eventCode: Event["eventCode"];
+interface NewRequests {
+	code: Event["code"];
 	requests: CustomizableRequestValues[];
 }
 
-const schema: JSONSchemaType<NewRequest> = {
+const schema: JSONSchemaType<NewRequests> = {
 	type: "object",
 	properties: {
-		eventCode: { type: "string" },
+		code: { type: "string" },
 		requests: {
 			type: "array",
 			items: {
@@ -34,24 +35,38 @@ const schema: JSONSchemaType<NewRequest> = {
 			minItems: 1,
 		},
 	},
-	required: ["eventCode", "requests"],
+	required: ["code", "requests"],
 	additionalProperties: false,
 };
 
 const validate = ajv.compile(schema);
 
-const createRequest = async (data: NewRequest): Promise<Request[]> => {
-	if (!validate(data)) {
+const createRequest = async ({
+	code,
+	requests,
+}: NewRequests): Promise<{ id: Request["id"] }[]> => {
+	if (!validate({ code, requests })) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const { eventCode, requests } = data;
+	const event = await findEvent({ code });
 
-	const { id } = await validateCtx(eventCode);
+	if (!event) {
+		throw new Error("Invalid event code");
+	}
 
-	const values = requests.map((request) => ({ ...request, eventId: id }));
+	const session = await auth();
 
-	return await db.insert(request).values(values).returning();
+	if (!session?.user?.email) {
+		throw new Error("Not authenticated");
+	}
+
+	const values = requests.map((request) => ({
+		...request,
+		eventId: event.id,
+	}));
+
+	return await db.insert(request).values(values).returning({ id: request.id });
 };
 
 export default createRequest;

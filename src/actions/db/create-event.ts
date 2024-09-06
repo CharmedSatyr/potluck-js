@@ -6,7 +6,9 @@ import db from "@/db/connection";
 import { CustomizableEventValues, Event, event } from "@/db/schema/event";
 import { auth } from "@/auth";
 
-const schema: JSONSchemaType<CustomizableEventValues> = {
+type NewEvent = CustomizableEventValues;
+
+const schema: JSONSchemaType<NewEvent> = {
 	type: "object",
 	properties: {
 		description: { type: "string" },
@@ -23,8 +25,8 @@ const schema: JSONSchemaType<CustomizableEventValues> = {
 const validate = ajv.compile(schema);
 
 const createEvent = async (
-	data: CustomizableEventValues
-): Promise<{ eventCode: Event["eventCode"] }[]> => {
+	data: NewEvent
+): Promise<{ code: Event["code"] }[]> => {
 	if (!validate(data)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
@@ -41,7 +43,7 @@ const createEvent = async (
 			...data,
 			createdBy: session.user.email,
 		})
-		.returning({ eventCode: event.eventCode });
+		.returning({ code: event.code });
 };
 
 export default createEvent;

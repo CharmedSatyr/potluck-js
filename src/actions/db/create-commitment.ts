@@ -21,7 +21,9 @@ const schema: JSONSchemaType<NewCommitment> = {
 
 const validate = ajv.compile(schema);
 
-const createCommitment = async (data: NewCommitment): Promise<Commitment[]> => {
+const createCommitment = async (
+	data: NewCommitment
+): Promise<{ id: Commitment["id"] }[]> => {
 	if (!validate(data)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
@@ -40,7 +42,7 @@ const createCommitment = async (data: NewCommitment): Promise<Commitment[]> => {
 			quantity: data.quantity,
 			requestId: data.requestId,
 		})
-		.returning();
+		.returning({ id: commitment.id });
 };
 
 export default createCommitment;
