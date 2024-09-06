@@ -3,17 +3,17 @@
 import { startTransition } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { Party, SHORT_ID_LENGTH } from "@/db/schema/parties";
+import { Event, SHORT_ID_LENGTH } from "@/db/schema/event";
 
 interface Props {
-	findPartyAction: (partyId: Party["shortId"]) => Promise<boolean>;
+	findEventAction: (eventId: Event["shortId"]) => Promise<boolean>;
 }
 
 interface FormInput {
-	partyId: string;
+	eventId: string;
 }
 
-const GotoPartyForm = ({ findPartyAction }: Props) => {
+const GotoEventForm = ({ findEventAction }: Props) => {
 	const { push } = useRouter();
 
 	const {
@@ -29,17 +29,17 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 				return;
 			}
 
-			const result = await findPartyAction(data.partyId);
+			const result = await findEventAction(data.eventId);
 
 			if (!result) {
-				setError("partyId", {
+				setError("eventId", {
 					type: "notFound",
-					message: "A party with this code was not found",
+					message: "A event with this code was not found",
 				});
 				return;
 			}
 
-			push(`/event/${data.partyId}`);
+			push(`/event/${data.eventId}`);
 		});
 	};
 
@@ -48,11 +48,11 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 			<input
 				type="submit"
 				className="btn btn-secondary mb-2 text-2xl"
-				value="Find a Party"
+				value="Find a Event"
 			/>
 			<input
-				{...register("partyId", {
-					required: `Enter a ${SHORT_ID_LENGTH}-character party code`,
+				{...register("eventId", {
+					required: `Enter a ${SHORT_ID_LENGTH}-character event code`,
 					minLength: {
 						value: SHORT_ID_LENGTH,
 						message: `Code must be ${SHORT_ID_LENGTH} alphanumeric characters`,
@@ -65,12 +65,12 @@ const GotoPartyForm = ({ findPartyAction }: Props) => {
 				})}
 				type="text"
 				className="input input-bordered w-full"
-				id="partyId"
+				id="eventId"
 				placeholder="238JK"
 			/>
-			<span className="text-error">{errors.partyId?.message}</span>
+			<span className="text-error">{errors.eventId?.message}</span>
 		</form>
 	);
 };
 
-export default GotoPartyForm;
+export default GotoEventForm;

@@ -1,5 +1,5 @@
 {
-  "id": "0749a091-aba0-44d1-8d21-f52b274b83ad",
+  "id": "44a7548b-6b83-44ab-a8ed-b1f88cf2a8c9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -33,12 +33,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "food_plan_id": {
-          "name": "food_plan_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "id": {
           "name": "id",
           "type": "uuid",
@@ -52,6 +46,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "request_id": {
+          "name": "request_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
@@ -62,12 +62,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "commitment_food_plan_id_food_plan_id_fk": {
-          "name": "commitment_food_plan_id_food_plan_id_fk",
+        "commitment_request_id_request_id_fk": {
+          "name": "commitment_request_id_request_id_fk",
           "tableFrom": "commitment",
-          "tableTo": "food_plan",
+          "tableTo": "request",
           "columnsFrom": [
-            "food_plan_id"
+            "request_id"
           ],
           "columnsTo": [
             "id"
@@ -79,71 +79,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.food_plan": {
-      "name": "food_plan",
-      "schema": "",
-      "columns": {
-        "course": {
-          "name": "course",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "count": {
-          "name": "count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "party_id": {
-          "name": "party_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "food_plan_party_id_parties_id_fk": {
-          "name": "food_plan_party_id_parties_id_fk",
-          "tableFrom": "food_plan",
-          "tableTo": "parties",
-          "columnsFrom": [
-            "party_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.parties": {
-      "name": "parties",
+    "public.event": {
+      "name": "event",
       "schema": "",
       "columns": {
         "created_at": {
@@ -236,14 +173,77 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "parties_short_id_unique": {
-          "name": "parties_short_id_unique",
+        "event_short_id_unique": {
+          "name": "event_short_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "short_id"
           ]
         }
       }
+    },
+    "public.request": {
+      "name": "request",
+      "schema": "",
+      "columns": {
+        "course": {
+          "name": "course",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "request_event_id_event_id_fk": {
+          "name": "request_event_id_event_id_fk",
+          "tableFrom": "request",
+          "tableTo": "event",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
   "enums": {},

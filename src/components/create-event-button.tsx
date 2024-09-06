@@ -1,9 +1,9 @@
 "use client";
 
-import useCreatePartySession from "@/hooks/use-create-party-session-storage";
+import useCreateEventSession from "@/hooks/use-create-event-session-storage";
 
-const CreatePartyButton = () => {
-	const [, , removeValue] = useCreatePartySession();
+const CreateEventButton = () => {
+	const [, , removeValue] = useCreateEventSession();
 
 	return (
 		<button
@@ -11,9 +11,9 @@ const CreatePartyButton = () => {
 				removeValue();
 			}}
 		>
-			Start a Party
+			Create an Event
 		</button>
 	);
 };
 
-export default CreatePartyButton;
+export default CreateEventButton;

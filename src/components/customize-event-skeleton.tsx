@@ -3,13 +3,13 @@
 import _ from "lodash";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { CustomizablePartyValues } from "@/db/schema/parties";
+import { CustomizableEventValues } from "@/db/schema/event";
 import formatIsoTime from "@/utilities/format-iso-time";
 
 interface CustomizeEventSkeletonProps {
-	errors: FieldErrors<Partial<CustomizablePartyValues>>;
+	errors: FieldErrors<Partial<CustomizableEventValues>>;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	register: UseFormRegister<CustomizablePartyValues>;
+	register: UseFormRegister<CustomizableEventValues>;
 	shortId?: string;
 }
 

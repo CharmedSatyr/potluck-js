@@ -17,8 +17,8 @@ const createShortId = (): string =>
 		.substring(2, 2 + SHORT_ID_LENGTH)
 		.toUpperCase();
 
-export const parties = pgTable(
-	"parties",
+export const event = pgTable(
+	"event",
 	{
 		// TODO: Capacity
 		// TODO: Cost per person
@@ -47,9 +47,9 @@ export const parties = pgTable(
 	(table) => ({ shortIdIdx: index("short_id_idx").on(table.shortId) })
 );
 
-export type Party = typeof parties.$inferSelect;
+export type Event = typeof event.$inferSelect;
 
-export type CustomizablePartyValues = Pick<
-	Party,
+export type CustomizableEventValues = Pick<
+	Event,
 	"description" | "hosts" | "location" | "name" | "startDate" | "startTime"
 >;

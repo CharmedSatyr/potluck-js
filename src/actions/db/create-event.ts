@@ -3,12 +3,12 @@
 import { JSONSchemaType } from "ajv";
 import ajv from "@/actions/ajv";
 import db from "@/db/connection";
-import { CustomizablePartyValues, Party, parties } from "@/db/schema/parties";
+import { CustomizableEventValues, Event, event } from "@/db/schema/event";
 import { auth } from "@/auth";
 
-type NewPartyWithUser = CustomizablePartyValues & Pick<Party, "createdBy">;
+type NewEventWithUser = CustomizableEventValues & Pick<Event, "createdBy">;
 
-const schema: JSONSchemaType<NewPartyWithUser> = {
+const schema: JSONSchemaType<NewEventWithUser> = {
 	type: "object",
 	properties: {
 		createdBy: { type: "string", format: "email" },
@@ -32,14 +32,14 @@ const schema: JSONSchemaType<NewPartyWithUser> = {
 
 const validate = ajv.compile(schema);
 
-const createParty = async (info: CustomizablePartyValues): Promise<string> => {
+const createEvent = async (info: CustomizableEventValues): Promise<string> => {
 	const session = await auth();
 
 	if (!session?.user?.email) {
 		throw new Error("Not authenticated");
 	}
 
-	const values: NewPartyWithUser = {
+	const values: NewEventWithUser = {
 		...info,
 		createdBy: session.user.email,
 	};
@@ -49,11 +49,11 @@ const createParty = async (info: CustomizablePartyValues): Promise<string> => {
 	}
 
 	const result = await db
-		.insert(parties)
+		.insert(event)
 		.values(values)
-		.returning({ shortId: parties.shortId });
+		.returning({ shortId: event.shortId });
 
 	return result[0].shortId;
 };
 
-export default createParty;
+export default createEvent;

@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CopyLinkButton from "@/components/copy-link-button";
-import { Party } from "@/db/schema/parties";
+import { Event } from "@/db/schema/event";
 
-type EventSkeletonProps = Party;
+type EventSkeletonProps = Event;
 
 export const EventSkeleton = ({
 	createdBy,

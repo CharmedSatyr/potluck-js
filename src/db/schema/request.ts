@@ -5,7 +5,7 @@ import {
 	pgTable,
 	integer,
 } from "drizzle-orm/pg-core";
-import { parties } from "@/db/schema/parties";
+import { event } from "@/db/schema/event";
 
 export const request = pgTable("request", {
 	course: varchar("course", { length: 256 }).notNull(),
@@ -14,8 +14,8 @@ export const request = pgTable("request", {
 		.notNull()
 		.defaultNow(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
-	partyId: uuid("party_id")
-		.references(() => parties.id, { onDelete: "cascade" })
+	eventId: uuid("event_id")
+		.references(() => event.id, { onDelete: "cascade" })
 		.notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
@@ -24,4 +24,4 @@ export const request = pgTable("request", {
 
 export type Request = typeof request.$inferSelect;
 
-export type CustomizableFoodPlanValues = Pick<Request, "course" | "count">;
+export type CustomizableRequestValues = Pick<Request, "course" | "count">;

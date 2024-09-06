@@ -4,9 +4,9 @@ import db from "@/db/connection";
 import { request } from "@/db/schema/request";
 import { eq } from "drizzle-orm";
 import { commitment, Commitment } from "@/db/schema/commitment";
-import { Party } from "@/db/schema/parties";
+import { Event } from "@/db/schema/event";
 
-const findCommitments = async (partyId: Party["id"]): Promise<Commitment[]> => {
+const findCommitments = async (eventId: Event["id"]): Promise<Commitment[]> => {
 	const {
 		avatar,
 		createdAt,
@@ -30,7 +30,7 @@ const findCommitments = async (partyId: Party["id"]): Promise<Commitment[]> => {
 			updatedAt,
 		})
 		.from(request)
-		.where(eq(request.partyId, partyId))
+		.where(eq(request.eventId, eventId))
 		.innerJoin(commitment, eq(request.id, commitment.requestId));
 };
 

@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import findPartyServerCtxByShortId from "@/actions/db/find-party-server-ctx-by-shortid";
+import findEventServerCtxByShortId from "@/actions/db/find-event-server-ctx-by-shortid";
 
 interface Return {
 	id: string;
@@ -11,7 +11,7 @@ const validateCtx = async (shortId: string): Promise<Return> => {
 		throw new Error("Missing shortId");
 	}
 
-	const result = await findPartyServerCtxByShortId(shortId);
+	const result = await findEventServerCtxByShortId(shortId);
 	if (!result?.id || !result?.createdBy) {
 		throw new Error("Invalid shortId");
 	}

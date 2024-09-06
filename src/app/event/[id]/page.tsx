@@ -1,5 +1,5 @@
 import findRequest from "@/actions/db/find-request";
-import findPartyByShortId from "@/actions/db/find-party-by-shortid";
+import findEventByShortId from "@/actions/db/find-event-by-shortid";
 import findCommitments from "@/actions/db/find-commitments";
 import RequestManager from "@/app/event/[id]/request-manager";
 import EventSkeleton from "@/components/event-skeleton";
@@ -10,24 +10,24 @@ interface Props {
 	};
 }
 
-const PartyPage = async ({ params }: Props) => {
-	const partyData = (await findPartyByShortId(params.id)) ?? [];
+const EventPage = async ({ params }: Props) => {
+	const eventData = (await findEventByShortId(params.id)) ?? [];
 	const requests = (await findRequest({ shortId: params.id })) ?? []; // TODO: Make consistent
 
-	if (!partyData.length) {
+	if (!eventData.length) {
 		return <div>Event not found</div>;
 	}
 
-	const party = partyData[0];
+	const event = eventData[0];
 
-	const commitments = await findCommitments(party.id);
+	const commitments = await findCommitments(event.id);
 
 	return (
 		<div className="flex w-full flex-col justify-center">
-			<EventSkeleton {...party} />
+			<EventSkeleton {...event} />
 			<RequestManager commitments={commitments} requests={requests} />
 		</div>
 	);
 };
 
-export default PartyPage;
+export default EventPage;

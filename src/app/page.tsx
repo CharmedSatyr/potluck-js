@@ -1,16 +1,16 @@
 import Link from "next/link";
-import findPartyByShortId from "@/actions/db/find-party-by-shortid";
-import { Party } from "@/db/schema/parties";
-import GotoPartyForm from "@/components/goto-party-form";
+import findEventByShortId from "@/actions/db/find-event-by-shortid";
+import { Event } from "@/db/schema/event";
+import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
 import CreateEventButton from "@/components/create-event-button";
 
-const findParty = async (shortId: Party["shortId"]): Promise<boolean> => {
+const findEvent = async (shortId: Event["shortId"]): Promise<boolean> => {
 	"use server";
 
-	const party = await findPartyByShortId(shortId);
+	const event = await findEventByShortId(shortId);
 
-	return party.length > 0;
+	return event.length > 0;
 };
 
 const Home = () => {
@@ -27,7 +27,7 @@ const Home = () => {
 				</div>
 				<div className="divider divider-horizontal">OR</div>
 				<div className="divider divider-end divider-horizontal w-fit">
-					<GotoPartyForm findPartyAction={findParty} />
+					<GotoEventForm findEventAction={findEvent} />
 				</div>
 			</div>
 		</main>

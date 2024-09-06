@@ -5,15 +5,15 @@ import ajv from "@/actions/ajv";
 import validateCtx from "@/actions/validate-ctx";
 import db from "@/db/connection";
 import {
-	CustomizableFoodPlanValues,
+	CustomizableRequestValues,
 	request,
 	Request,
 } from "@/db/schema/request";
-import { Party } from "@/db/schema/parties";
+import { Event } from "@/db/schema/event";
 
 interface NewRequest {
-	slots: CustomizableFoodPlanValues[];
-	shortId: Party["shortId"];
+	slots: CustomizableRequestValues[];
+	shortId: Event["shortId"];
 }
 
 const schema: JSONSchemaType<NewRequest> = {
@@ -49,7 +49,7 @@ const createRequest = async (data: NewRequest): Promise<Request[]> => {
 
 	const { id } = await validateCtx(shortId);
 
-	const values = slots.map((slot) => ({ ...slot, partyId: id }));
+	const values = slots.map((slot) => ({ ...slot, eventId: id }));
 
 	return await db.insert(request).values(values).returning();
 };

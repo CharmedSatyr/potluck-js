@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
-import createParty from "@/actions/db/create-party";
+import createEvent from "@/actions/db/create-event";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
-import useCreatePartySessionStorage from "@/hooks/use-create-party-session-storage";
-import { CustomizablePartyValues } from "@/db/schema/parties";
+import useCreateEventSessionStorage from "@/hooks/use-create-event-session-storage";
+import { CustomizableEventValues } from "@/db/schema/event";
 
 const CreateEventManager = () => {
 	const { data: authData, status } = useSession();
@@ -16,7 +16,7 @@ const CreateEventManager = () => {
 
 	const { push } = useRouter();
 	const [storageValues, setStorageValues, removeStorageValues] =
-		useCreatePartySessionStorage();
+		useCreateEventSessionStorage();
 
 	const {
 		formState: { errors },
@@ -25,7 +25,7 @@ const CreateEventManager = () => {
 		reset,
 		setValue,
 		getValues,
-	} = useForm<CustomizablePartyValues>({
+	} = useForm<CustomizableEventValues>({
 		defaultValues: {},
 	});
 
@@ -35,7 +35,7 @@ const CreateEventManager = () => {
 		}
 
 		for (const property in storageValues) {
-			const key = property as keyof CustomizablePartyValues;
+			const key = property as keyof CustomizableEventValues;
 			const value = storageValues[key];
 
 			if (value === undefined) {
@@ -54,7 +54,7 @@ const CreateEventManager = () => {
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [reset, setValue]);
 
-	const onSubmit = handleSubmit(async (data: CustomizablePartyValues) => {
+	const onSubmit = handleSubmit(async (data: CustomizableEventValues) => {
 		if (!loggedIn) {
 			await signInWithDiscord();
 
@@ -66,7 +66,7 @@ const CreateEventManager = () => {
 				data.hosts = authData.user.name;
 			}
 
-			const shortId = await createParty(data);
+			const shortId = await createEvent(data);
 
 			removeStorageValues();
 
