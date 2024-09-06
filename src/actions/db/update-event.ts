@@ -29,7 +29,9 @@ const schema: JSONSchemaType<UpdatedEvent> = {
 
 const validate = ajv.compile(schema);
 
-const updateEvent = async (updatedEvent: UpdatedEvent): Promise<any> => {
+const updateEvent = async (
+	updatedEvent: UpdatedEvent
+): Promise<{ code: Event["code"] }[]> => {
 	if (!validate(updatedEvent)) {
 		throw new Error(JSON.stringify(validate.errors));
 	}

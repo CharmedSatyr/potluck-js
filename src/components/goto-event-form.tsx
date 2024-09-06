@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { Event, EVENT_CODE_LENGTH } from "@/db/schema/event";
 
 interface Props {
-	findEventAction: (eventId: Event["eventCode"]) => Promise<boolean>;
+	findEventAction: (eventCode: Event["code"]) => Promise<boolean>;
 }
 
 interface FormInput {
-	eventId: string;
+	eventCode: string;
 }
 
 const GotoEventForm = ({ findEventAction }: Props) => {
@@ -29,17 +29,17 @@ const GotoEventForm = ({ findEventAction }: Props) => {
 				return;
 			}
 
-			const result = await findEventAction(data.eventId);
+			const result = await findEventAction(data.eventCode);
 
 			if (!result) {
-				setError("eventId", {
+				setError("eventCode", {
 					type: "notFound",
 					message: "A event with this code was not found",
 				});
 				return;
 			}
 
-			push(`/event/${data.eventId}`);
+			push(`/event/${data.eventCode}`);
 		});
 	};
 
@@ -51,7 +51,7 @@ const GotoEventForm = ({ findEventAction }: Props) => {
 				value="Find an Event"
 			/>
 			<input
-				{...register("eventId", {
+				{...register("eventCode", {
 					required: `Enter a ${EVENT_CODE_LENGTH}-character event code`,
 					minLength: {
 						value: EVENT_CODE_LENGTH,
@@ -68,7 +68,7 @@ const GotoEventForm = ({ findEventAction }: Props) => {
 				id="eventId"
 				placeholder="238JK"
 			/>
-			<span className="text-error">{errors.eventId?.message}</span>
+			<span className="text-error">{errors.eventCode?.message}</span>
 		</form>
 	);
 };

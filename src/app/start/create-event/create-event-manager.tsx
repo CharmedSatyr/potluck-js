@@ -70,7 +70,7 @@ const CreateEventManager = () => {
 
 			removeStorageValues();
 
-			push(`/start/plan-food?event=${result[0].eventCode}`);
+			push(`/start/plan-food?event=${result[0].code}`);
 		} catch (err) {
 			// TODO: Handle error
 			console.error(err);

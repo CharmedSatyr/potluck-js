@@ -4,26 +4,23 @@ import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import {
-	isUpdatedEvent,
-	UpdatedEvent,
-	updateEventAndRevalidate,
-} from "@/actions/db/update-event";
+import updateEvent, { UpdatedEvent } from "@/actions/db/update-event";
 import { CustomizableEventValues, Event } from "@/db/schema/event";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
+import { revalidatePage } from "@/actions/revalidate-path";
 
-type EditEventManagerProps = Event;
+type Props = Event;
 
 const EditEventManager = ({
+	code,
 	createdBy,
 	description,
-	eventCode,
 	hosts,
 	location,
 	name,
 	startDate,
 	startTime,
-}: EditEventManagerProps) => {
+}: Props) => {
 	const session = useSession();
 	const { push, replace } = useRouter();
 	const {
@@ -51,38 +48,36 @@ const EditEventManager = ({
 			);
 
 			if (Object.keys(modifiedValues).length === 0) {
-				push(`/event/${eventCode}`);
+				push(`/event/${code}`);
 				return;
 			}
 
-			const updatedEvent = { ...modifiedValues, eventCode };
+			const updatedEvent = { ...modifiedValues, code };
 
-			if (!isUpdatedEvent(updatedEvent)) {
-				throw new Error("Update event form values invalid");
-			}
-
-			const result = await updateEventAndRevalidate(updatedEvent);
+			const result = await updateEvent(updatedEvent);
 
 			if (!result.length) {
 				throw new Error("Failed to update event");
 			}
 
-			push(`/event/${eventCode}`);
+			await revalidatePage(`/event/${code}`);
+
+			push(`/event/${code}`);
 		} catch (err) {
 			console.error(err);
 		}
 	});
 
 	if (session?.data?.user?.email !== createdBy) {
-		replace(`/event/${eventCode}`);
+		replace(`/event/${code}`);
 	}
 
 	return (
 		<CustomizeEventSkeleton
+			code={code}
 			errors={errors}
 			onSubmit={onSubmit}
 			register={register}
-			eventCode={eventCode}
 		/>
 	);
 };

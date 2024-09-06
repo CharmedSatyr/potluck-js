@@ -1,16 +1,14 @@
 import Link from "next/link";
-import findEventByEventCode from "@/actions/db/find-event";
+import findEvent from "@/actions/db/find-event";
 import { Event } from "@/db/schema/event";
 import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
 import CreateEventButton from "@/components/create-event-button";
 
-const findEventExists = async (
-	eventCode: Event["eventCode"]
-): Promise<boolean> => {
+const findEventExists = async (code: Event["code"]): Promise<boolean> => {
 	"use server";
 
-	const event = await findEventByEventCode(eventCode);
+	const event = await findEvent({ code });
 
 	return typeof event !== "undefined";
 };

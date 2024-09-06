@@ -1,4 +1,4 @@
-import findRequest from "@/actions/db/find-request";
+import findRequests from "@/actions/db/find-requests";
 import findEvent from "@/actions/db/find-event";
 import findCommitments from "@/actions/db/find-commitments";
 import RequestManager from "@/app/event/[id]/request-manager";
@@ -11,18 +11,16 @@ interface Props {
 }
 
 const EventPage = async ({ params }: Props) => {
-	const event = await findEvent(params.id);
-	const requests = (await findRequest({ eventCode: params.id })) ?? []; // TODO: Make consistent
-
-	if (!event) {
-		return <div>Event not found</div>;
-	}
-
-	const commitments = await findCommitments(event.id);
+	// TODO: These could be combined.
+	const [event, requests, commitments] = await Promise.all([
+		findEvent({ code: params.id }),
+		findRequests({ eventCode: params.id }),
+		findCommitments({ eventCode: params.id }),
+	]);
 
 	return (
 		<div className="flex w-full flex-col justify-center">
-			<EventSkeleton {...event} />
+			<EventSkeleton {...event!} />
 			<RequestManager commitments={commitments} requests={requests} />
 		</div>
 	);

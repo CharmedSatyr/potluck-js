@@ -8,7 +8,7 @@ interface Props {
 }
 
 const EditEventPage = async ({ params }: Props) => {
-	const event = await findEvent(params.id);
+	const event = await findEvent({ code: params.id });
 
 	if (!event) {
 		return <div>Event not found</div>;
