@@ -37,18 +37,25 @@ const findCommitments = async ({
 		throw new Error("Invalid event code");
 	}
 
-	const { createdAt, description, id, quantity, requestId, updatedAt, userId } =
-		commitment;
+	const {
+		createdAt,
+		createdBy,
+		description,
+		id,
+		quantity,
+		requestId,
+		updatedAt,
+	} = commitment;
 
 	return await db
 		.select({
 			createdAt,
+			createdBy,
 			description,
 			id,
 			quantity,
 			requestId,
 			updatedAt,
-			userId,
 		})
 		.from(request)
 		.where(eq(request.eventId, event.id))

@@ -12,6 +12,9 @@ export const commitment = pgTable("commitment", {
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
+	createdBy: uuid("user_id")
+		.references(() => user.id, { onDelete: "cascade" })
+		.notNull(),
 	description: varchar("description", { length: 256 }).notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	quantity: integer("quantity").notNull(),
@@ -21,9 +24,6 @@ export const commitment = pgTable("commitment", {
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
-	userId: uuid("user_id")
-		.references(() => user.id, { onDelete: "cascade" })
-		.notNull(),
 });
 
 export type Commitment = typeof commitment.$inferSelect;

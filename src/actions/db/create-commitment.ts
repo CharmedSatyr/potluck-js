@@ -37,10 +37,10 @@ const createCommitment = async (
 	return await db
 		.insert(commitment)
 		.values({
+			createdBy: session.user.id,
 			description: data.description,
 			quantity: data.quantity,
 			requestId: data.requestId,
-			userId: session.user.id,
 		})
 		.returning({ id: commitment.id });
 };

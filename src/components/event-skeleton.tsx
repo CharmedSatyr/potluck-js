@@ -8,6 +8,7 @@ import { Event } from "@/db/schema/event";
 type EventSkeletonProps = Event;
 
 export const EventSkeleton = ({
+	createdBy,
 	description,
 	hosts,
 	location,
@@ -15,11 +16,10 @@ export const EventSkeleton = ({
 	code,
 	startDate,
 	startTime,
-	userId,
 }: EventSkeletonProps) => {
 	const session = useSession();
 
-	const isHost = session?.data?.user?.id === userId;
+	const isHost = session?.data?.user?.id === createdBy;
 
 	return (
 		<div className="w-full">

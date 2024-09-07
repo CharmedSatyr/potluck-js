@@ -31,6 +31,9 @@ export const event = pgTable(
 		createdAt: timestamp("created_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
+		createdBy: uuid("user_id")
+			.references(() => user.id, { onDelete: "cascade" })
+			.notNull(),
 		// TODO: Add custom field (link or text)
 		description: text("description").notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
@@ -43,9 +46,6 @@ export const event = pgTable(
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
-		userId: uuid("user_id")
-			.references(() => user.id, { onDelete: "cascade" })
-			.notNull(),
 	},
 	(table) => ({ codeIdx: index("code_idx").on(table.code) })
 );

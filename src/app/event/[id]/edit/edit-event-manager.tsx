@@ -13,13 +13,13 @@ type Props = Event;
 
 const EditEventManager = ({
 	code,
+	createdBy,
 	description,
 	hosts,
 	location,
 	name,
 	startDate,
 	startTime,
-	userId,
 }: Props) => {
 	const session = useSession();
 	const { push, replace } = useRouter();
@@ -68,7 +68,7 @@ const EditEventManager = ({
 		}
 	});
 
-	if (session?.data?.user?.id !== userId) {
+	if (session?.data?.user?.id !== createdBy) {
 		replace(`/event/${code}`);
 	}
 

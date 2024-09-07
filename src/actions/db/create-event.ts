@@ -41,7 +41,7 @@ const createEvent = async (
 		.insert(event)
 		.values({
 			...data,
-			userId: session.user.id,
+			createdBy: session.user.id,
 		})
 		.returning({ code: event.code });
 };

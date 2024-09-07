@@ -1,5 +1,5 @@
 {
-  "id": "bd3ad5e3-aeb8-4db0-8aeb-d4ae3aea9c4c",
+  "id": "507719ca-7c4a-4b76-9174-c6fd124278b6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -204,6 +204,12 @@
           "notNull": true,
           "default": "now()"
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "description": {
           "name": "description",
           "type": "varchar(256)",
@@ -235,22 +241,16 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "commitment_request_id_request_id_fk": {
-          "name": "commitment_request_id_request_id_fk",
+        "commitment_user_id_user_id_fk": {
+          "name": "commitment_user_id_user_id_fk",
           "tableFrom": "commitment",
-          "tableTo": "request",
+          "tableTo": "user",
           "columnsFrom": [
-            "request_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -258,12 +258,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "commitment_user_id_user_id_fk": {
-          "name": "commitment_user_id_user_id_fk",
+        "commitment_request_id_request_id_fk": {
+          "name": "commitment_request_id_request_id_fk",
           "tableFrom": "commitment",
-          "tableTo": "user",
+          "tableTo": "request",
           "columnsFrom": [
-            "user_id"
+            "request_id"
           ],
           "columnsTo": [
             "id"
@@ -291,6 +291,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         },
         "description": {
           "name": "description",
@@ -341,12 +347,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {
