@@ -3,13 +3,11 @@
 ## High Priority
 
 - BUG: Location always fails the first time on creating event.
-- BUG: Fix Logout - need server call
 
 - Host should be able to modify requests
 - Only event/request/commitment creators should be able to modify them.
 - Move auth into middleware.
 - !!!Tests!!!
-- Add user table and pipe in avatars and usernames to requests table.
 - Loading indicators
 - Everything responsive!
 
