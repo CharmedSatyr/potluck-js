@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import createCommitment from "@/actions/db/create-commitment";
@@ -9,16 +10,18 @@ import { revalidatePage } from "@/actions/revalidate-path";
 import QuantityInput from "@/components/quantity-input";
 import { Commitment } from "@/db/schema/commitment";
 import { Request } from "@/db/schema/request";
+import { User } from "@/db/schema/auth/user";
 
 interface Props {
 	commitments: Commitment[];
 	index: number;
 	request: Request;
+	users: User[];
 }
 
 type FormInput = Pick<Commitment, "description" | "quantity">;
 
-const RequestDetails = ({ commitments, request, index }: Props) => {
+const RequestDetails = ({ commitments, request, index, users }: Props) => {
 	const pathName = usePathname();
 	const [expanded, setExpanded] = useState<boolean>(false);
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
@@ -29,12 +32,20 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 		0
 	);
 
-	const placeholderImages = commitments.map((commitment) => (
-		<div
-			key={commitment.id}
-			className="skeleton mx-2 h-10 w-10 rounded-full border"
-		/>
-	));
+	const avatars = users.map((user) =>
+		user.image ? (
+			<Image
+				key={user.id}
+				alt={`Avatar for user ${user.name}`}
+				className="avatar my-0 rounded-full border"
+				src={user.image}
+				height={40}
+				width={40}
+			/>
+		) : (
+			<div key={user.id} className="skeleton h-8 w-8 rounded-full border" />
+		)
+	);
 
 	useEffect(() => {
 		setValue("quantity", commitQuantity);
@@ -67,7 +78,7 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 
 			<div className="collapse-title flex w-full items-center justify-between">
 				<div className="w-6/12 text-2xl">{request.course}</div>
-				{placeholderImages}
+				{avatars}
 				<div className="flex items-center justify-between">
 					{totalCommitments} of {request.count} filled
 					{expanded ? (
@@ -84,7 +95,7 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 			>
 				<h3 className="mt-0">Current Signups</h3>
 				{commitments.length ? (
-					<CommitmentsTable commitments={commitments} />
+					<CommitmentsTable commitments={commitments} users={users} />
 				) : (
 					<p>None yet. Be the first!</p>
 				)}
@@ -119,7 +130,13 @@ const RequestDetails = ({ commitments, request, index }: Props) => {
 	);
 };
 
-const CommitmentsTable = ({ commitments }: { commitments: Commitment[] }) => {
+const CommitmentsTable = ({
+	commitments,
+	users,
+}: {
+	commitments: Commitment[];
+	users: User[];
+}) => {
 	return (
 		<div className="overflow-x-auto">
 			<table className="table mt-0">
@@ -133,12 +150,23 @@ const CommitmentsTable = ({ commitments }: { commitments: Commitment[] }) => {
 				</thead>
 				<tbody>
 					{commitments.map((commitment) => {
+						const user = users.filter((u) => u.id === commitment.createdBy)[0];
+						const image = user.image ? (
+							<Image
+								alt={`Avatar for user ${user.name}`}
+								className="avatar my-0 rounded-full border"
+								src={user.image}
+								height={25}
+								width={25}
+							/>
+						) : (
+							<div className="skeleton h-8 w-8 rounded-full border" />
+						);
+
 						return (
 							<tr key={commitment.id}>
-								<td className="avatar">
-									<div className="skeleton h-8 w-8 rounded-full border" />
-								</td>
-								<td>Placeholder</td>
+								<td className="avatar">{image}</td>
+								<td>{user.name}</td>
 								<td>{commitment.quantity}</td>
 								<td>{commitment.description}</td>
 							</tr>
