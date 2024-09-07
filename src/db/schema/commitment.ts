@@ -4,7 +4,6 @@ import {
 	timestamp,
 	pgTable,
 	integer,
-	text,
 } from "drizzle-orm/pg-core";
 import { request } from "@/db/schema/request";
 import { user } from "./auth/user";
@@ -22,7 +21,7 @@ export const commitment = pgTable("commitment", {
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
-	userId: text("user_id")
+	userId: uuid("user_id")
 		.references(() => user.id, { onDelete: "cascade" })
 		.notNull(),
 });

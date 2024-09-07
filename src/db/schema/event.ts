@@ -8,6 +8,7 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
+import { user } from "./auth/user";
 
 export const EVENT_CODE_LENGTH = 5;
 
@@ -30,7 +31,6 @@ export const event = pgTable(
 		createdAt: timestamp("created_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
-		createdBy: varchar("created_by", { length: 256 }).notNull(),
 		// TODO: Add custom field (link or text)
 		description: text("description").notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
@@ -38,12 +38,14 @@ export const event = pgTable(
 		location: varchar("location", { length: 256 }).notNull(),
 		name: varchar("name", { length: 256 }).notNull(),
 		// TODO: RSVP options (yes, maybe, no)
-
 		startDate: date("startDate").notNull(),
 		startTime: time("startTime", { withTimezone: false }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
+		userId: uuid("user_id")
+			.references(() => user.id, { onDelete: "cascade" })
+			.notNull(),
 	},
 	(table) => ({ codeIdx: index("code_idx").on(table.code) })
 );

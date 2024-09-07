@@ -33,7 +33,7 @@ const createEvent = async (
 
 	const session = await auth();
 
-	if (!session?.user?.email) {
+	if (!session?.user?.id) {
 		throw new Error("Not authenticated");
 	}
 
@@ -41,7 +41,7 @@ const createEvent = async (
 		.insert(event)
 		.values({
 			...data,
-			createdBy: session.user.email,
+			userId: session.user.id,
 		})
 		.returning({ code: event.code });
 };
