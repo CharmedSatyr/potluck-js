@@ -16,6 +16,7 @@
 - Limit event timeframes to within 1 year
   - Mark past events
   - Past events cannot be modified
+- Improve event code generation method
 - Add import sorter
 - Don't send too much data to the client
 - Login page/modal for when you try to do something that needs auth.
@@ -23,3 +24,4 @@
 - On Inga's computer, Plus and Minus signs on Signups Needed shows up as black.
 - Back button on 2nd page of wizard
 - Remove lodash
+- Be able to retry each section that fails.
