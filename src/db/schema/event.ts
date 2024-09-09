@@ -12,7 +12,7 @@ import { user } from "./auth/user";
 
 export const EVENT_CODE_LENGTH = 5;
 
-const createcode = (): string =>
+const createCode = (): string =>
 	Math.random()
 		.toString(36)
 		.substring(2, 2 + EVENT_CODE_LENGTH)
@@ -27,7 +27,7 @@ export const event = pgTable(
 		code: varchar("code", { length: EVENT_CODE_LENGTH })
 			.notNull()
 			.unique()
-			.$default(createcode),
+			.$default(createCode),
 		createdAt: timestamp("created_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
