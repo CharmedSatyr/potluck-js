@@ -150,7 +150,7 @@ const CommitmentsTable = ({
 				</thead>
 				<tbody>
 					{commitments.map((commitment) => {
-						const user = users.filter((u) => u.id === commitment.createdBy)[0];
+						const [user] = users.filter((u) => u.id === commitment.createdBy);
 						const image = user.image ? (
 							<Image
 								alt={`Avatar for user ${user.name}`}
