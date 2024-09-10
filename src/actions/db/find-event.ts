@@ -21,14 +21,12 @@ const schema: JSONSchemaType<EventCode> = {
 
 const validate = ajv.compile(schema);
 
-const findEvent = async ({ code }: EventCode): Promise<Event | undefined> => {
+const findEvent = async ({ code }: EventCode): Promise<Event[]> => {
 	if (!validate({ code })) {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	return await db.query.event.findFirst({
-		where: eq(event.code, code),
-	});
+	return await db.select().from(event).where(eq(event.code, code)).limit(1);
 };
 
 export default findEvent;

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const EventPage = async ({ params }: Props) => {
-	const [event, requests, commitments] = await Promise.all([
+	const [[event], requests, commitments] = await Promise.all([
 		findEvent({ code: params.id }),
 		findRequests({ eventCode: params.id }),
 		findCommitments({ eventCode: params.id }),

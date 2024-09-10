@@ -6,14 +6,14 @@ import { useRouter } from "next/navigation";
 import { Event, EVENT_CODE_LENGTH } from "@/db/schema/event";
 
 interface Props {
-	findEventAction: (eventCode: Event["code"]) => Promise<boolean>;
+	findEventExistsAction: (eventCode: Event["code"]) => Promise<boolean>;
 }
 
 interface FormInput {
 	eventCode: string;
 }
 
-const GotoEventForm = ({ findEventAction }: Props) => {
+const GotoEventForm = ({ findEventExistsAction }: Props) => {
 	const { push } = useRouter();
 
 	const {
@@ -29,7 +29,7 @@ const GotoEventForm = ({ findEventAction }: Props) => {
 				return;
 			}
 
-			const result = await findEventAction(data.eventCode);
+			const result = await findEventExistsAction(data.eventCode);
 
 			if (!result) {
 				setError("eventCode", {

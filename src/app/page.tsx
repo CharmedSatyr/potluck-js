@@ -8,7 +8,7 @@ import CreateEventButton from "@/components/create-event-button";
 const findEventExists = async (code: Event["code"]): Promise<boolean> => {
 	"use server";
 
-	const event = await findEvent({ code });
+	const [event] = await findEvent({ code });
 
 	return typeof event !== "undefined";
 };
@@ -27,7 +27,7 @@ const Home = () => {
 				</div>
 				<div className="divider divider-horizontal">OR</div>
 				<div className="divider divider-end divider-horizontal w-fit">
-					<GotoEventForm findEventAction={findEventExists} />
+					<GotoEventForm findEventExistsAction={findEventExists} />
 				</div>
 			</div>
 		</main>

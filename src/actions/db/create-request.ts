@@ -49,7 +49,7 @@ const createRequest = async ({
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const event = await findEvent({ code });
+	const [event] = await findEvent({ code });
 
 	if (!event) {
 		throw new Error("Invalid event code");

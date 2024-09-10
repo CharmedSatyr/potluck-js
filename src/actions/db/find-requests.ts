@@ -28,7 +28,7 @@ const findRequests = async ({ eventCode }: EventCode): Promise<Request[]> => {
 		throw new Error(JSON.stringify(validate.errors));
 	}
 
-	const event = await findEvent({ code: eventCode });
+	const [event] = await findEvent({ code: eventCode });
 
 	if (!event) {
 		throw new Error("Invalid event code");

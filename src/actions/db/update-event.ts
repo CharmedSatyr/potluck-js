@@ -37,7 +37,7 @@ const updateEvent = async (
 	}
 
 	const { code, ...values } = updatedEvent;
-	const eventToUpdate = await findEvent({ code });
+	const [eventToUpdate] = await findEvent({ code });
 
 	if (!eventToUpdate) {
 		throw new Error("Invalid code");
