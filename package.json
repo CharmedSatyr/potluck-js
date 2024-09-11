@@ -27,10 +27,10 @@
 		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.33.0",
 		"lodash": "^4.17.21",
-		"next": "^14.2.9",
+		"next": "^15.0.0-rc.0",
 		"next-auth": "^5.0.0-beta.20",
-		"react": "^18",
-		"react-dom": "^18",
+		"react": "^19.0.0-rc-3dfd5d9e-20240910",
+		"react-dom": "^19.0.0-rc-3dfd5d9e-20240910",
 		"react-hook-form": "^7.53.0"
 	},
 	"devDependencies": {
@@ -43,7 +43,7 @@
 		"daisyui": "^4.12.10",
 		"drizzle-kit": "^0.24.2",
 		"eslint": "^8",
-		"eslint-config-next": "^14.2.9",
+		"eslint-config-next": "^15.0.0-rc.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-drizzle": "^0.2.3",
 		"eslint-plugin-prettier": "^5.2.1",
