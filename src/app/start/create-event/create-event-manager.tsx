@@ -46,6 +46,7 @@ const CreateEventManager = () => {
 		}
 
 		return () => {
+			// Potentially unmounting for auth redirect. Save to repopulate fields after auth.
 			if (!loggedIn) {
 				setStorageValues(getValues());
 			}
