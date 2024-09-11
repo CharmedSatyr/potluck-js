@@ -18,12 +18,13 @@ const EventPage = async ({ params }: Props) => {
 		findCommitments({ eventCode: params.id }),
 	]);
 
-	const usersToFetch = commitments.map((c) => c.createdBy);
-	const users = await findUsers({ users: usersToFetch });
+	const usersToFind = commitments.map((c) => c.createdBy);
+	const users =
+		usersToFind.length > 0 ? await findUsers({ users: usersToFind }) : [];
 
 	return (
 		<div className="flex w-full flex-col justify-center">
-			<EventSkeleton {...event!} />
+			<EventSkeleton {...event} />
 			<RequestManager
 				commitments={commitments}
 				requests={requests}
