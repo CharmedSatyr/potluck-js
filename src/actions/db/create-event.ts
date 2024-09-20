@@ -9,10 +9,7 @@ const createEvent = async (
 	data: CreateEventData
 ): Promise<{ code: Event["code"] }[]> => {
 	try {
-		const result = schema.safeParse(data);
-		if (!result.success) {
-			throw result.error;
-		}
+		schema.parse(data);
 
 		const session = await auth();
 
