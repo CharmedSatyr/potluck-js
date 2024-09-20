@@ -8,7 +8,6 @@ import { CreateEventData, schema } from "@/actions/db/create-event.types";
 const createEvent = async (
 	data: CreateEventData
 ): Promise<{ code: Event["code"] }[]> => {
-	throw new Error("Errrrrrr");
 	try {
 		const result = schema.safeParse(data);
 		if (!result.success) {
