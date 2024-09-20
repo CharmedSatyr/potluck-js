@@ -2,13 +2,14 @@
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
 import createEvent from "@/actions/db/create-event";
+import { schema, CreateEventData } from "@/actions/db/create-event.types";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import useCreateEventSessionStorage from "@/hooks/use-create-event-session-storage";
-import { CustomizableEventValues } from "@/db/schema/event";
 
 const CreateEventManager = () => {
 	const { data: authData, status } = useSession();
@@ -25,7 +26,8 @@ const CreateEventManager = () => {
 		reset,
 		setValue,
 		getValues,
-	} = useForm<CustomizableEventValues>({
+	} = useForm<CreateEventData>({
+		resolver: zodResolver(schema),
 		defaultValues: {},
 	});
 
@@ -35,7 +37,7 @@ const CreateEventManager = () => {
 		}
 
 		for (const property in storageValues) {
-			const key = property as keyof CustomizableEventValues;
+			const key = property as keyof CreateEventData;
 			const value = storageValues[key];
 
 			if (value === undefined) {
@@ -55,7 +57,7 @@ const CreateEventManager = () => {
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [reset, setValue]);
 
-	const onSubmit = handleSubmit(async (data: CustomizableEventValues) => {
+	const onSubmit = handleSubmit(async (data: CreateEventData) => {
 		if (!loggedIn) {
 			await signInWithDiscord();
 
@@ -68,6 +70,10 @@ const CreateEventManager = () => {
 			}
 
 			const [event] = await createEvent(data);
+			if (!event) {
+				// TODO: Allow retry.
+				return;
+			}
 
 			removeStorageValues();
 
