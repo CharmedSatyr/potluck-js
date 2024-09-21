@@ -1,17 +1,9 @@
 "use client";
 
-import _ from "lodash";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { RefObject } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { CustomizableEventValues } from "@/db/schema/event";
-import formatIsoTime from "@/utilities/format-iso-time";
-
-interface CustomizeEventSkeletonProps {
-	code?: string;
-	errors: FieldErrors<Partial<CustomizableEventValues>>;
-	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	register: UseFormRegister<CustomizableEventValues>;
-}
+import { CreateEventData } from "@/actions/db/create-event.types";
 
 const TitleManagement = ({ code }: { code?: string }) => {
 	if (!code) {
@@ -28,29 +20,44 @@ const TitleManagement = ({ code }: { code?: string }) => {
 	);
 };
 
+type Props = {
+	code?: string;
+	form: UseFormReturn<CreateEventData>;
+	ref: RefObject<HTMLFormElement>;
+	submitAction: (formData: FormData) => void;
+};
+
 export const CustomizeEventSkeleton = ({
 	code,
-	errors,
-	onSubmit,
-	register,
-}: CustomizeEventSkeletonProps) => {
-	const { data: authData, status } = useSession();
+	form,
+	ref,
+	submitAction,
+}: Props) => {
+	const { status } = useSession();
 	const loggedIn = status === "authenticated";
 
-	const username = authData?.user?.name;
+	const {
+		formState: { errors },
+		register,
+	} = form;
 
 	return (
-		<form className="form-control w-full" onSubmit={onSubmit}>
+		<form
+			ref={ref}
+			className="form-control w-full"
+			action={submitAction}
+			onSubmit={(e) => {
+				e.preventDefault();
+				form.handleSubmit(() => ref.current?.submit())(e);
+			}}
+		>
 			<TitleManagement code={code} />
 
 			<input
 				className={`-mt-2 w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none ${errors.name && "input-secondary border"}`}
 				placeholder="Untitled Event"
 				type="text"
-				{...register("name", {
-					required: "Event name is required",
-					maxLength: 256,
-				})}
+				{...register("name")}
 			/>
 			<span className="mb-2 text-secondary">{errors.name?.message}</span>
 
@@ -59,19 +66,14 @@ export const CustomizeEventSkeleton = ({
 					<input
 						className="border-base-100 bg-inherit text-2xl focus:border-b-2 focus:border-neutral focus:outline-none"
 						type="date"
-						{...register("startDate", {
-							required: "Date is required",
-						})}
+						{...register("startDate")}
 					/>{" "}
 					<span className="text-2xl font-bold"> at </span>
 					<input
 						className="w-4/12 border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
 						step={60}
 						type="time"
-						{...register("startTime", {
-							required: "Time is required",
-							setValueAs: formatIsoTime,
-						})}
+						{...register("startTime")}
 					/>
 				</div>
 				<div>
@@ -89,10 +91,7 @@ export const CustomizeEventSkeleton = ({
 					className="my-2 w-full border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
 					placeholder="Place name, address, or link"
 					type="text"
-					{...register("location", {
-						required: "Location is required",
-						maxLength: 256,
-					})}
+					{...register("location")}
 				/>
 				<span className="text-secondary">{errors.location?.message}</span>
 			</div>
@@ -102,12 +101,9 @@ export const CustomizeEventSkeleton = ({
 					<span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
 					<input
 						className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
-						placeholder={username ? "(optional) Nickname" : "Nickname"}
+						placeholder={loggedIn ? "(optional) Nickname" : "Nickname"}
 						type="text"
-						{...register("hosts", {
-							maxLength: 256,
-							required: username ? false : "Host name is required",
-						})}
+						{...register("hosts")}
 					/>
 				</div>
 				<span className="mb-2 text-secondary">{errors.hosts?.message}</span>
@@ -116,14 +112,13 @@ export const CustomizeEventSkeleton = ({
 			<input
 				className="my-2 w-full border-b-2 border-base-100 bg-inherit focus:border-neutral focus:outline-none"
 				placeholder="(optional) Add a description of your event"
-				{...register("description", {
-					maxLength: 256,
-				})}
+				{...register("description")}
 			/>
 
 			{!code && (
 				<input
 					className="btn btn-primary my-2 w-full"
+					disabled={!loggedIn}
 					type="submit"
 					value={loggedIn ? "Continue" : "Sign in to Continue"}
 				/>

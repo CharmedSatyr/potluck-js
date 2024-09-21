@@ -28,7 +28,7 @@ export const schema: z.ZodType<CustomizableEventValues> = z
 			.string()
 			.transform(formatIsoTime)
 			.refine((val) => /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(val), {
-				message: "Time required",
+				message: "Time required.",
 			}),
 	})
 	.required();
