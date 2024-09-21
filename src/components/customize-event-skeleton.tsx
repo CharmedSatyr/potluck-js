@@ -3,7 +3,7 @@
 import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { CreateEventData } from "@/actions/db/create-event.types";
+import { CreateEventFormData } from "@/app/start/create-event/submit-action.types";
 
 const TitleManagement = ({ code }: { code?: string }) => {
 	if (!code) {
@@ -22,7 +22,7 @@ const TitleManagement = ({ code }: { code?: string }) => {
 
 type Props = {
 	code?: string;
-	form: UseFormReturn<CreateEventData>;
+	form: UseFormReturn<CreateEventFormData>;
 	ref: RefObject<HTMLFormElement>;
 	submitAction: (formData: FormData) => void;
 };

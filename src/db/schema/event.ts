@@ -52,7 +52,13 @@ export const event = pgTable(
 
 export type Event = typeof event.$inferSelect;
 
-export type CustomizableEventValues = Pick<
+export type EventUserValues = Pick<
 	Event,
-	"description" | "hosts" | "location" | "name" | "startDate" | "startTime"
+	| "createdBy"
+	| "description"
+	| "hosts"
+	| "location"
+	| "name"
+	| "startDate"
+	| "startTime"
 >;
