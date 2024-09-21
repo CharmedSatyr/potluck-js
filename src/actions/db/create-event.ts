@@ -1,29 +1,17 @@
 "use server";
 
-import { auth } from "@/auth";
+import { z } from "zod";
 import db from "@/db/connection";
 import { Event, event } from "@/db/schema/event";
-import { CreateEventData, schema } from "@/actions/db/create-event.types";
+import { schema } from "@/actions/db/create-event.types";
 
 const createEvent = async (
-	data: CreateEventData
+	data: z.infer<typeof schema>
 ): Promise<{ code: Event["code"] }[]> => {
 	try {
 		schema.parse(data);
 
-		const session = await auth();
-
-		if (!session?.user?.id) {
-			throw new Error("Not authenticated");
-		}
-
-		return await db
-			.insert(event)
-			.values({
-				...data,
-				createdBy: session.user.id,
-			})
-			.returning({ code: event.code });
+		return await db.insert(event).values(data).returning({ code: event.code });
 	} catch (err) {
 		console.error(err);
 
