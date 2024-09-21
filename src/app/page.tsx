@@ -3,7 +3,6 @@ import findEvent from "@/actions/db/find-event";
 import { Event } from "@/db/schema/event";
 import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
-import CreateEventButton from "@/components/create-event-button";
 
 const findEventExists = async (code: Event["code"]): Promise<boolean> => {
 	"use server";
@@ -22,7 +21,7 @@ const Home = () => {
 			<div className="mt-20 flex min-h-60 w-full justify-center">
 				<div className="divider divider-start divider-horizontal w-fit">
 					<Link href="/start" className="btn btn-primary text-2xl">
-						<CreateEventButton />
+						<button>Create an Event</button>
 					</Link>
 				</div>
 				<div className="divider divider-horizontal">OR</div>
