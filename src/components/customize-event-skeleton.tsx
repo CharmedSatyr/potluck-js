@@ -38,6 +38,7 @@ export const CustomizeEventSkeleton = ({
 
 	const {
 		formState: { errors },
+		handleSubmit,
 		register,
 	} = form;
 
@@ -47,12 +48,8 @@ export const CustomizeEventSkeleton = ({
 			className="form-control w-full"
 			action={submitAction}
 			onSubmit={(e) => {
-				try {
-					e.preventDefault();
-					form.handleSubmit(() => ref.current?.submit())(e);
-				} catch (err) {
-					console.log("Error:", err);
-				}
+				// Use handleSubmit for validation and submitAction for form submit.
+				handleSubmit(() => ref.current?.submit())(e);
 			}}
 		>
 			<TitleManagement code={code} />
