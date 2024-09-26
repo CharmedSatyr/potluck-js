@@ -13,7 +13,7 @@ export const loginAction = async (
 ): Promise<CreateEventFormState> => {
 	const params = new URLSearchParams();
 	for (const [key, val] of formData) {
-		params.append(key, JSON.stringify(val));
+		params.append(key, String(val));
 	}
 
 	params.append("source", "discord");
@@ -32,7 +32,7 @@ export const createEventAction = async (
 
 	const fields: Record<string, string> = {};
 	for (const key of Object.keys(data)) {
-		fields[key] = JSON.stringify(data[key]);
+		fields[key] = String(data[key]);
 	}
 
 	const parsed = formSchema.safeParse(fields);
