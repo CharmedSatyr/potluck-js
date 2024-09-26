@@ -3,7 +3,7 @@
 import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { CreateEventFormData } from "@/app/start/create-event/submit-action.types";
+import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
 
 const TitleManagement = ({ code }: { code?: string }) => {
 	if (!code) {
@@ -47,8 +47,12 @@ export const CustomizeEventSkeleton = ({
 			className="form-control w-full"
 			action={submitAction}
 			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit(() => ref.current?.submit())(e);
+				try {
+					e.preventDefault();
+					form.handleSubmit(() => ref.current?.submit())(e);
+				} catch (err) {
+					console.log("Error:", err);
+				}
 			}}
 		>
 			<TitleManagement code={code} />
@@ -118,7 +122,6 @@ export const CustomizeEventSkeleton = ({
 			{!code && (
 				<input
 					className="btn btn-primary my-2 w-full"
-					disabled={!loggedIn}
 					type="submit"
 					value={loggedIn ? "Continue" : "Sign in to Continue"}
 				/>

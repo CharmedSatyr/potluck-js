@@ -1,39 +1,82 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import submitAction from "@/app/start/create-event/submit-action";
+import {
+	createEventAction,
+	loginAction,
+} from "@/app/start/create-event/submit-actions";
 import {
 	formSchema,
 	CreateEventFormData,
-} from "@/app/start/create-event/submit-action.types";
+} from "@/app/start/create-event/submit-actions.types";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
+import { useSession } from "next-auth/react";
 
 const CreateEventManager = () => {
-	const { push } = useRouter();
+	const path = usePathname();
 	const ref = useRef<HTMLFormElement>(null);
+	const { push } = useRouter();
+	const session = useSession();
+	const searchParams = useSearchParams();
+
+	const [defaultValues] = useState<CreateEventFormData>(() => {
+		const values: CreateEventFormData = {
+			description: "",
+			hosts: "",
+			location: "",
+			name: "",
+			startDate: "",
+			startTime: "",
+		};
+
+		if (searchParams.get("source") !== "discord") {
+			return values;
+		}
+
+		for (const key in values) {
+			const searchValue = searchParams.get(key);
+			if (!searchValue) {
+				continue;
+			}
+			values[key as keyof CreateEventFormData] = searchValue;
+		}
+
+		return values;
+	});
+
+	useEffect(() => {
+		if (!defaultValues) {
+			return;
+		}
+
+		window.history.replaceState(null, "", path);
+	}, [defaultValues]);
+
+	const submitAction =
+		session.status === "authenticated" ? createEventAction : loginAction;
 
 	const [state, formAction] = useActionState(submitAction, {
 		fields: {},
 		message: "",
+		path,
 		success: false,
 	});
 
 	const form = useForm<CreateEventFormData>({
 		resolver: zodResolver(formSchema),
-		defaultValues: state.fields,
+		defaultValues: { ...defaultValues, ...state.fields },
 	});
 
 	useEffect(() => {
 		if (!state.success) {
-			console.error("Message:", state.message, "\nIssues:", state.issues);
 			return;
 		}
 
 		push(`/event/${state.code}`);
-	}, [push, state]);
+	}, [state]);
 
 	return (
 		<CustomizeEventSkeleton form={form} ref={ref} submitAction={formAction} />

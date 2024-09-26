@@ -1,21 +1,38 @@
 "use server";
 
 import createEvent from "@/actions/db/create-event";
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import {
 	formSchema,
 	CreateEventFormState,
-} from "@/app/start/create-event/submit-action.types";
+} from "@/app/start/create-event/submit-actions.types";
 
-const submitAction = async (
-	prevState: unknown,
+export const loginAction = async (
+	prevState: CreateEventFormState,
+	formData: FormData
+): Promise<CreateEventFormState> => {
+	const params = new URLSearchParams();
+	for (const [key, val] of formData) {
+		params.append(key, JSON.stringify(val));
+	}
+
+	params.append("source", "discord");
+	await signIn("discord", {
+		redirectTo: prevState.path.concat("?", params.toString()),
+	});
+
+	return prevState;
+};
+
+export const createEventAction = async (
+	prevState: CreateEventFormState,
 	formData: FormData
 ): Promise<CreateEventFormState> => {
 	const data = Object.fromEntries(formData);
 
 	const fields: Record<string, string> = {};
 	for (const key of Object.keys(data)) {
-		fields[key] = data[key].toString();
+		fields[key] = JSON.stringify(data[key]);
 	}
 
 	const parsed = formSchema.safeParse(fields);
@@ -25,6 +42,7 @@ const submitAction = async (
 			fields,
 			issues: parsed.error.issues.map((issue) => issue.message),
 			message: "Invalid form data",
+			path: prevState.path,
 			success: false,
 		};
 	}
@@ -35,6 +53,7 @@ const submitAction = async (
 		return {
 			fields,
 			message: "Not authenticated",
+			path: prevState.path,
 			success: false,
 		};
 	}
@@ -48,6 +67,7 @@ const submitAction = async (
 		return {
 			fields,
 			message: "Failed to create event",
+			path: prevState.path,
 			success: false,
 		};
 	}
@@ -56,8 +76,7 @@ const submitAction = async (
 		code: result.code,
 		fields: {},
 		message: "Event created",
+		path: prevState.path,
 		success: true,
 	};
 };
-
-export default submitAction;

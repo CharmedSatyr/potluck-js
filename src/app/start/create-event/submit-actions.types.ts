@@ -10,5 +10,6 @@ export type CreateEventFormState = {
 	fields: Record<string, string>;
 	issues?: string[];
 	message: string;
+	path: string;
 	success: boolean;
 };
