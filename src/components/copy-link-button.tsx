@@ -1,6 +1,6 @@
 "use client";
 
-import siteMetadata from "@/data/site-metadata";
+import buildCurrentUrl from "@/utilities/build-current-url";
 import {
 	ClipboardDocumentCheckIcon,
 	ClipboardDocumentIcon,
@@ -20,12 +20,8 @@ const CopyLinkButton = ({ className }: Props) => {
 	const [clicked, setClicked] = useState<boolean>(false);
 
 	const copyUrlToClipboard = (): void => {
-		const urlBase =
-			process.env.NODE_ENV === "development"
-				? window.location.origin
-				: siteMetadata.siteUrl;
-
-		navigator.clipboard.writeText(urlBase.concat(pathName));
+		const url = buildCurrentUrl(pathName);
+		navigator.clipboard.writeText(url);
 	};
 
 	const copyWithReset = () => {
