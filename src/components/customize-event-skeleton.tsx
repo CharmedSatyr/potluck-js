@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject } from "react";
+import { RefObject, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
@@ -50,22 +50,27 @@ export const CustomizeEventSkeleton = ({
 	submitAction,
 }: Props) => {
 	const {
-		formState: { errors },
+		formState: { errors, isSubmitSuccessful },
 		handleSubmit,
 		register,
 	} = form;
+
+	useEffect(() => {
+		// Submit programmatically once useForm internal state is updated to success.
+		if (!isSubmitSuccessful) {
+			return;
+		}
+
+		ref.current?.submit();
+	}, [isSubmitSuccessful]);
 
 	return (
 		<form
 			ref={ref}
 			className="form-control w-full"
 			action={submitAction}
-			onSubmit={async (e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				// Validate with handleSubmit before calling submitAction
-				handleSubmit(() => ref.current?.submit())(e);
-			}}
+			// Validate with handleSubmit; perform no-op; call handleSubmit's return fn with e to update useForm state.
+			onSubmit={handleSubmit(() => {})}
 		>
 			<Title code={code} />
 

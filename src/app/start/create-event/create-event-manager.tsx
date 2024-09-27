@@ -79,7 +79,7 @@ const CreateEventManager = () => {
 		push(`/event/${state.code}`);
 	}, [state]);
 
-	const loading = isPending || state.success || !defaultValues;
+	const loading = isPending || state.success || form.formState.isSubmitting;
 
 	return (
 		<div className="flex items-center justify-center">
