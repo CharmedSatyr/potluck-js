@@ -4,8 +4,9 @@ import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
+import { useFormStatus } from "react-dom";
 
-const TitleManagement = ({ code }: { code?: string }) => {
+const Title = ({ code }: { code?: string }) => {
 	if (!code) {
 		return <h1>Create an Event</h1>;
 	}
@@ -17,6 +18,21 @@ const TitleManagement = ({ code }: { code?: string }) => {
 			</h1>
 			<input className="btn btn-primary w-36" type="submit" value="Save" />
 		</div>
+	);
+};
+
+const SubmitButton = () => {
+	const session = useSession();
+	const loggedIn = session.status === "authenticated";
+	const status = useFormStatus();
+
+	return (
+		<input
+			className="btn btn-primary my-2 w-full"
+			disabled={status.pending}
+			type="submit"
+			value={loggedIn ? "Continue" : "Sign in to Continue"}
+		/>
 	);
 };
 
@@ -33,9 +49,6 @@ export const CustomizeEventSkeleton = ({
 	ref,
 	submitAction,
 }: Props) => {
-	const { status } = useSession();
-	const loggedIn = status === "authenticated";
-
 	const {
 		formState: { errors },
 		handleSubmit,
@@ -47,12 +60,14 @@ export const CustomizeEventSkeleton = ({
 			ref={ref}
 			className="form-control w-full"
 			action={submitAction}
-			onSubmit={(e) => {
-				// Use handleSubmit for validation and submitAction for form submit.
+			onSubmit={async (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				// Validate with handleSubmit before calling submitAction
 				handleSubmit(() => ref.current?.submit())(e);
 			}}
 		>
-			<TitleManagement code={code} />
+			<Title code={code} />
 
 			<input
 				className={`-mt-2 w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none ${errors.name && "input-secondary border"}`}
@@ -102,7 +117,7 @@ export const CustomizeEventSkeleton = ({
 					<span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
 					<input
 						className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
-						placeholder={loggedIn ? "(optional) Nickname" : "Nickname"}
+						placeholder={"(optional) Nickname"}
 						type="text"
 						{...register("hosts")}
 					/>
@@ -116,13 +131,7 @@ export const CustomizeEventSkeleton = ({
 				{...register("description")}
 			/>
 
-			{!code && (
-				<input
-					className="btn btn-primary my-2 w-full"
-					type="submit"
-					value={loggedIn ? "Continue" : "Sign in to Continue"}
-				/>
-			)}
+			{!code && <SubmitButton />}
 		</form>
 	);
 };

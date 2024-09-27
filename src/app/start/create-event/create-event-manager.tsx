@@ -14,6 +14,7 @@ import {
 } from "@/app/start/create-event/submit-actions.types";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import { useSession } from "next-auth/react";
+import LoadingIndicator from "@/components/loading-indicator";
 
 const CreateEventManager = () => {
 	const path = usePathname();
@@ -58,7 +59,7 @@ const CreateEventManager = () => {
 	const submitAction =
 		session.status === "authenticated" ? createEventAction : loginAction;
 
-	const [state, formAction] = useActionState(submitAction, {
+	const [state, formAction, isPending] = useActionState(submitAction, {
 		fields: {},
 		message: "",
 		path,
@@ -78,8 +79,13 @@ const CreateEventManager = () => {
 		push(`/event/${state.code}`);
 	}, [state]);
 
+	const loading = isPending || state.success || !defaultValues;
+
 	return (
-		<CustomizeEventSkeleton form={form} ref={ref} submitAction={formAction} />
+		<div className="flex items-center justify-center">
+			<CustomizeEventSkeleton form={form} ref={ref} submitAction={formAction} />
+			{loading && <LoadingIndicator />}
+		</div>
 	);
 };
 
