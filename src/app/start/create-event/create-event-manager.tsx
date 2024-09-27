@@ -79,11 +79,20 @@ const CreateEventManager = () => {
 		push(`/event/${state.code}`);
 	}, [state]);
 
-	const loading = isPending || state.success || form.formState.isSubmitting;
+	const loading =
+		isPending ||
+		state.success ||
+		form.formState.isSubmitting ||
+		form.formState.isSubmitSuccessful;
 
 	return (
 		<div className="flex items-center justify-center">
-			<CustomizeEventSkeleton form={form} ref={ref} submitAction={formAction} />
+			<CustomizeEventSkeleton
+				form={form}
+				loading={loading}
+				ref={ref}
+				submitAction={formAction}
+			/>
 			{loading && <LoadingIndicator />}
 		</div>
 	);

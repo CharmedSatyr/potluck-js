@@ -4,7 +4,6 @@ import { RefObject, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
-import { useFormStatus } from "react-dom";
 
 const Title = ({ code }: { code?: string }) => {
 	if (!code) {
@@ -21,15 +20,14 @@ const Title = ({ code }: { code?: string }) => {
 	);
 };
 
-const SubmitButton = () => {
+const SubmitButton = ({ disabled }: { disabled: boolean }) => {
 	const session = useSession();
 	const loggedIn = session.status === "authenticated";
-	const status = useFormStatus();
 
 	return (
 		<input
 			className="btn btn-primary my-2 w-full"
-			disabled={status.pending}
+			disabled={disabled}
 			type="submit"
 			value={loggedIn ? "Continue" : "Sign in to Continue"}
 		/>
@@ -39,6 +37,7 @@ const SubmitButton = () => {
 type Props = {
 	code?: string;
 	form: UseFormReturn<CreateEventFormData>;
+	loading: boolean;
 	ref: RefObject<HTMLFormElement>;
 	submitAction: (formData: FormData) => void;
 };
@@ -46,6 +45,7 @@ type Props = {
 export const CustomizeEventSkeleton = ({
 	code,
 	form,
+	loading,
 	ref,
 	submitAction,
 }: Props) => {
@@ -136,7 +136,7 @@ export const CustomizeEventSkeleton = ({
 				{...register("description")}
 			/>
 
-			{!code && <SubmitButton />}
+			{!code && <SubmitButton disabled={loading} />}
 		</form>
 	);
 };
