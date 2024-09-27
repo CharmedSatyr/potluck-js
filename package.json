@@ -30,8 +30,8 @@
 		"lodash": "^4.17.21",
 		"next": "^15.0.0-rc.0",
 		"next-auth": "^5.0.0-beta.20",
-		"react": "^19.0.0-rc-3dfd5d9e-20240910",
-		"react-dom": "^19.0.0-rc-3dfd5d9e-20240910",
+		"react": "^19.0.0-rc-67fee58b-20240926",
+		"react-dom": "^19.0.0-rc-67fee58b-20240926",
 		"react-hook-form": "^7.53.0",
 		"zod": "^3.23.8"
 	},
