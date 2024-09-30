@@ -38,9 +38,13 @@ export const createEventAction = async (
 	const parsed = formSchema.safeParse(fields);
 
 	if (!parsed.success) {
+		console.warn(
+			"Invalid form data:",
+			parsed.error.issues.map((issue) => issue.message)
+		);
+
 		return {
 			fields,
-			issues: parsed.error.issues.map((issue) => issue.message),
 			message: "Invalid form data",
 			path: prevState.path,
 			success: false,
@@ -74,7 +78,7 @@ export const createEventAction = async (
 
 	return {
 		code: result.code,
-		fields: {},
+		fields,
 		message: "Event created",
 		path: prevState.path,
 		success: true,

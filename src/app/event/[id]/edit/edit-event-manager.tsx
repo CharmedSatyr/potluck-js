@@ -12,6 +12,7 @@ import { Event } from "@/db/schema/event";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import { useActionState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import LoadingIndicator from "@/components/loading-indicator";
 
 type Props = {
 	code: Event["code"];
@@ -26,12 +27,13 @@ const EditEventManager = ({ code, currentValues }: Props) => {
 		FormData
 	>(updateEventAction, {
 		code,
-		fields: {},
+		fields: currentValues,
 		message: "",
 		success: false,
 	});
 
 	const form = useForm<UpdateEventFormData>({
+		mode: "onTouched",
 		resolver: zodResolver(formSchema),
 		defaultValues: { ...currentValues, ...state.fields },
 	});
@@ -44,19 +46,18 @@ const EditEventManager = ({ code, currentValues }: Props) => {
 		push(`/event/${state.code}`);
 	}, [state]);
 
-	const loading =
-		isPending ||
-		state.success ||
-		form.formState.isSubmitting ||
-		form.formState.isSubmitSuccessful;
+	const loading = isPending || state.success;
 
 	return (
-		<CustomizeEventSkeleton
-			code={code}
-			form={form}
-			loading={loading}
-			submitAction={formAction}
-		/>
+		<div className="flex items-center justify-center">
+			<CustomizeEventSkeleton
+				code={code}
+				form={form}
+				loading={loading}
+				submitAction={formAction}
+			/>
+			{loading && <LoadingIndicator />}
+		</div>
 	);
 };
 

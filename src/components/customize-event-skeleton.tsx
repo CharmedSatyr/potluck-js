@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
@@ -21,20 +20,6 @@ const Title = ({ code }: { code?: string }) => {
 	);
 };
 
-const SubmitButton = ({ disabled }: { disabled: boolean }) => {
-	const session = useSession();
-	const loggedIn = session.status === "authenticated";
-
-	return (
-		<input
-			className="btn btn-primary my-2 w-full"
-			disabled={disabled}
-			type="submit"
-			value={loggedIn ? "Continue" : "Sign in to Continue"}
-		/>
-	);
-};
-
 type Props = {
 	code?: string;
 	form: UseFormReturn<CreateEventFormData> | UseFormReturn<UpdateEventFormData>;
@@ -48,31 +33,16 @@ export const CustomizeEventSkeleton = ({
 	loading,
 	submitAction,
 }: Props) => {
-	const ref = useRef<HTMLFormElement>(null);
+	const session = useSession();
+	const loggedIn = session.status === "authenticated";
 
 	const {
-		formState: { errors, isSubmitSuccessful },
-		handleSubmit,
+		formState: { errors },
 		register,
 	} = form;
 
-	useEffect(() => {
-		// Submit programmatically once useForm internal state is updated to success.
-		if (!isSubmitSuccessful) {
-			return;
-		}
-
-		ref.current?.submit();
-	}, [isSubmitSuccessful]);
-
 	return (
-		<form
-			ref={ref}
-			className="form-control w-full"
-			action={submitAction}
-			// Validate with handleSubmit; perform no-op; call handleSubmit's return fn with e to update useForm state.
-			onSubmit={handleSubmit(() => {})}
-		>
+		<form action={submitAction} className="form-control w-full" noValidate>
 			<Title code={code} />
 
 			<input
@@ -137,7 +107,14 @@ export const CustomizeEventSkeleton = ({
 				{...register("description")}
 			/>
 
-			{!code && <SubmitButton disabled={loading} />}
+			{!code && (
+				<input
+					className="btn btn-primary my-2 w-full"
+					disabled={loading || !form.formState.isValid}
+					type="submit"
+					value={loggedIn ? "Continue" : "Sign in to Continue"}
+				/>
+			)}
 		</form>
 	);
 };

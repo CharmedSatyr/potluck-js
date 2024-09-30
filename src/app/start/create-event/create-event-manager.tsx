@@ -63,13 +63,14 @@ const CreateEventManager = () => {
 		CreateEventFormState,
 		FormData
 	>(submitAction, {
-		fields: {},
+		fields: defaultValues,
 		message: "",
 		path,
 		success: false,
 	});
 
 	const form = useForm<CreateEventFormData>({
+		mode: "onTouched",
 		resolver: zodResolver(formSchema),
 		defaultValues: { ...defaultValues, ...state.fields },
 	});
@@ -82,11 +83,7 @@ const CreateEventManager = () => {
 		push(`/event/${state.code}`);
 	}, [state]);
 
-	const loading =
-		isPending ||
-		state.success ||
-		form.formState.isSubmitting ||
-		form.formState.isSubmitSuccessful;
+	const loading = isPending || state.success;
 
 	return (
 		<div className="flex items-center justify-center">

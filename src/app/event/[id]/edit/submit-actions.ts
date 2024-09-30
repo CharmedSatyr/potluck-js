@@ -35,10 +35,14 @@ export const updateEventAction = async (
 	const parsed = formSchema.safeParse(fields);
 
 	if (!parsed.success) {
+		console.warn(
+			"Invalid form data:",
+			parsed.error.issues.map((issue) => issue.message)
+		);
+
 		return {
 			code: prevState.code,
 			fields,
-			issues: parsed.error.issues.map((issue) => issue.message),
 			message: "Invalid form data",
 			success: false,
 		};
