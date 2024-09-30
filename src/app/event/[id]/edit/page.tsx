@@ -2,11 +2,11 @@ import findEvent from "@/actions/db/find-event";
 import EditEventManager from "@/app/event/[id]/edit/edit-event-manager";
 import { UpdateEventFormData } from "./submit-actions.types";
 
-interface Props {
+type Props = {
 	params: {
 		id: string;
 	};
-}
+};
 
 const EditEventPage = async ({ params }: Props) => {
 	const [event] = await findEvent({ code: params.id });
