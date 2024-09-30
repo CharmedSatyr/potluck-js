@@ -4,6 +4,7 @@ import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
 import { UpdateEventFormData } from "@/app/event/[id]/edit/submit-actions.types";
+import { useFormStatus } from "react-dom";
 
 const Title = ({ code }: { code?: string }) => {
 	if (!code) {
@@ -20,6 +21,33 @@ const Title = ({ code }: { code?: string }) => {
 	);
 };
 
+const SubmitButton = ({ disabled }: { disabled: boolean }) => {
+	const session = useSession();
+	const loggedIn = session.status === "authenticated";
+	const { pending } = useFormStatus();
+
+	const getValue = (): string => {
+		if (!loggedIn) {
+			return "Sign in to Continue";
+		}
+
+		if (pending) {
+			return "Submitting...";
+		}
+
+		return "Continue";
+	};
+
+	return (
+		<input
+			className="btn btn-primary my-2 w-full"
+			disabled={disabled}
+			type="submit"
+			value={getValue()}
+		/>
+	);
+};
+
 type Props = {
 	code?: string;
 	form: UseFormReturn<CreateEventFormData> | UseFormReturn<UpdateEventFormData>;
@@ -33,9 +61,6 @@ export const CustomizeEventSkeleton = ({
 	loading,
 	submitAction,
 }: Props) => {
-	const session = useSession();
-	const loggedIn = session.status === "authenticated";
-
 	const {
 		formState: { errors },
 		register,
@@ -107,14 +132,7 @@ export const CustomizeEventSkeleton = ({
 				{...register("description")}
 			/>
 
-			{!code && (
-				<input
-					className="btn btn-primary my-2 w-full"
-					disabled={loading || !form.formState.isValid}
-					type="submit"
-					value={loggedIn ? "Continue" : "Sign in to Continue"}
-				/>
-			)}
+			{!code && <SubmitButton disabled={loading || !form.formState.isValid} />}
 		</form>
 	);
 };
