@@ -67,7 +67,7 @@ export const CustomizeEventSkeleton = ({
 	} = form;
 
 	return (
-		<form action={submitAction} className="form-control w-full" noValidate>
+		<form action={submitAction} className="form-control w-full">
 			<Title code={code} />
 
 			<input
