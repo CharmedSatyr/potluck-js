@@ -65,6 +65,9 @@ export const createEventAction = async (
 	const [result] = await createEvent({
 		...parsed.data,
 		createdBy: session.user.id,
+		hosts: parsed.data.hosts.length
+			? parsed.data.hosts
+			: (session.user?.name ?? "A Mysterious Figure"),
 	});
 
 	if (!result) {
