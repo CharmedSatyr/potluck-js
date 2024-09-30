@@ -12,12 +12,12 @@ import { Commitment } from "@/db/schema/commitment";
 import { Request } from "@/db/schema/request";
 import { User } from "@/db/schema/auth/user";
 
-interface Props {
+type Props = {
 	commitments: Commitment[];
 	index: number;
 	request: Request;
 	users: User[];
-}
+};
 
 type FormInput = Pick<Commitment, "description" | "quantity">;
 

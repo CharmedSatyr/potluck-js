@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Event, EVENT_CODE_LENGTH } from "@/db/schema/event";
 
-interface Props {
+type Props = {
 	findEventExistsAction: (eventCode: Event["code"]) => Promise<boolean>;
-}
+};
 
 interface FormInput {
 	eventCode: string;

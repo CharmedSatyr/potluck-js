@@ -8,9 +8,9 @@ import {
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-interface Props {
+type Props = {
 	className?: string;
-}
+};
 
 const TIME_TO_RESET_SECONDS = 8;
 

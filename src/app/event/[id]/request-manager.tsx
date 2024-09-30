@@ -3,11 +3,11 @@ import { User } from "@/db/schema/auth/user";
 import { Commitment } from "@/db/schema/commitment";
 import { Request } from "@/db/schema/request";
 
-interface Props {
+type Props = {
 	commitments: Commitment[];
 	requests: Request[];
 	users: User[];
-}
+};
 
 const RequestManager = ({ commitments, requests, users }: Props) => {
 	return (

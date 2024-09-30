@@ -2,14 +2,14 @@
 
 import { Dispatch, SetStateAction } from "react";
 
-interface Props {
+type Props = {
 	index: number;
 	labelText: string;
 	max: number;
 	min: number;
 	quantity: number;
 	setQuantity: Dispatch<SetStateAction<number>>;
-}
+};
 const QuantityInput = ({
 	index,
 	labelText,
