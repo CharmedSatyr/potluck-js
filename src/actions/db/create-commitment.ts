@@ -1,48 +1,25 @@
 "use server";
 
-import { JSONSchemaType } from "ajv";
-import ajv from "@/actions/ajv";
-import { auth } from "@/auth";
+import { z } from "zod";
+import { schema } from "@/actions/db/create-commitment.types";
 import db from "@/db/connection";
 import { Commitment, commitment } from "@/db/schema/commitment";
 
-type NewCommitment = Pick<Commitment, "description" | "quantity" | "requestId">;
-
-const schema: JSONSchemaType<NewCommitment> = {
-	type: "object",
-	properties: {
-		description: { type: "string" },
-		quantity: { type: "number" },
-		requestId: { type: "string" },
-	},
-	required: ["description", "quantity", "requestId"],
-	additionalProperties: false,
-};
-
-const validate = ajv.compile(schema);
-
 const createCommitment = async (
-	data: NewCommitment
+	data: z.infer<typeof schema>
 ): Promise<{ id: Commitment["id"] }[]> => {
-	if (!validate(data)) {
-		throw new Error(JSON.stringify(validate.errors));
+	try {
+		schema.parse(data);
+
+		return await db
+			.insert(commitment)
+			.values(data)
+			.returning({ id: commitment.id });
+	} catch (err) {
+		console.error(err);
+
+		return [];
 	}
-
-	const session = await auth();
-
-	if (!session?.user?.id) {
-		throw new Error("Not authenticated");
-	}
-
-	return await db
-		.insert(commitment)
-		.values({
-			createdBy: session.user.id,
-			description: data.description,
-			quantity: data.quantity,
-			requestId: data.requestId,
-		})
-		.returning({ id: commitment.id });
 };
 
 export default createCommitment;
