@@ -80,7 +80,7 @@ const CreateEventManager = () => {
 			return;
 		}
 
-		push(`/event/${state.code}`);
+		push(`/start/${state.code}/plan-food`);
 	}, [state]);
 
 	const loading = isPending || state.success;

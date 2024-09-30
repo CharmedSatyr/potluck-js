@@ -5,11 +5,11 @@ import RequestManager from "@/app/event/[id]/request-manager";
 import EventSkeleton from "@/components/event-skeleton";
 import findUsers from "@/actions/db/find-users";
 
-interface Props {
+type Props = {
 	params: {
 		id: string;
 	};
-}
+};
 
 const EventPage = async ({ params }: Props) => {
 	const [[event], requests, commitments] = await Promise.all([

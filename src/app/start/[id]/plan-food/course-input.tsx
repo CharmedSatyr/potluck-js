@@ -7,16 +7,16 @@ import {
 import {
 	FormInput,
 	MAX_REQUESTS,
-} from "@/app/start/plan-food/plan-food-manager";
+} from "@/app/start/[id]/plan-food/plan-food-manager";
 import QuantityInput from "@/components/quantity-input";
 
-interface CourseInputProps {
+type CourseInputProps = {
 	index: number;
 	multipleFields: boolean;
 	register: UseFormRegister<FormInput>;
 	remove: UseFieldArrayRemove;
 	setValue: UseFormSetValue<FormInput>;
-}
+};
 
 const CourseInput = ({
 	index,
