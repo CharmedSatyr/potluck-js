@@ -4,7 +4,7 @@ import { ArrowPathIcon, HomeModernIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const Error = ({
+const ErrorBoundary = ({
 	error,
 	reset,
 }: {
@@ -34,4 +34,4 @@ const Error = ({
 	);
 };
 
-export default Error;
+export default ErrorBoundary;
