@@ -10,7 +10,7 @@ import {
 } from "@/app/start/[id]/plan-food/plan-food-manager";
 import QuantityInput from "@/components/quantity-input";
 
-type CourseInputProps = {
+type Props = {
 	index: number;
 	multipleFields: boolean;
 	register: UseFormRegister<FormInput>;
@@ -24,7 +24,7 @@ const CourseInput = ({
 	register,
 	remove,
 	setValue,
-}: CourseInputProps) => {
+}: Props) => {
 	const [count, setCount] = useState<number>(1);
 
 	useEffect(() => {
