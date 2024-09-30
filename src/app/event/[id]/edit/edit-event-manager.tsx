@@ -1,83 +1,61 @@
 "use client";
 
-import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import updateEvent, { UpdatedEvent } from "@/actions/db/update-event";
-import { CustomizableEventValues, Event } from "@/db/schema/event";
+import { updateEventAction } from "@/app/event/[id]/edit/submit-actions";
+import {
+	formSchema,
+	UpdateEventFormData,
+	UpdateEventFormState,
+} from "@/app/event/[id]/edit/submit-actions.types";
+import { Event } from "@/db/schema/event";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
-import { revalidatePage } from "@/actions/revalidate-path";
+import { useActionState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type Props = Event;
+type Props = {
+	code: Event["code"];
+	currentValues: Required<UpdateEventFormData>;
+};
 
-const EditEventManager = ({
-	code,
-	createdBy,
-	description,
-	hosts,
-	location,
-	name,
-	startDate,
-	startTime,
-}: Props) => {
-	const session = useSession();
-	const { push, replace } = useRouter();
-	const {
-		formState: { errors },
-		getFieldState,
-		handleSubmit,
-		register,
-	} = useForm<CustomizableEventValues>({
-		defaultValues: {
-			name,
-			startDate,
-			startTime,
-			location,
-			hosts,
-			description,
-		},
+const EditEventManager = ({ code, currentValues }: Props) => {
+	const { push } = useRouter();
+
+	const [state, formAction, isPending] = useActionState<
+		UpdateEventFormState,
+		FormData
+	>(updateEventAction, {
+		code,
+		fields: {},
+		message: "",
+		success: false,
 	});
 
-	const onSubmit = handleSubmit(async (data: CustomizableEventValues) => {
-		try {
-			const modifiedValues = _.pickBy<UpdatedEvent>(
-				data,
-				(_value, key) =>
-					getFieldState(key as keyof CustomizableEventValues).isDirty
-			);
+	const form = useForm<UpdateEventFormData>({
+		resolver: zodResolver(formSchema),
+		defaultValues: { ...currentValues, ...state.fields },
+	});
 
-			if (Object.keys(modifiedValues).length === 0) {
-				push(`/event/${code}`);
-				return;
-			}
-
-			const updatedEvent = { ...modifiedValues, code };
-
-			const result = await updateEvent(updatedEvent);
-
-			if (!result.length) {
-				throw new Error("Failed to update event");
-			}
-
-			await revalidatePage(`/event/${code}`);
-
-			push(`/event/${code}`);
-		} catch (err) {
-			console.error(err);
+	useEffect(() => {
+		if (!state.success) {
+			return;
 		}
-	});
 
-	if (session?.data?.user?.id !== createdBy) {
-		replace(`/event/${code}`);
-	}
+		push(`/event/${state.code}`);
+	}, [state]);
+
+	const loading =
+		isPending ||
+		state.success ||
+		form.formState.isSubmitting ||
+		form.formState.isSubmitSuccessful;
 
 	return (
 		<CustomizeEventSkeleton
 			code={code}
-			errors={errors}
-			onSubmit={onSubmit}
-			register={register}
+			form={form}
+			loading={loading}
+			submitAction={formAction}
 		/>
 	);
 };

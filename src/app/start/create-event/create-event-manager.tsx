@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,7 @@ import {
 import {
 	formSchema,
 	CreateEventFormData,
+	CreateEventFormState,
 } from "@/app/start/create-event/submit-actions.types";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import { useSession } from "next-auth/react";
@@ -18,7 +19,6 @@ import LoadingIndicator from "@/components/loading-indicator";
 
 const CreateEventManager = () => {
 	const path = usePathname();
-	const ref = useRef<HTMLFormElement>(null);
 	const { push } = useRouter();
 	const session = useSession();
 	const searchParams = useSearchParams();
@@ -59,7 +59,10 @@ const CreateEventManager = () => {
 	const submitAction =
 		session.status === "authenticated" ? createEventAction : loginAction;
 
-	const [state, formAction, isPending] = useActionState(submitAction, {
+	const [state, formAction, isPending] = useActionState<
+		CreateEventFormState,
+		FormData
+	>(submitAction, {
 		fields: {},
 		message: "",
 		path,
@@ -90,7 +93,6 @@ const CreateEventManager = () => {
 			<CustomizeEventSkeleton
 				form={form}
 				loading={loading}
-				ref={ref}
 				submitAction={formAction}
 			/>
 			{loading && <LoadingIndicator />}
