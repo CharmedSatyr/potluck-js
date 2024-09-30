@@ -1,9 +1,10 @@
 "use client";
 
-import { RefObject, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
+import { UpdateEventFormData } from "@/app/event/[id]/edit/submit-actions.types";
 
 const Title = ({ code }: { code?: string }) => {
 	if (!code) {
@@ -36,9 +37,8 @@ const SubmitButton = ({ disabled }: { disabled: boolean }) => {
 
 type Props = {
 	code?: string;
-	form: UseFormReturn<CreateEventFormData>;
+	form: UseFormReturn<CreateEventFormData> | UseFormReturn<UpdateEventFormData>;
 	loading: boolean;
-	ref: RefObject<HTMLFormElement>;
 	submitAction: (formData: FormData) => void;
 };
 
@@ -46,9 +46,10 @@ export const CustomizeEventSkeleton = ({
 	code,
 	form,
 	loading,
-	ref,
 	submitAction,
 }: Props) => {
+	const ref = useRef<HTMLFormElement>(null);
+
 	const {
 		formState: { errors, isSubmitSuccessful },
 		handleSubmit,
