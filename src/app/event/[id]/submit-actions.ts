@@ -1,7 +1,9 @@
+"use server";
+
 import createCommitment from "@/actions/db/create-commitment";
-import { revalidatePage } from "@/actions/revalidate-path";
 import { CreateCommitmentFormState, formSchema } from "./submit-actions.types";
 import { auth } from "@/auth";
+import { revalidatePage } from "@/actions/revalidate-path";
 
 export const createCommitmentAction = async (
 	prevState: CreateCommitmentFormState,
@@ -11,7 +13,7 @@ export const createCommitmentAction = async (
 
 	const fields: Record<string, string> = {};
 	for (const key of Object.keys(data)) {
-		fields[key] = String(data[key]);
+		fields[key] = data[key] as string;
 	}
 
 	const parsed = formSchema.safeParse(fields);
@@ -19,12 +21,14 @@ export const createCommitmentAction = async (
 	if (!parsed.success) {
 		console.warn(
 			"Invalid form data:",
+			fields,
 			parsed.error.issues.map((issue) => issue.message)
 		);
 
 		return {
 			fields,
 			message: "Invalid form data",
+			path: prevState.path,
 			requestId: prevState.requestId,
 			success: false,
 		};
@@ -36,6 +40,7 @@ export const createCommitmentAction = async (
 		return {
 			fields,
 			message: "Not authenticated",
+			path: prevState.path,
 			requestId: prevState.requestId,
 			success: false,
 		};
@@ -51,22 +56,19 @@ export const createCommitmentAction = async (
 		return {
 			fields,
 			message: "Failed to create event",
+			path: prevState.path,
 			requestId: prevState.requestId,
 			success: false,
 		};
 	}
 
+	await revalidatePage(prevState.path);
+
 	return {
 		fields,
 		message: "Event created",
+		path: prevState.path,
 		requestId: prevState.requestId,
 		success: true,
 	};
-
-	/**
-    reset();
-    setCommitQuantity(0);
-
-    await revalidatePage(pathName);
-    */
 };

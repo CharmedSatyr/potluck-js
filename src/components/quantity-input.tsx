@@ -47,6 +47,7 @@ const QuantityInput = ({
 					</svg>
 				</button>
 
+				{/** TODO: This doesn't function like an input in practice. */}
 				<input
 					type="text"
 					className="input join-item input-bordered w-14 border"
