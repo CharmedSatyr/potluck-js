@@ -45,8 +45,9 @@ const CommitmentForm = ({ commitments, index, request, users }: Props) => {
 	});
 	const { register } = form;
 
-	const stillNeeded = request.count - commitments.length;
-	const disabled = isPending || stillNeeded === 0 || commitQuantity < 1;
+	const commitmentsStillNeeded = request.count - commitments.length;
+	const isButtonDisabled =
+		isPending || commitmentsStillNeeded === 0 || commitQuantity < 1;
 
 	return (
 		<form action={formAction} className="form-control w-full" noValidate>
@@ -61,7 +62,7 @@ const CommitmentForm = ({ commitments, index, request, users }: Props) => {
 				<QuantityInput
 					index={index}
 					labelText="Quantity You'll Bring"
-					max={stillNeeded}
+					max={commitmentsStillNeeded}
 					min={1}
 					quantity={commitQuantity}
 					setQuantity={setCommitQuantity}
@@ -87,7 +88,7 @@ const CommitmentForm = ({ commitments, index, request, users }: Props) => {
 					})}
 				/>
 				<input
-					disabled={disabled}
+					disabled={isButtonDisabled}
 					className="btn btn-secondary"
 					type="submit"
 					value="Save"
