@@ -2,7 +2,8 @@ import RequestContainer from "@/app/event/[id]/request-container";
 import { User } from "@/db/schema/auth/user";
 import { Commitment } from "@/db/schema/commitment";
 import { Request } from "@/db/schema/request";
-import CommitmentForm from "./commitment-form";
+import CreateCommitmentForm from "@/app/event/[id]/create-commitment-form";
+import CommitmentsTable from "@/app/event/[id]/commitments-table";
 
 type Props = {
 	commitments: Commitment[];
@@ -39,7 +40,16 @@ const RequestManager = ({ commitments, requests, users }: Props) => {
 								requestTotal={request.count}
 								committedUsers={relatedUsers}
 							>
-								<CommitmentForm
+								<h3 className="mt-0">Current Signups</h3>
+								{commitments.length ? (
+									<CommitmentsTable
+										commitments={relatedCommitments}
+										users={relatedUsers}
+									/>
+								) : (
+									<p>None yet. Be the first!</p>
+								)}
+								<CreateCommitmentForm
 									commitments={relatedCommitments}
 									index={index}
 									request={request}

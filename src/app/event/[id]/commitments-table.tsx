@@ -1,6 +1,7 @@
 import { Commitment } from "@/db/schema/commitment";
 import { User } from "@/db/schema/auth/user";
 import Image from "next/image";
+import DeleteCommitmentForm from "@/app/event/[id]/delete-commitment-form";
 
 const CommitmentsTable = ({
 	commitments,
@@ -37,6 +38,9 @@ const CommitmentsTable = ({
 
 						return (
 							<tr key={commitment.id}>
+								<td>
+									<DeleteCommitmentForm id={commitment.id} />
+								</td>
 								<td className="avatar">{image}</td>
 								<td>{user.name}</td>
 								<td>{commitment.quantity}</td>

@@ -8,7 +8,6 @@ import {
 	formSchema,
 } from "@/app/event/[id]/submit-actions.types";
 import { Commitment } from "@/db/schema/commitment";
-import CommitmentsTable from "@/app/event/[id]/commitments-table";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@/db/schema/auth/user";
@@ -23,7 +22,12 @@ type Props = {
 	users: Pick<User, "id" | "image" | "name">[];
 };
 
-const CommitmentForm = ({ commitments, index, request, users }: Props) => {
+const CreateCommitmentForm = ({
+	commitments,
+	index,
+	request,
+	users,
+}: Props) => {
 	const path = usePathname();
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
 
@@ -51,13 +55,6 @@ const CommitmentForm = ({ commitments, index, request, users }: Props) => {
 
 	return (
 		<form action={formAction} className="form-control w-full" noValidate>
-			<h3 className="mt-0">Current Signups</h3>
-			{commitments.length ? (
-				<CommitmentsTable commitments={commitments} users={users} />
-			) : (
-				<p>None yet. Be the first!</p>
-			)}
-
 			<div className="flex w-full items-end justify-between">
 				<QuantityInput
 					index={index}
@@ -98,4 +95,4 @@ const CommitmentForm = ({ commitments, index, request, users }: Props) => {
 	);
 };
 
-export default CommitmentForm;
+export default CreateCommitmentForm;

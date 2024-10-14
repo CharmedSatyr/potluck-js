@@ -72,3 +72,7 @@ export const createCommitmentAction = async (
 		success: true,
 	};
 };
+
+export const deleteCommitmentAction = async (id: string) => {
+	console.log("deleting...", id);
+};
