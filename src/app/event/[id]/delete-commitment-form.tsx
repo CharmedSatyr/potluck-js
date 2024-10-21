@@ -3,6 +3,9 @@
 import { Commitment } from "@/db/schema/commitment";
 import { deleteCommitmentAction } from "./submit-actions";
 import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { DeleteCommitmentFormState } from "./submit-actions.types";
+import { usePathname } from "next/navigation";
 
 type Props = {
 	id: Commitment["id"];
@@ -10,6 +13,7 @@ type Props = {
 
 const SubmitButton = () => {
 	const { pending } = useFormStatus();
+
 	return (
 		<button className="btn btn-sm" type="submit">
 			{pending ? "..." : "✕"}
@@ -18,8 +22,19 @@ const SubmitButton = () => {
 };
 
 const DeleteCommitmentForm = (props: Props) => {
+	const path = usePathname();
+	const [, formAction] = useActionState<DeleteCommitmentFormState, FormData>(
+		deleteCommitmentAction,
+		{
+			commitmentId: props.id,
+			message: "",
+			path,
+			success: false,
+		}
+	);
+
 	return (
-		<form action={async () => await deleteCommitmentAction(props.id)}>
+		<form action={formAction}>
 			<SubmitButton />
 		</form>
 	);

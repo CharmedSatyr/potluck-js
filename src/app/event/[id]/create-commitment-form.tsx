@@ -1,16 +1,15 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createCommitmentAction } from "@/app/event/[id]/submit-actions";
 import {
 	CreateCommitmentFormData,
 	CreateCommitmentFormState,
-	formSchema,
+	createCommitmentFormSchema,
 } from "@/app/event/[id]/submit-actions.types";
 import { Commitment } from "@/db/schema/commitment";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "@/db/schema/auth/user";
 import { Request } from "@/db/schema/request";
 import QuantityInput from "@/components/quantity-input";
 import { usePathname } from "next/navigation";
@@ -19,15 +18,9 @@ type Props = {
 	commitments: Commitment[];
 	index: number;
 	request: Request;
-	users: Pick<User, "id" | "image" | "name">[];
 };
 
-const CreateCommitmentForm = ({
-	commitments,
-	index,
-	request,
-	users,
-}: Props) => {
+const CreateCommitmentForm = ({ commitments, index, request }: Props) => {
 	const path = usePathname();
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
 
@@ -42,9 +35,17 @@ const CreateCommitmentForm = ({
 		success: false,
 	});
 
+	useEffect(() => {
+		if (!state.success) {
+			return;
+		}
+
+		setCommitQuantity(0);
+	}, [state.success]);
+
 	const form = useForm<CreateCommitmentFormData>({
 		mode: "all",
-		resolver: zodResolver(formSchema),
+		resolver: zodResolver(createCommitmentFormSchema),
 		defaultValues: { description: "", quantity: 0, ...state.fields },
 	});
 	const { register } = form;

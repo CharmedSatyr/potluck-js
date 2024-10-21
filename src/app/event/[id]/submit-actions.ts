@@ -1,9 +1,14 @@
 "use server";
 
 import createCommitment from "@/actions/db/create-commitment";
-import { CreateCommitmentFormState, formSchema } from "./submit-actions.types";
+import {
+	CreateCommitmentFormState,
+	DeleteCommitmentFormState,
+	createCommitmentFormSchema,
+} from "@/app/event/[id]/submit-actions.types";
 import { auth } from "@/auth";
 import { revalidatePage } from "@/actions/revalidate-path";
+import deleteCommitment from "@/actions/db/delete-commitment";
 
 export const createCommitmentAction = async (
 	prevState: CreateCommitmentFormState,
@@ -16,7 +21,7 @@ export const createCommitmentAction = async (
 		fields[key] = data[key] as string;
 	}
 
-	const parsed = formSchema.safeParse(fields);
+	const parsed = createCommitmentFormSchema.safeParse(fields);
 
 	if (!parsed.success) {
 		console.warn(
@@ -73,6 +78,50 @@ export const createCommitmentAction = async (
 	};
 };
 
-export const deleteCommitmentAction = async (id: string) => {
-	console.log("deleting...", id);
+export const deleteCommitmentAction = async (
+	prevState: DeleteCommitmentFormState,
+	_: FormData
+): Promise<DeleteCommitmentFormState> => {
+	if (!prevState.commitmentId) {
+		return {
+			commitmentId: prevState.commitmentId,
+			message: "Missing commitment ID",
+			path: prevState.path,
+			success: false,
+		};
+	}
+
+	const session = await auth();
+
+	if (!session?.user?.id) {
+		return {
+			commitmentId: prevState.commitmentId,
+			message: "Not authenticated",
+			path: prevState.path,
+			success: false,
+		};
+	}
+
+	const [result] = await deleteCommitment({
+		createdBy: session.user.id,
+		id: prevState.commitmentId,
+	});
+
+	if (!result) {
+		return {
+			commitmentId: prevState.commitmentId,
+			message: "Failed to delete commitment",
+			path: prevState.path,
+			success: false,
+		};
+	}
+
+	await revalidatePage(prevState.path);
+
+	return {
+		commitmentId: prevState.commitmentId,
+		message: "Commitment deleted",
+		path: prevState.path,
+		success: true,
+	};
 };
