@@ -11,8 +11,8 @@ type Props = {
 const SubmitButton = () => {
 	const { pending } = useFormStatus();
 	return (
-		<button className="btn" type="submit">
-			{pending ? "..." : "X"}
+		<button className="btn btn-sm" type="submit">
+			{pending ? "..." : "✕"}
 		</button>
 	);
 };
