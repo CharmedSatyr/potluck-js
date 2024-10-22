@@ -1,3 +1,5 @@
+"use server";
+
 import findRequests from "@/actions/db/find-requests";
 import findEvent from "@/actions/db/find-event";
 import findCommitments from "@/actions/db/find-commitments";
@@ -12,10 +14,11 @@ type Props = {
 };
 
 const EventPage = async ({ params }: Props) => {
+	const { id } = await params; // NOSONAR - await required
 	const [[event], requests, commitments] = await Promise.all([
-		findEvent({ code: params.id }),
-		findRequests({ eventCode: params.id }),
-		findCommitments({ eventCode: params.id }),
+		findEvent({ code: id }),
+		findRequests({ eventCode: id }),
+		findCommitments({ eventCode: id }),
 	]);
 
 	const usersToFind = commitments.map((c) => c.createdBy);
