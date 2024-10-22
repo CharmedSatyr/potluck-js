@@ -3,16 +3,15 @@ import PlanFoodManager from "@/app/start/[id]/plan-food/plan-food-manager";
 import LoadingIndicator from "@/components/loading-indicator";
 
 type Props = {
-	params: {
-		id: string;
-	};
+	params: Promise<{ id: string }>;
 };
 
 const PlanFoodPage = async ({ params }: Props) => {
+	const { id } = await params;
 	return (
 		<div className="flex w-full flex-col items-center justify-items-center">
 			<Suspense fallback={<LoadingIndicator />}>
-				<PlanFoodManager code={params.id} />
+				<PlanFoodManager code={id} />
 			</Suspense>
 
 			<ul className="steps w-full">

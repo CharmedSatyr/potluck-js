@@ -54,7 +54,7 @@ const CreateEventManager = () => {
 		}
 
 		window.history.replaceState(null, "", path);
-	}, [defaultValues]);
+	}, [defaultValues, path]);
 
 	const submitAction =
 		session.status === "authenticated" ? createEventAction : loginAction;
@@ -81,7 +81,7 @@ const CreateEventManager = () => {
 		}
 
 		push(`/start/${state.code}/plan-food`);
-	}, [state]);
+	}, [push, state]);
 
 	const loading = isPending || state.success;
 

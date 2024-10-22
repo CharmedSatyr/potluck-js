@@ -8,13 +8,11 @@ import EventSkeleton from "@/components/event-skeleton";
 import findUsers from "@/actions/db/find-users";
 
 type Props = {
-	params: {
-		id: string;
-	};
+	params: Promise<{ id: string }>;
 };
 
 const EventPage = async ({ params }: Props) => {
-	const { id } = await params; // NOSONAR - await required
+	const { id } = await params;
 	const [[event], requests, commitments] = await Promise.all([
 		findEvent({ code: id }),
 		findRequests({ eventCode: id }),

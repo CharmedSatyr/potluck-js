@@ -44,7 +44,7 @@ const EditEventManager = ({ code, currentValues }: Props) => {
 		}
 
 		push(`/event/${state.code}`);
-	}, [state]);
+	}, [push, state]);
 
 	const loading = isPending || state.success;
 
