@@ -21,7 +21,7 @@ const Home = () => {
 			<div className="mt-20 flex min-h-60 w-full justify-center">
 				<div className="divider divider-start divider-horizontal w-fit">
 					<Link href="/start" className="btn btn-primary text-2xl">
-						<button>Create an Event</button>
+						<button type="button">Create an Event</button>
 					</Link>
 				</div>
 				<div className="divider divider-horizontal">OR</div>
