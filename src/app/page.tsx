@@ -1,16 +1,6 @@
 import Link from "next/link";
-import findEvent from "@/actions/db/find-event";
-import { Event } from "@/db/schema/event";
 import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
-
-const findEventExists = async (code: Event["code"]): Promise<boolean> => {
-	"use server";
-
-	const [event] = await findEvent({ code });
-
-	return typeof event !== "undefined";
-};
 
 const Home = () => {
 	return (
@@ -26,7 +16,7 @@ const Home = () => {
 				</div>
 				<div className="divider divider-horizontal">OR</div>
 				<div className="divider divider-end divider-horizontal w-fit">
-					<GotoEventForm findEventExistsAction={findEventExists} />
+					<GotoEventForm />
 				</div>
 			</div>
 		</main>
