@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Form from "next/form";
-import findEventExists from "@/components/goto-event-form/find-event-exists";
+import findEventExistsRedirect from "@/components/goto-event-form/find-event-exists-redirect";
 import { EVENT_CODE_LENGTH } from "@/db/schema/event";
 
 export type GotoEventFormState = {
@@ -15,7 +15,7 @@ const GotoEventForm = () => {
 	const [state, formAction, isPending] = useActionState<
 		GotoEventFormState,
 		FormData
-	>(findEventExists, {
+	>(findEventExistsRedirect, {
 		code: "",
 		message: "",
 		success: false,
