@@ -50,10 +50,11 @@ const RequestManager = ({ commitments, requests, users }: Props) => {
 									<p>None yet. Be the first!</p>
 								)}
 								<CreateCommitmentForm
-									commitments={relatedCommitments}
+									commitmentsStillNeeded={
+										request.count - relatedCommitments.length
+									}
 									index={index}
-									request={request}
-									users={relatedUsers}
+									requestId={request.id}
 								/>
 							</RequestContainer>
 						</div>

@@ -7,20 +7,22 @@ import {
 	CreateCommitmentFormState,
 	createCommitmentFormSchema,
 } from "@/app/event/[id]/submit-actions.types";
-import { Commitment } from "@/db/schema/commitment";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Request } from "@/db/schema/request";
 import QuantityInput from "@/components/quantity-input";
 import { usePathname } from "next/navigation";
 
 type Props = {
-	commitments: Commitment[];
+	commitmentsStillNeeded: number;
 	index: number;
-	request: Request;
+	requestId: string;
 };
 
-const CreateCommitmentForm = ({ commitments, index, request }: Props) => {
+const CreateCommitmentForm = ({
+	commitmentsStillNeeded,
+	index,
+	requestId,
+}: Props) => {
 	const path = usePathname();
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
 
@@ -31,7 +33,7 @@ const CreateCommitmentForm = ({ commitments, index, request }: Props) => {
 		fields: {},
 		message: "",
 		path,
-		requestId: request.id,
+		requestId,
 		success: false,
 	});
 
@@ -50,7 +52,6 @@ const CreateCommitmentForm = ({ commitments, index, request }: Props) => {
 	});
 	const { register } = form;
 
-	const commitmentsStillNeeded = request.count - commitments.length;
 	const isButtonDisabled =
 		isPending || commitmentsStillNeeded === 0 || commitQuantity < 1;
 
