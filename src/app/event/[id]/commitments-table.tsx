@@ -16,6 +16,10 @@ const CommitmentsTable = ({
 	const { data } = useSession();
 	const id = data?.user?.id;
 
+	if (!commitments.length) {
+		return null;
+	}
+
 	return (
 		<div className="overflow-x-auto">
 			<table className="table mt-0">
