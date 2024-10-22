@@ -95,7 +95,7 @@ const PlanFoodManager = ({ code }: Props) => {
 
 			<div className="flex justify-between">
 				<button
-					disabled={fields.length >= MAX_REQUESTS}
+					aria-disabled={fields.length >= MAX_REQUESTS}
 					onClick={() => {
 						if (fields.length >= MAX_REQUESTS) {
 							return;
@@ -116,7 +116,7 @@ const PlanFoodManager = ({ code }: Props) => {
 			<input
 				className="btn btn-primary my-8"
 				type="submit"
-				disabled={!isDirty || !isValid}
+				aria-disabled={!isDirty || !isValid}
 			/>
 		</form>
 	);

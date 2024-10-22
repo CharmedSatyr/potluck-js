@@ -41,8 +41,8 @@ const SubmitButton = ({ disabled }: { disabled: boolean }) => {
 
 	return (
 		<input
+			aria-disabled={disabled}
 			className="btn btn-primary my-2 w-full"
-			disabled={disabled}
 			type="submit"
 			value={getValue()}
 		/>

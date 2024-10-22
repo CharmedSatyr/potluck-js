@@ -88,7 +88,7 @@ const CreateCommitmentForm = ({
 					})}
 				/>
 				<input
-					disabled={isButtonDisabled}
+					aria-disabled={isButtonDisabled}
 					className="btn btn-secondary"
 					type="submit"
 					value="Save"
