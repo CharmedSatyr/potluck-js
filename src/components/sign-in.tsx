@@ -1,3 +1,4 @@
+import Form from "next/form";
 import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
 import { auth } from "@/auth";
 
@@ -9,11 +10,11 @@ const SignIn = async () => {
 	}
 
 	return (
-		<form action={signInWithDiscord}>
+		<Form action={signInWithDiscord}>
 			<button className="btn btn-accent" type="submit">
 				Sign In with Discord
 			</button>
-		</form>
+		</Form>
 	);
 };
 

@@ -1,3 +1,4 @@
+import Form from "next/form";
 import signOutAndRevalidate from "@/actions/auth/sign-out-and-revalidate";
 import { auth } from "@/auth";
 
@@ -9,7 +10,7 @@ const SignOut = async () => {
 	}
 
 	return (
-		<form
+		<Form
 			action={async () => {
 				"use server";
 
@@ -19,7 +20,7 @@ const SignOut = async () => {
 			<button className="btn btn-secondary" type="submit">
 				Sign Out
 			</button>
-		</form>
+		</Form>
 	);
 };
 

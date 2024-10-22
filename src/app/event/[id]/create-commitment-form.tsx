@@ -1,5 +1,6 @@
 "use client";
 
+import Form from "next/form";
 import { useActionState, useEffect, useState } from "react";
 import { createCommitmentAction } from "@/app/event/[id]/submit-actions";
 import {
@@ -56,7 +57,7 @@ const CreateCommitmentForm = ({
 		isPending || commitmentsStillNeeded === 0 || commitQuantity < 1;
 
 	return (
-		<form action={formAction} className="form-control w-full" noValidate>
+		<Form action={formAction} className="form-control w-full" noValidate>
 			<div className="flex w-full items-end justify-between">
 				<QuantityInput
 					index={index}
@@ -93,7 +94,7 @@ const CreateCommitmentForm = ({
 					value="Save"
 				/>
 			</div>
-		</form>
+		</Form>
 	);
 };
 

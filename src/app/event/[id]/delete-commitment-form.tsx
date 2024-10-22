@@ -1,5 +1,6 @@
 "use client";
 
+import Form from "next/form";
 import { Commitment } from "@/db/schema/commitment";
 import { deleteCommitmentAction } from "./submit-actions";
 import { useFormStatus } from "react-dom";
@@ -34,9 +35,9 @@ const DeleteCommitmentForm = (props: Props) => {
 	);
 
 	return (
-		<form action={formAction}>
+		<Form action={formAction}>
 			<SubmitButton />
-		</form>
+		</Form>
 	);
 };
 

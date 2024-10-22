@@ -1,5 +1,6 @@
 "use client";
 
+import Form from "next/form";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
@@ -67,7 +68,7 @@ export const CustomizeEventSkeleton = ({
 	} = form;
 
 	return (
-		<form action={submitAction} className="form-control w-full">
+		<Form action={submitAction} className="form-control w-full">
 			<Title code={code} />
 
 			<input
@@ -133,7 +134,7 @@ export const CustomizeEventSkeleton = ({
 			/>
 
 			{!code && <SubmitButton disabled={loading || !form.formState.isValid} />}
-		</form>
+		</Form>
 	);
 };
 
