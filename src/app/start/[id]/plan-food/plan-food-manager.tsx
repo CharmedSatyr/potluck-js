@@ -19,6 +19,7 @@ type Props = {
 };
 
 const PlanFoodManager = ({ code }: Props) => {
+	// Can I use `await connection();` ?
 	const [mounted, setMounted] = useState<boolean>(false);
 
 	useEffect(() => {
