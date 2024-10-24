@@ -1,14 +1,14 @@
 import findEvent from "@/actions/db/find-event";
-import EditEventManager from "@/app/event/[id]/edit/edit-event-manager";
+import EditEventManager from "@/app/event/[code]/edit/edit-event-manager";
 import { UpdateEventFormData } from "./submit-actions.types";
 
 type Props = {
-	params: Promise<{ id: string }>;
+	params: Promise<{ code: string }>;
 };
 
 const EditEventPage = async ({ params }: Props) => {
-	const { id } = await params;
-	const [event] = await findEvent({ code: id });
+	const { code } = await params;
+	const [event] = await findEvent({ code: code });
 
 	if (!event) {
 		return <div>Event not found</div>;
@@ -26,7 +26,7 @@ const EditEventPage = async ({ params }: Props) => {
 	return (
 		<div className="flex w-full justify-center">
 			<EditEventManager
-				code={id}
+				code={code}
 				currentValues={{
 					description,
 					hosts,

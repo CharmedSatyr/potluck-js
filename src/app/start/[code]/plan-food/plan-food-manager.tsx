@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
 import createRequest from "@/actions/db/create-request";
 import { CustomizableRequestValues } from "@/db/schema/request";
-import CourseInput from "@/app/start/[id]/plan-food/course-input";
+import CourseInput from "@/app/start/[code]/plan-food/course-input";
 
 export const MAX_REQUESTS = 20;
 

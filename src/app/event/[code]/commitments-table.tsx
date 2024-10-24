@@ -3,7 +3,7 @@
 import { Commitment } from "@/db/schema/commitment";
 import { User } from "@/db/schema/auth/user";
 import Image from "next/image";
-import DeleteCommitmentForm from "@/app/event/[id]/delete-commitment-form";
+import DeleteCommitmentForm from "@/app/event/[code]/delete-commitment-form";
 import { useSession } from "next-auth/react";
 
 const CommitmentsTable = ({

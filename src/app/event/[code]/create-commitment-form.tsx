@@ -2,12 +2,12 @@
 
 import Form from "next/form";
 import { useActionState, useEffect, useState } from "react";
-import { createCommitmentAction } from "@/app/event/[id]/submit-actions";
+import { createCommitmentAction } from "@/app/event/[code]/submit-actions";
 import {
 	CreateCommitmentFormData,
 	CreateCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[id]/submit-actions.types";
+} from "@/app/event/[code]/submit-actions.types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuantityInput from "@/components/quantity-input";

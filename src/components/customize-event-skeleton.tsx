@@ -4,7 +4,7 @@ import Form from "next/form";
 import { UseFormReturn } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { CreateEventFormData } from "@/app/start/create-event/submit-actions.types";
-import { UpdateEventFormData } from "@/app/event/[id]/edit/submit-actions.types";
+import { UpdateEventFormData } from "@/app/event/[code]/edit/submit-actions.types";
 import { useFormStatus } from "react-dom";
 
 const Title = ({ code }: { code?: string }) => {

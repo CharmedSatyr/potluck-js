@@ -1,9 +1,9 @@
-import RequestContainer from "@/app/event/[id]/request-container";
+import RequestContainer from "@/app/event/[code]/request-container";
 import { User } from "@/db/schema/auth/user";
 import { Commitment } from "@/db/schema/commitment";
 import { Request } from "@/db/schema/request";
-import CreateCommitmentForm from "@/app/event/[id]/create-commitment-form";
-import CommitmentsTable from "@/app/event/[id]/commitments-table";
+import CreateCommitmentForm from "@/app/event/[code]/create-commitment-form";
+import CommitmentsTable from "@/app/event/[code]/commitments-table";
 
 type Props = {
 	commitments: Commitment[];

@@ -2,12 +2,12 @@
 
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { updateEventAction } from "@/app/event/[id]/edit/submit-actions";
+import { updateEventAction } from "@/app/event/[code]/edit/submit-actions";
 import {
 	formSchema,
 	UpdateEventFormData,
 	UpdateEventFormState,
-} from "@/app/event/[id]/edit/submit-actions.types";
+} from "@/app/event/[code]/edit/submit-actions.types";
 import { Event } from "@/db/schema/event";
 import CustomizeEventSkeleton from "@/components/customize-event-skeleton";
 import { useActionState, useEffect } from "react";

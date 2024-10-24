@@ -1,12 +1,12 @@
 "use client";
 
-import Form from "next/form";
-import { Commitment } from "@/db/schema/commitment";
-import { deleteCommitmentAction } from "./submit-actions";
-import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
-import { DeleteCommitmentFormState } from "./submit-actions.types";
+import { useFormStatus } from "react-dom";
+import Form from "next/form";
 import { usePathname } from "next/navigation";
+import { Commitment } from "@/db/schema/commitment";
+import { deleteCommitmentAction } from "@/app/event/[code]/submit-actions";
+import { DeleteCommitmentFormState } from "@/app/event/[code]/submit-actions.types";
 
 type Props = {
 	id: Commitment["id"];

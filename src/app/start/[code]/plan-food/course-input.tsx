@@ -7,7 +7,7 @@ import {
 import {
 	FormInput,
 	MAX_REQUESTS,
-} from "@/app/start/[id]/plan-food/plan-food-manager";
+} from "@/app/start/[code]/plan-food/plan-food-manager";
 import QuantityInput from "@/components/quantity-input";
 
 type Props = {

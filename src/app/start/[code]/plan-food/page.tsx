@@ -1,17 +1,17 @@
 import { Suspense } from "react";
-import PlanFoodManager from "@/app/start/[id]/plan-food/plan-food-manager";
+import PlanFoodManager from "@/app/start/[code]/plan-food/plan-food-manager";
 import LoadingIndicator from "@/components/loading-indicator";
 
 type Props = {
-	params: Promise<{ id: string }>;
+	params: Promise<{ code: string }>;
 };
 
 const PlanFoodPage = async ({ params }: Props) => {
-	const { id } = await params;
+	const { code } = await params;
 	return (
 		<div className="flex w-full flex-col items-center justify-items-center">
 			<Suspense fallback={<LoadingIndicator />}>
-				<PlanFoodManager code={id} />
+				<PlanFoodManager code={code} />
 			</Suspense>
 
 			<ul className="steps w-full">

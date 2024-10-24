@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 import {
 	formSchema,
 	UpdateEventFormState,
-} from "@/app/event/[id]/edit/submit-actions.types";
+} from "@/app/event/[code]/edit/submit-actions.types";
 import { revalidatePage } from "@/actions/revalidate-path";
 
 export const updateEventAction = async (
