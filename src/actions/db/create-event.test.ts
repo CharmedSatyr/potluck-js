@@ -117,9 +117,10 @@ describe("createEvent", () => {
 	});
 
 	it("should return an empty array and log an error if db insertion fails", async () => {
+		const error = new Error("DB Error");
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
-				returning: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
+				returning: jest.fn().mockRejectedValueOnce(error),
 			}),
 		});
 
@@ -127,6 +128,6 @@ describe("createEvent", () => {
 
 		expect(db.insert).toHaveBeenCalledWith(event);
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
+		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 });
