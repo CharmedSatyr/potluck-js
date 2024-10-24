@@ -12,18 +12,18 @@ jest.mock("@/actions/db/create-commitment.types", () => ({
 }));
 
 describe("createCommitment", () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	let errorLog: jest.SpyInstance;
+	let errorLogger: jest.SpyInstance;
 
 	beforeAll(() => {
-		errorLog = jest.spyOn(console, "error").mockImplementation(() => {});
+		errorLogger = jest.spyOn(console, "error").mockImplementation(() => {});
 	});
 
 	afterAll(() => {
-		errorLog.mockRestore();
+		errorLogger.mockRestore();
+	});
+
+	beforeEach(() => {
+		jest.clearAllMocks();
 	});
 
 	const validData = {
@@ -97,7 +97,7 @@ describe("createCommitment", () => {
 		expect(schema.parse).toHaveBeenCalledWith(invalidData);
 		expect(db.insert).not.toHaveBeenCalled();
 		expect(result).toEqual([]);
-		expect(errorLog).toHaveBeenCalledWith(error);
+		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 
 	it("should return an empty array and log an error if db insertion fails", async () => {
@@ -115,6 +115,6 @@ describe("createCommitment", () => {
 		expect(schema.parse).toHaveBeenCalledWith(validData);
 		expect(db.insert).toHaveBeenCalledWith(commitment);
 		expect(result).toEqual([]);
-		expect(errorLog).toHaveBeenCalledWith(new Error("DB Error"));
+		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
 	});
 });
