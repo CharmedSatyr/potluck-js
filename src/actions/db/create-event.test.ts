@@ -1,21 +1,17 @@
 import { ZodError, ZodIssueCode } from "zod";
-import createCommitment from "@/actions/db/create-commitment";
+import createEvent from "@/actions/db/create-event";
 import db from "@/db/connection";
-import { commitment } from "@/db/schema/commitment";
-import { schema } from "@/actions/db/create-commitment.types";
+import { event } from "@/db/schema/event";
+import { schema } from "@/actions/db/create-event.types";
 
 jest.mock("@/db/connection");
-jest.mock("@/actions/db/create-commitment.types", () => ({
+jest.mock("@/actions/db/create-event.types", () => ({
 	schema: {
 		parse: jest.fn(),
 	},
 }));
 
-describe("createCommitment", () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
+describe("createEvent", () => {
 	let errorLog: jest.SpyInstance;
 
 	beforeAll(() => {
@@ -26,35 +22,45 @@ describe("createCommitment", () => {
 		errorLog.mockRestore();
 	});
 
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
 	const validData = {
 		createdBy: "123e4567-e89b-12d3-a456-426614174000",
-		description: "This is a valid test commitment",
-		quantity: 10,
-		requestId: "123e4567-e89b-12d3-a456-426614174001",
+		description: "This is a valid test event",
+		hosts: "John Doe",
+		location: "123 Test St",
+		name: "Test Event",
+		startDate: "2024-12-31",
+		startTime: "12:30:00",
 	};
 
-	it("should insert valid data into the database and return the id on success", async () => {
+	it("should insert valid data into the database and return the event code on success", async () => {
 		(schema.parse as jest.Mock).mockReturnValueOnce(validData);
 
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
-				returning: jest.fn().mockResolvedValueOnce([{ id: 1 }]),
+				returning: jest.fn().mockResolvedValueOnce([{ code: "CODE1" }]),
 			}),
 		});
 
-		const result = await createCommitment(validData);
+		const result = await createEvent(validData);
 
 		expect(schema.parse).toHaveBeenCalledWith(validData);
-		expect(db.insert).toHaveBeenCalledWith(commitment);
-		expect(result).toEqual([{ id: 1 }]);
+		expect(db.insert).toHaveBeenCalledWith(event);
+		expect(result).toEqual([{ code: "CODE1" }]);
 	});
 
 	it("should throw an error if invalid data is provided", async () => {
 		const invalidData = {
 			createdBy: "invalid-uuid",
 			description: "This description is too long".repeat(20),
-			quantity: -10,
-			requestId: "also-invalid-uuid",
+			hosts: "Hosts".repeat(70),
+			location: "",
+			name: "",
+			startDate: "1999-12-31",
+			startTime: "25:61:00",
 		};
 
 		const error = new ZodError([
@@ -73,18 +79,32 @@ describe("createCommitment", () => {
 				type: "string",
 			},
 			{
-				path: ["quantity"],
-				message: "Must be a positive number",
-				code: ZodIssueCode.too_small,
-				minimum: 0,
-				inclusive: false,
-				type: "number",
+				path: ["hosts"],
+				message: "Too long",
+				code: ZodIssueCode.too_big,
+				maximum: 256,
+				inclusive: true,
+				type: "string",
 			},
 			{
-				path: ["requestId"],
-				message: "Invalid UUID",
-				code: ZodIssueCode.invalid_string,
-				validation: "uuid",
+				path: ["location"],
+				message: "Location required.",
+				code: ZodIssueCode.custom,
+			},
+			{
+				path: ["name"],
+				message: "Name required.",
+				code: ZodIssueCode.custom,
+			},
+			{
+				path: ["startDate"],
+				message: "Date must be within the next year.",
+				code: ZodIssueCode.custom,
+			},
+			{
+				path: ["startTime"],
+				message: "Time required.",
+				code: ZodIssueCode.custom,
 			},
 		]);
 
@@ -92,7 +112,7 @@ describe("createCommitment", () => {
 			throw error;
 		});
 
-		const result = await createCommitment(invalidData);
+		const result = await createEvent(invalidData);
 
 		expect(schema.parse).toHaveBeenCalledWith(invalidData);
 		expect(db.insert).not.toHaveBeenCalled();
@@ -103,17 +123,16 @@ describe("createCommitment", () => {
 	it("should return an empty array and log an error if db insertion fails", async () => {
 		(schema.parse as jest.Mock).mockReturnValueOnce(validData);
 
-		// Mock db insertion to throw an error
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
 				returning: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
 			}),
 		});
 
-		const result = await createCommitment(validData);
+		const result = await createEvent(validData);
 
 		expect(schema.parse).toHaveBeenCalledWith(validData);
-		expect(db.insert).toHaveBeenCalledWith(commitment);
+		expect(db.insert).toHaveBeenCalledWith(event);
 		expect(result).toEqual([]);
 		expect(errorLog).toHaveBeenCalledWith(new Error("DB Error"));
 	});
