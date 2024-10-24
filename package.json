@@ -15,7 +15,7 @@
 		"db:generate": "npx drizzle-kit generate",
 		"db:migrate": "npx drizzle-kit migrate",
 		"prepare": "husky",
-		"test": "jest --passWithNoTests",
+		"test": "jest",
 		"test:staged": "jest --findRelatedTests --passWithNoTests"
 	},
 	"dependencies": {
@@ -37,6 +37,9 @@
 	},
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.15",
+		"@testing-library/dom": "^10.4.0",
+		"@testing-library/jest-dom": "^6.6.2",
+		"@testing-library/react": "^16.0.1",
 		"@types/jest": "^29.5.14",
 		"@types/node": "^22.7.9",
 		"@types/react": "^18.3.12",
