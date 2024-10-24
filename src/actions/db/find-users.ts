@@ -1,36 +1,21 @@
 "use server";
 
-import { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import { inArray } from "drizzle-orm";
-import ajv from "@/actions/ajv";
 import db from "@/db/connection";
-import { User, user } from "@/db/schema/auth/user";
+import { user } from "@/db/schema/auth/user";
+import { schema } from "./find-users.types";
 
-interface UserLookup {
-	users: User["id"][];
-}
+const findUsers = async (data: z.infer<typeof schema>) => {
+	try {
+		schema.parse(data);
 
-const schema: JSONSchemaType<UserLookup> = {
-	type: "object",
-	properties: {
-		users: {
-			type: "array",
-			items: { type: "string" },
-			minItems: 1,
-		},
-	},
-	required: ["users"],
-	additionalProperties: false,
-};
+		return await db.select().from(user).where(inArray(user.id, data.users));
+	} catch (err) {
+		console.error(err);
 
-const validate = ajv.compile(schema);
-
-const findUsers = async (data: UserLookup) => {
-	if (!validate(data)) {
-		throw new Error(JSON.stringify(validate.errors));
+		return [];
 	}
-
-	return await db.select().from(user).where(inArray(user.id, data.users));
 };
 
 export default findUsers;
