@@ -16,7 +16,7 @@
 		"db:migrate": "npx drizzle-kit migrate",
 		"prepare": "husky",
 		"test": "jest",
-		"test:staged": "jest --findRelatedTests --passWithNoTests"
+		"test:staged": "jest --findRelatedTests"
 	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.7.2",
