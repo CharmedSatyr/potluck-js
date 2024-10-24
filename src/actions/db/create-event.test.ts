@@ -1,15 +1,9 @@
-import { ZodError, ZodIssueCode } from "zod";
+import { ZodError } from "zod";
 import createEvent from "@/actions/db/create-event";
 import db from "@/db/connection";
 import { event } from "@/db/schema/event";
-import { schema } from "@/actions/db/create-event.types";
 
 jest.mock("@/db/connection");
-jest.mock("@/actions/db/create-event.types", () => ({
-	schema: {
-		parse: jest.fn(),
-	},
-}));
 
 describe("createEvent", () => {
 	let errorLogger: jest.SpyInstance;
@@ -37,8 +31,6 @@ describe("createEvent", () => {
 	};
 
 	it("should insert valid data into the database and return the event code on success", async () => {
-		(schema.parse as jest.Mock).mockReturnValueOnce(validData);
-
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
 				returning: jest.fn().mockResolvedValueOnce([{ code: "CODE1" }]),
@@ -47,7 +39,6 @@ describe("createEvent", () => {
 
 		const result = await createEvent(validData);
 
-		expect(schema.parse).toHaveBeenCalledWith(validData);
 		expect(db.insert).toHaveBeenCalledWith(event);
 		expect(result).toEqual([{ code: "CODE1" }]);
 	});
@@ -65,64 +56,67 @@ describe("createEvent", () => {
 
 		const error = new ZodError([
 			{
-				path: ["createdBy"],
-				message: "Invalid UUID",
-				code: ZodIssueCode.invalid_string,
 				validation: "uuid",
+				code: "invalid_string",
+				message: "Invalid uuid",
+				path: ["createdBy"],
 			},
 			{
+				code: "too_big",
+				maximum: 256,
+				type: "string",
+				inclusive: true,
+				exact: false,
+				message: "String must contain at most 256 character(s)",
 				path: ["description"],
-				message: "Too long",
-				code: ZodIssueCode.too_big,
-				maximum: 256,
-				inclusive: true,
-				type: "string",
 			},
 			{
+				code: "too_big",
+				maximum: 256,
+				type: "string",
+				inclusive: true,
+				exact: false,
+				message: "String must contain at most 256 character(s)",
 				path: ["hosts"],
-				message: "Too long",
-				code: ZodIssueCode.too_big,
-				maximum: 256,
-				inclusive: true,
+			},
+			{
+				code: "too_small",
+				minimum: 1,
 				type: "string",
-			},
-			{
-				path: ["location"],
+				inclusive: true,
+				exact: false,
 				message: "Location required.",
-				code: ZodIssueCode.custom,
+				path: ["location"],
 			},
 			{
-				path: ["name"],
+				code: "too_small",
+				minimum: 1,
+				type: "string",
+				inclusive: true,
+				exact: false,
 				message: "Name required.",
-				code: ZodIssueCode.custom,
+				path: ["name"],
 			},
 			{
-				path: ["startDate"],
+				code: "custom",
 				message: "Date must be within the next year.",
-				code: ZodIssueCode.custom,
+				path: ["startDate"],
 			},
 			{
-				path: ["startTime"],
+				code: "custom",
 				message: "Time required.",
-				code: ZodIssueCode.custom,
+				path: ["startTime"],
 			},
 		]);
 
-		(schema.parse as jest.Mock).mockImplementationOnce(() => {
-			throw error;
-		});
-
 		const result = await createEvent(invalidData);
 
-		expect(schema.parse).toHaveBeenCalledWith(invalidData);
 		expect(db.insert).not.toHaveBeenCalled();
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 
 	it("should return an empty array and log an error if db insertion fails", async () => {
-		(schema.parse as jest.Mock).mockReturnValueOnce(validData);
-
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
 				returning: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
@@ -131,7 +125,6 @@ describe("createEvent", () => {
 
 		const result = await createEvent(validData);
 
-		expect(schema.parse).toHaveBeenCalledWith(validData);
 		expect(db.insert).toHaveBeenCalledWith(event);
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
