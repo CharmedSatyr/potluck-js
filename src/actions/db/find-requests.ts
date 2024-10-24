@@ -1,40 +1,30 @@
 "use server";
 
-import { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import { eq } from "drizzle-orm";
-import ajv from "@/actions/ajv";
 import db from "@/db/connection";
 import findEvent from "@/actions/db/find-event";
 import { request, Request } from "@/db/schema/request";
-import { Event } from "@/db/schema/event";
+import { schema } from "./find-requests.types";
 
-interface EventCode {
-	eventCode: Event["code"];
-}
+const findRequests = async (
+	data: z.infer<typeof schema>
+): Promise<Request[]> => {
+	try {
+		schema.parse(data);
 
-const schema: JSONSchemaType<EventCode> = {
-	type: "object",
-	properties: {
-		eventCode: { type: "string" },
-	},
-	required: ["eventCode"],
-	additionalProperties: false,
-};
+		const [event] = await findEvent({ code: data.eventCode });
 
-const validate = ajv.compile(schema);
+		if (!event) {
+			return [];
+		}
 
-const findRequests = async ({ eventCode }: EventCode): Promise<Request[]> => {
-	if (!validate({ eventCode })) {
-		throw new Error(JSON.stringify(validate.errors));
+		return await db.select().from(request).where(eq(request.eventId, event.id));
+	} catch (err) {
+		console.error(err);
+
+		return [];
 	}
-
-	const [event] = await findEvent({ code: eventCode });
-
-	if (!event) {
-		throw new Error("Invalid event code");
-	}
-
-	return await db.select().from(request).where(eq(request.eventId, event.id));
 };
 
 export default findRequests;

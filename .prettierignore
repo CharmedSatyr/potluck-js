@@ -1,1 +1,2 @@
 src/db/migrations/*
+pnpm-lock.yaml
