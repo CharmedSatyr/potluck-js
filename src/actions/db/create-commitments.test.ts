@@ -1,15 +1,9 @@
-import { ZodError, ZodIssueCode } from "zod";
+import { ZodError } from "zod";
 import createCommitment from "@/actions/db/create-commitment";
 import db from "@/db/connection";
 import { commitment } from "@/db/schema/commitment";
-import { schema } from "@/actions/db/create-commitment.types";
 
 jest.mock("@/db/connection");
-jest.mock("@/actions/db/create-commitment.types", () => ({
-	schema: {
-		parse: jest.fn(),
-	},
-}));
 
 describe("createCommitment", () => {
 	let errorLogger: jest.SpyInstance;
@@ -34,8 +28,6 @@ describe("createCommitment", () => {
 	};
 
 	it("should insert valid data into the database and return the id on success", async () => {
-		(schema.parse as jest.Mock).mockReturnValueOnce(validData);
-
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
 				returning: jest.fn().mockResolvedValueOnce([{ id: 1 }]),
@@ -44,7 +36,6 @@ describe("createCommitment", () => {
 
 		const result = await createCommitment(validData);
 
-		expect(schema.parse).toHaveBeenCalledWith(validData);
 		expect(db.insert).toHaveBeenCalledWith(commitment);
 		expect(result).toEqual([{ id: 1 }]);
 	});
@@ -59,51 +50,45 @@ describe("createCommitment", () => {
 
 		const error = new ZodError([
 			{
+				validation: "uuid",
+				code: "invalid_string",
+				message: "Invalid uuid",
 				path: ["createdBy"],
-				message: "Invalid UUID",
-				code: ZodIssueCode.invalid_string,
-				validation: "uuid",
 			},
 			{
-				path: ["description"],
-				message: "Too long",
-				code: ZodIssueCode.too_big,
+				code: "too_big",
 				maximum: 256,
-				inclusive: true,
 				type: "string",
+				inclusive: true,
+				exact: false,
+				message: "String must contain at most 256 character(s)",
+				path: ["description"],
 			},
 			{
-				path: ["quantity"],
-				message: "Must be a positive number",
-				code: ZodIssueCode.too_small,
+				code: "too_small",
 				minimum: 0,
-				inclusive: false,
 				type: "number",
+				inclusive: false,
+				exact: false,
+				message: "Number must be greater than 0",
+				path: ["quantity"],
 			},
 			{
-				path: ["requestId"],
-				message: "Invalid UUID",
-				code: ZodIssueCode.invalid_string,
 				validation: "uuid",
+				code: "invalid_string",
+				message: "Invalid uuid",
+				path: ["requestId"],
 			},
 		]);
 
-		(schema.parse as jest.Mock).mockImplementationOnce(() => {
-			throw error;
-		});
-
 		const result = await createCommitment(invalidData);
 
-		expect(schema.parse).toHaveBeenCalledWith(invalidData);
 		expect(db.insert).not.toHaveBeenCalled();
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 
 	it("should return an empty array and log an error if db insertion fails", async () => {
-		(schema.parse as jest.Mock).mockReturnValueOnce(validData);
-
-		// Mock db insertion to throw an error
 		(db.insert as jest.Mock).mockReturnValueOnce({
 			values: jest.fn().mockReturnValueOnce({
 				returning: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
@@ -112,7 +97,6 @@ describe("createCommitment", () => {
 
 		const result = await createCommitment(validData);
 
-		expect(schema.parse).toHaveBeenCalledWith(validData);
 		expect(db.insert).toHaveBeenCalledWith(commitment);
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
