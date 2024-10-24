@@ -4,7 +4,7 @@ import { z } from "zod";
 import { inArray } from "drizzle-orm";
 import db from "@/db/connection";
 import { user } from "@/db/schema/auth/user";
-import { schema } from "./find-users.types";
+import { schema } from "@/actions/db/find-users.types";
 
 const findUsers = async (data: z.infer<typeof schema>) => {
 	try {

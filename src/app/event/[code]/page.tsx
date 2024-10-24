@@ -1,5 +1,3 @@
-"use server";
-
 import findRequests from "@/actions/db/find-requests";
 import findEvent from "@/actions/db/find-event";
 import findCommitments from "@/actions/db/find-commitments";
@@ -13,6 +11,7 @@ type Props = {
 
 const EventPage = async ({ params }: Props) => {
 	const { code } = await params;
+	// TODO: Use the new hotness (`use`) to pass these into components as promises.
 	const [[event], requests, commitments] = await Promise.all([
 		findEvent({ code }),
 		findRequests({ eventCode: code }),
@@ -21,7 +20,9 @@ const EventPage = async ({ params }: Props) => {
 
 	const usersToFind = commitments.map((c) => c.createdBy);
 	const users =
-		usersToFind.length > 0 ? await findUsers({ users: usersToFind }) : [];
+		usersToFind.length > 0
+			? await findUsers({ users: usersToFind as [string, ...string[]] })
+			: [];
 
 	return (
 		<div className="flex w-full flex-col justify-center">
