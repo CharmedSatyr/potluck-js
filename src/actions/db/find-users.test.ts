@@ -88,9 +88,11 @@ describe("findUsers", () => {
 	});
 
 	it("should return an empty array and log an error if the database query fails", async () => {
+		const error = new Error("DB Error");
+
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
+				where: jest.fn().mockRejectedValueOnce(error),
 			}),
 		});
 
@@ -98,6 +100,6 @@ describe("findUsers", () => {
 
 		expect(db.select).toHaveBeenCalledWith();
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
+		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 });

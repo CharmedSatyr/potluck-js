@@ -137,10 +137,12 @@ describe("updateEvent", () => {
 	it("should return an empty array and log an error if db update fails", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
 
+		const error = new Error("DB Error");
+
 		(db.update as jest.Mock).mockReturnValueOnce({
 			set: jest.fn().mockReturnValueOnce({
 				where: jest.fn().mockReturnValueOnce({
-					returning: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
+					returning: jest.fn().mockRejectedValueOnce(error),
 				}),
 			}),
 		});
@@ -150,6 +152,6 @@ describe("updateEvent", () => {
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.update).toHaveBeenCalledWith(event);
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
+		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 });

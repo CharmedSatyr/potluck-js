@@ -77,9 +77,11 @@ describe("findRequests", () => {
 	it("should return an empty array and log an error if db query fails", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
 
+		const error = new Error("DB Error");
+
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
+				where: jest.fn().mockRejectedValueOnce(error),
 			}),
 		});
 
@@ -88,6 +90,6 @@ describe("findRequests", () => {
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
 		expect(db.select).toHaveBeenCalled();
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
+		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 });

@@ -67,9 +67,11 @@ describe("deleteCommitment", () => {
 	});
 
 	it("should return an empty array and log an error if db deletion fails", async () => {
+		const error = new Error("DB Error");
+
 		(db.delete as jest.Mock).mockReturnValueOnce({
 			where: jest.fn().mockReturnValueOnce({
-				returning: jest.fn().mockRejectedValueOnce(new Error("DB Error")),
+				returning: jest.fn().mockRejectedValueOnce(error),
 			}),
 		});
 
@@ -77,6 +79,6 @@ describe("deleteCommitment", () => {
 
 		expect(db.delete).toHaveBeenCalledWith(commitment);
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));
+		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 });
