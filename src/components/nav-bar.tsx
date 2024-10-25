@@ -38,8 +38,8 @@ const NavBar = async () => {
 						width={128}
 						height={128}
 						className="my-0 rounded-full"
-						src={session.user.image ?? ""}
-						alt="User Avatar"
+						src={String(session.user.image)}
+						alt={`${session.user.name} Avatar`}
 						priority
 					/>
 				</div>
