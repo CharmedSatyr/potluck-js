@@ -21,7 +21,7 @@ const findEventExistsRedirect = async (
 	if (!parsed.success) {
 		return {
 			code: fields.code,
-			message: "Event code invalid.",
+			message: "Event code not found.",
 			success: false,
 		};
 	}
