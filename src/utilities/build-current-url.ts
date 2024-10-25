@@ -1,9 +1,13 @@
 import siteMetadata from "@/data/site-metadata";
 
-const buildCurrentUrl = (pathName: string): string => {
+const buildCurrentUrl = (
+	pathName: string,
+	env: string = process.env.NODE_ENV,
+	port: string | undefined = process.env.PORT
+): string => {
 	const urlBase =
-		process.env.NODE_ENV === "development"
-			? `http://localhost:${process.env.PORT ?? 3000}`
+		env === "development"
+			? `http://localhost:${port ?? 3000}`
 			: siteMetadata.siteUrl;
 
 	return urlBase.concat(pathName);
