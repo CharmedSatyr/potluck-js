@@ -6,7 +6,7 @@ import {
 	formSchema,
 	UpdateEventFormState,
 } from "@/app/event/[code]/edit/submit-actions.types";
-import { revalidatePage } from "@/actions/revalidate-path";
+import { revalidatePath } from "next/cache";
 
 export const updateEventAction = async (
 	prevState: UpdateEventFormState,
@@ -74,7 +74,7 @@ export const updateEventAction = async (
 		};
 	}
 
-	revalidatePage(`/event/${prevState.code}`);
+	revalidatePath(`/event/${prevState.code}`, "page");
 
 	return {
 		code: prevState.code,

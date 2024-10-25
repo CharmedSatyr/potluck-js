@@ -7,8 +7,8 @@ import {
 	createCommitmentFormSchema,
 } from "@/app/event/[code]/submit-actions.types";
 import { auth } from "@/auth";
-import { revalidatePage } from "@/actions/revalidate-path";
 import deleteCommitment from "@/actions/db/delete-commitment";
+import { revalidatePath } from "next/cache";
 
 export const createCommitmentAction = async (
 	prevState: CreateCommitmentFormState,
@@ -67,7 +67,7 @@ export const createCommitmentAction = async (
 		};
 	}
 
-	await revalidatePage(prevState.path);
+	revalidatePath(prevState.path, "page");
 
 	return {
 		fields,
@@ -116,7 +116,7 @@ export const deleteCommitmentAction = async (
 		};
 	}
 
-	await revalidatePage(prevState.path);
+	revalidatePath(prevState.path, "page");
 
 	return {
 		commitmentId: prevState.commitmentId,

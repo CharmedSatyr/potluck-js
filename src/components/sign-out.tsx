@@ -10,13 +10,7 @@ const SignOut = async () => {
 	}
 
 	return (
-		<Form
-			action={async () => {
-				"use server";
-
-				await signOutAndRevalidate();
-			}}
-		>
+		<Form action={signOutAndRevalidate}>
 			<button className="btn btn-secondary" type="submit">
 				Sign Out
 			</button>
