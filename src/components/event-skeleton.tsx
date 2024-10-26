@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import CopyLinkButton from "@/components/copy-link-button";
 import { Event } from "@/db/schema/event";
 
+// TODO: Don't pass a whole event to the client.
 type EventSkeletonProps = Event;
 
 export const EventSkeleton = ({
