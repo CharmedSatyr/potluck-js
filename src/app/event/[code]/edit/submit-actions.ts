@@ -74,10 +74,10 @@ export const updateEventAction = async (
 		};
 	}
 
-	revalidatePath(`/event/${prevState.code}`, "page");
+	revalidatePath(`/event/${result.code}`, "page");
 
 	return {
-		code: prevState.code,
+		code: result.code,
 		fields: {},
 		message: "Event updated",
 		success: true,
