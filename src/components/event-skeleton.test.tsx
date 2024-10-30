@@ -3,106 +3,160 @@ import { useSession } from "next-auth/react";
 import EventSkeleton from "@/components/event-skeleton";
 
 jest.mock("next-auth/react", () => ({
-	useSession: jest.fn(),
+    useSession: jest.fn(),
 }));
 
 jest.mock(
-	"@/components/copy-link-button",
-	() =>
-		function mockButton() {
-			return <button>Copy Link</button>;
-		}
+    "@/components/copy-link-button",
+    () =>
+        function mockCopyLinkButton() {
+            return <button>Copy Link</button>;
+        }
 );
 
 describe("EventSkeleton Component", () => {
-	const eventProps = {
-		createdBy: "b2c2e71d-c72a-4f8a-bce6-cc89c6a33529",
-		description: "This is a test event description.",
-		hosts: "Test Host",
-		location: "Test Location",
-		name: "Test Event",
-		code: "CODE1",
-		startDate: "2024-10-31",
-		startTime: "18:00",
-		createdAt: new Date("2024-10-01"),
-		id: "c2c2e71d-c72a-4f8a-bce6-cc89c6a33520",
-		updatedAt: new Date("2024-10-02"),
-	};
+    const eventProps = {
+        createdBy: "b2c2e71d-c72a-4f8a-bce6-cc89c6a33529",
+        description: "This is a test event description.",
+        hosts: "Test Host",
+        location: "Test Location",
+        name: "Test Event",
+        code: "CODE1",
+        startDate: "2024-10-31",
+        startTime: "18:00",
+        createdAt: new Date("2024-10-01"),
+        id: "c2c2e71d-c72a-4f8a-bce6-cc89c6a33520",
+        updatedAt: new Date("2024-10-02"),
+    };
 
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
-	it("should render event details correctly", () => {
-		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
-			status: "authenticated",
-		});
+    it("should render full event details if the user is authenticated", () => {
+        (useSession as jest.Mock).mockReturnValueOnce({
+            data: { user: { id: "user-999" } },
+            status: "authenticated",
+        });
 
-		render(<EventSkeleton {...eventProps} />);
+        render(<EventSkeleton {...eventProps} />);
 
-		expect(screen.getByText(`${eventProps.code}`)).toBeInTheDocument();
-		expect(screen.getByText(eventProps.name)).toBeInTheDocument();
-		expect(
-			screen.getByText(`${eventProps.startDate} at ${eventProps.startTime}`)
-		).toBeInTheDocument();
-		expect(screen.getByText(eventProps.location)).toBeInTheDocument();
-		expect(
-			screen.getByText(`Hosted by ${eventProps.hosts}`)
-		).toBeInTheDocument();
-		expect(screen.getByText(eventProps.description)).toBeInTheDocument();
-	});
+        expect(screen.getByText(eventProps.code)).toBeInTheDocument();
+        expect(screen.getByText(eventProps.name)).toBeInTheDocument();
+        expect(
+            screen.getByText(`${eventProps.startDate} at ${eventProps.startTime}`)
+        ).toBeInTheDocument();
+        expect(screen.getByText(eventProps.location)).toBeInTheDocument();
+        expect(
+            screen.getByText(`Hosted by ${eventProps.hosts}`)
+        ).toBeInTheDocument();
+        expect(screen.getByText(eventProps.description)).toBeInTheDocument();
+    });
 
-	it("should render 'Edit' link if the user is the host", () => {
-		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: eventProps.createdBy } },
-			status: "authenticated",
-		});
+    it("shows sign-in prompt if user is not authenticated", () => {
+        (useSession as jest.Mock).mockReturnValue({
+            status: "unauthenticated",
+            data: null,
+        });
+        render(<EventSkeleton {...eventProps} />);
 
-		render(<EventSkeleton {...eventProps} />);
+        expect(screen.getByText("Sign In to see all the details!")).toBeInTheDocument();
+        expect(screen.getByText(eventProps.code)).toBeInTheDocument();
+        expect(screen.getByText(eventProps.name)).toBeInTheDocument();
+        expect(
+            screen.queryByText(`${eventProps.startDate} at ${eventProps.startTime}`)
+        ).not.toBeInTheDocument();
+        expect(screen.queryByText(eventProps.location)).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(`Hosted by ${eventProps.hosts}`)
+        ).not.toBeInTheDocument();
+        expect(screen.queryByText(eventProps.description)).not.toBeInTheDocument();
 
-		const editLink = screen.getByRole("link", { name: /edit/i });
+    });
 
-		expect(editLink).toBeInTheDocument();
-		expect(editLink).toHaveAttribute("href", `/event/${eventProps.code}/edit`);
-	});
+    it("should render 'Edit' link if the user is the host", () => {
+        (useSession as jest.Mock).mockReturnValueOnce({
+            data: { user: { id: eventProps.createdBy } },
+            status: "authenticated",
+        });
 
-	it("should not render 'Edit' link if the user is not the host", () => {
-		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
-			status: "authenticated",
-		});
+        render(<EventSkeleton {...eventProps} />);
 
-		render(<EventSkeleton {...eventProps} />);
+        const editLink = screen.getByRole("link", { name: /edit/i });
 
-		expect(
-			screen.queryByRole("link", { name: /edit/i })
-		).not.toBeInTheDocument();
-	});
+        expect(editLink).toBeInTheDocument();
+        expect(editLink).toHaveAttribute("href", `/event/${eventProps.code}/edit`);
+    });
 
-	it("should render 'CopyLinkButton' if code is present", () => {
-		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
-			status: "authenticated",
-		});
+    it("should not render 'Edit' link if the user is not the host", () => {
+        (useSession as jest.Mock).mockReturnValueOnce({
+            data: { user: { id: "other-user-999" } },
+            status: "authenticated",
+        });
 
-		render(<EventSkeleton {...eventProps} />);
+        render(<EventSkeleton {...eventProps} />);
 
-		const copyLinkButton = screen.getByRole("button", { name: /copy link/i });
+        expect(
+            screen.queryByRole("link", { name: /edit/i })
+        ).not.toBeInTheDocument();
+    });
 
-		expect(copyLinkButton).toBeInTheDocument();
-	});
+    it("should render 'CopyLinkButton' if code is present", () => {
+        (useSession as jest.Mock).mockReturnValueOnce({
+            data: { user: { id: "user-999" } },
+            status: "authenticated",
+        });
 
-	it("should not render 'CopyLinkButton' if no code is present", () => {
-		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
-			status: "authenticated",
-		});
+        render(<EventSkeleton {...eventProps} />);
 
-		render(<EventSkeleton {...eventProps} code="" />);
+        const copyLinkButton = screen.getByRole("button", { name: /copy link/i });
 
-		expect(
-			screen.queryByRole("button", { name: /copy link/i })
-		).not.toBeInTheDocument();
-	});
+        expect(copyLinkButton).toBeInTheDocument();
+    });
+
+    it("should not render 'CopyLinkButton' if no code is present", () => {
+        (useSession as jest.Mock).mockReturnValueOnce({
+            data: { user: { id: "user-999" } },
+            status: "authenticated",
+        });
+
+        render(<EventSkeleton {...eventProps} code="" />);
+
+        expect(
+            screen.queryByRole("button", { name: /copy link/i })
+        ).not.toBeInTheDocument();
+    });
 });
+/*
+=======
+import { EventSkeleton, EventSkeletonProps } from "@/components/event-skeleton";
+//import { useSession } from "next-auth/react";
+
+//jest.mock("next-auth/react");
+
+describe("EventSkeleton Component", () => {
+  
+
+    it.skip("displays full event details if user is authenticated", () => {
+        render(<EventSkeleton {...mockEvent} />);
+
+        expect(screen.getByText(/Sample Location/)).toBeInTheDocument();
+        expect(screen.getByText(/Hosted by Host Name/)).toBeInTheDocument();
+        expect(screen.getByText(mockEvent.description)).toBeInTheDocument();
+        expect(screen.getByText("18:00:00")).toBeInTheDocument();
+        expect(screen.getByText(/2024-12-31/)).toBeInTheDocument();
+    });
+
+    it.skip("shows sign-in prompt if user is not authenticated", () => {
+         (useSession as jest.Mock).mockReturnValue({
+             status: "unauthenticated",
+             data: null,
+         });
+         render(<EventSkeleton {...mockEvent} />);
+
+         expect(screen.getByText("Sign In to see all the details!")).toBeInTheDocument();
+         expect(screen.queryByText(/Sample Location/)).not.toBeInTheDocument();
+    });
+    
+});
+*/
