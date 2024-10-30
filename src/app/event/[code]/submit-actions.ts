@@ -24,12 +24,6 @@ export const createCommitmentAction = async (
 	const parsed = createCommitmentFormSchema.safeParse(fields);
 
 	if (!parsed.success) {
-		console.warn(
-			"Invalid form data:",
-			fields,
-			parsed.error.issues.map((issue) => issue.message)
-		);
-
 		return {
 			fields,
 			message: "Invalid form data",
