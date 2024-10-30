@@ -64,7 +64,7 @@ const PlanFoodManager = ({ code }: Props) => {
 
 	const onSubmit = async (data: FormInput) => {
 		try {
-			await createRequest({ ...data, code });
+			await createRequest({ ...data, code } as any); // TODO: Fix
 
 			goToNextPage();
 		} catch (err) {
@@ -96,7 +96,7 @@ const PlanFoodManager = ({ code }: Props) => {
 
 			<div className="flex justify-between">
 				<button
-					aria-disabled={fields.length >= MAX_REQUESTS}
+					disabled={fields.length >= MAX_REQUESTS}
 					onClick={() => {
 						if (fields.length >= MAX_REQUESTS) {
 							return;
@@ -117,7 +117,7 @@ const PlanFoodManager = ({ code }: Props) => {
 			<input
 				className="btn btn-primary my-8"
 				type="submit"
-				aria-disabled={!isDirty || !isValid}
+				disabled={!isDirty || !isValid}
 			/>
 		</form>
 	);

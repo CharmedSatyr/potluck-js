@@ -4,12 +4,16 @@ import findCommitments from "@/actions/db/find-commitments";
 import RequestManager from "@/app/event/[code]/request-manager";
 import EventSkeleton from "@/components/event-skeleton";
 import findUsers from "@/actions/db/find-users";
+import { auth } from "@/auth";
 
 type Props = {
 	params: Promise<{ code: string }>;
 };
 
 const EventPage = async ({ params }: Props) => {
+	const session = await auth();
+	const authenticated = Boolean(session?.user?.id);
+
 	const { code } = await params;
 	// TODO: Use the new hotness (`use`) to pass these into components as promises.
 	const [[event], requests, commitments] = await Promise.all([
@@ -27,11 +31,13 @@ const EventPage = async ({ params }: Props) => {
 	return (
 		<div className="flex w-full flex-col justify-center">
 			<EventSkeleton {...event} />
-			<RequestManager
-				commitments={commitments}
-				requests={requests}
-				users={users}
-			/>
+			{authenticated && (
+				<RequestManager
+					commitments={commitments}
+					requests={requests}
+					users={users}
+				/>
+			)}
 		</div>
 	);
 };

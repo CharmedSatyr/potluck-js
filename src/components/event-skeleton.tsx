@@ -6,7 +6,7 @@ import CopyLinkButton from "@/components/copy-link-button";
 import { Event } from "@/db/schema/event";
 
 // TODO: Don't pass a whole event to the client.
-type EventSkeletonProps = Event;
+export type EventSkeletonProps = Event;
 
 export const EventSkeleton = ({
 	createdBy,
@@ -19,7 +19,7 @@ export const EventSkeleton = ({
 	startTime,
 }: EventSkeletonProps) => {
 	const session = useSession();
-
+	const authenticated = session?.status === "authenticated";
 	const isHost = session?.data?.user?.id === createdBy;
 
 	return (
@@ -42,15 +42,21 @@ export const EventSkeleton = ({
 
 			<h1 className="mb-6 w-full text-6xl text-primary">{name}</h1>
 
-			<h2 className="my-7 font-normal">
-				{startDate} at {startTime}
-			</h2>
+			{authenticated ? (
+				<>
+					<h2 className="my-7 font-normal">
+						{startDate} at {startTime}
+					</h2>
 
-			<h2 className="my-6 font-normal">{location}</h2>
+					<h2 className="my-6 font-normal">{location}</h2>
 
-			<h3 className="my-4 font-bold">Hosted by {hosts}</h3>
+					<h3 className="my-4 font-bold">Hosted by {hosts}</h3>
 
-			<div className="my-4">{description}</div>
+					<div className="my-4">{description}</div>
+				</>
+			) : (
+				<h2 className="my-7 font-bold">Sign In to see all the details!</h2>
+			)}
 		</div>
 	);
 };

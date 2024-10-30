@@ -9,7 +9,7 @@ jest.mock("next-auth/react", () => ({
 jest.mock(
 	"@/components/copy-link-button",
 	() =>
-		function mockButton() {
+		function mockCopyLinkButton() {
 			return <button>Copy Link</button>;
 		}
 );
@@ -33,7 +33,7 @@ describe("EventSkeleton Component", () => {
 		jest.clearAllMocks();
 	});
 
-	it("should render event details correctly", () => {
+	it("should render full event details if the user is authenticated", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
 			data: { user: { id: "user-999" } },
 			status: "authenticated",
@@ -41,7 +41,7 @@ describe("EventSkeleton Component", () => {
 
 		render(<EventSkeleton {...eventProps} />);
 
-		expect(screen.getByText(`${eventProps.code}`)).toBeInTheDocument();
+		expect(screen.getByText(eventProps.code)).toBeInTheDocument();
 		expect(screen.getByText(eventProps.name)).toBeInTheDocument();
 		expect(
 			screen.getByText(`${eventProps.startDate} at ${eventProps.startTime}`)
@@ -51,6 +51,28 @@ describe("EventSkeleton Component", () => {
 			screen.getByText(`Hosted by ${eventProps.hosts}`)
 		).toBeInTheDocument();
 		expect(screen.getByText(eventProps.description)).toBeInTheDocument();
+	});
+
+	it("shows sign-in prompt if user is not authenticated", () => {
+		(useSession as jest.Mock).mockReturnValue({
+			status: "unauthenticated",
+			data: null,
+		});
+		render(<EventSkeleton {...eventProps} />);
+
+		expect(
+			screen.getByText("Sign In to see all the details!")
+		).toBeInTheDocument();
+		expect(screen.getByText(eventProps.code)).toBeInTheDocument();
+		expect(screen.getByText(eventProps.name)).toBeInTheDocument();
+		expect(
+			screen.queryByText(`${eventProps.startDate} at ${eventProps.startTime}`)
+		).not.toBeInTheDocument();
+		expect(screen.queryByText(eventProps.location)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(`Hosted by ${eventProps.hosts}`)
+		).not.toBeInTheDocument();
+		expect(screen.queryByText(eventProps.description)).not.toBeInTheDocument();
 	});
 
 	it("should render 'Edit' link if the user is the host", () => {
@@ -69,7 +91,7 @@ describe("EventSkeleton Component", () => {
 
 	it("should not render 'Edit' link if the user is not the host", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
+			data: { user: { id: "other-user-999" } },
 			status: "authenticated",
 		});
 
