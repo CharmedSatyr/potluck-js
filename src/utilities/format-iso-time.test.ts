@@ -6,6 +6,10 @@ describe("formatIsoTime", () => {
 		expect(formatIsoTime("23:59:59")).toBe("23:59:59");
 	});
 
+	it("returns the time without action if it is a placeholder empty string", () => {
+		expect(formatIsoTime("")).toBe("");
+	});
+
 	it("appends ':00' if the time is missing seconds (length of 6)", () => {
 		expect(formatIsoTime("12:34")).toBe("12:34:00");
 		expect(formatIsoTime("23:59")).toBe("23:59:00");
