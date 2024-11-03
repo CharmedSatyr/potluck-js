@@ -1,6 +1,6 @@
 import Form from "next/form";
 import { useActionState, useState } from "react";
-import { submitPlan } from "../test-action";
+import { submitPlan } from "../manage-event-wizard/actions";
 import CourseInput from "./course-input";
 import { MAX_REQUESTS } from "@/app/start/[code]/plan-food/plan-food-manager";
 
@@ -40,7 +40,7 @@ const PlanFoodForm = () => {
 
 			{courses.map((course, index) => (
 				<CourseInput
-					key={`${index}-${course.toString()}`}
+					key={`${index}-${course.value}`}
 					change={handleCourseChange}
 					remove={removeCourse}
 					index={index}
@@ -48,28 +48,19 @@ const PlanFoodForm = () => {
 				/>
 			))}
 
-			<div className="mb-6 flex justify-between">
-				<button
-					className="btn btn-secondary w-1/3"
-					onClick={addCourse}
-					type="button"
-				>
-					Add Request
-				</button>
-				<button
-					className="btn btn-accent w-1/3"
-					onClick={() => console.log("push to next page")}
-					type="button"
-				>
-					Skip For Now
-				</button>
-			</div>
+			<button
+				className="btn btn-secondary mb-2 w-full"
+				onClick={addCourse}
+				type="button"
+			>
+				Add Request
+			</button>
 			<button
 				className="btn btn-primary w-full"
 				disabled={isPending}
 				type="submit"
 			>
-				Continue to Event
+				Submit and Continue
 			</button>
 		</Form>
 	);
