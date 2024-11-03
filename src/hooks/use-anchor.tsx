@@ -1,36 +1,36 @@
 import { useEffect, useState } from "react";
 
 const useAnchor = (): [string] => {
-    const [mounted, setMounted] = useState<boolean>(false);
-    const [anchor, setAnchor] = useState<string>("");
-    useEffect(() => {
-        if (mounted) {
-            return;
-        }
+	const [mounted, setMounted] = useState<boolean>(false);
+	const [anchor, setAnchor] = useState<string>("#");
 
-        setMounted(true);
-    }, []);
+	useEffect(() => {
+		if (mounted) {
+			return;
+		}
 
-    useEffect(() => {
-        if (!mounted) {
-            return;
-        }
+		setMounted(true);
+	}, []);
 
-        if (typeof window === 'undefined') {
-            return;
-        }
+	useEffect(() => {
+		if (!mounted) {
+			return;
+		}
 
-        const handleAnchorChange = (event: HashChangeEvent) => {
-            setAnchor(event.newURL)
-        }
+		if (typeof window === "undefined") {
+			return;
+		}
 
-        window.addEventListener("hashchange", handleAnchorChange);
+		const handleAnchorChange = (event: HashChangeEvent) => {
+			setAnchor(event.newURL ?? event.oldURL);
+		};
 
-        return () => window.removeEventListener("hashchange", handleAnchorChange);
-    }, [mounted]);
+		window.addEventListener("hashchange", handleAnchorChange);
 
-    return [anchor.split("#")[1]];
-}
+		return () => window.removeEventListener("hashchange", handleAnchorChange);
+	}, [mounted]);
 
+	return [anchor.split("#")[1]];
+};
 
 export default useAnchor;
