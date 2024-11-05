@@ -1,6 +1,20 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
-const useAnchor = (): [string] => {
+const scrollToAnchor = (id: string): void => {
+	const el = document.getElementById(id);
+	el?.scrollIntoView({ behavior: "smooth" });
+	window.history.pushState(null, "", `#${id}`);
+	window.dispatchEvent(
+		new HashChangeEvent("hashchange", {
+			oldURL: window.location.href,
+			newURL: `${window.location.origin}${window.location.pathname}#${id}`,
+		})
+	);
+};
+
+const useAnchor = (): [string, (id: string) => void] => {
 	const [mounted, setMounted] = useState<boolean>(false);
 	const [anchor, setAnchor] = useState<string>("#");
 
@@ -10,6 +24,7 @@ const useAnchor = (): [string] => {
 		}
 
 		setMounted(true);
+		setAnchor(window.location.hash)
 	}, []);
 
 	useEffect(() => {
@@ -22,15 +37,19 @@ const useAnchor = (): [string] => {
 		}
 
 		const handleAnchorChange = (event: HashChangeEvent) => {
-			setAnchor(event.newURL ?? event.oldURL);
+			if (!event.newURL) {
+				return;
+			}
+
+			setAnchor(new URL(event.newURL).hash);
 		};
 
-		window.addEventListener("hashchange", handleAnchorChange);
+		window.addEventListener("hashchange", handleAnchorChange, true);
 
 		return () => window.removeEventListener("hashchange", handleAnchorChange);
 	}, [mounted]);
 
-	return [anchor.split("#")[1]];
+	return [anchor.split("#")[1], scrollToAnchor];
 };
 
 export default useAnchor;
