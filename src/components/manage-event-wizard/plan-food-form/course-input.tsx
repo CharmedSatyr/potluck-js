@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 type Props = {
 	change: (index: number, value: string) => void;
 	index: number;
@@ -6,6 +8,8 @@ type Props = {
 };
 
 const CourseInput = ({ index, change, remove, value }: Props) => {
+	const quantityInputRef = useRef<HTMLInputElement>(null);
+
 	return (
 		<>
 			<div className="flex w-full items-center justify-between">
@@ -20,10 +24,11 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 					<label className="label label-text">What&apos;s Needed</label>
 					<input
 						className="input-text input input-bordered"
-						type="text"
 						maxLength={256}
 						minLength={1}
+						name={`name-${index}`}
 						onChange={(e) => change(index, e.target.value)}
+						type="text"
 						value={value}
 					/>
 				</div>
@@ -33,10 +38,7 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						<button
 							className="btn join-item"
 							onClick={() => {
-								const q = document.querySelector<HTMLInputElement>(
-									`#quantity-${index}`
-								);
-								q?.stepDown();
+								quantityInputRef.current?.stepDown();
 							}}
 							type="button"
 						>
@@ -58,19 +60,19 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						</button>
 						<input
 							className="input join-item input-bordered max-w-20"
+							defaultValue={0}
 							id={`quantity-${index}`}
 							inputMode="numeric"
 							min="0"
-							type="number"
+							name={`quantity-${index}`}
 							placeholder="0"
+							ref={quantityInputRef}
+							type="number"
 						/>
 						<button
 							className="btn join-item"
 							onClick={() => {
-								const q = document.querySelector<HTMLInputElement>(
-									`#quantity-${index}`
-								);
-								q?.stepUp();
+								quantityInputRef.current?.stepUp();
 							}}
 							type="button"
 						>
