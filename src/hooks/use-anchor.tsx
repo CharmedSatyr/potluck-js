@@ -2,19 +2,19 @@
 
 import { useEffect, useState } from "react";
 
-const scrollToAnchor = (id: string): void => {
+const scrollToAnchor = (id: string, query: string = ''): void => {
 	const el = document.getElementById(id);
 	el?.scrollIntoView({ behavior: "smooth" });
-	window.history.pushState(null, "", `#${id}`);
+	window.history.pushState(null, "", `#${id}${query}`);
 	window.dispatchEvent(
 		new HashChangeEvent("hashchange", {
 			oldURL: window.location.href,
-			newURL: `${window.location.origin}${window.location.pathname}#${id}`,
+			newURL: `${window.location.origin}${window.location.pathname}#${id}${query}`,
 		})
 	);
 };
 
-const useAnchor = (): [string, (id: string) => void] => {
+const useAnchor = (): [string, (id: string, query?: string) => void] => {
 	const [mounted, setMounted] = useState<boolean>(false);
 	const [anchor, setAnchor] = useState<string>("#");
 
