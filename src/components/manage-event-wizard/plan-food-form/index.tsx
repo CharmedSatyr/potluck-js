@@ -1,7 +1,7 @@
 import Form from "next/form";
 import { useActionState, useState } from "react";
-import { submitPlan } from "../manage-event-wizard/actions";
-import CourseInput from "./course-input";
+import { submitPlan } from "@/components/manage-event-wizard/actions";
+import CourseInput from "@/components/manage-event-wizard/plan-food-form/course-input";
 import { MAX_REQUESTS } from "@/app/start/[code]/plan-food/plan-food-manager";
 
 const PlanFoodForm = () => {

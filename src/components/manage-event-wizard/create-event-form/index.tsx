@@ -2,7 +2,7 @@
 
 import Form from "next/form";
 import { useActionState, useEffect } from "react";
-import submit from "../manage-event-wizard/actions";
+import submit from "../actions";
 import useAnchor from "@/hooks/use-anchor";
 
 const CreateEventForm = () => {

@@ -24,7 +24,7 @@ const useAnchor = (): [string, (id: string) => void] => {
 		}
 
 		setMounted(true);
-		setAnchor(window.location.hash)
+		setAnchor(window.location.hash);
 	}, []);
 
 	useEffect(() => {

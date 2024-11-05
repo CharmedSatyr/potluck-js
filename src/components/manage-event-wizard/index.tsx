@@ -1,7 +1,7 @@
 "use client";
 
-import CreateEventForm from "@/components/create-event-form";
-import PlanFoodForm from "@/components/plan-food-form";
+import CreateEventForm from "@/components/manage-event-wizard/create-event-form";
+import PlanFoodForm from "@/components/manage-event-wizard/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
 
 const ManageEventWizard = () => {
@@ -25,10 +25,18 @@ const ManageEventWizard = () => {
 			</div>
 
 			<div className="flex w-full justify-center gap-2 py-2">
-				<button type="button" onClick={() => scrollToAnchor("create-event")} className="btn btn-xs">
+				<button
+					type="button"
+					onClick={() => scrollToAnchor("create-event")}
+					className="btn btn-xs"
+				>
 					Create Event
 				</button>
-				<button type="button" onClick={() => scrollToAnchor('plan-food')} className="btn btn-xs">
+				<button
+					type="button"
+					onClick={() => scrollToAnchor("plan-food")}
+					className="btn btn-xs"
+				>
 					Plan Food
 				</button>
 			</div>
