@@ -25,7 +25,7 @@ const useAnchor = (): [string, (id: string) => void] => {
 
 		setMounted(true);
 		setAnchor(window.location.hash);
-	}, []);
+	}, [mounted]);
 
 	useEffect(() => {
 		if (!mounted) {
