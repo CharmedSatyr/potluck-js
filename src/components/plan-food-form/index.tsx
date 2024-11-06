@@ -2,11 +2,11 @@
 
 import Form from "next/form";
 import { useActionState, useEffect, useState } from "react";
-import CourseInput from "@/components/manage-event-wizard/plan-food-form/course-input";
+import CourseInput from "@/components/plan-food-form/course-input";
 import { MAX_REQUESTS } from "@/app/start/[code]/plan-food/plan-food-manager";
 import submitRequest, {
 	PlanFoodFormState,
-} from "@/components/manage-event-wizard/plan-food-form/submit-actions";
+} from "@/components/plan-food-form/submit-actions";
 import { useSearchParams } from "next/navigation";
 import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
@@ -32,7 +32,7 @@ const PlanFoodForm = () => {
 		}
 
 		state.code = code;
-	}, [anchor, params]);
+	}, [anchor, params, state]);
 
 	const [courses, setCourses] = useState([{ name: "", count: "0" }]);
 

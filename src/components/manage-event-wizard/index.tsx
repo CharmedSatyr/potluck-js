@@ -1,7 +1,7 @@
 "use client";
 
 import CreateEventForm from "@/components/manage-event-wizard/create-event-form";
-import PlanFoodForm from "@/components/manage-event-wizard/plan-food-form";
+import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
 
 const ManageEventWizard = () => {

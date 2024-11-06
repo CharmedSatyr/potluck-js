@@ -75,7 +75,7 @@ const CreateEventForm = () => {
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
-	}, [state.code, isPending, scrollToAnchor]);
+	}, [createQueryString, state.code, isPending, scrollToAnchor]);
 
 	return (
 		<Form
