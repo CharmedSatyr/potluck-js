@@ -1,13 +1,14 @@
 import { useRef } from "react";
 
 type Props = {
-	change: (index: number, value: string) => void;
+	change: (index: number, value: string, count: string) => void;
 	index: number;
 	remove: (index: number) => void;
 	value: string;
 };
 
 const CourseInput = ({ index, change, remove, value }: Props) => {
+	const courseInputRef = useRef<HTMLInputElement>(null);
 	const quantityInputRef = useRef<HTMLInputElement>(null);
 
 	return (
@@ -27,7 +28,15 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						maxLength={256}
 						minLength={1}
 						name={`name-${index}`}
-						onChange={(e) => change(index, e.target.value)}
+						onChange={(e) =>
+							change(
+								index,
+								e.target.value,
+								quantityInputRef.current?.value ?? "0"
+							)
+						}
+						ref={courseInputRef}
+						required
 						type="text"
 						value={value}
 					/>
@@ -60,13 +69,22 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						</button>
 						<input
 							className="input join-item input-bordered max-w-20"
-							defaultValue={0}
+							defaultValue="0"
 							id={`quantity-${index}`}
 							inputMode="numeric"
+							max="99"
 							min="0"
 							name={`quantity-${index}`}
+							onChange={(e) =>
+								change(
+									index,
+									courseInputRef.current?.value ?? "",
+									e.target.value
+								)
+							}
 							placeholder="0"
 							ref={quantityInputRef}
+							required
 							type="number"
 						/>
 						<button

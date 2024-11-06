@@ -1,82 +1,176 @@
 "use client";
 
 import Form from "next/form";
-import { useActionState, useEffect } from "react";
-import submit from "../actions";
+import { useActionState, useCallback, useEffect, useState } from "react";
+import {
+	createEventAction,
+	loginAction,
+} from "@/components/manage-event-wizard/create-event-form/submit-actions";
 import useAnchor from "@/hooks/use-anchor";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import {
+	CreateEventFormData,
+	CreateEventFormState,
+} from "@/components/manage-event-wizard/create-event-form/submit-actions.types";
 
 const CreateEventForm = () => {
-    const [, scrollToAnchor] = useAnchor();
-    const [state, submitAction, isPending] = useActionState(submit, {});
+	const path = usePathname();
+	const session = useSession();
+	const searchParams = useSearchParams();
 
-    useEffect(() => {
-        if (isPending || !state.code || typeof window === "undefined") {
-            return;
-        }
+	const [defaultValues] = useState<CreateEventFormData>(() => {
+		const values: CreateEventFormData = {
+			description: "",
+			hosts: "",
+			location: "Location",
+			name: "Example",
+			startDate: "2025-01-09",
+			startTime: "12:00",
+		};
 
-        scrollToAnchor('plan-food');
-    }, [state.code, isPending]);
+		if (searchParams.get("source") !== "discord") {
+			return values;
+		}
 
-    return (
-        <Form
-            action={submitAction}
-            className="flex max-h-96 flex-col justify-between"
-        >
-            <input
-                className="w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none"
-                name="name"
-                id="name"
-                placeholder="Wicked"
-                type="text"
-                defaultValue="Wicked"
-            />
-            <div className="flex items-center justify-between">
-                <input
-                    className="border-base-100 bg-inherit text-2xl focus:border-b-2 focus:border-neutral focus:outline-none"
-                    name="date"
-                    type="date"
-                />{" "}
-                <span className="text-2xl font-bold"> at </span>
-                <input
-                    className="w-4/12 border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
-                    name="time"
-                    step={60}
-                    type="time"
-                />
-            </div>
-            <div className="mb-4 mt-1">
-                <input
-                    className="my-2 w-full border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
-                    name="location"
-                    placeholder="Place name, address, or link"
-                    type="text"
-                />
-            </div>
-            <div className="flex flex-col">
-                <div className="flex items-center justify-between">
-                    <span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
-                    <input
-                        className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
-                        name="hosts"
-                        placeholder={"(optional) Nickname"}
-                        type="text"
-                    />
-                </div>
-            </div>
-            <input
-                className="my-2 w-full border-b-2 border-base-100 bg-inherit focus:border-neutral focus:outline-none"
-                name="description"
-                placeholder="(optional) Add a description of your event"
-            />
-            <button
-                className="btn btn-primary w-full"
-                disabled={isPending}
-                type="submit"
-            >
-                Next
-            </button>
-        </Form>
-    );
+		for (const key in values) {
+			const searchValue = searchParams.get(key);
+			if (!searchValue) {
+				continue;
+			}
+			values[key as keyof CreateEventFormData] = searchValue;
+		}
+
+		return values;
+	});
+
+	const createQueryString = useCallback(
+		(name: string, value: string) => {
+			const params = new URLSearchParams(searchParams.toString());
+			params.set(name, value);
+
+			return params.toString();
+		},
+		[searchParams]
+	);
+
+	const submit =
+		session.status === "authenticated" ? createEventAction : loginAction;
+
+	const [, scrollToAnchor] = useAnchor();
+	const [state, submitAction, isPending] = useActionState<
+		CreateEventFormState,
+		FormData
+	>(submit, {
+		fields: defaultValues,
+		message: "",
+		path,
+		success: false,
+	});
+
+	useEffect(() => {
+		if (isPending || !state.code || typeof window === "undefined") {
+			return;
+		}
+
+		const query = "?" + createQueryString("code", state.code);
+		scrollToAnchor("plan-food", query);
+	}, [state.code, isPending, scrollToAnchor]);
+
+	return (
+		<Form
+			action={submitAction}
+			className="flex max-h-96 flex-col justify-between"
+		>
+			<input
+				className="w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none"
+				defaultValue={state.fields.name}
+				name="name"
+				id="name"
+				placeholder="Untitled Event"
+				required
+				type="text"
+			/>
+			<span className="mb-2 text-secondary">
+				{state.errors?.fieldErrors.name}
+			</span>
+
+			<div className="flex items-center justify-between">
+				<input
+					className="border-base-100 bg-inherit text-2xl focus:border-b-2 focus:border-neutral focus:outline-none"
+					defaultValue={state.fields.startDate}
+					name="startDate"
+					type="date"
+					required
+				/>{" "}
+				<span className="text-2xl font-bold"> at </span>
+				<input
+					className="w-4/12 border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
+					defaultValue={state.fields.startTime}
+					name="startTime"
+					step={60}
+					required
+					type="time"
+				/>
+			</div>
+			<div>
+				<span className="mt-0 text-secondary">
+					{state.errors?.fieldErrors.startDate}
+				</span>
+				<span className="float-right mb-2 mt-0 text-secondary">
+					{state.errors?.fieldErrors.startTime}
+				</span>
+			</div>
+
+			<div className="mb-4 mt-1">
+				<input
+					className="my-2 w-full border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
+					defaultValue={state.fields.location}
+					name="location"
+					placeholder="Place name, address, or link"
+					required
+					type="text"
+				/>
+				<span className="mb-2 text-secondary">
+					{state.errors?.fieldErrors.location}
+				</span>
+			</div>
+
+			<div className="flex flex-col">
+				<div className="flex items-center justify-between">
+					<span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
+					<input
+						className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
+						defaultValue={state.fields.hosts}
+						name="hosts"
+						placeholder={"(optional) Nickname"}
+						type="text"
+					/>
+				</div>
+				<span className="mb-2 text-secondary">
+					{state.errors?.fieldErrors.hosts}
+				</span>
+			</div>
+
+			<input
+				className="my-2 w-full border-b-2 border-base-100 bg-inherit focus:border-neutral focus:outline-none"
+				defaultValue={state.fields.description}
+				name="description"
+				placeholder="(optional) Add a description of your event"
+			/>
+			<span className="mb-2 text-secondary">
+				{state.errors?.fieldErrors.description}
+			</span>
+
+			<button
+				className="btn btn-primary w-full"
+				disabled={isPending}
+				type="submit"
+			>
+				Next
+			</button>
+		</Form>
+	);
 };
 
 export default CreateEventForm;

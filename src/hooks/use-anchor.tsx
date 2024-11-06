@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-const scrollToAnchor = (id: string, query: string = ''): void => {
+const scrollToAnchor = (id: string, query: string = ""): void => {
 	const el = document.getElementById(id);
 	el?.scrollIntoView({ behavior: "smooth" });
-	window.history.pushState(null, "", `#${id}${query}`);
+	window.history.pushState(null, "", `${query}#${id}`);
 	window.dispatchEvent(
 		new HashChangeEvent("hashchange", {
 			oldURL: window.location.href,
-			newURL: `${window.location.origin}${window.location.pathname}#${id}${query}`,
+			newURL: `${window.location.origin}${window.location.pathname}${query}#${id}`,
 		})
 	);
 };
