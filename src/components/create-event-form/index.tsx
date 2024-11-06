@@ -5,14 +5,14 @@ import { useActionState, useCallback, useEffect, useState } from "react";
 import {
 	createEventAction,
 	loginAction,
-} from "@/components/manage-event-wizard/create-event-form/submit-actions";
+} from "@/components/create-event-form/submit-actions";
 import useAnchor from "@/hooks/use-anchor";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
 	CreateEventFormData,
 	CreateEventFormState,
-} from "@/components/manage-event-wizard/create-event-form/submit-actions.types";
+} from "@/components/create-event-form/submit-actions.types";
 
 const CreateEventForm = () => {
 	const path = usePathname();

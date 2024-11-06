@@ -5,7 +5,7 @@ import { auth, signIn } from "@/auth";
 import {
 	formSchema,
 	CreateEventFormState,
-} from "@/components/manage-event-wizard/create-event-form/submit-actions.types";
+} from "@/components/create-event-form/submit-actions.types";
 
 export const loginAction = async (
 	prevState: CreateEventFormState,

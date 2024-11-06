@@ -1,6 +1,6 @@
 "use client";
 
-import CreateEventForm from "@/components/manage-event-wizard/create-event-form";
+import CreateEventForm from "@/components/create-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
 
