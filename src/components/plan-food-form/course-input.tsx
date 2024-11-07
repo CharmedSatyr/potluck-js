@@ -22,9 +22,12 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 					✕
 				</button>
 				<div className="form-control w-2/3">
-					<label className="label label-text">What&apos;s Needed</label>
+					<label className="label label-text" htmlFor={`name-${index}`}>
+						What&apos;s Needed
+					</label>
 					<input
 						className="input-text input input-bordered"
+						id={`name-${index}`}
 						maxLength={256}
 						minLength={1}
 						name={`name-${index}`}
@@ -38,7 +41,9 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 					/>
 				</div>
 				<div className="form-control">
-					<label className="label label-text">Signups Needed</label>
+					<label className="label label-text" htmlFor={`quantity-${index}`}>
+						Signups Needed
+					</label>
 					<div className="join">
 						<button
 							className="btn join-item"
