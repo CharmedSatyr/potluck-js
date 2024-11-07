@@ -42,6 +42,7 @@ const ManageEventWizard = () => {
 			</div>
 
 			<ul className="steps w-full">
+				{/* TODO: These should be buttons that behave like the above scroll to anchor buttons. */}
 				<li className="step step-secondary">Create an Event</li>
 				<li
 					className={`step ${anchor === "plan-food" ? "step-secondary" : ""}`}

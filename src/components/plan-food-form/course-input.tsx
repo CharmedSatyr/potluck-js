@@ -8,8 +8,8 @@ type Props = {
 };
 
 const CourseInput = ({ index, change, remove, value }: Props) => {
-	const courseInputRef = useRef<HTMLInputElement>(null);
-	const quantityInputRef = useRef<HTMLInputElement>(null);
+	const nameRef = useRef<HTMLInputElement>(null);
+	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<>
@@ -29,13 +29,9 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						minLength={1}
 						name={`name-${index}`}
 						onChange={(e) =>
-							change(
-								index,
-								e.target.value,
-								quantityInputRef.current?.value ?? "0"
-							)
+							change(index, e.target.value, countRef.current?.value ?? "0")
 						}
-						ref={courseInputRef}
+						ref={nameRef}
 						required
 						type="text"
 						value={value}
@@ -47,7 +43,12 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						<button
 							className="btn join-item"
 							onClick={() => {
-								quantityInputRef.current?.stepDown();
+								countRef.current?.stepDown();
+								change(
+									index,
+									nameRef.current?.value ?? "",
+									countRef.current?.value ?? "0"
+								);
 							}}
 							type="button"
 						>
@@ -76,21 +77,22 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 							min="0"
 							name={`quantity-${index}`}
 							onChange={(e) =>
-								change(
-									index,
-									courseInputRef.current?.value ?? "",
-									e.target.value
-								)
+								change(index, nameRef.current?.value ?? "", e.target.value)
 							}
 							placeholder="0"
-							ref={quantityInputRef}
+							ref={countRef}
 							required
 							type="number"
 						/>
 						<button
 							className="btn join-item"
 							onClick={() => {
-								quantityInputRef.current?.stepUp();
+								countRef.current?.stepUp();
+								change(
+									index,
+									nameRef.current?.value ?? "",
+									countRef.current?.value ?? "0"
+								);
 							}}
 							type="button"
 						>

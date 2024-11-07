@@ -1,7 +1,7 @@
 "use client";
 
 import Form from "next/form";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
 import { MAX_REQUESTS } from "@/app/start/[code]/plan-food/plan-food-manager";
 import submitRequest, {
@@ -10,6 +10,12 @@ import submitRequest, {
 import { useSearchParams } from "next/navigation";
 import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
+import { z } from "zod";
+
+const courseSchema = z.strictObject({
+	count: z.coerce.number().positive(),
+	name: z.string().trim().min(1),
+});
 
 const PlanFoodForm = () => {
 	const [anchor] = useAnchor();
@@ -56,9 +62,10 @@ const PlanFoodForm = () => {
 		setCourses(updatedCourses);
 	};
 
-	const noEntries =
-		courses.reduce((acc, curr) => acc + Number(curr.count), 0) <= 0;
-	console.log("courses:", courses);
+	const coursesValid = useMemo(
+		() => courses.every((course) => courseSchema.safeParse(course).success),
+		[courses]
+	);
 
 	return (
 		<Form
@@ -92,9 +99,10 @@ const PlanFoodForm = () => {
 					Skip for Now
 				</Link>
 			</div>
+
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending || noEntries}
+				disabled={isPending || !coursesValid}
 				type="submit"
 			>
 				Submit and Continue

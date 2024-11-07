@@ -72,6 +72,8 @@ const CreateEventForm = () => {
 		if (isPending || !state.code || typeof window === "undefined") {
 			return;
 		}
+		// TODO: Unbreak "back" navigation via button in wizard.
+		// TODO: What should happen on refresh? It currently keeps existing hash to drop on this page, even if it's #plan-food
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
