@@ -40,6 +40,7 @@ export const createEventAction = async (
 	if (!parsed.success) {
 		return {
 			...prevState,
+			fields,
 			errors: parsed.error.flatten(),
 			message: "Invalid form data",
 			success: false,
@@ -51,6 +52,7 @@ export const createEventAction = async (
 	if (!session?.user?.id) {
 		return {
 			...prevState,
+			fields,
 			message: "Not authenticated",
 			success: false,
 		};
@@ -65,6 +67,7 @@ export const createEventAction = async (
 	if (!result) {
 		return {
 			...prevState,
+			fields,
 			message: "Failed to create event",
 			success: false,
 		};
