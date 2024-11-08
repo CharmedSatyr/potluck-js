@@ -23,10 +23,10 @@ const CreateEventForm = () => {
 		const values: CreateEventFormData = {
 			description: "",
 			hosts: "",
-			location: "Location",
-			name: "Example",
-			startDate: "2025-01-09",
-			startTime: "12:00",
+			location: "",
+			name: "",
+			startDate: "",
+			startTime: "",
 		};
 
 		if (searchParams.get("source") !== "discord") {
