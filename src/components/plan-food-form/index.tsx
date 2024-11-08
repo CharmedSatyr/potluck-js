@@ -3,7 +3,7 @@
 import Form from "next/form";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
-import { MAX_REQUESTS } from "@/app/start/[code]/plan-food/plan-food-manager";
+import { MAX_REQUESTS } from "@/constants";
 import submitRequest, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
