@@ -94,7 +94,7 @@ const CreateEventForm = () => {
 				type="text"
 			/>
 			<span className="mb-2 text-secondary">
-				{state.errors?.fieldErrors.name}
+				{state.errors?.fieldErrors.name?.join(" ")}
 			</span>
 
 			<div className="flex items-center justify-between">
@@ -117,10 +117,10 @@ const CreateEventForm = () => {
 			</div>
 			<div>
 				<span className="mt-0 text-secondary">
-					{state.errors?.fieldErrors.startDate}
+					{state.errors?.fieldErrors.startDate?.join(" ")}
 				</span>
 				<span className="float-right mb-2 mt-0 text-secondary">
-					{state.errors?.fieldErrors.startTime}
+					{state.errors?.fieldErrors.startTime?.join(" ")}
 				</span>
 			</div>
 
@@ -134,7 +134,7 @@ const CreateEventForm = () => {
 					type="text"
 				/>
 				<span className="mb-2 text-secondary">
-					{state.errors?.fieldErrors.location}
+					{state.errors?.fieldErrors.location?.join(" ")}
 				</span>
 			</div>
 
@@ -150,7 +150,7 @@ const CreateEventForm = () => {
 					/>
 				</div>
 				<span className="mb-2 text-secondary">
-					{state.errors?.fieldErrors.hosts}
+					{state.errors?.fieldErrors.hosts?.join(" ")}
 				</span>
 			</div>
 
@@ -161,7 +161,7 @@ const CreateEventForm = () => {
 				placeholder="(optional) Add a description of your event"
 			/>
 			<span className="mb-2 text-secondary">
-				{state.errors?.fieldErrors.description}
+				{state.errors?.fieldErrors.description?.join(" ")}
 			</span>
 
 			<button
