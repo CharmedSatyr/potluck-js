@@ -3,7 +3,6 @@
 import Form from "next/form";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
-import { MAX_REQUESTS } from "@/constants";
 import submitRequest, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
@@ -11,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
+
+const MAX_REQUESTS = 20;
 
 const courseSchema = z.strictObject({
 	count: z.coerce.number().positive(),
