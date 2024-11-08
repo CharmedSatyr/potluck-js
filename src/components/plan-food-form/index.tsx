@@ -21,6 +21,7 @@ const PlanFoodForm = () => {
 	const [anchor] = useAnchor();
 	const params = useSearchParams();
 
+	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<
 		PlanFoodFormState,
 		FormData
