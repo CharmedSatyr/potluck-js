@@ -13,10 +13,11 @@ describe("CourseInput", () => {
 	it("renders input fields and labels", () => {
 		render(
 			<CourseInput
-				index={0}
 				change={mockChange}
+				count="1"
+				index={0}
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
@@ -30,8 +31,9 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={1}
 				change={mockChange}
+				count="1"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
@@ -47,8 +49,9 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={0}
 				change={mockChange}
+				count="0"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
@@ -64,12 +67,13 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={0}
 				change={mockChange}
+				count="1"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
-		const countInput = screen.getByPlaceholderText("0");
+		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.change(countInput, { target: { value: "5" } });
 
@@ -81,13 +85,14 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={0}
 				change={mockChange}
+				count="0"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
 		const incrementButton = screen.getAllByRole("button")[2];
-		const countInput = screen.getByPlaceholderText("0");
+		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.click(incrementButton);
 
@@ -100,13 +105,14 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={0}
 				change={mockChange}
+				count="1"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
 		const decrementButton = screen.getAllByRole("button")[1];
-		const countInput = screen.getByPlaceholderText("0");
+		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.change(countInput, { target: { value: "2" } });
 
@@ -121,13 +127,14 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={0}
 				change={mockChange}
+				count="1"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
 		const decrementButton = screen.getAllByRole("button")[1];
-		const countInput = screen.getByPlaceholderText("0");
+		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.click(decrementButton);
 
@@ -140,13 +147,14 @@ describe("CourseInput", () => {
 			<CourseInput
 				index={0}
 				change={mockChange}
+				count="1"
+				name="Sample Course"
 				remove={mockRemove}
-				value="Sample Course"
 			/>
 		);
 
 		const incrementButton = screen.getAllByRole("button")[2];
-		const countInput = screen.getByPlaceholderText("0");
+		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.change(countInput, { target: { value: "99" } });
 

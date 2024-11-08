@@ -79,13 +79,15 @@ const PlanFoodForm = () => {
 			</h1>
 			<h2>Create Your Requests</h2>
 
+			<span className="mb-2 text-secondary">{state.message}</span>
 			{courses.map((course, index) => (
 				<CourseInput
 					key={`${index}-course`}
 					change={handleCourseChange}
+					count={course.count}
 					index={index}
+					name={course.name}
 					remove={removeCourse}
-					value={course.name}
 				/>
 			))}
 

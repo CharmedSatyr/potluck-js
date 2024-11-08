@@ -2,12 +2,13 @@ import { useRef } from "react";
 
 type Props = {
 	change: (index: number, value: string, count: string) => void;
+	count: string;
 	index: number;
+	name: string;
 	remove: (index: number) => void;
-	value: string;
 };
 
-const CourseInput = ({ index, change, remove, value }: Props) => {
+const CourseInput = ({ change, count, index, name, remove }: Props) => {
 	const nameRef = useRef<HTMLInputElement>(null);
 	const countRef = useRef<HTMLInputElement>(null);
 
@@ -37,7 +38,7 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						ref={nameRef}
 						required
 						type="text"
-						value={value}
+						value={name}
 					/>
 				</div>
 				<div className="form-control">
@@ -75,7 +76,7 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 						</button>
 						<input
 							className="input join-item input-bordered max-w-20"
-							defaultValue="0"
+							defaultValue={count}
 							id={`quantity-${index}`}
 							inputMode="numeric"
 							max="99"
@@ -84,7 +85,6 @@ const CourseInput = ({ index, change, remove, value }: Props) => {
 							onChange={(e) =>
 								change(index, nameRef.current?.value ?? "", e.target.value)
 							}
-							placeholder="0"
 							ref={countRef}
 							required
 							type="number"

@@ -20,7 +20,7 @@ const submitRequest = async (
 	if (!prevState.code) {
 		return {
 			...prevState,
-			message: "Event code missing",
+			message: "Event code missing. Please refresh the page and try again.",
 			success: false,
 		};
 	}
@@ -36,28 +36,28 @@ const submitRequest = async (
 		fields[key] = String(data[key]);
 	}
 
-	console.log("fields:", fields);
+	const builder = new Map<number, { course: string; count: number }>();
 
-	const requests: { course: string; count: number }[] = [];
-	for (const [key, value] of Object.entries(data)) {
-		const entry = { course: "", count: 0 };
+	for (const [key, value] of Object.entries(fields)) {
+		const [field, i] = key.split("-");
 
-		if (key.startsWith("quantity")) {
-			const count = Number(value);
-			if (count <= 0) {
-				continue;
-			}
+		const index = Number(i);
+		const currentEntry = builder.get(index) ?? { course: "", count: 0 };
 
-			entry.count = count;
-			continue;
+		if (field === "quantity") {
+			currentEntry.count = Number(value);
 		}
 
-		entry.course = String(value);
+		if (field === "name") {
+			currentEntry.course = String(value);
+		}
+
+		builder.set(index, currentEntry);
 	}
 
-	if (requests.length === 0) {
-		redirect(`/event/${prevState.code}`);
-	}
+	const requests: { course: string; count: number }[] = Array.from(
+		builder.values()
+	);
 
 	const formatted = { code: prevState.code, requests };
 	const parsed = schema.safeParse(formatted);
@@ -65,7 +65,9 @@ const submitRequest = async (
 	if (!parsed.success) {
 		return {
 			...prevState,
+			fields,
 			errors: parsed.error.flatten(),
+			message: "There was a problem. Verify entries and try again.",
 			success: false,
 		};
 	}
@@ -78,7 +80,8 @@ const submitRequest = async (
 	if (!id) {
 		return {
 			...prevState,
-			message: "Failed to create request",
+			fields,
+			message: "Failed to create request. Please try again.",
 			success: false,
 		};
 	}
