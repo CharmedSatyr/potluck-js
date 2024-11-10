@@ -14,6 +14,8 @@ import {
 	CreateEventFormState,
 } from "@/components/create-event-form/submit-actions.types";
 
+const DEV = process.env.NODE_ENV === 'development'
+
 const CreateEventForm = () => {
 	const path = usePathname();
 	const session = useSession();
@@ -23,10 +25,10 @@ const CreateEventForm = () => {
 		const values: CreateEventFormData = {
 			description: "",
 			hosts: "",
-			location: "",
-			name: "",
-			startDate: "",
-			startTime: "",
+			location: DEV ? "123 Main Street" : "",
+			name: DEV ? "Test Event" : "",
+			startDate: DEV ? "2025-01-09" : "",
+			startTime: DEV ? "12:00" : "",
 		};
 
 		if (searchParams.get("source") !== "discord") {
