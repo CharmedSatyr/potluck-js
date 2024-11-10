@@ -14,7 +14,7 @@ import {
 	CreateEventFormState,
 } from "@/components/create-event-form/submit-actions.types";
 
-const DEV = process.env.NODE_ENV === 'development'
+const DEV = process.env.NODE_ENV === "development";
 
 const CreateEventForm = () => {
 	const path = usePathname();
@@ -71,15 +71,17 @@ const CreateEventForm = () => {
 	});
 
 	useEffect(() => {
-		if (isPending || !state.code || typeof window === "undefined") {
+		if (isPending || !state.code || !state.success) {
 			return;
 		}
-		// TODO: Unbreak "back" navigation via button in wizard.
+
 		// TODO: What should happen on refresh? It currently keeps existing hash to drop on this page, even if it's #plan-food
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
-	}, [createQueryString, state.code, isPending, scrollToAnchor]);
+
+		state.success = false;
+	}, [createQueryString, state, isPending, scrollToAnchor]);
 
 	return (
 		<Form
