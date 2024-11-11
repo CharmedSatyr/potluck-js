@@ -9,6 +9,7 @@ import {
 } from "@/app/start/submit-actions.types";
 
 type Props = {
+	code: string | null;
 	eventData: CreateEventFormData;
 	submitAction: (
 		prevState: CreateEventFormState,
@@ -16,7 +17,7 @@ type Props = {
 	) => Promise<CreateEventFormState>;
 };
 
-const ManageEventWizard = ({ eventData, submitAction }: Props) => {
+const ManageEventWizard = ({ code, eventData, submitAction }: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
 
 	return (
@@ -26,13 +27,17 @@ const ManageEventWizard = ({ eventData, submitAction }: Props) => {
 					className="carousel-item flex w-full justify-center"
 					id="create-event"
 				>
-					<PlanEventForm eventData={eventData} submitAction={submitAction} />
+					<PlanEventForm
+						code={code}
+						eventData={eventData}
+						submitAction={submitAction}
+					/>
 				</div>
 				<div
 					className="carousel-item flex w-full justify-center"
 					id="plan-food"
 				>
-					<PlanFoodForm />
+					<PlanFoodForm code={code} />
 				</div>
 			</div>
 

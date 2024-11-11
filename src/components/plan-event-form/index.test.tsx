@@ -42,7 +42,13 @@ describe("PlanEventForm", () => {
 	const scrollToAnchor = jest.fn();
 
 	it("renders form with default values", () => {
-		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
+		render(
+			<PlanEventForm
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
+		);
 
 		const inputs: HTMLInputElement[] = screen.getAllByRole("textbox");
 
@@ -59,7 +65,13 @@ describe("PlanEventForm", () => {
 	});
 
 	it("called the submitAction on submit", async () => {
-		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
+		render(
+			<PlanEventForm
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
+		);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -71,14 +83,20 @@ describe("PlanEventForm", () => {
 	});
 
 	it("fills default values based on eventData", () => {
-		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
+		render(
+			<PlanEventForm
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
+		);
 
 		for (const field of Object.values(eventData)) {
 			expect(screen.getByDisplayValue(field)).toBeInTheDocument();
 		}
 	});
 
-	it("calls scrollToAnchor with the correct query when state changes", async () => {
+	it("calls scrollToAnchor with the correct query when state.success is true", async () => {
 		(useSearchParams as jest.Mock).mockReturnValue(
 			new URLSearchParams({ code })
 		);
@@ -89,9 +107,15 @@ describe("PlanEventForm", () => {
 			success: true,
 		});
 
-		(useAnchor as jest.Mock).mockReturnValue(["", scrollToAnchor]);
+		(useAnchor as jest.Mock).mockReturnValue(["create-event", scrollToAnchor]);
 
-		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
+		render(
+			<PlanEventForm
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
+		);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -119,7 +143,13 @@ describe("PlanEventForm", () => {
 			success: true,
 		});
 
-		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
+		render(
+			<PlanEventForm
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
+		);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));

@@ -10,6 +10,7 @@ jest.mock("@/components/plan-event-form");
 jest.mock("@/components/plan-food-form");
 
 describe("ManageEventWizard", () => {
+	const code = "CODE1";
 	const submitAction = jest.fn();
 	const eventData = {} as CreateEventFormData;
 
@@ -21,7 +22,11 @@ describe("ManageEventWizard", () => {
 
 	it("should render CreateEventForm and PlanFoodForm", () => {
 		render(
-			<ManageEventWizard eventData={eventData} submitAction={submitAction} />
+			<ManageEventWizard
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
 		);
 
 		expect(screen.getByText("Create Event Form")).toBeInTheDocument();
@@ -30,7 +35,11 @@ describe("ManageEventWizard", () => {
 
 	it("should pass through the submitAction to CreateEventForm", () => {
 		render(
-			<ManageEventWizard eventData={eventData} submitAction={submitAction} />
+			<ManageEventWizard
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
 		);
 
 		expect(PlanEventForm).toHaveBeenCalled();
@@ -41,7 +50,11 @@ describe("ManageEventWizard", () => {
 
 	it("should highlight the create event button initially", async () => {
 		render(
-			<ManageEventWizard eventData={eventData} submitAction={submitAction} />
+			<ManageEventWizard
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
 		);
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
@@ -54,7 +67,11 @@ describe("ManageEventWizard", () => {
 		(useAnchor as jest.Mock).mockReturnValue(["plan-food", jest.fn()]);
 
 		render(
-			<ManageEventWizard eventData={eventData} submitAction={submitAction} />
+			<ManageEventWizard
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
 		);
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
@@ -69,7 +86,11 @@ describe("ManageEventWizard", () => {
 		]);
 
 		render(
-			<ManageEventWizard eventData={eventData} submitAction={submitAction} />
+			<ManageEventWizard
+				code={code}
+				eventData={eventData}
+				submitAction={submitAction}
+			/>
 		);
 
 		fireEvent.click(screen.getByText(/Create an Event/i));

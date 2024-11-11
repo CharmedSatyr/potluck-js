@@ -18,7 +18,11 @@ const courseSchema = z.strictObject({
 	name: z.string().trim().min(1),
 });
 
-const PlanFoodForm = () => {
+type Props = {
+	code: string | null;
+};
+
+const PlanFoodForm = ({ code }: Props) => {
 	const [anchor] = useAnchor();
 	const params = useSearchParams();
 
@@ -27,21 +31,21 @@ const PlanFoodForm = () => {
 		PlanFoodFormState,
 		FormData
 	>(submitRequest, {
-		code: "",
+		code: code ?? "",
 		fields: {},
 		message: "",
 		success: false,
 	});
 
 	useEffect(() => {
-		const code = params.get("code");
-		if (!code) {
+		if (!code || !state) {
 			return;
 		}
 
 		state.code = code;
-	}, [anchor, params, state]);
+	}, [code, state]);
 
+	/** TODO: Update this to work without JS. */
 	const [courses, setCourses] = useState([{ name: "", count: "0" }]);
 
 	const addCourse = () => {
@@ -99,7 +103,10 @@ const PlanFoodForm = () => {
 				>
 					Add Request
 				</button>
-				<Link className="btn btn-accent w-1/3" href={`/event/${state.code}`}>
+				<Link
+					className={`btn btn-accent w-1/3 ${state.code ? "" : "btn-disabled pointer-events-none"}`}
+					href={`/event/${state.code}`}
+				>
 					Skip for Now
 				</Link>
 			</div>

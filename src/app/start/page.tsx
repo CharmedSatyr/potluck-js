@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/start/submit-actions";
@@ -12,6 +12,8 @@ const DEV = process.env.NODE_ENV === "development";
 const StartPage = () => {
 	const searchParams = useSearchParams();
 	const session = useSession();
+
+	const code = searchParams.get("code");
 
 	const submitAction =
 		session.status === "authenticated" ? createEventAction : loginAction;
@@ -45,6 +47,7 @@ const StartPage = () => {
 		<div className="flex h-full w-full flex-col items-center">
 			<Suspense fallback="TODO: Add skeleton">
 				<ManageEventWizard
+					code={code}
 					eventData={defaultValues}
 					submitAction={submitAction}
 				/>

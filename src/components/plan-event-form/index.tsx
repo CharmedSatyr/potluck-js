@@ -9,6 +9,7 @@ import {
 } from "@/app/start/submit-actions.types";
 
 type Props = {
+	code: string | null;
 	eventData: CreateEventFormData;
 	submitAction: (
 		prevState: CreateEventFormState,
@@ -16,7 +17,7 @@ type Props = {
 	) => Promise<CreateEventFormState>;
 };
 
-const PlanEventForm = ({ eventData, submitAction }: Props) => {
+const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor] = useAnchor();
@@ -44,14 +45,12 @@ const PlanEventForm = ({ eventData, submitAction }: Props) => {
 	});
 
 	useEffect(() => {
-		const code = searchParams.get("code");
-
-		if (!code) {
+		if (!code || !state) {
 			return;
 		}
 
 		state.code = code;
-	}, [searchParams, state]);
+	}, [code, state]);
 
 	useEffect(() => {
 		if (!state?.code) {
