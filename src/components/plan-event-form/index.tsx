@@ -20,7 +20,7 @@ type Props = {
 const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
-	const [anchor] = useAnchor();
+	const [anchor, scrollToAnchor] = useAnchor();
 
 	const createQueryString = useCallback(
 		(name: string, value: string) => {
@@ -31,8 +31,6 @@ const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 		},
 		[searchParams]
 	);
-
-	const [, scrollToAnchor] = useAnchor();
 
 	const [state, submit, isPending] = useActionState<
 		CreateEventFormState,
@@ -57,14 +55,15 @@ const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 			return;
 		}
 
-		if (anchor !== "plan-food" && !state?.success) {
+		if (anchor !== "plan-food" && !state.success) {
 			return;
 		}
 
-		const query = "?" + createQueryString("code", state?.code);
-		scrollToAnchor("plan-food", query);
 		state.success = false;
-	}, [anchor, createQueryString, scrollToAnchor, state]);
+
+		const query = "?" + createQueryString("code", state.code);
+		scrollToAnchor("plan-food", query);
+	}, [anchor, state]);
 
 	return (
 		<form

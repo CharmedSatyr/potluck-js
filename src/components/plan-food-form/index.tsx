@@ -1,7 +1,13 @@
 "use client";
 
 import Form from "next/form";
-import { useActionState, useEffect, useMemo, useState } from "react";
+import {
+	useActionState,
+	useEffect,
+	useMemo,
+	useReducer,
+	useState,
+} from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
 import submitRequest, {
 	PlanFoodFormState,
@@ -24,7 +30,8 @@ type Props = {
 
 const PlanFoodForm = ({ code }: Props) => {
 	const [anchor] = useAnchor();
-	const params = useSearchParams();
+	const searchParams = useSearchParams();
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
 	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<
@@ -43,7 +50,9 @@ const PlanFoodForm = ({ code }: Props) => {
 		}
 
 		state.code = code;
-	}, [code, state]);
+
+		forceUpdate();
+	}, [code, state, searchParams]);
 
 	/** TODO: Update this to work without JS. */
 	const [courses, setCourses] = useState([{ name: "", count: "0" }]);

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/start/submit-actions";
