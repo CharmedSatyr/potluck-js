@@ -8,6 +8,7 @@ import {
 import { useSearchParams, usePathname } from "next/navigation";
 import PlanEventForm from "@/components/plan-event-form";
 import useAnchor from "@/hooks/use-anchor";
+import { CreateEventFormData } from "@/app/start/submit-actions.types";
 
 jest.mock("next/navigation", () => ({
 	usePathname: jest.fn(),
@@ -15,8 +16,17 @@ jest.mock("next/navigation", () => ({
 }));
 jest.mock("@/hooks/use-anchor");
 
-describe("CreateEventForm", () => {
+describe("PlanEventForm", () => {
 	const code = "CODE1";
+
+	const eventData: CreateEventFormData = {
+		name: "Sample Event",
+		location: "Sample Location",
+		description: "Sample Description",
+		hosts: "Sample Hosts",
+		startDate: "2025-01-01",
+		startTime: "10:00",
+	};
 
 	beforeEach(() => {
 		(usePathname as jest.Mock).mockReturnValue("/events");
@@ -32,7 +42,7 @@ describe("CreateEventForm", () => {
 	const scrollToAnchor = jest.fn();
 
 	it("renders form with default values", () => {
-		render(<PlanEventForm submitAction={submitAction} />);
+		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
 
 		const inputs: HTMLInputElement[] = screen.getAllByRole("textbox");
 
@@ -49,7 +59,7 @@ describe("CreateEventForm", () => {
 	});
 
 	it("called the submitAction on submit", async () => {
-		render(<PlanEventForm submitAction={submitAction} />);
+		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -60,26 +70,12 @@ describe("CreateEventForm", () => {
 		});
 	});
 
-	it("fills default values based on query params", () => {
-		const searchParams = new URLSearchParams({
-			source: "discord",
-			name: "Sample Event",
-			location: "Sample Location",
-			startDate: "2025-01-01",
-			startTime: "10:00",
-		});
-		(useSearchParams as jest.Mock).mockReturnValue(searchParams);
+	it("fills default values based on eventData", () => {
+		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
 
-		render(<PlanEventForm submitAction={submitAction} />);
-
-		expect(screen.getByPlaceholderText("Untitled Event")).toHaveValue(
-			"Sample Event"
-		);
-		expect(
-			screen.getByPlaceholderText("Place name, address, or link")
-		).toHaveValue("Sample Location");
-		expect(screen.getByDisplayValue("2025-01-01")).toBeInTheDocument();
-		expect(screen.getByDisplayValue("10:00")).toBeInTheDocument();
+		for (const field of Object.values(eventData)) {
+			expect(screen.getByDisplayValue(field)).toBeInTheDocument();
+		}
 	});
 
 	it("calls scrollToAnchor with the correct query when state changes", async () => {
@@ -95,7 +91,7 @@ describe("CreateEventForm", () => {
 
 		(useAnchor as jest.Mock).mockReturnValue(["", scrollToAnchor]);
 
-		render(<PlanEventForm submitAction={submitAction} />);
+		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -123,7 +119,7 @@ describe("CreateEventForm", () => {
 			success: true,
 		});
 
-		render(<PlanEventForm submitAction={submitAction} />);
+		render(<PlanEventForm eventData={eventData} submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));

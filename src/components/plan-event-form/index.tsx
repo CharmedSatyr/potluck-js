@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useCallback, useEffect, useState } from "react";
+import { useActionState, useCallback, useEffect } from "react";
 import useAnchor from "@/hooks/use-anchor";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
@@ -8,44 +8,18 @@ import {
 	CreateEventFormState,
 } from "@/app/start/submit-actions.types";
 
-const DEV = process.env.NODE_ENV === "development";
-
 type Props = {
+	eventData: CreateEventFormData;
 	submitAction: (
 		prevState: CreateEventFormState,
 		formData: FormData
 	) => Promise<CreateEventFormState>;
 };
 
-const PlanEventForm = ({ submitAction }: Props) => {
+const PlanEventForm = ({ eventData, submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor] = useAnchor();
-
-	const [defaultValues] = useState<CreateEventFormData>(() => {
-		const values: CreateEventFormData = {
-			description: "",
-			hosts: "",
-			location: DEV ? "123 Main Street" : "",
-			name: DEV ? "Test Event" : "",
-			startDate: DEV ? "2025-01-09" : "",
-			startTime: DEV ? "12:00" : "",
-		};
-
-		if (searchParams.get("source") !== "discord") {
-			return values;
-		}
-
-		for (const key in values) {
-			const searchValue = searchParams.get(key);
-			if (!searchValue) {
-				continue;
-			}
-			values[key as keyof CreateEventFormData] = searchValue;
-		}
-
-		return values;
-	});
 
 	const createQueryString = useCallback(
 		(name: string, value: string) => {
@@ -58,11 +32,12 @@ const PlanEventForm = ({ submitAction }: Props) => {
 	);
 
 	const [, scrollToAnchor] = useAnchor();
+
 	const [state, submit, isPending] = useActionState<
 		CreateEventFormState,
 		FormData
 	>(submitAction, {
-		fields: defaultValues,
+		fields: eventData,
 		message: "",
 		path,
 		success: false,

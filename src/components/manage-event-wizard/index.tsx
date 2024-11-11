@@ -3,16 +3,20 @@
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
-import { CreateEventFormState } from "@/app/start/submit-actions.types";
+import {
+	CreateEventFormData,
+	CreateEventFormState,
+} from "@/app/start/submit-actions.types";
 
 type Props = {
+	eventData: CreateEventFormData;
 	submitAction: (
 		prevState: CreateEventFormState,
 		formData: FormData
 	) => Promise<CreateEventFormState>;
 };
 
-const ManageEventWizard = ({ submitAction }: Props) => {
+const ManageEventWizard = ({ eventData, submitAction }: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
 
 	return (
@@ -22,7 +26,7 @@ const ManageEventWizard = ({ submitAction }: Props) => {
 					className="carousel-item flex w-full justify-center"
 					id="create-event"
 				>
-					<PlanEventForm submitAction={submitAction} />
+					<PlanEventForm eventData={eventData} submitAction={submitAction} />
 				</div>
 				<div
 					className="carousel-item flex w-full justify-center"
