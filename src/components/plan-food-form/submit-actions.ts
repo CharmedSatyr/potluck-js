@@ -1,7 +1,7 @@
 "use server";
 
-import createRequest from "@/actions/db/create-request";
-import { schema } from "@/actions/db/create-request.types";
+import createRequests from "@/actions/db/create-requests";
+import { schema } from "@/actions/db/create-requests.types";
 import { redirect } from "next/navigation";
 import { typeToFlattenedError } from "zod";
 
@@ -72,7 +72,7 @@ const submitRequest = async (
 		};
 	}
 
-	const [id] = await createRequest({
+	const [id] = await createRequests({
 		...parsed.data,
 		code: prevState.code,
 	});

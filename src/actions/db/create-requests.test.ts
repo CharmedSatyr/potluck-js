@@ -1,4 +1,4 @@
-import createRequest from "@/actions/db/create-request";
+import createRequests from "@/actions/db/create-requests";
 import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
 import { request } from "@/db/schema/request";
@@ -44,7 +44,7 @@ describe("createRequest", () => {
 			}),
 		});
 
-		const result = await createRequest(validData);
+		const result = await createRequests(validData);
 
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.insert).toHaveBeenCalledWith(request);
@@ -54,7 +54,7 @@ describe("createRequest", () => {
 	it("should return an empty array if event is not found", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([]);
 
-		const result = await createRequest(validData);
+		const result = await createRequests(validData);
 
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(result).toEqual([]);
@@ -71,7 +71,7 @@ describe("createRequest", () => {
 			},
 		]);
 
-		const result = await createRequest(invalidData);
+		const result = await createRequests(invalidData);
 
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
@@ -86,7 +86,7 @@ describe("createRequest", () => {
 			}),
 		});
 
-		const result = await createRequest(validData);
+		const result = await createRequests(validData);
 
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));

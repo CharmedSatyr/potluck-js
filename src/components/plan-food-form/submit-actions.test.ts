@@ -1,11 +1,11 @@
 import submitRequest, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
-import createRequest from "@/actions/db/create-request";
+import createRequests from "@/actions/db/create-requests";
 import { redirect } from "next/navigation";
 
-jest.mock("@/actions/db/create-request");
 jest.mock("next/navigation");
+jest.mock("@/actions/db/create-requests");
 
 describe("submitRequest", () => {
 	let prevState: PlanFoodFormState;
@@ -17,7 +17,7 @@ describe("submitRequest", () => {
 			message: "",
 			success: true,
 		};
-		(createRequest as jest.Mock).mockResolvedValue([
+		(createRequests as jest.Mock).mockResolvedValue([
 			"e444d290-6723-44ed-a90f-5915ce7efcd5",
 		]);
 	});
@@ -60,7 +60,7 @@ describe("submitRequest", () => {
 		formData.append("name-1", "Main Course");
 		formData.append("quantity-1", "3");
 
-		(createRequest as jest.Mock).mockResolvedValue([]);
+		(createRequests as jest.Mock).mockResolvedValue([]);
 
 		const result = await submitRequest(prevState, formData);
 

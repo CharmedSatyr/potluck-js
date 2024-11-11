@@ -4,9 +4,9 @@ import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
 import { request, Request } from "@/db/schema/request";
 import { z } from "zod";
-import { schema } from "./create-request.types";
+import { schema } from "./create-requests.types";
 
-const createRequest = async (
+const createRequests = async (
 	data: z.infer<typeof schema>
 ): Promise<{ id: Request["id"] }[]> => {
 	try {
@@ -34,4 +34,4 @@ const createRequest = async (
 	}
 };
 
-export default createRequest;
+export default createRequests;
