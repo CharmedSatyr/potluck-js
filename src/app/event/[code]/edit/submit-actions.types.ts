@@ -1,5 +1,6 @@
-import { z } from "zod";
+import { typeToFlattenedError, z } from "zod";
 import { schema } from "@/actions/db/update-event.types";
+import { EventUserValues } from "@/db/schema/event";
 
 export const formSchema = schema
 	.omit({
@@ -9,10 +10,3 @@ export const formSchema = schema
 	.strip();
 
 export type UpdateEventFormData = z.infer<typeof formSchema>;
-
-export type UpdateEventFormState = {
-	code: string;
-	fields: Record<string, string>;
-	message: string;
-	success: boolean;
-};

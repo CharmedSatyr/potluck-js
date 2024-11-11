@@ -2,16 +2,14 @@
 
 import updateEvent from "@/actions/db/update-event";
 import { auth } from "@/auth";
-import {
-	formSchema,
-	UpdateEventFormState,
-} from "@/app/event/[code]/edit/submit-actions.types";
+import { formSchema } from "@/app/event/[code]/edit/submit-actions.types";
 import { revalidatePath } from "next/cache";
+import { PlanEventFormState } from "@/app/start/submit-actions.types";
 
 export const updateEventAction = async (
-	prevState: UpdateEventFormState,
+	prevState: PlanEventFormState,
 	formData: FormData
-): Promise<UpdateEventFormState> => {
+): Promise<PlanEventFormState> => {
 	const data = Object.fromEntries(formData);
 
 	const fields: Record<string, string> = {};
@@ -23,10 +21,17 @@ export const updateEventAction = async (
 		fields[key] = String(data[key]);
 	}
 
+	if (!prevState.code) {
+		return {
+			...prevState,
+			message: "Missing event code",
+			success: false,
+		};
+	}
+
 	if (Object.keys(fields).length === 0) {
 		return {
-			code: prevState.code,
-			fields,
+			...prevState,
 			message: "No changes detected",
 			success: true,
 		};
@@ -36,8 +41,7 @@ export const updateEventAction = async (
 
 	if (!parsed.success) {
 		return {
-			code: prevState.code,
-			fields,
+			...prevState,
 			message: "Invalid form data",
 			success: false,
 		};
@@ -47,8 +51,7 @@ export const updateEventAction = async (
 
 	if (!session?.user?.id) {
 		return {
-			code: prevState.code,
-			fields,
+			...prevState,
 			message: "Not authenticated",
 			success: false,
 		};
@@ -62,8 +65,7 @@ export const updateEventAction = async (
 
 	if (!result) {
 		return {
-			code: prevState.code,
-			fields,
+			...prevState,
 			message: "Failed to update event",
 			success: false,
 		};
@@ -72,6 +74,7 @@ export const updateEventAction = async (
 	revalidatePath(`/event/${result.code}`, "page");
 
 	return {
+		...prevState,
 		code: result.code,
 		fields: {},
 		message: "Event updated",

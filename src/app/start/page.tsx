@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/start/submit-actions";
-import { CreateEventFormData } from "@/app/start/submit-actions.types";
+import { PlanEventFormData } from "@/app/start/submit-actions.types";
 import { useSearchParams } from "next/navigation";
 
 const DEV = process.env.NODE_ENV === "development";
@@ -18,8 +18,8 @@ const StartPage = () => {
 	const submitAction =
 		session.status === "authenticated" ? createEventAction : loginAction;
 
-	const [defaultValues] = useState<CreateEventFormData>(() => {
-		const values: CreateEventFormData = {
+	const [defaultValues] = useState<Promise<PlanEventFormData>>(async () => {
+		const values: PlanEventFormData = {
 			description: "",
 			hosts: "",
 			location: DEV ? "123 Main Street" : "",
@@ -37,7 +37,7 @@ const StartPage = () => {
 			if (!searchValue) {
 				continue;
 			}
-			values[key as keyof CreateEventFormData] = searchValue;
+			values[key as keyof PlanEventFormData] = searchValue;
 		}
 
 		return values;
@@ -45,13 +45,11 @@ const StartPage = () => {
 
 	return (
 		<div className="flex h-full w-full flex-col items-center">
-			<Suspense fallback="TODO: Add skeleton">
-				<ManageEventWizard
-					code={code}
-					eventData={defaultValues}
-					submitAction={submitAction}
-				/>
-			</Suspense>
+			<ManageEventWizard
+				code={code}
+				eventPromise={defaultValues as any}
+				submitAction={submitAction}
+			/>
 		</div>
 	);
 };

@@ -4,17 +4,17 @@ import { useActionState, useCallback, useEffect } from "react";
 import useAnchor from "@/hooks/use-anchor";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
-	CreateEventFormData,
-	CreateEventFormState,
+	PlanEventFormData,
+	PlanEventFormState,
 } from "@/app/start/submit-actions.types";
 
 type Props = {
 	code: string | null;
-	eventData: CreateEventFormData;
+	eventData: PlanEventFormData;
 	submitAction: (
-		prevState: CreateEventFormState,
+		prevState: PlanEventFormState,
 		formData: FormData
-	) => Promise<CreateEventFormState>;
+	) => Promise<PlanEventFormState>;
 };
 
 const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
@@ -33,7 +33,7 @@ const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 	);
 
 	const [state, submit, isPending] = useActionState<
-		CreateEventFormState,
+		PlanEventFormState,
 		FormData
 	>(submitAction, {
 		fields: eventData,
@@ -63,7 +63,7 @@ const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
-	}, [anchor, state]);
+	}, [anchor, createQueryString, scrollToAnchor, state]);
 
 	return (
 		<form

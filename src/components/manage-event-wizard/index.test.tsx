@@ -1,9 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import useAnchor from "@/hooks/use-anchor";
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
-import { CreateEventFormData } from "@/app/start/submit-actions.types";
 
 jest.mock("@/hooks/use-anchor");
 jest.mock("@/components/plan-event-form");
@@ -12,7 +11,16 @@ jest.mock("@/components/plan-food-form");
 describe("ManageEventWizard", () => {
 	const code = "CODE1";
 	const submitAction = jest.fn();
-	const eventData = {} as CreateEventFormData;
+	const eventPromise = Promise.resolve([
+		{
+			name: "",
+			location: "",
+			startDate: "",
+			startTime: "",
+			hosts: "",
+			description: "",
+		},
+	]);
 
 	beforeEach(() => {
 		(useAnchor as jest.Mock).mockReturnValue(["create-event", jest.fn()]);
@@ -20,24 +28,26 @@ describe("ManageEventWizard", () => {
 		(PlanFoodForm as jest.Mock).mockReturnValue(<div>Plan Food Form</div>);
 	});
 
-	it("should render CreateEventForm and PlanFoodForm", () => {
+	it("should render CreateEventForm and PlanFoodForm", async () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventData={eventData}
+				eventPromise={eventPromise}
 				submitAction={submitAction}
 			/>
 		);
 
-		expect(screen.getByText("Create Event Form")).toBeInTheDocument();
-		expect(screen.getByText("Plan Food Form")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(screen.getByText("Create Event Form")).toBeInTheDocument();
+			expect(screen.getByText("Plan Food Form")).toBeInTheDocument();
+		});
 	});
 
 	it("should pass through the submitAction to CreateEventForm", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventData={eventData}
+				eventPromise={eventPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -52,7 +62,7 @@ describe("ManageEventWizard", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventData={eventData}
+				eventPromise={eventPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -69,7 +79,7 @@ describe("ManageEventWizard", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventData={eventData}
+				eventPromise={eventPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -88,7 +98,7 @@ describe("ManageEventWizard", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventData={eventData}
+				eventPromise={eventPromise}
 				submitAction={submitAction}
 			/>
 		);

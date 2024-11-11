@@ -8,7 +8,7 @@ import {
 import { useSearchParams, usePathname } from "next/navigation";
 import PlanEventForm from "@/components/plan-event-form";
 import useAnchor from "@/hooks/use-anchor";
-import { CreateEventFormData } from "@/app/start/submit-actions.types";
+import { PlanEventFormData } from "@/app/start/submit-actions.types";
 
 jest.mock("next/navigation", () => ({
 	usePathname: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock("@/hooks/use-anchor");
 describe("PlanEventForm", () => {
 	const code = "CODE1";
 
-	const eventData: CreateEventFormData = {
+	const eventData: PlanEventFormData = {
 		name: "Sample Event",
 		location: "Sample Location",
 		description: "Sample Description",
