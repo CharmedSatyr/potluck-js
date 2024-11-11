@@ -1,5 +1,4 @@
 import findEvent from "@/actions/db/find-event";
-import EditEventManager from "@/app/event/[code]/edit/edit-event-manager";
 import { UpdateEventFormData } from "./submit-actions.types";
 
 type Props = {
@@ -23,21 +22,7 @@ const EditEventPage = async ({ params }: Props) => {
 		startTime,
 	}: Required<UpdateEventFormData> = event;
 
-	return (
-		<div className="flex w-full justify-center">
-			<EditEventManager
-				code={code}
-				currentValues={{
-					description,
-					hosts,
-					location,
-					name,
-					startDate,
-					startTime,
-				}}
-			/>
-		</div>
-	);
+	return <div className="flex w-full justify-center">TODO</div>;
 };
 
 export default EditEventPage;
