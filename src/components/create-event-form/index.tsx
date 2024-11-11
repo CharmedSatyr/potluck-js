@@ -182,7 +182,7 @@ const CreateEventForm = () => {
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending}
+				disabled={isPending || anchor === "plan-food"}
 				type="submit"
 			>
 				Next

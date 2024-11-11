@@ -24,32 +24,21 @@ const ManageEventWizard = () => {
 				</div>
 			</div>
 
-			<div className="flex w-full justify-center gap-2 py-2">
+			{/* Add a hover state to make it clearer you can click. */}
+			<div className="steps my-8 w-full">
 				<button
-					type="button"
+					className="step step-secondary"
 					onClick={() => scrollToAnchor("create-event")}
-					className="btn btn-xs"
 				>
-					Create Event
+					Create an Event
 				</button>
 				<button
-					type="button"
-					onClick={() => scrollToAnchor("plan-food")}
-					className="btn btn-xs"
-				>
-					Plan Food
-				</button>
-			</div>
-
-			<ul className="steps w-full">
-				{/* TODO: These should be buttons that behave like the above scroll to anchor buttons. */}
-				<li className="step step-secondary">Create an Event</li>
-				<li
 					className={`step ${anchor === "plan-food" ? "step-secondary" : ""}`}
+					onClick={() => scrollToAnchor("plan-food")}
 				>
 					Plan the Food
-				</li>
-			</ul>
+				</button>
+			</div>
 		</div>
 	);
 };

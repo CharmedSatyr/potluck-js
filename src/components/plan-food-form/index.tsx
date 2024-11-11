@@ -106,7 +106,7 @@ const PlanFoodForm = () => {
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending || !coursesValid}
+				disabled={isPending || !coursesValid || anchor === "create-event"}
 				type="submit"
 			>
 				Submit and Continue
