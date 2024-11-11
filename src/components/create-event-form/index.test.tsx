@@ -1,43 +1,38 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { useSession } from "next-auth/react";
+import {
+	act,
+	render,
+	screen,
+	fireEvent,
+	waitFor,
+} from "@testing-library/react";
 import { useSearchParams, usePathname } from "next/navigation";
 import CreateEventForm from "@/components/create-event-form";
-import {
-	createEventAction,
-	loginAction,
-} from "@/components/create-event-form/submit-actions";
 import useAnchor from "@/hooks/use-anchor";
-import { act } from "react";
 
-jest.mock("next-auth/react", () => ({
-	useSession: jest.fn(),
-}));
 jest.mock("next/navigation", () => ({
 	usePathname: jest.fn(),
 	useSearchParams: jest.fn(),
 }));
 jest.mock("@/hooks/use-anchor");
-jest.mock("@/components/create-event-form/submit-actions", () => ({
-	createEventAction: jest.fn(),
-	loginAction: jest.fn(),
-}));
 
 describe("CreateEventForm", () => {
 	const code = "CODE1";
 
 	beforeEach(() => {
-		(useSession as jest.Mock).mockReturnValue({ status: "authenticated" });
 		(usePathname as jest.Mock).mockReturnValue("/events");
 		(useSearchParams as jest.Mock).mockReturnValue(new URLSearchParams(""));
-		(useAnchor as jest.Mock).mockReturnValue([null, jest.fn()]);
+		(useAnchor as jest.Mock).mockReturnValue(["", jest.fn()]);
 	});
 
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
 
+	const submitAction = jest.fn();
+	const scrollToAnchor = jest.fn();
+
 	it("renders form with default values", () => {
-		render(<CreateEventForm />);
+		render(<CreateEventForm submitAction={submitAction} />);
 
 		const inputs: HTMLInputElement[] = screen.getAllByRole("textbox");
 
@@ -53,31 +48,15 @@ describe("CreateEventForm", () => {
 		expect(timeInput.name).toBe("startTime");
 	});
 
-	it("uses loginAction if unauthenticated", async () => {
-		(useSession as jest.Mock).mockReturnValue({ status: "unauthenticated" });
-
-		render(<CreateEventForm />);
+	it("called the submitAction on submit", async () => {
+		render(<CreateEventForm submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
 		});
 
 		await waitFor(() => {
-			expect(loginAction).toHaveBeenCalled();
-			expect(createEventAction).not.toHaveBeenCalled();
-		});
-	});
-
-	it("uses createEventAction if authenticated", async () => {
-		render(<CreateEventForm />);
-
-		act(() => {
-			fireEvent.submit(screen.getByRole("form"));
-		});
-
-		await waitFor(() => {
-			expect(createEventAction).toHaveBeenCalled();
-			expect(loginAction).not.toHaveBeenCalled();
+			expect(submitAction).toHaveBeenCalled();
 		});
 	});
 
@@ -91,7 +70,7 @@ describe("CreateEventForm", () => {
 		});
 		(useSearchParams as jest.Mock).mockReturnValue(searchParams);
 
-		render(<CreateEventForm />);
+		render(<CreateEventForm submitAction={submitAction} />);
 
 		expect(screen.getByPlaceholderText("Untitled Event")).toHaveValue(
 			"Sample Event"
@@ -108,16 +87,15 @@ describe("CreateEventForm", () => {
 			new URLSearchParams({ code })
 		);
 
-		(createEventAction as jest.Mock).mockReturnValue({
+		submitAction.mockReturnValue({
 			code,
 			fields: {},
 			success: true,
 		});
 
-		const scrollToAnchor = jest.fn();
 		(useAnchor as jest.Mock).mockReturnValue(["", scrollToAnchor]);
 
-		render(<CreateEventForm />);
+		render(<CreateEventForm submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -129,7 +107,7 @@ describe("CreateEventForm", () => {
 	});
 
 	it("shows error messages when fields are invalid", async () => {
-		(createEventAction as jest.Mock).mockReturnValue({
+		submitAction.mockReturnValue({
 			code,
 			errors: {
 				fieldErrors: {
@@ -144,7 +122,8 @@ describe("CreateEventForm", () => {
 			fields: {},
 			success: true,
 		});
-		render(<CreateEventForm />);
+
+		render(<CreateEventForm submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -158,60 +137,3 @@ describe("CreateEventForm", () => {
 		expect(screen.getByText(/error 2/i)).toBeInTheDocument();
 	});
 });
-
-/*
-
-    it("uses createEventAction if authenticated", async () => {
-        (useSession as jest.Mock).mockReturnValue({ status: "authenticated" });
-
-        render(<CreateEventForm />);
-
-        const submitButton = (screen.getByRole("button", { name: "Next" }))
-
-        await waitFor(() => {
-            fireEvent.click(submitButton)
-        })
-
-        await waitFor(() => {
-            expect(createEventAction).toHaveBeenCalled();
-        })
-
-    });
-
-    xit("scrolls to anchor on 'plan-food' if state code and success conditions are met", () => {
-        const scrollToAnchorMock = jest.fn();
-        (useAnchor as jest.Mock).mockReturnValue(["plan-food", scrollToAnchorMock]);
-
-        const searchParams = new URLSearchParams();
-        searchParams.set("code", "CODE1");
-        (useSearchParams as jest.Mock).mockReturnValue(searchParams);
-
-        render(<CreateEventForm />);
-
-        expect(scrollToAnchorMock).toHaveBeenCalledWith("plan-food", "?code=CODE1");
-    });
-
-    it("updates input fields correctly", async () => {
-        render(<CreateEventForm />);
-        const nameInput = screen.getByPlaceholderText("Untitled Event");
-
-        fireEvent.change(nameInput, { target: { value: "My New Event" } });
-
-        expect(nameInput).toHaveValue("My New Event");
-    });
-
-    xit("disables submit button when isPending is true", async () => {
-        render(<CreateEventForm />);
-        const submitButton: HTMLInputElement = screen.getByRole("button", { name: "Next" });
-
-        expect(submitButton).toBeEnabled();
-
-        fireEvent.click(submitButton);
-
-        await waitFor(() => {
-            expect(submitButton).toBeDisabled();
-        })
-    });
-    
-});
-*/

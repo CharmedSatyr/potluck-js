@@ -1,13 +1,8 @@
 "use client";
 
 import { useActionState, useCallback, useEffect, useState } from "react";
-import {
-	createEventAction,
-	loginAction,
-} from "@/components/create-event-form/submit-actions";
 import useAnchor from "@/hooks/use-anchor";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import {
 	CreateEventFormData,
 	CreateEventFormState,
@@ -15,9 +10,15 @@ import {
 
 const DEV = process.env.NODE_ENV === "development";
 
-const CreateEventForm = () => {
+type Props = {
+	submitAction: (
+		prevState: CreateEventFormState,
+		formData: FormData
+	) => Promise<CreateEventFormState>;
+};
+
+const CreateEventForm = ({ submitAction }: Props) => {
 	const path = usePathname();
-	const session = useSession();
 	const searchParams = useSearchParams();
 	const [anchor] = useAnchor();
 
@@ -56,14 +57,11 @@ const CreateEventForm = () => {
 		[searchParams]
 	);
 
-	const submit =
-		session.status === "authenticated" ? createEventAction : loginAction;
-
 	const [, scrollToAnchor] = useAnchor();
-	const [state, submitAction, isPending] = useActionState<
+	const [state, submit, isPending] = useActionState<
 		CreateEventFormState,
 		FormData
-	>(submit, {
+	>(submitAction, {
 		fields: defaultValues,
 		message: "",
 		path,
@@ -96,7 +94,7 @@ const CreateEventForm = () => {
 
 	return (
 		<form
-			action={submitAction}
+			action={submit}
 			className="flex max-h-96 flex-col justify-between"
 			name="create-event-form"
 		>

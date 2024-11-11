@@ -1,37 +1,42 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import useAnchor from "@/hooks/use-anchor";
+import CreateEventForm from "../create-event-form";
+import PlanFoodForm from "../plan-food-form";
 
 jest.mock("@/hooks/use-anchor");
-jest.mock(
-	"@/components/create-event-form",
-	() =>
-		function createEventForm() {
-			return <div>Create Event Form</div>;
-		}
-);
-jest.mock(
-	"@/components/plan-food-form",
-	() =>
-		function planFoodForm() {
-			return <div>Plan Food Form</div>;
-		}
-);
+jest.mock("@/components/create-event-form");
+jest.mock("@/components/plan-food-form");
 
 describe("ManageEventWizard", () => {
 	beforeEach(() => {
 		(useAnchor as jest.Mock).mockReturnValue(["create-event", jest.fn()]);
+		(CreateEventForm as jest.Mock).mockReturnValue(
+			<div>Create Event Form</div>
+		);
+		(PlanFoodForm as jest.Mock).mockReturnValue(<div>Plan Food Form</div>);
 	});
 
+	const submitAction = jest.fn();
+
 	it("should render CreateEventForm and PlanFoodForm", () => {
-		render(<ManageEventWizard />);
+		render(<ManageEventWizard submitAction={submitAction} />);
 
 		expect(screen.getByText("Create Event Form")).toBeInTheDocument();
 		expect(screen.getByText("Plan Food Form")).toBeInTheDocument();
 	});
 
+	it("should pass through the submitAction to CreateEventForm", () => {
+		render(<ManageEventWizard submitAction={submitAction} />);
+
+		expect(CreateEventForm).toHaveBeenCalled();
+		expect((CreateEventForm as jest.Mock).mock.calls[0][0]).toMatchObject({
+			submitAction,
+		});
+	});
+
 	it("should highlight the create event button initially", async () => {
-		render(<ManageEventWizard />);
+		render(<ManageEventWizard submitAction={submitAction} />);
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
 		expect(screen.getByText(/plan the food/i)).not.toHaveClass(
@@ -42,7 +47,7 @@ describe("ManageEventWizard", () => {
 	it("should highlight the plan food button based on anchor state", async () => {
 		(useAnchor as jest.Mock).mockReturnValue(["plan-food", jest.fn()]);
 
-		render(<ManageEventWizard />);
+		render(<ManageEventWizard submitAction={submitAction} />);
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
 		expect(screen.getByText(/plan the food/i)).toHaveClass("step-secondary");
@@ -55,7 +60,7 @@ describe("ManageEventWizard", () => {
 			scrollToAnchor,
 		]);
 
-		render(<ManageEventWizard />);
+		render(<ManageEventWizard submitAction={submitAction} />);
 
 		fireEvent.click(screen.getByText(/Create an Event/i));
 
