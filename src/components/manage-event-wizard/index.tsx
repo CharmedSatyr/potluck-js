@@ -8,19 +8,27 @@ import {
 	PlanEventFormState,
 } from "@/app/start/submit-actions.types";
 import { Suspense, use } from "react";
+import { Request } from "@/db/schema/request";
 
 type Props = {
 	code: string | null;
 	eventPromise: Promise<PlanEventFormData[]>;
+	requestsPromise: Promise<Request[]>;
 	submitAction: (
 		prevState: PlanEventFormState,
 		formData: FormData
 	) => Promise<PlanEventFormState>;
 };
 
-const ManageEventWizard = ({ code, eventPromise, submitAction }: Props) => {
+const ManageEventWizard = ({
+	code,
+	eventPromise,
+	requestsPromise,
+	submitAction,
+}: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
 	const [eventData] = use(eventPromise);
+	const requests = use(requestsPromise);
 
 	return (
 		<>
@@ -37,11 +45,14 @@ const ManageEventWizard = ({ code, eventPromise, submitAction }: Props) => {
 						/>
 					</Suspense>
 				</div>
+
 				<div
 					className="carousel-item flex w-full justify-center"
 					id="plan-food"
 				>
-					<PlanFoodForm code={code} />
+					<Suspense fallback="TODO: Skellington 2">
+						<PlanFoodForm code={code} requests={requests} />
+					</Suspense>
 				</div>
 			</div>
 

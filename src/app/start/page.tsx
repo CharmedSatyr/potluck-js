@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/start/submit-actions";
@@ -48,6 +48,7 @@ const StartPage = () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={defaultValues as any}
+				requestsPromise={Promise.resolve([])} // TODO: This is gross.
 				submitAction={submitAction}
 			/>
 		</div>

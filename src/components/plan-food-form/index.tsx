@@ -16,6 +16,7 @@ import { useSearchParams } from "next/navigation";
 import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
+import { Request } from "@/db/schema/request";
 
 const MAX_REQUESTS = 20;
 
@@ -26,9 +27,10 @@ const courseSchema = z.strictObject({
 
 type Props = {
 	code: string | null;
+	requests: Request[];
 };
 
-const PlanFoodForm = ({ code }: Props) => {
+const PlanFoodForm = ({ code, requests }: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -39,7 +41,7 @@ const PlanFoodForm = ({ code }: Props) => {
 		FormData
 	>(submitRequest, {
 		code: code ?? "",
-		fields: {},
+		fields: {}, // TODO: Make this useful.
 		message: "",
 		success: false,
 	});
@@ -55,7 +57,18 @@ const PlanFoodForm = ({ code }: Props) => {
 	}, [code, state, searchParams]);
 
 	/** TODO: Update this to work without JS. */
-	const [courses, setCourses] = useState([{ name: "", count: "0" }]);
+	const [courses, setCourses] = useState<{ name: string; count: string }[]>(
+		() => {
+			if (requests.length > 0) {
+				return requests.map((request) => ({
+					name: request.course,
+					count: request.count.toString(),
+				}));
+			}
+
+			return [{ name: "", count: "0" }];
+		}
+	);
 
 	const addCourse = () => {
 		if (courses.length >= MAX_REQUESTS) {

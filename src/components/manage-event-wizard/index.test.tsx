@@ -21,6 +21,7 @@ describe("ManageEventWizard", () => {
 			description: "",
 		},
 	]);
+	const requestsPromise = Promise.resolve([]);
 
 	beforeEach(() => {
 		(useAnchor as jest.Mock).mockReturnValue(["create-event", jest.fn()]);
@@ -33,6 +34,7 @@ describe("ManageEventWizard", () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={eventPromise}
+				requestsPromise={requestsPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -48,6 +50,7 @@ describe("ManageEventWizard", () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={eventPromise}
+				requestsPromise={requestsPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -63,6 +66,7 @@ describe("ManageEventWizard", () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={eventPromise}
+				requestsPromise={requestsPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -80,6 +84,7 @@ describe("ManageEventWizard", () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={eventPromise}
+				requestsPromise={requestsPromise}
 				submitAction={submitAction}
 			/>
 		);
@@ -99,6 +104,7 @@ describe("ManageEventWizard", () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={eventPromise}
+				requestsPromise={requestsPromise}
 				submitAction={submitAction}
 			/>
 		);
