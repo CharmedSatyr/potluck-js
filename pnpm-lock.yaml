@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@auth/drizzle-adapter':
         specifier: ^1.7.3
-        version: 1.7.3
+        version: 1.7.3(nodemailer@6.9.16)
       '@heroicons/react':
         specifier: ^2.1.5
         version: 2.1.5(react@19.0.0-rc-5c56b873-20241107)
@@ -28,13 +28,13 @@ importers:
         version: 16.4.5
       drizzle-orm:
         specifier: ^0.36.1
-        version: 0.36.1(@libsql/client-wasm@0.14.0)(@neondatabase/serverless@0.10.3)(@types/pg@8.11.6)(@types/react@18.3.12)(react@19.0.0-rc-5c56b873-20241107)
+        version: 0.36.1(@libsql/client-wasm@0.14.0)(@neondatabase/serverless@0.10.3)(@prisma/client@2.30.3)(@types/pg@8.11.6)(@types/react@18.3.12)(react@19.0.0-rc-5c56b873-20241107)
       next:
         specifier: ^15.0.3
         version: 15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107)
       next-auth:
         specifier: 5.0.0-beta.25
-        version: 5.0.0-beta.25(next@15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107)
+        version: 5.0.0-beta.25(next@15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107))(nodemailer@6.9.16)(react@19.0.0-rc-5c56b873-20241107)
       react:
         specifier: 19.0.0-rc-5c56b873-20241107
         version: 19.0.0-rc-5c56b873-20241107
@@ -988,6 +988,18 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@prisma/client@2.30.3':
+    resolution: {integrity: sha512-Ey2miZ+Hne12We3rA8XrlPoAF0iuKEhw5IK2nropaelSt0Ju3b2qSz9Qt50a/1Mx3+7yRSu/iSXt8y9TUMl/Yw==}
+    engines: {node: '>=12.2'}
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+
+  '@prisma/engines-version@2.30.1-2.b8c35d44de987a9691890b3ddf3e2e7effb9bf20':
+    resolution: {integrity: sha512-/iDRgaoSQC77WN2oDsOM8dn61fykm6tnZUAClY+6p+XJbOEgZ9gy4CKuKTBgrjSGDVjtQ/S2KGcYd3Ring8xaw==}
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
@@ -2838,6 +2850,10 @@ packages:
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
 
+  nodemailer@6.9.16:
+    resolution: {integrity: sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ==}
+    engines: {node: '>=6.0.0'}
+
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -3774,7 +3790,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@auth/core@0.37.2':
+  '@auth/core@0.37.2(nodemailer@6.9.16)':
     dependencies:
       '@panva/hkdf': 1.2.1
       '@types/cookie': 0.6.0
@@ -3783,8 +3799,10 @@ snapshots:
       oauth4webapi: 3.1.2
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
+    optionalDependencies:
+      nodemailer: 6.9.16
 
-  '@auth/core@0.37.3':
+  '@auth/core@0.37.3(nodemailer@6.9.16)':
     dependencies:
       '@panva/hkdf': 1.2.1
       cookie: 1.0.1
@@ -3792,10 +3810,12 @@ snapshots:
       oauth4webapi: 3.1.2
       preact: 10.24.3
       preact-render-to-string: 6.5.11(preact@10.24.3)
+    optionalDependencies:
+      nodemailer: 6.9.16
 
-  '@auth/drizzle-adapter@1.7.3':
+  '@auth/drizzle-adapter@1.7.3(nodemailer@6.9.16)':
     dependencies:
-      '@auth/core': 0.37.3
+      '@auth/core': 0.37.3(nodemailer@6.9.16)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
       - '@simplewebauthn/server'
@@ -4565,6 +4585,14 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
+  '@prisma/client@2.30.3':
+    dependencies:
+      '@prisma/engines-version': 2.30.1-2.b8c35d44de987a9691890b3ddf3e2e7effb9bf20
+    optional: true
+
+  '@prisma/engines-version@2.30.1-2.b8c35d44de987a9691890b3ddf3e2e7effb9bf20':
+    optional: true
+
   '@rtsao/scc@1.1.0': {}
 
   '@rushstack/eslint-patch@1.10.4': {}
@@ -5311,10 +5339,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.36.1(@libsql/client-wasm@0.14.0)(@neondatabase/serverless@0.10.3)(@types/pg@8.11.6)(@types/react@18.3.12)(react@19.0.0-rc-5c56b873-20241107):
+  drizzle-orm@0.36.1(@libsql/client-wasm@0.14.0)(@neondatabase/serverless@0.10.3)(@prisma/client@2.30.3)(@types/pg@8.11.6)(@types/react@18.3.12)(react@19.0.0-rc-5c56b873-20241107):
     optionalDependencies:
       '@libsql/client-wasm': 0.14.0
       '@neondatabase/serverless': 0.10.3
+      '@prisma/client': 2.30.3
       '@types/pg': 8.11.6
       '@types/react': 18.3.12
       react: 19.0.0-rc-5c56b873-20241107
@@ -6730,11 +6759,13 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next-auth@5.0.0-beta.25(next@15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107):
+  next-auth@5.0.0-beta.25(next@15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107))(nodemailer@6.9.16)(react@19.0.0-rc-5c56b873-20241107):
     dependencies:
-      '@auth/core': 0.37.2
+      '@auth/core': 0.37.2(nodemailer@6.9.16)
       next: 15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107)
       react: 19.0.0-rc-5c56b873-20241107
+    optionalDependencies:
+      nodemailer: 6.9.16
 
   next@15.0.3(@babel/core@7.25.9)(react-dom@19.0.0-rc-5c56b873-20241107(react@19.0.0-rc-5c56b873-20241107))(react@19.0.0-rc-5c56b873-20241107):
     dependencies:
@@ -6764,6 +6795,9 @@ snapshots:
   node-int64@0.4.0: {}
 
   node-releases@2.0.18: {}
+
+  nodemailer@6.9.16:
+    optional: true
 
   normalize-path@3.0.0: {}
 
