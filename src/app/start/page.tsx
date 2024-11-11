@@ -3,10 +3,7 @@
 import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
-import {
-	createEventAction,
-	loginAction,
-} from "@/components/manage-event-form/submit-actions";
+import { createEventAction, loginAction } from "@/app/start/submit-actions";
 
 const StartPage = () => {
 	const session = useSession();

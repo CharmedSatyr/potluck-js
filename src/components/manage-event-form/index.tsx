@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import {
 	CreateEventFormData,
 	CreateEventFormState,
-} from "@/components/manage-event-form/submit-actions.types";
+} from "@/app/start/submit-actions.types";
 
 const DEV = process.env.NODE_ENV === "development";
 
@@ -76,7 +76,7 @@ const ManageEventForm = ({ submitAction }: Props) => {
 		}
 
 		state.code = code;
-	}, [searchParams]);
+	}, [searchParams, state]);
 
 	useEffect(() => {
 		if (!state?.code) {

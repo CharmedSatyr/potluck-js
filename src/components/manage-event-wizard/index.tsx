@@ -3,7 +3,7 @@
 import ManageEventForm from "@/components/manage-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
-import { CreateEventFormState } from "@/components/manage-event-form/submit-actions.types";
+import { CreateEventFormState } from "@/app/start/submit-actions.types";
 
 type Props = {
 	submitAction: (
