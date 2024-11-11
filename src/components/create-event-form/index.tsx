@@ -20,6 +20,7 @@ const CreateEventForm = () => {
 	const path = usePathname();
 	const session = useSession();
 	const searchParams = useSearchParams();
+	const [anchor] = useAnchor();
 
 	const [defaultValues] = useState<CreateEventFormData>(() => {
 		const values: CreateEventFormData = {
@@ -71,17 +72,28 @@ const CreateEventForm = () => {
 	});
 
 	useEffect(() => {
-		if (isPending || !state.code || !state.success) {
+		const code = searchParams.get("code");
+
+		if (!code) {
 			return;
 		}
 
-		// TODO: What should happen on refresh? It currently keeps existing hash to drop on this page, even if it's #plan-food
+		state.code = code;
+	}, [searchParams]);
+
+	useEffect(() => {
+		if (!state.code) {
+			return;
+		}
+
+		if (anchor !== "plan-food" && (!state.success)) {
+			return;
+		}
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
-
 		state.success = false;
-	}, [createQueryString, state, isPending, scrollToAnchor]);
+	}, [anchor, createQueryString, scrollToAnchor, state]);
 
 	return (
 		<Form
@@ -119,6 +131,7 @@ const CreateEventForm = () => {
 					type="time"
 				/>
 			</div>
+
 			<div>
 				<span className="mt-0 text-secondary">
 					{state.errors?.fieldErrors.startDate?.join(" ")}
