@@ -1,17 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import useAnchor from "@/hooks/use-anchor";
-import CreateEventForm from "../create-event-form";
-import PlanFoodForm from "../plan-food-form";
+import ManageEventForm from "@/components/manage-event-form";
+import PlanFoodForm from "@/components/plan-food-form";
 
 jest.mock("@/hooks/use-anchor");
-jest.mock("@/components/create-event-form");
+jest.mock("@/components/manage-event-form");
 jest.mock("@/components/plan-food-form");
 
 describe("ManageEventWizard", () => {
 	beforeEach(() => {
 		(useAnchor as jest.Mock).mockReturnValue(["create-event", jest.fn()]);
-		(CreateEventForm as jest.Mock).mockReturnValue(
+		(ManageEventForm as jest.Mock).mockReturnValue(
 			<div>Create Event Form</div>
 		);
 		(PlanFoodForm as jest.Mock).mockReturnValue(<div>Plan Food Form</div>);
@@ -29,8 +29,8 @@ describe("ManageEventWizard", () => {
 	it("should pass through the submitAction to CreateEventForm", () => {
 		render(<ManageEventWizard submitAction={submitAction} />);
 
-		expect(CreateEventForm).toHaveBeenCalled();
-		expect((CreateEventForm as jest.Mock).mock.calls[0][0]).toMatchObject({
+		expect(ManageEventForm).toHaveBeenCalled();
+		expect((ManageEventForm as jest.Mock).mock.calls[0][0]).toMatchObject({
 			submitAction,
 		});
 	});

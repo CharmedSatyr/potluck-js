@@ -6,7 +6,7 @@ import {
 	waitFor,
 } from "@testing-library/react";
 import { useSearchParams, usePathname } from "next/navigation";
-import CreateEventForm from "@/components/create-event-form";
+import ManageEventForm from "@/components/manage-event-form";
 import useAnchor from "@/hooks/use-anchor";
 
 jest.mock("next/navigation", () => ({
@@ -32,7 +32,7 @@ describe("CreateEventForm", () => {
 	const scrollToAnchor = jest.fn();
 
 	it("renders form with default values", () => {
-		render(<CreateEventForm submitAction={submitAction} />);
+		render(<ManageEventForm submitAction={submitAction} />);
 
 		const inputs: HTMLInputElement[] = screen.getAllByRole("textbox");
 
@@ -49,7 +49,7 @@ describe("CreateEventForm", () => {
 	});
 
 	it("called the submitAction on submit", async () => {
-		render(<CreateEventForm submitAction={submitAction} />);
+		render(<ManageEventForm submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -70,7 +70,7 @@ describe("CreateEventForm", () => {
 		});
 		(useSearchParams as jest.Mock).mockReturnValue(searchParams);
 
-		render(<CreateEventForm submitAction={submitAction} />);
+		render(<ManageEventForm submitAction={submitAction} />);
 
 		expect(screen.getByPlaceholderText("Untitled Event")).toHaveValue(
 			"Sample Event"
@@ -95,7 +95,7 @@ describe("CreateEventForm", () => {
 
 		(useAnchor as jest.Mock).mockReturnValue(["", scrollToAnchor]);
 
-		render(<CreateEventForm submitAction={submitAction} />);
+		render(<ManageEventForm submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));
@@ -123,7 +123,7 @@ describe("CreateEventForm", () => {
 			success: true,
 		});
 
-		render(<CreateEventForm submitAction={submitAction} />);
+		render(<ManageEventForm submitAction={submitAction} />);
 
 		act(() => {
 			fireEvent.submit(screen.getByRole("form"));

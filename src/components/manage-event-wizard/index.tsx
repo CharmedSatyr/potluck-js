@@ -1,9 +1,9 @@
 "use client";
 
-import CreateEventForm from "@/components/create-event-form";
+import ManageEventForm from "@/components/manage-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
-import { CreateEventFormState } from "@/components/create-event-form/submit-actions.types";
+import { CreateEventFormState } from "@/components/manage-event-form/submit-actions.types";
 
 type Props = {
 	submitAction: (
@@ -22,7 +22,7 @@ const ManageEventWizard = ({ submitAction }: Props) => {
 					className="carousel-item flex w-full justify-center"
 					id="create-event"
 				>
-					<CreateEventForm submitAction={submitAction} />
+					<ManageEventForm submitAction={submitAction} />
 				</div>
 				<div
 					className="carousel-item flex w-full justify-center"

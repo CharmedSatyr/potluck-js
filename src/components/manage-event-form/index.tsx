@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import {
 	CreateEventFormData,
 	CreateEventFormState,
-} from "@/components/create-event-form/submit-actions.types";
+} from "@/components/manage-event-form/submit-actions.types";
 
 const DEV = process.env.NODE_ENV === "development";
 
@@ -17,7 +17,7 @@ type Props = {
 	) => Promise<CreateEventFormState>;
 };
 
-const CreateEventForm = ({ submitAction }: Props) => {
+const ManageEventForm = ({ submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor] = useAnchor();
@@ -189,4 +189,4 @@ const CreateEventForm = ({ submitAction }: Props) => {
 	);
 };
 
-export default CreateEventForm;
+export default ManageEventForm;

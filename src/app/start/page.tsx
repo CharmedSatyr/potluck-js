@@ -6,7 +6,7 @@ import ManageEventWizard from "@/components/manage-event-wizard";
 import {
 	createEventAction,
 	loginAction,
-} from "@/components/create-event-form/submit-actions";
+} from "@/components/manage-event-form/submit-actions";
 
 const StartPage = () => {
 	const session = useSession();
