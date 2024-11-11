@@ -17,7 +17,7 @@ type Props = {
 	) => Promise<CreateEventFormState>;
 };
 
-const ManageEventForm = ({ submitAction }: Props) => {
+const PlanEventForm = ({ submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor] = useAnchor();
@@ -189,4 +189,4 @@ const ManageEventForm = ({ submitAction }: Props) => {
 	);
 };
 
-export default ManageEventForm;
+export default PlanEventForm;
