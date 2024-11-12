@@ -120,6 +120,13 @@ const CourseInput = ({ change, count, id, index, name, remove }: Props) => {
 						</button>
 					</div>
 				</div>
+				<input
+					className="hidden"
+					defaultValue={id}
+					name={`id-${index}`}
+					required
+					type="text"
+				/>
 			</div>
 			<div className="divider mt-6" />
 		</>
