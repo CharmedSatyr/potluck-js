@@ -35,7 +35,7 @@ type Props = {
 	slots: Slot[];
 };
 
-const PlanFoodForm = ({ code, slots }: Props) => {
+const PlanFoodForm = ({ code, slots: prevSlots }: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -61,11 +61,11 @@ const PlanFoodForm = ({ code, slots }: Props) => {
 	}, [code, state, searchParams]);
 
 	/** TODO: Update this to work without JS. */
-	const [courses, setCourses] = useState<
+	const [slots, setSlots] = useState<
 		{ item: string; count: string; id: string }[]
 	>(() => {
-		if (slots.length > 0) {
-			return slots.map((slot) => ({
+		if (prevSlots.length > 0) {
+			return prevSlots.map((slot) => ({
 				item: slot.course,
 				count: slot.count.toString(),
 				id: slot.id,
@@ -75,30 +75,30 @@ const PlanFoodForm = ({ code, slots }: Props) => {
 		return [{ item: "", count: "0", id: crypto.randomUUID() }];
 	});
 
-	const addCourse = () => {
-		if (courses.length >= MAX_SLOTS) {
+	const addSlot = () => {
+		if (slots.length >= MAX_SLOTS) {
 			return;
 		}
 
-		setCourses([...courses, { item: "", count: "0", id: crypto.randomUUID() }]);
+		setSlots([...slots, { item: "", count: "0", id: crypto.randomUUID() }]);
 	};
 
-	const removeCourse = async (index: number, id: string) => {
-		setCourses(courses.filter((_, i) => i !== index));
+	const removeSlot = async (index: number, id: string) => {
+		setSlots(slots.filter((_, i) => i !== index));
 		await deleteSlot({ id });
 	};
 
-	const handleCourseChange = (index: number, item: string, count: string) => {
-		const updatedCourses = [...courses];
+	const handleSlotChange = (index: number, item: string, count: string) => {
+		const updatedCourses = [...slots];
 		updatedCourses[index].item = item;
 		updatedCourses[index].count = count;
 
-		setCourses(updatedCourses);
+		setSlots(updatedCourses);
 	};
 
-	const coursesValid = useMemo(
-		() => courses.every((course) => courseSchema.safeParse(course).success),
-		[courses]
+	const slotsValid = useMemo(
+		() => slots.every((course) => courseSchema.safeParse(course).success),
+		[slots]
 	);
 
 	return (
@@ -112,22 +112,22 @@ const PlanFoodForm = ({ code, slots }: Props) => {
 			<h2>Create Your Slots</h2>
 
 			<span className="mb-2 text-secondary">{state.message}</span>
-			{courses.map((course, index) => (
+			{slots.map((course, index) => (
 				<CourseInput
-					change={handleCourseChange}
+					change={handleSlotChange}
 					count={course.count}
 					id={course.id}
 					index={index}
 					item={course.item}
 					key={course.id}
-					remove={removeCourse}
+					remove={removeSlot}
 				/>
 			))}
 
 			<div className="mb-4 flex justify-between">
 				<button
 					className="btn btn-secondary w-1/3"
-					onClick={addCourse}
+					onClick={addSlot}
 					type="button"
 				>
 					Add Slot
@@ -142,7 +142,7 @@ const PlanFoodForm = ({ code, slots }: Props) => {
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending || !coursesValid || anchor === "create-event"}
+				disabled={isPending || !slotsValid || anchor === "create-event"}
 				type="submit"
 			>
 				Submit and Continue

@@ -29,10 +29,7 @@ const SlotManager = ({ commitments, slots, users }: Props) => {
 
 					return (
 						<div key={slot.id} className="join-item border">
-							<SlotContainer
-								course={slot.course}
-								committedUsers={relatedUsers}
-							>
+							<SlotContainer course={slot.course} committedUsers={relatedUsers}>
 								<h3 className="mt-0">Current Signups</h3>
 								{commitments.length ? (
 									<CommitmentsTable
