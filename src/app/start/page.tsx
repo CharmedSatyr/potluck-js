@@ -18,7 +18,7 @@ const StartPage = () => {
 	const submitAction =
 		session.status === "authenticated" ? createEventAction : loginAction;
 
-	const [defaultValues] = useState<Promise<PlanEventFormData>>(async () => {
+	const [defaultValues] = useState<Promise<PlanEventFormData[]>>(async () => {
 		const values: PlanEventFormData = {
 			description: "",
 			hosts: "",
@@ -29,7 +29,7 @@ const StartPage = () => {
 		};
 
 		if (searchParams.get("source") !== "discord") {
-			return values;
+			return [values];
 		}
 
 		for (const key in values) {
@@ -40,14 +40,15 @@ const StartPage = () => {
 			values[key as keyof PlanEventFormData] = searchValue;
 		}
 
-		return values;
+		return [values];
 	});
 
 	return (
 		<div className="flex h-full w-full flex-col items-center">
 			<ManageEventWizard
 				code={code}
-				eventPromise={defaultValues as any}
+				committedUsersBySlotPromise={Promise.resolve(new Map())}
+				eventPromise={defaultValues}
 				slotsPromise={Promise.resolve([])} // TODO: This is gross.
 				submitAction={submitAction}
 			/>

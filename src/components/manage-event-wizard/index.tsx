@@ -12,6 +12,7 @@ import { Slot } from "@/db/schema/slot";
 
 type Props = {
 	code: string | null;
+	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	eventPromise: Promise<PlanEventFormData[]>;
 	slotsPromise: Promise<Slot[]>;
 	submitAction: (
@@ -22,6 +23,7 @@ type Props = {
 
 const ManageEventWizard = ({
 	code,
+	committedUsersBySlotPromise,
 	eventPromise,
 	slotsPromise,
 	submitAction,
@@ -50,9 +52,11 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id="plan-food"
 				>
-					<Suspense fallback="TODO: Skellington 2">
-						<PlanFoodForm code={code} slots={slots} />
-					</Suspense>
+					<PlanFoodForm
+						code={code}
+						slots={slots}
+						committedUsersBySlotPromise={committedUsersBySlotPromise}
+					/>
 				</div>
 			</div>
 

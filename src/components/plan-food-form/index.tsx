@@ -2,6 +2,8 @@
 
 import Form from "next/form";
 import {
+	Suspense,
+	use,
 	useActionState,
 	useEffect,
 	useMemo,
@@ -18,7 +20,7 @@ import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
 // TODO: This isn't what's being used.
-import { Slot } from "@/db/schema/slot";
+import { slot, Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
 
@@ -33,12 +35,18 @@ const courseSchema = z.strictObject({
 type Props = {
 	code: string | null;
 	slots: Slot[];
+	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 };
 
-const PlanFoodForm = ({ code, slots: prevSlots }: Props) => {
+const PlanFoodForm = ({
+	code,
+	committedUsersBySlotPromise,
+	slots: prevSlots,
+}: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
 	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<
@@ -112,16 +120,29 @@ const PlanFoodForm = ({ code, slots: prevSlots }: Props) => {
 			<h2>Create Your Slots</h2>
 
 			<span className="mb-2 text-secondary">{state.message}</span>
-			{slots.map((course, index) => (
-				<CourseInput
-					change={handleSlotChange}
-					count={course.count}
-					id={course.id}
-					index={index}
-					item={course.item}
-					key={course.id}
-					remove={removeSlot}
-				/>
+			{slots.map((slot, index) => (
+				<div key={slot.id}>
+					<CourseInput
+						change={handleSlotChange}
+						count={slot.count}
+						id={slot.id}
+						index={index}
+						item={slot.item}
+						key={slot.id}
+						remove={removeSlot}
+					/>
+					<Suspense key={index} fallback="TODO: Skellington">
+						{committedUsersBySlot.has(slot.id) && (
+							<div className="mt-4 flex w-full items-center justify-center">
+								Existing Commitments:{" "}
+								<span className="mx-2">
+									{committedUsersBySlot.get(slot.id)}
+								</span>
+							</div>
+						)}
+					</Suspense>
+					<div className="divider mt-6" />
+				</div>
 			))}
 
 			<div className="mb-4 flex justify-between">
