@@ -30,7 +30,7 @@ const submitRequest = async (
 	const fields: Record<string, string> = {};
 	for (const key of Object.keys(data)) {
 		if (
-			!key.startsWith("name") &&
+			!key.startsWith("item") &&
 			!key.startsWith("quantity") &&
 			!key.startsWith("id")
 		) {
@@ -55,7 +55,7 @@ const submitRequest = async (
 			currentEntry.count = Number(value);
 		}
 
-		if (field === "name") {
+		if (field === "item") {
 			currentEntry.course = String(value);
 		}
 

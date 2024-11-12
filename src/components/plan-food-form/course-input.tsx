@@ -10,7 +10,7 @@ type Props = {
 };
 
 const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
-	const nameRef = useRef<HTMLInputElement>(null);
+	const itemRef = useRef<HTMLInputElement>(null);
 	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
@@ -24,19 +24,19 @@ const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 					✕
 				</button>
 				<div className="form-control w-2/3">
-					<label className="label label-text" htmlFor={`name-${index}`}>
+					<label className="label label-text" htmlFor={`item-${index}`}>
 						What&apos;s Needed
 					</label>
 					<input
 						className="input-text input input-bordered"
-						id={`name-${index}`}
+						id={`item-${index}`}
 						maxLength={256}
 						minLength={1}
-						name={`name-${index}`}
+						name={`item-${index}`}
 						onChange={(e) =>
 							change(index, e.target.value, countRef.current?.value ?? "0")
 						}
-						ref={nameRef}
+						ref={itemRef}
 						required
 						type="text"
 						value={item}
@@ -53,7 +53,7 @@ const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 								countRef.current?.stepDown();
 								change(
 									index,
-									nameRef.current?.value ?? "",
+									itemRef.current?.value ?? "",
 									countRef.current?.value ?? "0"
 								);
 							}}
@@ -84,7 +84,7 @@ const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 							min="0"
 							name={`quantity-${index}`}
 							onChange={(e) =>
-								change(index, nameRef.current?.value ?? "", e.target.value)
+								change(index, itemRef.current?.value ?? "", e.target.value)
 							}
 							ref={countRef}
 							required
@@ -96,7 +96,7 @@ const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 								countRef.current?.stepUp();
 								change(
 									index,
-									nameRef.current?.value ?? "",
+									itemRef.current?.value ?? "",
 									countRef.current?.value ?? "0"
 								);
 							}}

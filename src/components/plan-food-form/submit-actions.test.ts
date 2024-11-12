@@ -39,7 +39,7 @@ describe("submitRequest", () => {
 
 	it("returns an error when schema validation fails", async () => {
 		const formData = new FormData();
-		formData.append("name-1", "");
+		formData.append("item-1", "");
 		formData.append("quantity-1", "NaN");
 		formData.append("id-1", "");
 
@@ -60,7 +60,7 @@ describe("submitRequest", () => {
 			formErrors: [],
 		});
 		expect(result.fields).toEqual({
-			"name-1": "",
+			"item-1": "",
 			"quantity-1": "NaN",
 			"id-1": "",
 		});
@@ -68,7 +68,7 @@ describe("submitRequest", () => {
 
 	it("returns an error if updateRequest fails to return an ID", async () => {
 		const formData = new FormData();
-		formData.append("name-1", "Main Course");
+		formData.append("item-1", "Main Course");
 		formData.append("quantity-1", "3");
 		formData.append("id-1", id);
 
@@ -79,7 +79,7 @@ describe("submitRequest", () => {
 		expect(result.success).toBe(false);
 		expect(result.message).toBe("Failed to update request. Please try again.");
 		expect(result.fields).toEqual({
-			"name-1": "Main Course",
+			"item-1": "Main Course",
 			"quantity-1": "3",
 			"id-1": id,
 		});
@@ -87,7 +87,7 @@ describe("submitRequest", () => {
 
 	it("calls redirect on successful request update", async () => {
 		const formData = new FormData();
-		formData.append("name-1", "Dessert");
+		formData.append("item-1", "Dessert");
 		formData.append("quantity-1", "2");
 		formData.append("id-1", id);
 
