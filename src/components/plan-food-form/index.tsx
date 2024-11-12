@@ -17,10 +17,12 @@ import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
 import { Request } from "@/db/schema/request";
+import deleteRequest from "@/actions/db/delete-request";
 
 const MAX_REQUESTS = 20;
 
 const courseSchema = z.strictObject({
+	id: z.string().uuid(),
 	count: z.coerce.number().positive(),
 	name: z.string().trim().min(1),
 });
@@ -57,29 +59,31 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 	}, [code, state, searchParams]);
 
 	/** TODO: Update this to work without JS. */
-	const [courses, setCourses] = useState<{ name: string; count: string }[]>(
-		() => {
-			if (requests.length > 0) {
-				return requests.map((request) => ({
-					name: request.course,
-					count: request.count.toString(),
-				}));
-			}
-
-			return [{ name: "", count: "0" }];
+	const [courses, setCourses] = useState<
+		{ name: string; count: string; id: string }[]
+	>(() => {
+		if (requests.length > 0) {
+			return requests.map((request) => ({
+				name: request.course,
+				count: request.count.toString(),
+				id: request.id,
+			}));
 		}
-	);
+
+		return [{ name: "", count: "0", id: crypto.randomUUID() }];
+	});
 
 	const addCourse = () => {
 		if (courses.length >= MAX_REQUESTS) {
 			return;
 		}
 
-		setCourses([...courses, { name: "", count: "0" }]);
+		setCourses([...courses, { name: "", count: "0", id: crypto.randomUUID() }]);
 	};
 
-	const removeCourse = (index: number) => {
+	const removeCourse = async (index: number, id: string) => {
 		setCourses(courses.filter((_, i) => i !== index));
+		await deleteRequest({ id });
 	};
 
 	const handleCourseChange = (index: number, name: string, count: string) => {
@@ -108,10 +112,11 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 			<span className="mb-2 text-secondary">{state.message}</span>
 			{courses.map((course, index) => (
 				<CourseInput
-					key={`${index}-course`}
 					change={handleCourseChange}
 					count={course.count}
+					id={course.id}
 					index={index}
+					key={course.id}
 					name={course.name}
 					remove={removeCourse}
 				/>
