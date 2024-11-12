@@ -7,16 +7,12 @@ import { User } from "@/db/schema/auth/user";
 
 type Props = {
 	course: string;
-	commitmentTotal: number;
-	slotTotal: number;
 	committedUsers: Pick<User, "id" | "image" | "name">[];
 };
 
 const SlotContainer = ({
 	children,
 	course,
-	commitmentTotal,
-	slotTotal,
 	committedUsers,
 }: PropsWithChildren<Props>) => {
 	const [expanded, setExpanded] = useState<boolean>(false);

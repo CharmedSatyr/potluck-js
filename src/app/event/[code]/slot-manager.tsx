@@ -27,17 +27,10 @@ const SlotManager = ({ commitments, slots, users }: Props) => {
 						.filter((u) => deduplicatedRelatedUsers.has(u.id))
 						.map((u) => ({ id: u.id, image: u.image, name: u.name }));
 
-					const commitmentTotal = relatedCommitments.reduce(
-						(acc, curr) => acc + curr.quantity,
-						0
-					);
-
 					return (
 						<div key={slot.id} className="join-item border">
 							<SlotContainer
 								course={slot.course}
-								commitmentTotal={commitmentTotal}
-								slotTotal={slot.count}
 								committedUsers={relatedUsers}
 							>
 								<h3 className="mt-0">Current Signups</h3>
