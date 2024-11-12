@@ -6,22 +6,29 @@ import findUsers from "@/actions/db/find-users";
 import { User } from "@/db/schema/auth/user";
 import Image from "next/image";
 
+type UserWithCount = Pick<User, "id" | "image" | "name"> & { count: number };
+
 type Props = {
-	committedUsers: Pick<User, "id" | "image" | "name">[];
+	committedUsers: UserWithCount[];
 };
 
 const Avatars = ({ committedUsers }: Props) => {
 	return committedUsers.map((user) =>
 		user.image ? (
-			<Image
-				key={user.id}
-				alt={`Avatar for user ${user.name}`}
-				className="avatar my-0 rounded-full border"
-				src={user.image}
-				height={40}
-				title={user.name ?? ""}
-				width={40}
-			/>
+			<div className="indicator">
+				<Image
+					key={user.id}
+					alt={`Avatar for user ${user.name}`}
+					className="avatar my-0 rounded-full border"
+					src={user.image}
+					height={40}
+					title={`${user.name} is bringing ${user.count}`}
+					width={40}
+				/>
+				<span className="badge indicator-item badge-primary badge-sm">
+					{user.count}
+				</span>
+			</div>
 		) : (
 			<div key={user.id} className="skeleton h-8 w-8 rounded-full border" />
 		)
@@ -59,6 +66,9 @@ const committedUsersBySlot = async (
 				id: u.id,
 				image: u.image,
 				name: u.name,
+				count: relatedCommitments
+					.filter((c) => c.createdBy === u.id)
+					.reduce((acc, curr) => acc + curr.quantity, 0),
 			}));
 
 		if (!committedUsers.length) {

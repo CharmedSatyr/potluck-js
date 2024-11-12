@@ -134,7 +134,9 @@ const PlanFoodForm = ({
 					<Suspense key={index} fallback="TODO: Skellington">
 						{committedUsersBySlot.has(slot.id) && (
 							<div className="mt-4 flex w-full items-center justify-center">
-								Existing Commitments:{" "}
+								<span className="text-sm font-light">
+									Existing Commitments:
+								</span>
 								<span className="mx-2">
 									{committedUsersBySlot.get(slot.id)}
 								</span>
