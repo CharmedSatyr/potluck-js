@@ -8,7 +8,7 @@ import {
 import { useSearchParams, usePathname } from "next/navigation";
 import PlanEventForm from "@/components/plan-event-form";
 import useAnchor from "@/hooks/use-anchor";
-import { PlanEventFormData } from "@/app/start/submit-actions.types";
+import { PlanEventFormData } from "@/app/start/submit-actions.schema";
 
 jest.mock("next/navigation", () => ({
 	usePathname: jest.fn(),

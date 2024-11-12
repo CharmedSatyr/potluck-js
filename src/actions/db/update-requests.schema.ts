@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { code } from "@/actions/db/shared-types";
+import { code } from "@/schemas/code.schema";
 import { Event } from "@/db/schema/event";
 import { CustomizableRequestValues, Request } from "@/db/schema/request";
 

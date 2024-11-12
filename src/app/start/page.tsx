@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/start/submit-actions";
-import { PlanEventFormData } from "@/app/start/submit-actions.types";
+import { PlanEventFormData } from "@/app/start/submit-actions.schema";
 import { useSearchParams } from "next/navigation";
 
 const DEV = process.env.NODE_ENV === "development";

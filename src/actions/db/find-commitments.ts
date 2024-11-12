@@ -6,7 +6,7 @@ import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
 import { commitment, Commitment } from "@/db/schema/commitment";
 import { request } from "@/db/schema/request";
-import { schema } from "@/actions/db/find-commitments.types";
+import { schema } from "@/actions/db/find-commitments.schema";
 
 const findCommitments = async (
 	data: z.infer<typeof schema>

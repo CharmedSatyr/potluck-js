@@ -1,7 +1,7 @@
 import { CustomizableRequestValues } from "@/db/schema/request";
 import { z } from "zod";
 import { Event } from "@/db/schema/event";
-import { code } from "@/actions/db/shared-types";
+import { code } from "@/schemas/code.schema";
 
 export const schema = z
 	.strictObject({

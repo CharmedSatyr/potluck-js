@@ -1,9 +1,9 @@
 "use server";
 
 import { z } from "zod";
-import { schema } from "@/actions/db/delete-request.types";
+import { schema } from "@/actions/db/delete-request.schema";
 import db from "@/db/connection";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { request, Request } from "@/db/schema/request";
 
 const deleteRequest = async (

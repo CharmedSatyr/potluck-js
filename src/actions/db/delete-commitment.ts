@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { schema } from "@/actions/db/delete-commitment.types";
+import { schema } from "@/actions/db/delete-commitment.schema";
 import db from "@/db/connection";
 import { Commitment, commitment } from "@/db/schema/commitment";
 import { and, eq } from "drizzle-orm";

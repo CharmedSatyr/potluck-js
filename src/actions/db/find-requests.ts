@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import db from "@/db/connection";
 import findEvent from "@/actions/db/find-event";
 import { request, Request } from "@/db/schema/request";
-import { schema } from "./find-requests.types";
+import { schema } from "./find-requests.schema";
 
 const findRequests = async (
 	data: z.infer<typeof schema>

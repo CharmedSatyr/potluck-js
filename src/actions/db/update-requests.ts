@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import db from "@/db/connection";
-import { schema } from "@/actions/db/update-requests.types";
+import { schema } from "@/actions/db/update-requests.schema";
 import findEvent from "@/actions/db/find-event";
 import { request, Request } from "@/db/schema/request";
 import { getTableColumns, SQL, sql } from "drizzle-orm";

@@ -1,5 +1,5 @@
 import { typeToFlattenedError, z } from "zod";
-import { schema } from "@/actions/db/update-event.types";
+import { schema } from "@/actions/db/update-event.schema";
 import { EventUserValues } from "@/db/schema/event";
 
 export const formSchema = schema

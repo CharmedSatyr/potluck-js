@@ -4,7 +4,7 @@ import updateEvent from "@/actions/db/update-event";
 import {
 	formSchema,
 	UpdateEventFormState,
-} from "@/app/event/[code]/edit/submit-actions.types";
+} from "@/app/event/[code]/edit/submit-actions.schema";
 import { revalidatePath } from "next/cache";
 
 // Mock dependencies

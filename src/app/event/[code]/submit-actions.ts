@@ -5,7 +5,7 @@ import {
 	CreateCommitmentFormState,
 	DeleteCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[code]/submit-actions.types";
+} from "@/app/event/[code]/submit-actions.schema";
 import { auth } from "@/auth";
 import deleteCommitment from "@/actions/db/delete-commitment";
 import { revalidatePath } from "next/cache";

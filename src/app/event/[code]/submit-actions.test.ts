@@ -10,7 +10,7 @@ import {
 	CreateCommitmentFormState,
 	DeleteCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[code]/submit-actions.types";
+} from "@/app/event/[code]/submit-actions.schema";
 
 jest.mock("@/auth", () => ({ auth: jest.fn() }));
 jest.mock("@/actions/db/create-commitment", () => jest.fn());

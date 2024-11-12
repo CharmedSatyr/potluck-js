@@ -7,7 +7,7 @@ import {
 	CreateCommitmentFormData,
 	CreateCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[code]/submit-actions.types";
+} from "@/app/event/[code]/submit-actions.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuantityInput from "@/components/quantity-input";

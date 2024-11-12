@@ -6,7 +6,7 @@ import useAnchor from "@/hooks/use-anchor";
 import {
 	PlanEventFormData,
 	PlanEventFormState,
-} from "@/app/start/submit-actions.types";
+} from "@/app/start/submit-actions.schema";
 import { Suspense, use } from "react";
 import { Request } from "@/db/schema/request";
 

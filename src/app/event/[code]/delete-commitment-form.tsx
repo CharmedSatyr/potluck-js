@@ -6,7 +6,7 @@ import Form from "next/form";
 import { usePathname } from "next/navigation";
 import { Commitment } from "@/db/schema/commitment";
 import { deleteCommitmentAction } from "@/app/event/[code]/submit-actions";
-import { DeleteCommitmentFormState } from "@/app/event/[code]/submit-actions.types";
+import { DeleteCommitmentFormState } from "@/app/event/[code]/submit-actions.schema";
 
 type Props = {
 	id: Commitment["id"];

@@ -2,9 +2,9 @@
 
 import updateEvent from "@/actions/db/update-event";
 import { auth } from "@/auth";
-import { formSchema } from "@/app/event/[code]/edit/submit-actions.types";
+import { formSchema } from "@/app/event/[code]/edit/submit-actions.schema";
 import { revalidatePath } from "next/cache";
-import { PlanEventFormState } from "@/app/start/submit-actions.types";
+import { PlanEventFormState } from "@/app/start/submit-actions.schema";
 
 export const updateEventAction = async (
 	prevState: PlanEventFormState,

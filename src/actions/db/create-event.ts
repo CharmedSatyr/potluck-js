@@ -3,7 +3,7 @@
 import { z } from "zod";
 import db from "@/db/connection";
 import { Event, event } from "@/db/schema/event";
-import { schema } from "@/actions/db/create-event.types";
+import { schema } from "@/actions/db/create-event.schema";
 
 const createEvent = async (
 	data: z.infer<typeof schema>

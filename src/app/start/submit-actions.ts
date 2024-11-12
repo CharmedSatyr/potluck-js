@@ -5,7 +5,7 @@ import { auth, signIn } from "@/auth";
 import {
 	formSchema,
 	PlanEventFormState,
-} from "@/app/start/submit-actions.types";
+} from "@/app/start/submit-actions.schema";
 
 export const loginAction = async (
 	prevState: PlanEventFormState,

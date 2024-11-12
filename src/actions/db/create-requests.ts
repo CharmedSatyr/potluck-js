@@ -4,7 +4,7 @@ import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
 import { request, Request } from "@/db/schema/request";
 import { z } from "zod";
-import { schema } from "@/actions/db/create-requests.types";
+import { schema } from "@/actions/db/create-requests.schema";
 
 const createRequests = async (
 	data: z.infer<typeof schema>

@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import {
 	PlanEventFormData,
 	PlanEventFormState,
-} from "@/app/start/submit-actions.types";
+} from "@/app/start/submit-actions.schema";
 
 type Props = {
 	code: string | null;

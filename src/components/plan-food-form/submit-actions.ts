@@ -1,6 +1,6 @@
 "use server";
 
-import { schema } from "@/actions/db/update-requests.types";
+import { schema } from "@/actions/db/update-requests.schema";
 import updateRequests from "@/actions/db/update-requests";
 import { redirect } from "next/navigation";
 import { typeToFlattenedError } from "zod";
@@ -88,7 +88,7 @@ const submitRequest = async (
 		code: prevState.code,
 	});
 
-	if (!result) {
+	if (!result?.length) {
 		return {
 			...prevState,
 			fields,
