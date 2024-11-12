@@ -1,11 +1,11 @@
 import { ZodError } from "zod";
 import db from "@/db/connection";
-import deleteRequest from "@/actions/db/delete-request";
-import { request } from "@/db/schema/request";
+import deleteSlot from "@/actions/db/delete-slot";
+import { slot } from "@/db/schema/slot";
 
 jest.mock("@/db/connection");
 
-describe("deleteRequest", () => {
+describe("deleteSlot", () => {
 	let errorLogger: jest.SpyInstance;
 
 	beforeAll(() => {
@@ -22,16 +22,16 @@ describe("deleteRequest", () => {
 
 	const validData = { id: "456e4567-e89b-12d3-a456-426614174000" };
 
-	it("should delete a request and return the deleted id on success", async () => {
+	it("should delete a slot and return the deleted id on success", async () => {
 		(db.delete as jest.Mock).mockReturnValueOnce({
 			where: jest.fn().mockReturnValueOnce({
 				returning: jest.fn().mockResolvedValueOnce([{ id: validData.id }]),
 			}),
 		});
 
-		const result = await deleteRequest(validData);
+		const result = await deleteSlot(validData);
 
-		expect(db.delete).toHaveBeenCalledWith(request);
+		expect(db.delete).toHaveBeenCalledWith(slot);
 		expect(result).toEqual([{ id: validData.id }]);
 	});
 
@@ -49,7 +49,7 @@ describe("deleteRequest", () => {
 			},
 		]);
 
-		const result = await deleteRequest(invalidData);
+		const result = await deleteSlot(invalidData);
 
 		expect(db.delete).not.toHaveBeenCalled();
 		expect(result).toEqual([]);
@@ -65,9 +65,9 @@ describe("deleteRequest", () => {
 			}),
 		});
 
-		const result = await deleteRequest(validData);
+		const result = await deleteSlot(validData);
 
-		expect(db.delete).toHaveBeenCalledWith(request);
+		expect(db.delete).toHaveBeenCalledWith(slot);
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
 	});

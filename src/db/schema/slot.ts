@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { event } from "@/db/schema/event";
 
-export const request = pgTable("request", {
+export const slot = pgTable("slot", {
 	course: varchar("course", { length: 256 }).notNull(),
 	count: integer("count").notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
@@ -22,6 +22,6 @@ export const request = pgTable("request", {
 		.defaultNow(),
 });
 
-export type Request = typeof request.$inferSelect;
+export type Slot = typeof slot.$inferSelect;
 
-export type CustomizableRequestValues = Pick<Request, "course" | "count">;
+export type CustomizableSlotValues = Pick<Slot, "course" | "count">;

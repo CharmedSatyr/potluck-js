@@ -48,7 +48,7 @@ const StartPage = () => {
 			<ManageEventWizard
 				code={code}
 				eventPromise={defaultValues as any}
-				requestsPromise={Promise.resolve([])} // TODO: This is gross.
+				slotsPromise={Promise.resolve([])} // TODO: This is gross.
 				submitAction={submitAction}
 			/>
 		</div>

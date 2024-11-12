@@ -34,7 +34,7 @@ describe("findCommitments", () => {
 		description: "Mock description",
 		id: 1,
 		quantity: 5,
-		requestId: 1,
+		slotId: 1,
 		updatedAt: "2024-01-02",
 	};
 
@@ -58,7 +58,7 @@ describe("findCommitments", () => {
 			description: commitment.description,
 			id: commitment.id,
 			quantity: commitment.quantity,
-			requestId: commitment.requestId,
+			slotId: commitment.slotId,
 			updatedAt: commitment.updatedAt,
 		});
 		expect(result).toEqual([mockCommitment]);

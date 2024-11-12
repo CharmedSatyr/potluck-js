@@ -8,15 +8,15 @@ import { User } from "@/db/schema/auth/user";
 type Props = {
 	course: string;
 	commitmentTotal: number;
-	requestTotal: number;
+	slotTotal: number;
 	committedUsers: Pick<User, "id" | "image" | "name">[];
 };
 
-const RequestContainer = ({
+const SlotContainer = ({
 	children,
 	course,
 	commitmentTotal,
-	requestTotal,
+	slotTotal,
 	committedUsers,
 }: PropsWithChildren<Props>) => {
 	const [expanded, setExpanded] = useState<boolean>(false);
@@ -48,7 +48,6 @@ const RequestContainer = ({
 				<div className="w-6/12 text-2xl">{course}</div>
 				{avatars}
 				<div className="flex items-center justify-between">
-					{commitmentTotal} of {requestTotal} filled
 					{expanded ? (
 						<ChevronUpIcon className="-mr-6 ml-2 size-6" />
 					) : (
@@ -61,4 +60,4 @@ const RequestContainer = ({
 	);
 };
 
-export default RequestContainer;
+export default SlotContainer;

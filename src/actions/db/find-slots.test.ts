@@ -3,12 +3,12 @@
 import { ZodError } from "zod";
 import db from "@/db/connection";
 import findEvent from "@/actions/db/find-event";
-import findRequests from "@/actions/db/find-requests";
+import findSlots from "@/actions/db/find-slots";
 
 jest.mock("@/db/connection");
 jest.mock("@/actions/db/find-event");
 
-describe("findRequests", () => {
+describe("findSlots", () => {
 	let errorLogger: jest.SpyInstance;
 
 	beforeAll(() => {
@@ -25,28 +25,28 @@ describe("findRequests", () => {
 
 	const validData = { eventCode: "CODE1" };
 
-	it("should return requests for a valid event code", async () => {
+	it("should return slots for a valid event code", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
 
-		const mockRequests = [{ id: 101, eventId: 1 }];
+		const mockSlots = [{ id: 101, eventId: 1 }];
 
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockResolvedValueOnce(mockRequests),
+				where: jest.fn().mockResolvedValueOnce(mockSlots),
 			}),
 		});
 
-		const result = await findRequests(validData);
+		const result = await findSlots(validData);
 
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
 		expect(db.select).toHaveBeenCalled();
-		expect(result).toEqual(mockRequests);
+		expect(result).toEqual(mockSlots);
 	});
 
 	it("should return an empty array and log an error if the event code is invalid", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([]);
 
-		const result = await findRequests(validData);
+		const result = await findSlots(validData);
 
 		expect(result).toEqual([]);
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
@@ -67,7 +67,7 @@ describe("findRequests", () => {
 			},
 		]);
 
-		const result = await findRequests(invalidData);
+		const result = await findSlots(invalidData);
 
 		expect(result).toEqual([]);
 		expect(findEvent).not.toHaveBeenCalled();
@@ -85,7 +85,7 @@ describe("findRequests", () => {
 			}),
 		});
 
-		const result = await findRequests(validData);
+		const result = await findSlots(validData);
 
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
 		expect(db.select).toHaveBeenCalled();

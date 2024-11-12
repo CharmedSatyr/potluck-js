@@ -16,13 +16,13 @@ import { usePathname } from "next/navigation";
 type Props = {
 	commitmentsStillNeeded: number;
 	index: number;
-	requestId: string;
+	slotId: string;
 };
 
 const CreateCommitmentForm = ({
 	commitmentsStillNeeded,
 	index,
-	requestId,
+	slotId,
 }: Props) => {
 	const path = usePathname();
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
@@ -34,7 +34,7 @@ const CreateCommitmentForm = ({
 		fields: {},
 		message: "",
 		path,
-		requestId,
+		slotId,
 		success: false,
 	});
 

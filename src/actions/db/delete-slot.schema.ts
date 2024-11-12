@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { Request } from "@/db/schema/request";
+import { Slot } from "@/db/schema/slot";
 
 export const schema = z
 	.strictObject({
 		id: z.string().trim().uuid(),
 	})
-	.required() satisfies z.ZodType<Pick<Request, "id">>;
+	.required() satisfies z.ZodType<Pick<Slot, "id">>;

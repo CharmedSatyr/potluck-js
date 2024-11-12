@@ -8,12 +8,12 @@ import {
 	PlanEventFormState,
 } from "@/app/start/submit-actions.schema";
 import { Suspense, use } from "react";
-import { Request } from "@/db/schema/request";
+import { Slot } from "@/db/schema/slot";
 
 type Props = {
 	code: string | null;
 	eventPromise: Promise<PlanEventFormData[]>;
-	requestsPromise: Promise<Request[]>;
+	slotsPromise: Promise<Slot[]>;
 	submitAction: (
 		prevState: PlanEventFormState,
 		formData: FormData
@@ -23,12 +23,12 @@ type Props = {
 const ManageEventWizard = ({
 	code,
 	eventPromise,
-	requestsPromise,
+	slotsPromise,
 	submitAction,
 }: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
 	const [eventData] = use(eventPromise);
-	const requests = use(requestsPromise);
+	const slots = use(slotsPromise);
 
 	return (
 		<>
@@ -51,7 +51,7 @@ const ManageEventWizard = ({
 					id="plan-food"
 				>
 					<Suspense fallback="TODO: Skellington 2">
-						<PlanFoodForm code={code} requests={requests} />
+						<PlanFoodForm code={code} slots={slots} />
 					</Suspense>
 				</div>
 			</div>

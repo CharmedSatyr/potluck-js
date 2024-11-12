@@ -1,7 +1,7 @@
 "use server";
 
-import { schema } from "@/actions/db/update-requests.schema";
-import updateRequests from "@/actions/db/update-requests";
+import { schema } from "@/actions/db/update-slots.schema";
+import updateSlots from "@/actions/db/update-slots";
 import { redirect } from "next/navigation";
 import { typeToFlattenedError } from "zod";
 
@@ -13,7 +13,7 @@ export type PlanFoodFormState = {
 	success: boolean;
 };
 
-const submitRequest = async (
+const submitSlots = async (
 	prevState: PlanFoodFormState,
 	formData: FormData
 ): Promise<PlanFoodFormState> => {
@@ -66,11 +66,11 @@ const submitRequest = async (
 		builder.set(index, currentEntry);
 	}
 
-	const requests: { course: string; count: number; id: string }[] = Array.from(
+	const slots: { course: string; count: number; id: string }[] = Array.from(
 		builder.values()
 	);
 
-	const formatted = { code: prevState.code, requests };
+	const formatted = { code: prevState.code, slots };
 	const parsed = schema.safeParse(formatted);
 
 	if (!parsed.success) {
@@ -83,7 +83,7 @@ const submitRequest = async (
 		};
 	}
 
-	const result = await updateRequests({
+	const result = await updateSlots({
 		...parsed.data,
 		code: prevState.code,
 	});
@@ -92,7 +92,7 @@ const submitRequest = async (
 		return {
 			...prevState,
 			fields,
-			message: "Failed to update request. Please try again.",
+			message: "Failed to update slots. Please try again.",
 			success: false,
 		};
 	}
@@ -100,4 +100,4 @@ const submitRequest = async (
 	redirect(`/event/${prevState.code}`);
 };
 
-export default submitRequest;
+export default submitSlots;

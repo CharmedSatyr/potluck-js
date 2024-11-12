@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
 import { commitment, Commitment } from "@/db/schema/commitment";
-import { request } from "@/db/schema/request";
+import { slot } from "@/db/schema/slot";
 import { schema } from "@/actions/db/find-commitments.schema";
 
 const findCommitments = async (
@@ -26,7 +26,7 @@ const findCommitments = async (
 			description,
 			id,
 			quantity,
-			requestId,
+			slotId,
 			updatedAt,
 		} = commitment;
 
@@ -37,12 +37,12 @@ const findCommitments = async (
 				description,
 				id,
 				quantity,
-				requestId,
+				slotId,
 				updatedAt,
 			})
-			.from(request)
-			.where(eq(request.eventId, event.id))
-			.innerJoin(commitment, eq(request.id, commitment.requestId));
+			.from(slot)
+			.where(eq(slot.eventId, event.id))
+			.innerJoin(commitment, eq(slot.id, commitment.slotId));
 	} catch (err) {
 		console.error(err);
 

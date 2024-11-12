@@ -28,7 +28,7 @@ export const createCommitmentAction = async (
 			fields,
 			message: "Invalid form data",
 			path: prevState.path,
-			requestId: prevState.requestId,
+			slotId: prevState.slotId,
 			success: false,
 		};
 	}
@@ -40,7 +40,7 @@ export const createCommitmentAction = async (
 			fields,
 			message: "Not authenticated",
 			path: prevState.path,
-			requestId: prevState.requestId,
+			slotId: prevState.slotId,
 			success: false,
 		};
 	}
@@ -48,7 +48,7 @@ export const createCommitmentAction = async (
 	const [result] = await createCommitment({
 		...parsed.data,
 		createdBy: session.user.id,
-		requestId: prevState.requestId,
+		slotId: prevState.slotId,
 	});
 
 	if (!result) {
@@ -56,7 +56,7 @@ export const createCommitmentAction = async (
 			fields,
 			message: "Failed to create event",
 			path: prevState.path,
-			requestId: prevState.requestId,
+			slotId: prevState.slotId,
 			success: false,
 		};
 	}
@@ -67,7 +67,7 @@ export const createCommitmentAction = async (
 		fields,
 		message: "Event created",
 		path: prevState.path,
-		requestId: prevState.requestId,
+		slotId: prevState.slotId,
 		success: true,
 	};
 };

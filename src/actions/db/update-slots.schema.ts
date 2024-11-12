@@ -1,16 +1,16 @@
 import { z } from "zod";
 import { code } from "@/schemas/code.schema";
 import { Event } from "@/db/schema/event";
-import { CustomizableRequestValues, Request } from "@/db/schema/request";
+import { CustomizableSlotValues, Slot } from "@/db/schema/slot";
 
-type CustomizableRequestValuesWithId = CustomizableRequestValues & {
-	id: Request["id"];
+type CustomizableSlotValuesWithId = CustomizableSlotValues & {
+	id: Slot["id"];
 };
 
 export const schema = z
 	.strictObject({
 		code: code,
-		requests: z
+		slots: z
 			.array(
 				z.strictObject({
 					count: z.number().positive(),
@@ -22,5 +22,5 @@ export const schema = z
 	})
 	.required() satisfies z.ZodType<{
 	code: Event["code"];
-	requests: CustomizableRequestValuesWithId[];
+	slots: CustomizableSlotValuesWithId[];
 }>;

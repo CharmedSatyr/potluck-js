@@ -1,25 +1,25 @@
-import RequestContainer from "@/app/event/[code]/request-container";
+import SlotContainer from "@/app/event/[code]/slot-container";
 import { User } from "@/db/schema/auth/user";
 import { Commitment } from "@/db/schema/commitment";
-import { Request } from "@/db/schema/request";
+import { Slot } from "@/db/schema/slot";
 import CreateCommitmentForm from "@/app/event/[code]/create-commitment-form";
 import CommitmentsTable from "@/app/event/[code]/commitments-table";
 
 type Props = {
 	commitments: Commitment[];
-	requests: Request[];
+	slots: Slot[];
 	users: User[];
 };
 
-const RequestManager = ({ commitments, requests, users }: Props) => {
+const SlotManager = ({ commitments, slots, users }: Props) => {
 	return (
 		<div>
 			<h2>Food Plan</h2>
 
 			<div className="join join-vertical w-full border">
-				{requests.map((request, index) => {
+				{slots.map((slot, index) => {
 					const relatedCommitments = commitments.filter(
-						(c) => c.requestId === request.id
+						(c) => c.slotId === slot.id
 					);
 					const eventUsers = relatedCommitments.map((c) => c.createdBy);
 					const deduplicatedRelatedUsers = new Set(eventUsers);
@@ -33,11 +33,11 @@ const RequestManager = ({ commitments, requests, users }: Props) => {
 					);
 
 					return (
-						<div key={request.id} className="join-item border">
-							<RequestContainer
-								course={request.course}
+						<div key={slot.id} className="join-item border">
+							<SlotContainer
+								course={slot.course}
 								commitmentTotal={commitmentTotal}
-								requestTotal={request.count}
+								slotTotal={slot.count}
 								committedUsers={relatedUsers}
 							>
 								<h3 className="mt-0">Current Signups</h3>
@@ -51,12 +51,12 @@ const RequestManager = ({ commitments, requests, users }: Props) => {
 								)}
 								<CreateCommitmentForm
 									commitmentsStillNeeded={
-										request.count - relatedCommitments.length
+										slot.count - relatedCommitments.length
 									}
 									index={index}
-									requestId={request.id}
+									slotId={slot.id}
 								/>
-							</RequestContainer>
+							</SlotContainer>
 						</div>
 					);
 				})}
@@ -65,4 +65,4 @@ const RequestManager = ({ commitments, requests, users }: Props) => {
 	);
 };
 
-export default RequestManager;
+export default SlotManager;

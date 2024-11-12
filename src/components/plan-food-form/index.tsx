@@ -10,7 +10,7 @@ import {
 } from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
 // TODO: Should this be passed in?
-import submitRequest, {
+import submitSlots, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
 import { useSearchParams } from "next/navigation";
@@ -18,11 +18,11 @@ import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
 // TODO: This isn't what's being used.
-import { Request } from "@/db/schema/request";
+import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
-import deleteRequest from "@/actions/db/delete-request";
+import deleteSlot from "@/actions/db/delete-slot";
 
-const MAX_REQUESTS = 20;
+const MAX_SLOTS = 20;
 
 const courseSchema = z.strictObject({
 	id: z.string().uuid(),
@@ -32,10 +32,10 @@ const courseSchema = z.strictObject({
 
 type Props = {
 	code: string | null;
-	requests: Request[];
+	slots: Slot[];
 };
 
-const PlanFoodForm = ({ code, requests }: Props) => {
+const PlanFoodForm = ({ code, slots }: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -44,7 +44,7 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 	const [state, submit, isPending] = useActionState<
 		PlanFoodFormState,
 		FormData
-	>(submitRequest, {
+	>(submitSlots, {
 		code: code ?? "",
 		fields: {}, // TODO: Make this useful.
 		message: "",
@@ -65,11 +65,11 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 	const [courses, setCourses] = useState<
 		{ item: string; count: string; id: string }[]
 	>(() => {
-		if (requests.length > 0) {
-			return requests.map((request) => ({
-				item: request.course,
-				count: request.count.toString(),
-				id: request.id,
+		if (slots.length > 0) {
+			return slots.map((slot) => ({
+				item: slot.course,
+				count: slot.count.toString(),
+				id: slot.id,
 			}));
 		}
 
@@ -77,7 +77,7 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 	});
 
 	const addCourse = () => {
-		if (courses.length >= MAX_REQUESTS) {
+		if (courses.length >= MAX_SLOTS) {
 			return;
 		}
 
@@ -86,7 +86,7 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 
 	const removeCourse = async (index: number, id: string) => {
 		setCourses(courses.filter((_, i) => i !== index));
-		await deleteRequest({ id });
+		await deleteSlot({ id });
 	};
 
 	const handleCourseChange = (index: number, item: string, count: string) => {
@@ -110,7 +110,7 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 			<h1 className="my-0 text-6xl font-extrabold text-primary">
 				Plan the Food
 			</h1>
-			<h2>Create Your Requests</h2>
+			<h2>Create Your Slots</h2>
 
 			<span className="mb-2 text-secondary">{state.message}</span>
 			{courses.map((course, index) => (
@@ -131,7 +131,7 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 					onClick={addCourse}
 					type="button"
 				>
-					Add Request
+					Add Slot
 				</button>
 				<Link
 					className={`btn btn-accent w-1/3 ${state.code ? "" : "btn-disabled pointer-events-none"}`}

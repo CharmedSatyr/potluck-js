@@ -2,9 +2,9 @@
 
 import { z } from "zod";
 import db from "@/db/connection";
-import { schema } from "@/actions/db/update-requests.schema";
+import { schema } from "@/actions/db/update-slots.schema";
 import findEvent from "@/actions/db/find-event";
-import { request, Request } from "@/db/schema/request";
+import { slot, Slot } from "@/db/schema/slot";
 import { getTableColumns, SQL, sql } from "drizzle-orm";
 import { PgTable } from "drizzle-orm/pg-core";
 
@@ -28,10 +28,10 @@ const buildConflictUpdateColumns = <
 	);
 };
 
-const updateRequests = async (
+const updateSlots = async (
 	data: z.infer<typeof schema>
 ): Promise<
-	{ course: Request["course"]; count: Request["count"]; id: Request["id"] }[]
+	{ course: Slot["course"]; count: Slot["count"]; id: Slot["id"] }[]
 > => {
 	try {
 		schema.parse(data);
@@ -42,22 +42,22 @@ const updateRequests = async (
 			return [];
 		}
 
-		const values = data.requests.map((request) => ({
-			...request,
+		const values = data.slots.map((slot) => ({
+			...slot,
 			eventId: event.id,
 		}));
 
 		return await db
-			.insert(request)
+			.insert(slot)
 			.values(values)
 			.onConflictDoUpdate({
-				target: request.id,
-				set: buildConflictUpdateColumns(request, ["course", "count"]),
+				target: slot.id,
+				set: buildConflictUpdateColumns(slot, ["course", "count"]),
 			})
 			.returning({
-				course: request.course,
-				count: request.count,
-				id: request.id,
+				course: slot.course,
+				count: slot.count,
+				id: slot.id,
 			});
 	} catch (err) {
 		console.error(err);
@@ -66,4 +66,4 @@ const updateRequests = async (
 	}
 };
 
-export default updateRequests;
+export default updateSlots;
