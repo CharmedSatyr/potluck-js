@@ -1,7 +1,7 @@
 "use server";
 
-import createRequests from "@/actions/db/create-requests";
-import { schema } from "@/actions/db/create-requests.types";
+import { schema } from "@/actions/db/update-requests.types";
+import updateRequests from "@/actions/db/update-requests";
 import { redirect } from "next/navigation";
 import { typeToFlattenedError } from "zod";
 
@@ -29,20 +29,27 @@ const submitRequest = async (
 
 	const fields: Record<string, string> = {};
 	for (const key of Object.keys(data)) {
-		if (!key.startsWith("name") && !key.startsWith("quantity")) {
+		if (
+			!key.startsWith("name") &&
+			!key.startsWith("quantity") &&
+			!key.startsWith("id")
+		) {
 			continue;
 		}
 
 		fields[key] = String(data[key]);
 	}
 
-	const builder = new Map<number, { course: string; count: number }>();
+	const builder = new Map<
+		number,
+		{ course: string; count: number; id: string }
+	>();
 
 	for (const [key, value] of Object.entries(fields)) {
 		const [field, i] = key.split("-");
 
 		const index = Number(i);
-		const currentEntry = builder.get(index) ?? { course: "", count: 0 };
+		const currentEntry = builder.get(index) ?? { course: "", count: 0, id: "" };
 
 		if (field === "quantity") {
 			currentEntry.count = Number(value);
@@ -52,10 +59,14 @@ const submitRequest = async (
 			currentEntry.course = String(value);
 		}
 
+		if (field === "id") {
+			currentEntry.id = String(value);
+		}
+
 		builder.set(index, currentEntry);
 	}
 
-	const requests: { course: string; count: number }[] = Array.from(
+	const requests: { course: string; count: number; id: string }[] = Array.from(
 		builder.values()
 	);
 
@@ -72,16 +83,16 @@ const submitRequest = async (
 		};
 	}
 
-	const [id] = await createRequests({
+	const result = await updateRequests({
 		...parsed.data,
 		code: prevState.code,
 	});
 
-	if (!id) {
+	if (!result) {
 		return {
 			...prevState,
 			fields,
-			message: "Failed to create request. Please try again.",
+			message: "Failed to update request. Please try again.",
 			success: false,
 		};
 	}

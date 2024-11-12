@@ -1,11 +1,11 @@
 import submitRequest, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
-import createRequests from "@/actions/db/create-requests";
 import { redirect } from "next/navigation";
+import updateRequests from "@/actions/db/update-requests";
 
 jest.mock("next/navigation");
-jest.mock("@/actions/db/create-requests");
+jest.mock("@/actions/db/update-requests");
 
 describe("submitRequest", () => {
 	let prevState: PlanFoodFormState;
@@ -17,10 +17,13 @@ describe("submitRequest", () => {
 			message: "",
 			success: true,
 		};
-		(createRequests as jest.Mock).mockResolvedValue([
+
+		(updateRequests as jest.Mock).mockResolvedValue([
 			"e444d290-6723-44ed-a90f-5915ce7efcd5",
 		]);
 	});
+
+	const id = "8059740a-d6ba-4215-807d-ea5502441bf1";
 
 	it("returns an error when the event code is missing", async () => {
 		const formData = new FormData();
@@ -36,8 +39,9 @@ describe("submitRequest", () => {
 
 	it("returns an error when schema validation fails", async () => {
 		const formData = new FormData();
-		formData.append("name-1", "Appetizer");
+		formData.append("name-1", "");
 		formData.append("quantity-1", "NaN");
+		formData.append("id-1", "");
 
 		const result = await submitRequest(prevState, formData);
 
@@ -46,36 +50,46 @@ describe("submitRequest", () => {
 			"There was a problem. Verify entries and try again."
 		);
 		expect(result.errors).toEqual({
-			fieldErrors: { requests: ["Expected number, received nan"] },
+			fieldErrors: {
+				requests: [
+					"Expected number, received nan",
+					"String must contain at least 1 character(s)",
+					"Invalid uuid",
+				],
+			},
 			formErrors: [],
 		});
 		expect(result.fields).toEqual({
-			"name-1": "Appetizer",
+			"name-1": "",
 			"quantity-1": "NaN",
+			"id-1": "",
 		});
 	});
 
-	it("returns an error if createRequest fails to return an ID", async () => {
+	it("returns an error if updateRequest fails to return an ID", async () => {
 		const formData = new FormData();
 		formData.append("name-1", "Main Course");
 		formData.append("quantity-1", "3");
+		formData.append("id-1", id);
 
-		(createRequests as jest.Mock).mockResolvedValue([]);
+		(updateRequests as jest.Mock).mockResolvedValue(null);
 
 		const result = await submitRequest(prevState, formData);
 
 		expect(result.success).toBe(false);
-		expect(result.message).toBe("Failed to create request. Please try again.");
+		expect(result.message).toBe("Failed to update request. Please try again.");
 		expect(result.fields).toEqual({
 			"name-1": "Main Course",
 			"quantity-1": "3",
+			"id-1": id,
 		});
 	});
 
-	it("calls redirect on successful request creation", async () => {
+	it("calls redirect on successful request update", async () => {
 		const formData = new FormData();
 		formData.append("name-1", "Dessert");
 		formData.append("quantity-1", "2");
+		formData.append("id-1", id);
 
 		const result = await submitRequest(prevState, formData);
 
