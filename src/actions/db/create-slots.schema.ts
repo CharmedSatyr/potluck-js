@@ -1,7 +1,7 @@
 import { CustomizableSlotValues } from "@/db/schema/slot";
 import { z } from "zod";
 import { Event } from "@/db/schema/event";
-import { code } from "@/schemas/code.schema";
+import { code } from "@/validation/code.schema";
 
 export const schema = z
 	.strictObject({

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { code } from "@/schemas/code.schema";
+import { code } from "@/validation/code.schema";
 import { Event } from "@/db/schema/event";
 
 export const schema = z
