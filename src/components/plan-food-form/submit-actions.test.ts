@@ -13,7 +13,6 @@ describe("submitSlots", () => {
 	beforeEach(() => {
 		prevState = {
 			code: "CODE1",
-			fields: {},
 			message: "",
 			success: true,
 		};
@@ -59,11 +58,6 @@ describe("submitSlots", () => {
 			},
 			formErrors: [],
 		});
-		expect(result.fields).toEqual({
-			"item-1": "",
-			"count-1": "NaN",
-			"id-1": "",
-		});
 	});
 
 	it("returns an error if updateSlots fails to return an ID", async () => {
@@ -78,11 +72,6 @@ describe("submitSlots", () => {
 
 		expect(result.success).toBe(false);
 		expect(result.message).toBe("Failed to update slots. Please try again.");
-		expect(result.fields).toEqual({
-			"item-1": "Main Course",
-			"count-1": "3",
-			"id-1": id,
-		});
 	});
 
 	it("calls redirect on successful slot update", async () => {

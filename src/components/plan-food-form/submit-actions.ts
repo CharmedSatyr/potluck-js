@@ -8,7 +8,6 @@ import { typeToFlattenedError } from "zod";
 export type PlanFoodFormState = {
 	code: string;
 	errors?: typeToFlattenedError<unknown>; // TODO
-	fields: any;
 	message: string;
 	success: boolean;
 };
@@ -76,7 +75,6 @@ const submitSlots = async (
 	if (!parsed.success) {
 		return {
 			...prevState,
-			fields,
 			errors: parsed.error.flatten(),
 			message: "There was a problem. Verify entries and try again.",
 			success: false,
@@ -91,7 +89,6 @@ const submitSlots = async (
 	if (!result?.length) {
 		return {
 			...prevState,
-			fields,
 			message: "Failed to update slots. Please try again.",
 			success: false,
 		};

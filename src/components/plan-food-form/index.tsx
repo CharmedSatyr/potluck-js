@@ -46,7 +46,6 @@ const PlanFoodForm = ({ code, slots }: Props) => {
 		FormData
 	>(submitSlots, {
 		code: code ?? "",
-		fields: {}, // TODO: Make this useful.
 		message: "",
 		success: false,
 	});
