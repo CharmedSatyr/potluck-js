@@ -7,7 +7,7 @@ import { ZodError } from "zod";
 jest.mock("@/db/connection");
 jest.mock("@/actions/db/find-event");
 
-describe("createRequest", () => {
+describe("createRequests", () => {
 	let errorLogger: jest.SpyInstance;
 
 	beforeAll(() => {
