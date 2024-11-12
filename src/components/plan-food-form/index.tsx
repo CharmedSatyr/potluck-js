@@ -27,7 +27,7 @@ const MAX_SLOTS = 20;
 const courseSchema = z.strictObject({
 	id: z.string().uuid(),
 	count: z.coerce.number().positive(),
-	name: z.string().trim().min(1),
+	item: z.string().trim().min(1),
 });
 
 type Props = {
