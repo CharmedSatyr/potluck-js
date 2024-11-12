@@ -3,12 +3,13 @@ import { useRef } from "react";
 type Props = {
 	change: (index: number, value: string, count: string) => void;
 	count: string;
+	id: string;
 	index: number;
 	name: string;
-	remove: (index: number) => void;
+	remove: (index: number, id: string) => void;
 };
 
-const CourseInput = ({ change, count, index, name, remove }: Props) => {
+const CourseInput = ({ change, count, id, index, name, remove }: Props) => {
 	const nameRef = useRef<HTMLInputElement>(null);
 	const countRef = useRef<HTMLInputElement>(null);
 
@@ -16,7 +17,7 @@ const CourseInput = ({ change, count, index, name, remove }: Props) => {
 		<>
 			<div className="flex w-full items-center justify-between">
 				<button
-					onClick={() => remove(index)}
+					onClick={() => remove(index, id)}
 					className="btn btn-circle btn-ghost btn-sm"
 					type="button"
 				>
