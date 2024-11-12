@@ -5,6 +5,7 @@ import SlotManager from "@/app/event/[code]/slot-manager";
 import EventSkeleton from "@/components/event-skeleton";
 import findUsers from "@/actions/db/find-users";
 import { auth } from "@/auth";
+import committedUsersBySlot from "@/components/committed-users-by-slot";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -21,6 +22,7 @@ const EventPage = async ({ params }: Props) => {
 		findSlots({ eventCode: code }),
 		findCommitments({ eventCode: code }),
 	]);
+	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
 	const usersToFind = commitments.map((c) => c.createdBy);
 	const users =
@@ -32,7 +34,12 @@ const EventPage = async ({ params }: Props) => {
 		<div className="flex w-full flex-col justify-center">
 			<EventSkeleton {...event} />
 			{authenticated && (
-				<SlotManager commitments={commitments} slots={slots} users={users} />
+				<SlotManager
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					commitments={commitments}
+					slots={slots}
+					users={users}
+				/>
 			)}
 		</div>
 	);

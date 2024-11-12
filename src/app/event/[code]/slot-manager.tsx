@@ -1,17 +1,26 @@
+import { use } from "react";
 import SlotContainer from "@/app/event/[code]/slot-container";
-import { User } from "@/db/schema/auth/user";
-import { Commitment } from "@/db/schema/commitment";
-import { Slot } from "@/db/schema/slot";
 import CreateCommitmentForm from "@/app/event/[code]/create-commitment-form";
 import CommitmentsTable from "@/app/event/[code]/commitments-table";
+import { Commitment } from "@/db/schema/commitment";
+import { Slot } from "@/db/schema/slot";
+import { User } from "@/db/schema/auth/user";
 
 type Props = {
 	commitments: Commitment[];
+	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	slots: Slot[];
 	users: User[];
 };
 
-const SlotManager = ({ commitments, slots, users }: Props) => {
+const SlotManager = ({
+	committedUsersBySlotPromise,
+	commitments,
+	slots,
+	users,
+}: Props) => {
+	const committedUsersBySlot = use(committedUsersBySlotPromise);
+
 	return (
 		<div>
 			<h2>Food Plan</h2>
@@ -29,7 +38,10 @@ const SlotManager = ({ commitments, slots, users }: Props) => {
 
 					return (
 						<div key={slot.id} className="join-item border">
-							<SlotContainer course={slot.course} committedUsers={relatedUsers}>
+							<SlotContainer
+								avatars={committedUsersBySlot.get(slot.id)}
+								item={slot.course}
+							>
 								<h3 className="mt-0">Current Signups</h3>
 								{commitments.length ? (
 									<CommitmentsTable

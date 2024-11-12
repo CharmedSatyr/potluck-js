@@ -1,36 +1,19 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
-import Image from "next/image";
+import { PropsWithChildren, Suspense, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
-import { User } from "@/db/schema/auth/user";
 
 type Props = {
-	course: string;
-	committedUsers: Pick<User, "id" | "image" | "name">[];
+	avatars?: JSX.Element;
+	item: string;
 };
 
 const SlotContainer = ({
+	avatars,
 	children,
-	course,
-	committedUsers,
+	item,
 }: PropsWithChildren<Props>) => {
 	const [expanded, setExpanded] = useState<boolean>(false);
-
-	const avatars = committedUsers.map((user) =>
-		user.image ? (
-			<Image
-				key={user.id}
-				alt={`Avatar for user ${user.name}`}
-				className="avatar my-0 rounded-full border"
-				src={user.image}
-				height={40}
-				width={40}
-			/>
-		) : (
-			<div key={user.id} className="skeleton h-8 w-8 rounded-full border" />
-		)
-	);
 
 	return (
 		<div className="collapse w-full">
@@ -41,7 +24,7 @@ const SlotContainer = ({
 			/>
 
 			<div className="collapse-title flex w-full items-center justify-between">
-				<div className="w-6/12 text-2xl">{course}</div>
+				<div className="w-6/12 text-2xl">{item}</div>
 				{avatars}
 				<div className="flex items-center justify-between">
 					{expanded ? (
