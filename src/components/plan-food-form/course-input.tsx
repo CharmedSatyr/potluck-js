@@ -5,11 +5,11 @@ type Props = {
 	count: string;
 	id: string;
 	index: number;
-	name: string;
+	item: string;
 	remove: (index: number, id: string) => void;
 };
 
-const CourseInput = ({ change, count, id, index, name, remove }: Props) => {
+const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 	const nameRef = useRef<HTMLInputElement>(null);
 	const countRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +39,7 @@ const CourseInput = ({ change, count, id, index, name, remove }: Props) => {
 						ref={nameRef}
 						required
 						type="text"
-						value={name}
+						value={item}
 					/>
 				</div>
 				<div className="form-control">

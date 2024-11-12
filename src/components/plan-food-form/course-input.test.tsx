@@ -18,7 +18,7 @@ describe("CourseInput", () => {
 				count="1"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -35,7 +35,7 @@ describe("CourseInput", () => {
 				count="0"
 				id={id}
 				index={1}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -54,7 +54,7 @@ describe("CourseInput", () => {
 				count="0"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -73,7 +73,7 @@ describe("CourseInput", () => {
 				count="1"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -92,7 +92,7 @@ describe("CourseInput", () => {
 				count="0"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -113,7 +113,7 @@ describe("CourseInput", () => {
 				count="1"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -136,7 +136,7 @@ describe("CourseInput", () => {
 				count="1"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);
@@ -157,7 +157,7 @@ describe("CourseInput", () => {
 				count="1"
 				id={id}
 				index={0}
-				name="Sample Course"
+				item="Sample Course"
 				remove={handleRemove}
 			/>
 		);

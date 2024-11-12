@@ -63,17 +63,17 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 
 	/** TODO: Update this to work without JS. */
 	const [courses, setCourses] = useState<
-		{ name: string; count: string; id: string }[]
+		{ item: string; count: string; id: string }[]
 	>(() => {
 		if (requests.length > 0) {
 			return requests.map((request) => ({
-				name: request.course,
+				item: request.course,
 				count: request.count.toString(),
 				id: request.id,
 			}));
 		}
 
-		return [{ name: "", count: "0", id: crypto.randomUUID() }];
+		return [{ item: "", count: "0", id: crypto.randomUUID() }];
 	});
 
 	const addCourse = () => {
@@ -81,7 +81,7 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 			return;
 		}
 
-		setCourses([...courses, { name: "", count: "0", id: crypto.randomUUID() }]);
+		setCourses([...courses, { item: "", count: "0", id: crypto.randomUUID() }]);
 	};
 
 	const removeCourse = async (index: number, id: string) => {
@@ -89,9 +89,9 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 		await deleteRequest({ id });
 	};
 
-	const handleCourseChange = (index: number, name: string, count: string) => {
+	const handleCourseChange = (index: number, item: string, count: string) => {
 		const updatedCourses = [...courses];
-		updatedCourses[index].name = name;
+		updatedCourses[index].item = item;
 		updatedCourses[index].count = count;
 
 		setCourses(updatedCourses);
@@ -119,8 +119,8 @@ const PlanFoodForm = ({ code, requests }: Props) => {
 					count={course.count}
 					id={course.id}
 					index={index}
+					item={course.item}
 					key={course.id}
-					name={course.name}
 					remove={removeCourse}
 				/>
 			))}
