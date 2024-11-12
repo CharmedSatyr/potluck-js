@@ -31,7 +31,7 @@ const submitRequest = async (
 	for (const key of Object.keys(data)) {
 		if (
 			!key.startsWith("item") &&
-			!key.startsWith("quantity") &&
+			!key.startsWith("count") &&
 			!key.startsWith("id")
 		) {
 			continue;
@@ -51,7 +51,7 @@ const submitRequest = async (
 		const index = Number(i);
 		const currentEntry = builder.get(index) ?? { course: "", count: 0, id: "" };
 
-		if (field === "quantity") {
+		if (field === "count") {
 			currentEntry.count = Number(value);
 		}
 

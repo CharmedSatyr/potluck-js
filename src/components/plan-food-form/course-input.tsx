@@ -43,7 +43,7 @@ const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 					/>
 				</div>
 				<div className="form-control">
-					<label className="label label-text" htmlFor={`quantity-${index}`}>
+					<label className="label label-text" htmlFor={`count-${index}`}>
 						Signups Needed
 					</label>
 					<div className="join">
@@ -78,11 +78,11 @@ const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
 						<input
 							className="input join-item input-bordered max-w-20"
 							defaultValue={count}
-							id={`quantity-${index}`}
+							id={`count-${index}`}
 							inputMode="numeric"
 							max="99"
 							min="0"
-							name={`quantity-${index}`}
+							name={`count-${index}`}
 							onChange={(e) =>
 								change(index, itemRef.current?.value ?? "", e.target.value)
 							}
