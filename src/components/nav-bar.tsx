@@ -32,7 +32,12 @@ const NavBar = async () => {
 			</div>
 
 			<div className="gap-2">
-				<div>Welcome, {session.user.name}</div>
+				<Link className="btn btn-ghost" href="/my-events">
+					My Events
+				</Link>
+
+				<div className="text-sm">Welcome, {session.user.name}</div>
+
 				<div className="avatar w-12">
 					<Image
 						width={128}
