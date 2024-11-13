@@ -66,7 +66,9 @@ describe("findUsers", () => {
 	});
 
 	it("should return an empty array and log an error if no users are provided", async () => {
-		const emptyData = { users: [] } as any;
+		const emptyData = { users: [] } as unknown as {
+			users: [string, ...string[]];
+		};
 
 		const error = new ZodError([
 			{
