@@ -3,10 +3,10 @@ import { auth } from "@/auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import DeleteEventButton from "./delete-event-button";
-import remove from "@/app/my-events/remove-action";
+import remove from "@/app/dashboard/remove-action";
 import eventIsPassed from "@/utilities/event-is-passed";
 
-const MyEvents = async () => {
+const Dashboard = async () => {
 	const session = await auth();
 
 	if (!session?.user?.id) {
@@ -17,9 +17,9 @@ const MyEvents = async () => {
 
 	return (
 		<div className="w-full">
-			<h1>My Events</h1>
+			<h1>Dashboard</h1>
 
-			<h2>Host</h2>
+			<h2>Events You Created</h2>
 			{!hosted.length ? (
 				<div>
 					You haven&apos;t hosted any events.{" "}
@@ -77,9 +77,10 @@ const MyEvents = async () => {
 				</div>
 			)}
 
-			<h3>Contributor</h3>
+			<h3>Events You Attended</h3>
+			<p>Coming Soon</p>
 		</div>
 	);
 };
 
-export default MyEvents;
+export default Dashboard;

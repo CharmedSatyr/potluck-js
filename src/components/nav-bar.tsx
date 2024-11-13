@@ -32,8 +32,8 @@ const NavBar = async () => {
 			</div>
 
 			<div className="gap-2">
-				<Link className="btn btn-ghost" href="/my-events">
-					My Events
+				<Link className="btn btn-ghost" href="/dashboard">
+					Dashboard
 				</Link>
 
 				<div className="text-sm">Welcome, {session.user.name}</div>
