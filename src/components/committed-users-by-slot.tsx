@@ -15,9 +15,8 @@ type Props = {
 const Avatars = ({ committedUsers }: Props) => {
 	return committedUsers.map((user) =>
 		user.image ? (
-			<div className="indicator">
+			<div key={user.id} className="indicator">
 				<Image
-					key={user.id}
 					alt={`Avatar for user ${user.name}`}
 					className="avatar my-0 rounded-full border"
 					src={user.image}
