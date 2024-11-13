@@ -41,7 +41,7 @@ const Dashboard = async () => {
 							</thead>
 							<tbody>
 								{hosted
-									.toSorted((a, b) =>
+									.sort((a, b) =>
 										new Date(a.startDate) > new Date(b.startDate) ? -1 : 1
 									)
 									.map((event) => {
