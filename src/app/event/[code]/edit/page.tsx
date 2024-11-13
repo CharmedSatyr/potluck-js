@@ -10,7 +10,7 @@ type Props = {
 
 const EditEventPage = async ({ params }: Props) => {
 	const { code } = await params;
-	const eventPromise = findEvent({ code: code }) as any;
+	const eventDataPromise = findEvent({ code: code });
 	const slotsPromise = findSlots({ eventCode: code });
 	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
@@ -19,7 +19,7 @@ const EditEventPage = async ({ params }: Props) => {
 			<ManageEventWizard
 				code={code}
 				committedUsersBySlotPromise={committedUsersBySlotPromise}
-				eventPromise={eventPromise}
+				eventDataPromise={eventDataPromise}
 				slotsPromise={slotsPromise}
 				submitAction={updateEventAction}
 			/>

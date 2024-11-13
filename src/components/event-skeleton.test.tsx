@@ -22,7 +22,7 @@ describe("EventSkeleton Component", () => {
 		location: "Test Location",
 		name: "Test Event",
 		code: "CODE1",
-		startDate: "2024-10-31",
+		startDate: "2099-10-31",
 		startTime: "18:00",
 		createdAt: new Date("2024-10-01"),
 		id: "c2c2e71d-c72a-4f8a-bce6-cc89c6a33520",
@@ -33,7 +33,27 @@ describe("EventSkeleton Component", () => {
 		jest.clearAllMocks();
 	});
 
-	it("should render full event details if the user is authenticated", () => {
+	it("should render full event details if the user is authenticated and the event is not passed", () => {
+		(useSession as jest.Mock).mockReturnValueOnce({
+			data: { user: { id: "user-999" } },
+			status: "authenticated",
+		});
+
+		render(<EventSkeleton {...eventProps} />);
+
+		expect(screen.getByText(eventProps.code)).toBeInTheDocument();
+		expect(screen.getByText(eventProps.name)).toBeInTheDocument();
+		expect(
+			screen.getByText(`${eventProps.startDate} at ${eventProps.startTime}`)
+		).toBeInTheDocument();
+		expect(screen.getByText(eventProps.location)).toBeInTheDocument();
+		expect(
+			screen.getByText(`Hosted by ${eventProps.hosts}`)
+		).toBeInTheDocument();
+		expect(screen.getByText(eventProps.description)).toBeInTheDocument();
+	});
+
+	it("should render  event details if the user is authenticated and the event is not passed", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
 			data: { user: { id: "user-999" } },
 			status: "authenticated",

@@ -1,11 +1,13 @@
 import findSlots from "@/actions/db/find-slots";
 import findEvent from "@/actions/db/find-event";
 import findCommitments from "@/actions/db/find-commitments";
-import SlotManager from "@/app/event/[code]/slot-manager";
+import SlotManager from "@/app/event/[code]/(slot-manager)/index";
 import EventSkeleton from "@/components/event-skeleton";
 import findUsers from "@/actions/db/find-users";
 import { auth } from "@/auth";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
+import eventIsPassed from "@/utilities/event-is-passed";
+import CommitmentsTable from "@/components/commitments-table";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -30,12 +32,23 @@ const EventPage = async ({ params }: Props) => {
 			? await findUsers({ users: usersToFind as [string, ...string[]] })
 			: [];
 
+	const isPassed = eventIsPassed(event.startDate);
+
 	return (
 		<div className="flex w-full flex-col justify-center">
 			<EventSkeleton {...event} />
-			{authenticated && (
+			{authenticated && !isPassed && (
 				<SlotManager
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					commitments={commitments}
+					slots={slots}
+					users={users}
+				/>
+			)}
+
+			<h2 className="mb-0">Food Plan</h2>
+			{authenticated && isPassed && (
+				<CommitmentsTable
 					commitments={commitments}
 					slots={slots}
 					users={users}
