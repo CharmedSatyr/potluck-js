@@ -37,6 +37,9 @@ const EventPage = async ({ params }: Props) => {
 	return (
 		<div className="flex w-full flex-col justify-center">
 			<EventSkeleton {...event} />
+
+			<h2 className="mb-0">Food Plan</h2>
+
 			{authenticated && !isPassed && (
 				<SlotManager
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
@@ -46,7 +49,6 @@ const EventPage = async ({ params }: Props) => {
 				/>
 			)}
 
-			<h2 className="mb-0">Food Plan</h2>
 			{authenticated && isPassed && (
 				<CommitmentsTable
 					commitments={commitments}
