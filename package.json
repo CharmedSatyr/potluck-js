@@ -31,6 +31,7 @@
 		"react": "19.0.0-rc-5c56b873-20241107",
 		"react-dom": "19.0.0-rc-5c56b873-20241107",
 		"react-hook-form": "^7.53.2",
+		"uuid": "^11.0.3",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
@@ -38,6 +39,7 @@
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.0.1",
+		"@testing-library/user-event": "^14.5.2",
 		"@types/jest": "^29.5.14",
 		"@types/node": "^22.9.0",
 		"@types/react": "^18.3.12",

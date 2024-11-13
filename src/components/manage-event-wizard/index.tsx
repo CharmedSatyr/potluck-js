@@ -7,13 +7,13 @@ import {
 	PlanEventFormData,
 	PlanEventFormState,
 } from "@/app/start/submit-actions.schema";
-import { Suspense, use } from "react";
 import { Slot } from "@/db/schema/slot";
+import { Suspense } from "react";
 
 type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
-	eventPromise: Promise<PlanEventFormData[]>;
+	eventDataPromise: Promise<PlanEventFormData[]>;
 	slotsPromise: Promise<Slot[]>;
 	submitAction: (
 		prevState: PlanEventFormState,
@@ -24,13 +24,11 @@ type Props = {
 const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
-	eventPromise,
+	eventDataPromise,
 	slotsPromise,
 	submitAction,
 }: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
-	const [eventData] = use(eventPromise);
-	const slots = use(slotsPromise);
 
 	return (
 		<>
@@ -39,10 +37,10 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id="create-event"
 				>
-					<Suspense fallback="TODO: Skellington">
+					<Suspense>
 						<PlanEventForm
 							code={code}
-							eventData={eventData}
+							eventDataPromise={eventDataPromise}
 							submitAction={submitAction}
 						/>
 					</Suspense>
@@ -52,11 +50,13 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id="plan-food"
 				>
-					<PlanFoodForm
-						code={code}
-						slots={slots}
-						committedUsersBySlotPromise={committedUsersBySlotPromise}
-					/>
+					<Suspense>
+						<PlanFoodForm
+							code={code}
+							slotsPromise={slotsPromise}
+							committedUsersBySlotPromise={committedUsersBySlotPromise}
+						/>
+					</Suspense>
 				</div>
 			</div>
 

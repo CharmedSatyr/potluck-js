@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useCallback, useEffect } from "react";
+import { use, useActionState, useCallback, useEffect } from "react";
 import useAnchor from "@/hooks/use-anchor";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
@@ -10,14 +10,14 @@ import {
 
 type Props = {
 	code: string | null;
-	eventData: PlanEventFormData;
+	eventDataPromise: Promise<PlanEventFormData[]>;
 	submitAction: (
 		prevState: PlanEventFormState,
 		formData: FormData
 	) => Promise<PlanEventFormState>;
 };
 
-const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
+const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor, scrollToAnchor] = useAnchor();
@@ -31,6 +31,8 @@ const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 		},
 		[searchParams]
 	);
+
+	const [eventData] = use(eventDataPromise);
 
 	const [state, submit, isPending] = useActionState<
 		PlanEventFormState,

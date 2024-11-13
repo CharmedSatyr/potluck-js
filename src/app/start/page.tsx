@@ -1,55 +1,47 @@
-"use client";
-
-import { useState } from "react";
-import { useSession } from "next-auth/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/start/submit-actions";
 import { PlanEventFormData } from "@/app/start/submit-actions.schema";
-import { useSearchParams } from "next/navigation";
+import { auth } from "@/auth";
 
 const DEV = process.env.NODE_ENV === "development";
 
-const StartPage = () => {
-	const searchParams = useSearchParams();
-	const session = useSession();
+const StartPage = async ({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string };
+}) => {
+	const session = await auth();
 
-	const code = searchParams.get("code");
+	const submitAction = session?.user?.id ? createEventAction : loginAction;
 
-	const submitAction =
-		session.status === "authenticated" ? createEventAction : loginAction;
+	const params = await searchParams; // NOSONAR
+	const code = params.code;
+	const values: PlanEventFormData = {
+		description: "",
+		hosts: "",
+		location: DEV ? "123 Main Street" : "",
+		name: DEV ? "Test Event" : "",
+		startDate: DEV ? "2025-01-09" : "",
+		startTime: DEV ? "12:00" : "",
+	};
 
-	const [defaultValues] = useState<Promise<PlanEventFormData[]>>(async () => {
-		const values: PlanEventFormData = {
-			description: "",
-			hosts: "",
-			location: DEV ? "123 Main Street" : "",
-			name: DEV ? "Test Event" : "",
-			startDate: DEV ? "2025-01-09" : "",
-			startTime: DEV ? "12:00" : "",
-		};
-
-		if (searchParams.get("source") !== "discord") {
-			return [values];
-		}
-
+	if (params.source === "discord") {
 		for (const key in values) {
-			const searchValue = searchParams.get(key);
+			const searchValue = params[key];
 			if (!searchValue) {
 				continue;
 			}
 			values[key as keyof PlanEventFormData] = searchValue;
 		}
-
-		return [values];
-	});
+	}
 
 	return (
 		<div className="flex h-full w-full flex-col items-center">
 			<ManageEventWizard
 				code={code}
 				committedUsersBySlotPromise={Promise.resolve(new Map())}
-				eventPromise={defaultValues}
-				slotsPromise={Promise.resolve([])} // TODO: This is gross.
+				eventDataPromise={Promise.resolve([values])}
+				slotsPromise={Promise.resolve([])}
 				submitAction={submitAction}
 			/>
 		</div>

@@ -1,16 +1,16 @@
 "use client";
 
-import Form from "next/form";
 import {
-	Suspense,
 	use,
 	useActionState,
+	useCallback,
 	useEffect,
 	useMemo,
 	useReducer,
 	useState,
 } from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
+import { v4 as uuidv4 } from "uuid";
 // TODO: Should this be passed in?
 import submitSlots, {
 	PlanFoodFormState,
@@ -20,7 +20,7 @@ import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
 // TODO: This isn't what's being used.
-import { slot, Slot } from "@/db/schema/slot";
+import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
 
@@ -34,19 +34,21 @@ const courseSchema = z.strictObject({
 
 type Props = {
 	code: string | null;
-	slots: Slot[];
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
+	slotsPromise: Promise<Slot[]>;
 };
 
 const PlanFoodForm = ({
 	code,
 	committedUsersBySlotPromise,
-	slots: prevSlots,
+	slotsPromise,
 }: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
+	const prevSlots = use(slotsPromise);
 
 	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<
@@ -80,7 +82,7 @@ const PlanFoodForm = ({
 			}));
 		}
 
-		return [{ item: "", count: "0", id: crypto.randomUUID() }];
+		return [{ item: "", count: "0", id: uuidv4() }];
 	});
 
 	const addSlot = () => {
@@ -88,13 +90,16 @@ const PlanFoodForm = ({
 			return;
 		}
 
-		setSlots([...slots, { item: "", count: "0", id: crypto.randomUUID() }]);
+		setSlots([...slots, { item: "", count: "0", id: uuidv4() }]);
 	};
 
-	const removeSlot = async (index: number, id: string) => {
-		setSlots(slots.filter((_, i) => i !== index));
-		await deleteSlot({ id });
-	};
+	const removeSlot = useCallback(
+		async (index: number, id: string) => {
+			setSlots(slots.filter((_, i) => i !== index));
+			await deleteSlot({ id });
+		},
+		[slots]
+	);
 
 	const handleSlotChange = (index: number, item: string, count: string) => {
 		const updatedCourses = [...slots];
@@ -109,41 +114,38 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
+	const disableButtons = isPending || anchor === "create-event";
+
 	return (
-		<Form
+		<form
 			action={submit}
 			className="form-control w-full lg:w-5/6 xl:w-2/3 2xl:w-1/2"
+			data-testid="plan-food-form"
 		>
 			<h1 className="my-0 text-6xl font-extrabold text-primary">
 				Plan the Food
 			</h1>
 			<h2>Create Your Slots</h2>
 
-			<span className="mb-2 text-secondary">{state.message}</span>
+			<span className="mb-2 text-secondary">{state?.message}</span>
 			{slots.map((slot, index) => (
 				<div key={slot.id}>
-					<Suspense key={index} fallback="TODO: Skellington">
-						<CourseInput
-							change={handleSlotChange}
-							count={slot.count}
-							hasCommitments={committedUsersBySlot.has(slot.id)}
-							id={slot.id}
-							index={index}
-							item={slot.item}
-							key={slot.id}
-							remove={removeSlot}
-						/>
-						{committedUsersBySlot.has(slot.id) && (
-							<div className="mt-4 flex w-full items-center justify-center">
-								<span className="text-sm font-light">
-									Existing Commitments:
-								</span>
-								<span className="mx-2">
-									{committedUsersBySlot.get(slot.id)}
-								</span>
-							</div>
-						)}
-					</Suspense>
+					<CourseInput
+						change={handleSlotChange}
+						count={slot.count}
+						hasCommitments={committedUsersBySlot.has(slot.id)}
+						id={slot.id}
+						index={index}
+						item={slot.item}
+						key={slot.id}
+						remove={removeSlot}
+					/>
+					{committedUsersBySlot.has(slot.id) && (
+						<div className="mt-4 flex w-full items-center justify-center">
+							<span className="text-sm font-light">Existing Commitments:</span>
+							<span className="mx-2">{committedUsersBySlot.get(slot.id)}</span>
+						</div>
+					)}
 					<div className="divider mt-6" />
 				</div>
 			))}
@@ -151,13 +153,14 @@ const PlanFoodForm = ({
 			<div className="mb-4 flex justify-between">
 				<button
 					className="btn btn-secondary w-1/3"
+					disabled={disableButtons || slots.length >= MAX_SLOTS}
 					onClick={addSlot}
 					type="button"
 				>
 					Add Slot
 				</button>
 				<Link
-					className={`btn btn-accent w-1/3 ${state.code ? "" : "btn-disabled pointer-events-none"}`}
+					className={`btn btn-accent w-1/3 ${!state.code || disableButtons ? "btn-disabled pointer-events-none" : ""}`}
 					href={`/event/${state.code}`}
 				>
 					Skip for Now
@@ -166,12 +169,12 @@ const PlanFoodForm = ({
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending || !slotsValid || anchor === "create-event"}
+				disabled={disableButtons || !slotsValid}
 				type="submit"
 			>
 				Submit and Continue
 			</button>
-		</Form>
+		</form>
 	);
 };
 

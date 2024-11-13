@@ -1,165 +1,182 @@
 import {
-	act,
 	render,
 	screen,
 	fireEvent,
 	waitFor,
+	act,
 } from "@testing-library/react";
-import { useSearchParams, usePathname } from "next/navigation";
-import PlanEventForm from "@/components/plan-event-form";
-import useAnchor from "@/hooks/use-anchor";
-import { PlanEventFormData } from "@/app/start/submit-actions.schema";
+import userEvent from "@testing-library/user-event";
+import PlanFoodForm from "@/components/plan-food-form";
+import { Slot } from "@/db/schema/slot";
+import submitSlots from "@/components/plan-food-form/submit-actions";
 
-jest.mock("next/navigation", () => ({
-	usePathname: jest.fn(),
-	useSearchParams: jest.fn(),
-}));
-jest.mock("@/hooks/use-anchor");
+jest.mock("@/actions/db/delete-slot");
+jest.mock("@/components/plan-food-form/submit-actions");
 
-describe("PlanEventForm", () => {
-	const code = "CODE1";
-
-	const eventData: PlanEventFormData = {
-		name: "Sample Event",
-		location: "Sample Location",
-		description: "Sample Description",
-		hosts: "Sample Hosts",
-		startDate: "2025-01-01",
-		startTime: "10:00",
-	};
+describe("PlanFoodForm", () => {
+	const committedUsersBySlotPromise = Promise.resolve(new Map());
+	const slotsPromise = Promise.resolve([]);
 
 	beforeEach(() => {
-		(usePathname as jest.Mock).mockReturnValue("/events");
-		(useSearchParams as jest.Mock).mockReturnValue(new URLSearchParams(""));
-		(useAnchor as jest.Mock).mockReturnValue(["", jest.fn()]);
+		(submitSlots as jest.Mock).mockReturnValue({
+			code: "CODE1",
+			message: "",
+			success: true,
+		});
 	});
 
-	afterEach(() => {
-		jest.clearAllMocks();
+	it("renders the PlanFoodForm with initial elements", async () => {
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					slotsPromise={slotsPromise}
+				/>
+			);
+		});
+
+		expect(
+			screen.getByRole("heading", { name: /Plan the Food/i })
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /Add Slot/i })
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /Submit and Continue/i })
+		).toBeInTheDocument();
 	});
 
-	const submitAction = jest.fn();
-	const scrollToAnchor = jest.fn();
+	it("adds a slot when Add Slot is clicked", async () => {
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					slotsPromise={slotsPromise}
+				/>
+			);
+		});
 
-	it("renders form with default values", () => {
-		render(
-			<PlanEventForm
-				code={code}
-				eventData={eventData}
-				submitAction={submitAction}
-			/>
-		);
+		const addButton = screen.getByRole("button", { name: /Add Slot/i });
 
-		const inputs: HTMLInputElement[] = screen.getAllByRole("textbox");
+		await userEvent.click(addButton);
 
-		expect(inputs[0].name).toBe("name");
-		expect(inputs[1].name).toBe("location");
-		expect(inputs[2].name).toBe("hosts");
-		expect(inputs[3].name).toBe("description");
-
-		const dateInput: HTMLInputElement = screen.getByTestId("start-date");
-		const timeInput: HTMLInputElement = screen.getByTestId("start-time");
-
-		expect(dateInput.name).toBe("startDate");
-		expect(timeInput.name).toBe("startTime");
+		expect(screen.getAllByLabelText(/What's Needed/i).length).toBe(2);
+		expect(screen.getAllByLabelText(/Signups Needed/i).length).toBe(2);
 	});
 
-	it("called the submitAction on submit", async () => {
-		render(
-			<PlanEventForm
-				code={code}
-				eventData={eventData}
-				submitAction={submitAction}
-			/>
-		);
+	it("removes a slot when the remove button is clicked", async () => {
+		const slotsWithInitialData = Promise.resolve([
+			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
+		]); // TODO: Don't use Slot type.
 
-		act(() => {
-			fireEvent.submit(screen.getByRole("form"));
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					slotsPromise={slotsWithInitialData}
+				/>
+			);
+		});
+
+		const removeButton = screen.getByRole("button", { name: /✕/i });
+
+		await userEvent.click(removeButton);
+
+		expect(screen.queryByLabelText(/What's Needed/i)).not.toBeInTheDocument();
+	});
+
+	it("calls submit action on form submit", async () => {
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					slotsPromise={slotsPromise}
+				/>
+			);
+		});
+
+		await act(async () => {
+			fireEvent.submit(screen.getByTestId("plan-food-form"));
 		});
 
 		await waitFor(() => {
-			expect(submitAction).toHaveBeenCalled();
+			expect(submitSlots).toHaveBeenCalled();
 		});
 	});
 
-	it("fills default values based on eventData", () => {
-		render(
-			<PlanEventForm
-				code={code}
-				eventData={eventData}
-				submitAction={submitAction}
-			/>
-		);
+	it("disables Add Slot button when reaching the maximum slot limit", async () => {
+		let counter = 0;
+		const genRandItem = () =>
+			({
+				id: `${Date.now()}-${counter++}`, // Combine Date.now() with counter for uniqueness
+				course: "test",
+				count: 1,
+			}) as Slot;
 
-		for (const field of Object.values(eventData)) {
-			expect(screen.getByDisplayValue(field)).toBeInTheDocument();
-		}
+		const maxSlots = new Array(20).fill(null).map(() => genRandItem());
+
+		const maxSlotsPromise = Promise.resolve(maxSlots);
+
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					slotsPromise={maxSlotsPromise}
+				/>
+			);
+		});
+
+		const addButton = screen.getByRole("button", { name: /Add Slot/i });
+
+		expect(addButton).toBeDisabled();
 	});
 
-	it("calls scrollToAnchor with the correct query when state.success is true", async () => {
-		(useSearchParams as jest.Mock).mockReturnValue(
-			new URLSearchParams({ code })
-		);
+	it("disables submit button if slots are invalid", async () => {
+		const invalidSlots = Promise.resolve([
+			{ id: "testSlotId", course: "", count: 0 } as Slot,
+		]); // Invalid slot
 
-		submitAction.mockReturnValue({
-			code,
-			fields: {},
-			success: true,
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					slotsPromise={invalidSlots}
+				/>
+			);
 		});
 
-		(useAnchor as jest.Mock).mockReturnValue(["create-event", scrollToAnchor]);
-
-		render(
-			<PlanEventForm
-				code={code}
-				eventData={eventData}
-				submitAction={submitAction}
-			/>
-		);
-
-		act(() => {
-			fireEvent.submit(screen.getByRole("form"));
+		const submitButton = screen.getByRole("button", {
+			name: /Submit and Continue/i,
 		});
 
-		await waitFor(() => {
-			expect(scrollToAnchor).toHaveBeenCalledWith("plan-food", `?code=${code}`);
-		});
+		expect(submitButton).toBeDisabled();
 	});
 
-	it("shows error messages when fields are invalid", async () => {
-		submitAction.mockReturnValue({
-			code,
-			errors: {
-				fieldErrors: {
-					name: ["Name is required."],
-					startDate: ["Date is required."],
-					startTime: ["Time is required."],
-					hosts: ["Error 1."],
-					location: ["Location is required."],
-					description: ["Error 2."],
-				},
-			},
-			fields: {},
-			success: true,
-		});
-
-		render(
-			<PlanEventForm
-				code={code}
-				eventData={eventData}
-				submitAction={submitAction}
-			/>
+	it("displays commitment information if a slot has commitments", async () => {
+		const committedUsersWithSlot = Promise.resolve(
+			new Map([["testSlotId", <span key="123">Committed User</span>]])
 		);
+		const slotsWithCommitment = Promise.resolve([
+			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
+		]);
 
-		act(() => {
-			fireEvent.submit(screen.getByRole("form"));
+		await act(async () => {
+			render(
+				<PlanFoodForm
+					code="testCode"
+					committedUsersBySlotPromise={committedUsersWithSlot}
+					slotsPromise={slotsWithCommitment}
+				/>
+			);
 		});
 
-		expect(screen.getByText(/name is required/i)).toBeInTheDocument();
-		expect(screen.getByText(/date is required/i)).toBeInTheDocument();
-		expect(screen.getByText(/time is required/i)).toBeInTheDocument();
-		expect(screen.getByText(/error 1/i)).toBeInTheDocument();
-		expect(screen.getByText(/location is required/i)).toBeInTheDocument();
-		expect(screen.getByText(/error 2/i)).toBeInTheDocument();
+		expect(screen.getByText(/Existing Commitments:/i)).toBeInTheDocument();
+		expect(screen.getByText(/Committed User/i)).toBeInTheDocument();
 	});
 });
