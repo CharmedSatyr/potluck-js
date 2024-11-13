@@ -1,56 +1,81 @@
 "use client";
 
-import CreateEventForm from "@/components/create-event-form";
+import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
+import {
+	PlanEventFormData,
+	PlanEventFormState,
+} from "@/app/start/submit-actions.schema";
+import { Suspense, use } from "react";
+import { Slot } from "@/db/schema/slot";
 
-const ManageEventWizard = () => {
+type Props = {
+	code: string | null;
+	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
+	eventPromise: Promise<PlanEventFormData[]>;
+	slotsPromise: Promise<Slot[]>;
+	submitAction: (
+		prevState: PlanEventFormState,
+		formData: FormData
+	) => Promise<PlanEventFormState>;
+};
+
+const ManageEventWizard = ({
+	code,
+	committedUsersBySlotPromise,
+	eventPromise,
+	slotsPromise,
+	submitAction,
+}: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
+	const [eventData] = use(eventPromise);
+	const slots = use(slotsPromise);
 
 	return (
-		<div>
+		<>
 			<div className="carousel w-full">
 				<div
 					className="carousel-item flex w-full justify-center"
 					id="create-event"
 				>
-					<CreateEventForm />
+					<Suspense fallback="TODO: Skellington">
+						<PlanEventForm
+							code={code}
+							eventData={eventData}
+							submitAction={submitAction}
+						/>
+					</Suspense>
 				</div>
+
 				<div
 					className="carousel-item flex w-full justify-center"
 					id="plan-food"
 				>
-					<PlanFoodForm />
+					<PlanFoodForm
+						code={code}
+						slots={slots}
+						committedUsersBySlotPromise={committedUsersBySlotPromise}
+					/>
 				</div>
 			</div>
 
-			<div className="flex w-full justify-center gap-2 py-2">
+			{/* Add a hover state to make it clearer you can click. */}
+			<div className="steps my-8 w-full">
 				<button
-					type="button"
+					className="step step-secondary"
 					onClick={() => scrollToAnchor("create-event")}
-					className="btn btn-xs"
 				>
-					Create Event
+					Create an Event
 				</button>
 				<button
-					type="button"
-					onClick={() => scrollToAnchor("plan-food")}
-					className="btn btn-xs"
-				>
-					Plan Food
-				</button>
-			</div>
-
-			<ul className="steps w-full">
-				{/* TODO: These should be buttons that behave like the above scroll to anchor buttons. */}
-				<li className="step step-secondary">Create an Event</li>
-				<li
 					className={`step ${anchor === "plan-food" ? "step-secondary" : ""}`}
+					onClick={() => scrollToAnchor("plan-food")}
 				>
 					Plan the Food
-				</li>
-			</ul>
-		</div>
+				</button>
+			</div>
+		</>
 	);
 };
 

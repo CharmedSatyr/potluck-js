@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import db from "@/db/connection";
 import { Event, event } from "@/db/schema/event";
 import findEvent from "@/actions/db/find-event";
-import { schema } from "@/actions/db/update-event.types";
+import { schema } from "@/actions/db/update-event.schema";
 
 const updateEvent = async (
 	data: z.infer<typeof schema>

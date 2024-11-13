@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { schema } from "@/actions/db/find-event.types";
+import { schema } from "@/actions/db/find-event.schema";
 import db from "@/db/connection";
 import { Event, event } from "@/db/schema/event";
 

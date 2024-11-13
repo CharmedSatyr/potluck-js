@@ -1,6 +1,6 @@
 import { Event } from "@/db/schema/event";
 import { z } from "zod";
-import { code } from "@/actions/db/shared-types";
+import { code } from "@/validation/code.schema";
 
 export const schema = z
 	.strictObject({

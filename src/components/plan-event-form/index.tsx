@@ -1,48 +1,26 @@
 "use client";
 
-import Form from "next/form";
-import { useActionState, useCallback, useEffect, useState } from "react";
-import {
-	createEventAction,
-	loginAction,
-} from "@/components/create-event-form/submit-actions";
+import { useActionState, useCallback, useEffect } from "react";
 import useAnchor from "@/hooks/use-anchor";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import {
-	CreateEventFormData,
-	CreateEventFormState,
-} from "@/components/create-event-form/submit-actions.types";
+	PlanEventFormData,
+	PlanEventFormState,
+} from "@/app/start/submit-actions.schema";
 
-const CreateEventForm = () => {
+type Props = {
+	code: string | null;
+	eventData: PlanEventFormData;
+	submitAction: (
+		prevState: PlanEventFormState,
+		formData: FormData
+	) => Promise<PlanEventFormState>;
+};
+
+const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 	const path = usePathname();
-	const session = useSession();
 	const searchParams = useSearchParams();
-
-	const [defaultValues] = useState<CreateEventFormData>(() => {
-		const values: CreateEventFormData = {
-			description: "",
-			hosts: "",
-			location: "",
-			name: "",
-			startDate: "",
-			startTime: "",
-		};
-
-		if (searchParams.get("source") !== "discord") {
-			return values;
-		}
-
-		for (const key in values) {
-			const searchValue = searchParams.get(key);
-			if (!searchValue) {
-				continue;
-			}
-			values[key as keyof CreateEventFormData] = searchValue;
-		}
-
-		return values;
-	});
+	const [anchor, scrollToAnchor] = useAnchor();
 
 	const createQueryString = useCallback(
 		(name: string, value: string) => {
@@ -54,53 +32,62 @@ const CreateEventForm = () => {
 		[searchParams]
 	);
 
-	const submit =
-		session.status === "authenticated" ? createEventAction : loginAction;
-
-	const [, scrollToAnchor] = useAnchor();
-	const [state, submitAction, isPending] = useActionState<
-		CreateEventFormState,
+	const [state, submit, isPending] = useActionState<
+		PlanEventFormState,
 		FormData
-	>(submit, {
-		fields: defaultValues,
+	>(submitAction, {
+		fields: eventData,
 		message: "",
 		path,
 		success: false,
 	});
 
 	useEffect(() => {
-		if (isPending || !state.code || typeof window === "undefined") {
+		if (!code || !state) {
 			return;
 		}
-		// TODO: Unbreak "back" navigation via button in wizard.
-		// TODO: What should happen on refresh? It currently keeps existing hash to drop on this page, even if it's #plan-food
+
+		state.code = code;
+	}, [code, state]);
+
+	useEffect(() => {
+		if (!state?.code) {
+			return;
+		}
+
+		if (anchor !== "plan-food" && !state.success) {
+			return;
+		}
+
+		state.success = false;
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
-	}, [createQueryString, state.code, isPending, scrollToAnchor]);
+	}, [anchor, createQueryString, scrollToAnchor, state]);
 
 	return (
-		<Form
-			action={submitAction}
+		<form
+			action={submit}
 			className="flex max-h-96 flex-col justify-between"
+			name="create-event-form"
 		>
 			<input
 				className="w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none"
-				defaultValue={state.fields.name}
+				defaultValue={state?.fields.name}
 				name="name"
-				id="name"
 				placeholder="Untitled Event"
 				required
 				type="text"
 			/>
 			<span className="mb-2 text-secondary">
-				{state.errors?.fieldErrors.name?.join(" ")}
+				{state?.errors?.fieldErrors.name?.join(" ")}
 			</span>
 
 			<div className="flex items-center justify-between">
 				<input
 					className="border-base-100 bg-inherit text-2xl focus:border-b-2 focus:border-neutral focus:outline-none"
-					defaultValue={state.fields.startDate}
+					data-testid="start-date"
+					defaultValue={state?.fields.startDate}
 					name="startDate"
 					type="date"
 					required
@@ -108,7 +95,8 @@ const CreateEventForm = () => {
 				<span className="text-2xl font-bold"> at </span>
 				<input
 					className="w-4/12 border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
-					defaultValue={state.fields.startTime}
+					data-testid="start-time"
+					defaultValue={state?.fields.startTime}
 					name="startTime"
 					step={60}
 					required
@@ -117,62 +105,61 @@ const CreateEventForm = () => {
 			</div>
 			<div>
 				<span className="mt-0 text-secondary">
-					{state.errors?.fieldErrors.startDate?.join(" ")}
+					{state?.errors?.fieldErrors.startDate?.join(" ")}
 				</span>
 				<span className="float-right mb-2 mt-0 text-secondary">
-					{state.errors?.fieldErrors.startTime?.join(" ")}
+					{state?.errors?.fieldErrors.startTime?.join(" ")}
 				</span>
 			</div>
 
-			<div className="mb-4 mt-1">
+			<div className="mb-4 mt-2">
 				<input
 					className="my-2 w-full border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
-					defaultValue={state.fields.location}
+					defaultValue={state?.fields.location}
 					name="location"
 					placeholder="Place name, address, or link"
 					required
 					type="text"
 				/>
 				<span className="mb-2 text-secondary">
-					{state.errors?.fieldErrors.location?.join(" ")}
+					{state?.errors?.fieldErrors.location?.join(" ")}
 				</span>
 			</div>
 
 			<div className="flex flex-col">
 				<div className="flex items-center justify-between">
-					<span className="-mr-5 w-3/12 text-xl font-bold">Hosted by</span>{" "}
 					<input
 						className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
-						defaultValue={state.fields.hosts}
+						defaultValue={state?.fields.hosts}
 						name="hosts"
 						placeholder={"(optional) Nickname"}
 						type="text"
 					/>
 				</div>
 				<span className="mb-2 text-secondary">
-					{state.errors?.fieldErrors.hosts?.join(" ")}
+					{state?.errors?.fieldErrors.hosts?.join(" ")}
 				</span>
 			</div>
 
 			<input
 				className="my-2 w-full border-b-2 border-base-100 bg-inherit focus:border-neutral focus:outline-none"
-				defaultValue={state.fields.description}
+				defaultValue={state?.fields.description}
 				name="description"
 				placeholder="(optional) Add a description of your event"
 			/>
 			<span className="mb-2 text-secondary">
-				{state.errors?.fieldErrors.description?.join(" ")}
+				{state?.errors?.fieldErrors.description?.join(" ")}
 			</span>
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending}
+				disabled={isPending || anchor === "plan-food"}
 				type="submit"
 			>
 				Next
 			</button>
-		</Form>
+		</form>
 	);
 };
 
-export default CreateEventForm;
+export default PlanEventForm;

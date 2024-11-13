@@ -1,6 +1,6 @@
 {
-  "id": "c68f4a6b-ae13-4b44-a72f-80fabcaa842d",
-  "prevId": "507719ca-7c4a-4b76-9174-c6fd124278b6",
+  "id": "2d7969cb-5783-489d-9f70-13f8e30210fc",
+  "prevId": "c68f4a6b-ae13-4b44-a72f-80fabcaa842d",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -100,7 +100,10 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.session": {
       "name": "session",
@@ -142,7 +145,10 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.user": {
       "name": "user",
@@ -191,7 +197,10 @@
             "email"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.commitment": {
       "name": "commitment",
@@ -229,8 +238,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "request_id": {
-          "name": "request_id",
+        "slot_id": {
+          "name": "slot_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -258,12 +267,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "commitment_request_id_request_id_fk": {
-          "name": "commitment_request_id_request_id_fk",
+        "commitment_slot_id_slot_id_fk": {
+          "name": "commitment_slot_id_slot_id_fk",
           "tableFrom": "commitment",
-          "tableTo": "request",
+          "tableTo": "slot",
           "columnsFrom": [
-            "request_id"
+            "slot_id"
           ],
           "columnsTo": [
             "id"
@@ -273,7 +282,10 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.event": {
       "name": "event",
@@ -300,7 +312,7 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(256)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -390,10 +402,13 @@
             "code"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "public.request": {
-      "name": "request",
+    "public.slot": {
+      "name": "slot",
       "schema": "",
       "columns": {
         "course": {
@@ -438,9 +453,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "request_event_id_event_id_fk": {
-          "name": "request_event_id_event_id_fk",
-          "tableFrom": "request",
+        "slot_event_id_event_id_fk": {
+          "name": "slot_event_id_event_id_fk",
+          "tableFrom": "slot",
           "tableTo": "event",
           "columnsFrom": [
             "event_id"
@@ -453,12 +468,18 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {},
   "schemas": {},
   "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

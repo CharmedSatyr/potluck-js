@@ -7,7 +7,7 @@ import {
 	CreateCommitmentFormData,
 	CreateCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[code]/submit-actions.types";
+} from "@/app/event/[code]/submit-actions.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuantityInput from "@/components/quantity-input";
@@ -16,13 +16,13 @@ import { usePathname } from "next/navigation";
 type Props = {
 	commitmentsStillNeeded: number;
 	index: number;
-	requestId: string;
+	slotId: string;
 };
 
 const CreateCommitmentForm = ({
 	commitmentsStillNeeded,
 	index,
-	requestId,
+	slotId,
 }: Props) => {
 	const path = usePathname();
 	const [commitQuantity, setCommitQuantity] = useState<number>(0);
@@ -34,7 +34,7 @@ const CreateCommitmentForm = ({
 		fields: {},
 		message: "",
 		path,
-		requestId,
+		slotId,
 		success: false,
 	});
 

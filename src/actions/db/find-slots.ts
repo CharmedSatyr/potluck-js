@@ -4,12 +4,10 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import db from "@/db/connection";
 import findEvent from "@/actions/db/find-event";
-import { request, Request } from "@/db/schema/request";
-import { schema } from "./find-requests.types";
+import { slot, Slot } from "@/db/schema/slot";
+import { schema } from "@/actions/db/find-slots.schema";
 
-const findRequests = async (
-	data: z.infer<typeof schema>
-): Promise<Request[]> => {
+const findSlots = async (data: z.infer<typeof schema>): Promise<Slot[]> => {
 	try {
 		schema.parse(data);
 
@@ -19,7 +17,7 @@ const findRequests = async (
 			return [];
 		}
 
-		return await db.select().from(request).where(eq(request.eventId, event.id));
+		return await db.select().from(slot).where(eq(slot.eventId, event.id));
 	} catch (err) {
 		console.error(err);
 
@@ -27,4 +25,4 @@ const findRequests = async (
 	}
 };
 
-export default findRequests;
+export default findSlots;

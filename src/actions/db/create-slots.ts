@@ -2,13 +2,13 @@
 
 import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
-import { request, Request } from "@/db/schema/request";
+import { slot, Slot } from "@/db/schema/slot";
 import { z } from "zod";
-import { schema } from "./create-request.types";
+import { schema } from "@/actions/db/create-slots.schema";
 
-const createRequest = async (
+const createSlots = async (
 	data: z.infer<typeof schema>
-): Promise<{ id: Request["id"] }[]> => {
+): Promise<{ id: Slot["id"] }[]> => {
 	try {
 		schema.parse(data);
 
@@ -18,15 +18,12 @@ const createRequest = async (
 			return [];
 		}
 
-		const values = data.requests.map((request) => ({
-			...request,
+		const values = data.slots.map((slot) => ({
+			...slot,
 			eventId: event.id,
 		}));
 
-		return await db
-			.insert(request)
-			.values(values)
-			.returning({ id: request.id });
+		return await db.insert(slot).values(values).returning({ id: slot.id });
 	} catch (err) {
 		console.error(err);
 
@@ -34,4 +31,4 @@ const createRequest = async (
 	}
 };
 
-export default createRequest;
+export default createSlots;

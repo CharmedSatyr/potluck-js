@@ -10,7 +10,7 @@ import {
 	CreateCommitmentFormState,
 	DeleteCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[code]/submit-actions.types";
+} from "@/app/event/[code]/submit-actions.schema";
 
 jest.mock("@/auth", () => ({ auth: jest.fn() }));
 jest.mock("@/actions/db/create-commitment", () => jest.fn());
@@ -26,7 +26,7 @@ describe("createCommitmentAction", () => {
 			fields: {},
 			message: "",
 			path: "/event/test",
-			requestId: "request123",
+			slotId: "slot123",
 			success: false,
 		};
 
@@ -72,7 +72,7 @@ describe("createCommitmentAction", () => {
 		expect(createCommitment).toHaveBeenCalledWith({
 			...createCommitmentFormSchema.parse(Object.fromEntries(formData)),
 			createdBy: "b2c2e71d-c72a-4f8a-bce6-cc89c6a33529",
-			requestId: prevState.requestId,
+			slotId: prevState.slotId,
 		});
 	});
 

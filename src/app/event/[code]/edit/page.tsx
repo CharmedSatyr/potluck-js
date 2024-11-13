@@ -1,6 +1,8 @@
 import findEvent from "@/actions/db/find-event";
-import EditEventManager from "@/app/event/[code]/edit/edit-event-manager";
-import { UpdateEventFormData } from "./submit-actions.types";
+import ManageEventWizard from "@/components/manage-event-wizard";
+import { updateEventAction } from "./submit-actions";
+import findSlots from "@/actions/db/find-slots";
+import committedUsersBySlot from "@/components/committed-users-by-slot";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -8,33 +10,18 @@ type Props = {
 
 const EditEventPage = async ({ params }: Props) => {
 	const { code } = await params;
-	const [event] = await findEvent({ code: code });
-
-	if (!event) {
-		return <div>Event not found</div>;
-	}
-
-	const {
-		description,
-		hosts,
-		location,
-		name,
-		startDate,
-		startTime,
-	}: Required<UpdateEventFormData> = event;
+	const eventPromise = findEvent({ code: code }) as any;
+	const slotsPromise = findSlots({ eventCode: code });
+	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
 	return (
-		<div className="flex w-full justify-center">
-			<EditEventManager
+		<div className="flex h-full w-full flex-col items-center">
+			<ManageEventWizard
 				code={code}
-				currentValues={{
-					description,
-					hosts,
-					location,
-					name,
-					startDate,
-					startTime,
-				}}
+				committedUsersBySlotPromise={committedUsersBySlotPromise}
+				eventPromise={eventPromise}
+				slotsPromise={slotsPromise}
+				submitAction={updateEventAction}
 			/>
 		</div>
 	);

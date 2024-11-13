@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { schema } from "@/actions/db/create-commitment.types";
+import { schema } from "@/actions/db/create-commitment.schema";
 import db from "@/db/connection";
 import { Commitment, commitment } from "@/db/schema/commitment";
 

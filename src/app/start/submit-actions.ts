@@ -4,13 +4,13 @@ import createEvent from "@/actions/db/create-event";
 import { auth, signIn } from "@/auth";
 import {
 	formSchema,
-	CreateEventFormState,
-} from "@/components/create-event-form/submit-actions.types";
+	PlanEventFormState,
+} from "@/app/start/submit-actions.schema";
 
 export const loginAction = async (
-	prevState: CreateEventFormState,
+	prevState: PlanEventFormState,
 	formData: FormData
-): Promise<CreateEventFormState> => {
+): Promise<PlanEventFormState> => {
 	const params = new URLSearchParams();
 	for (const [key, val] of formData) {
 		params.append(key, String(val));
@@ -25,9 +25,9 @@ export const loginAction = async (
 };
 
 export const createEventAction = async (
-	prevState: CreateEventFormState,
+	prevState: PlanEventFormState,
 	formData: FormData
-): Promise<CreateEventFormState> => {
+): Promise<PlanEventFormState> => {
 	const data = Object.fromEntries(formData);
 
 	const fields: Record<string, string> = {};

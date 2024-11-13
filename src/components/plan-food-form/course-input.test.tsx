@@ -2,22 +2,24 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import CourseInput from "@/components/plan-food-form/course-input";
 
 describe("CourseInput", () => {
-	let mockChange: jest.Mock;
-	let mockRemove: jest.Mock;
-
 	beforeEach(() => {
-		mockChange = jest.fn();
-		mockRemove = jest.fn();
+		jest.clearAllMocks();
 	});
+
+	const handleChange = jest.fn();
+	const handleRemove = jest.fn();
+
+	const id = "a6842b4d-a9fa-4351-92e0-b6a6661ca40c";
 
 	it("renders input fields and labels", () => {
 		render(
 			<CourseInput
-				change={mockChange}
+				change={handleChange}
 				count="1"
+				id={id}
 				index={0}
-				name="Sample Course"
-				remove={mockRemove}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -26,14 +28,15 @@ describe("CourseInput", () => {
 		expect(screen.getByRole("button", { name: /✕/i })).toBeInTheDocument();
 	});
 
-	it("calls remove with index when remove button is clicked", () => {
+	it("calls remove with index and id when remove button is clicked", () => {
 		render(
 			<CourseInput
+				change={handleChange}
+				count="0"
+				id={id}
 				index={1}
-				change={mockChange}
-				count="1"
-				name="Sample Course"
-				remove={mockRemove}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -41,17 +44,18 @@ describe("CourseInput", () => {
 
 		fireEvent.click(removeButton);
 
-		expect(mockRemove).toHaveBeenCalledWith(1);
+		expect(handleRemove).toHaveBeenCalledWith(1, id);
 	});
 
 	it("calls change with correct values when text input changes", () => {
 		render(
 			<CourseInput
-				index={0}
-				change={mockChange}
+				change={handleChange}
 				count="0"
-				name="Sample Course"
-				remove={mockRemove}
+				id={id}
+				index={0}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -59,17 +63,18 @@ describe("CourseInput", () => {
 
 		fireEvent.change(nameInput, { target: { value: "Updated Course" } });
 
-		expect(mockChange).toHaveBeenCalledWith(0, "Updated Course", "0");
+		expect(handleChange).toHaveBeenCalledWith(0, "Updated Course", "0");
 	});
 
 	it("calls change with correct values when count input changes", () => {
 		render(
 			<CourseInput
-				index={0}
-				change={mockChange}
+				change={handleChange}
 				count="1"
-				name="Sample Course"
-				remove={mockRemove}
+				id={id}
+				index={0}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -77,17 +82,18 @@ describe("CourseInput", () => {
 
 		fireEvent.change(countInput, { target: { value: "5" } });
 
-		expect(mockChange).toHaveBeenCalledWith(0, "Sample Course", "5");
+		expect(handleChange).toHaveBeenCalledWith(0, "Sample Course", "5");
 	});
 
 	it('increments the count when the "+" button is clicked', () => {
 		render(
 			<CourseInput
-				index={0}
-				change={mockChange}
+				change={handleChange}
 				count="0"
-				name="Sample Course"
-				remove={mockRemove}
+				id={id}
+				index={0}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -97,17 +103,18 @@ describe("CourseInput", () => {
 		fireEvent.click(incrementButton);
 
 		expect(countInput).toHaveValue(1);
-		expect(mockChange).toHaveBeenCalledWith(0, "Sample Course", "1");
+		expect(handleChange).toHaveBeenCalledWith(0, "Sample Course", "1");
 	});
 
 	it('decrements the count when the "-" button is clicked', () => {
 		render(
 			<CourseInput
-				index={0}
-				change={mockChange}
+				change={handleChange}
 				count="1"
-				name="Sample Course"
-				remove={mockRemove}
+				id={id}
+				index={0}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -119,17 +126,18 @@ describe("CourseInput", () => {
 		fireEvent.click(decrementButton);
 
 		expect(countInput).toHaveValue(1);
-		expect(mockChange).toHaveBeenCalledWith(0, "Sample Course", "1");
+		expect(handleChange).toHaveBeenCalledWith(0, "Sample Course", "1");
 	});
 
 	it("does not decrement below 0 on the count input", () => {
 		render(
 			<CourseInput
-				index={0}
-				change={mockChange}
+				change={handleChange}
 				count="1"
-				name="Sample Course"
-				remove={mockRemove}
+				id={id}
+				index={0}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -139,17 +147,18 @@ describe("CourseInput", () => {
 		fireEvent.click(decrementButton);
 
 		expect(countInput).toHaveValue(0);
-		expect(mockChange).toHaveBeenLastCalledWith(0, "Sample Course", "0");
+		expect(handleChange).toHaveBeenLastCalledWith(0, "Sample Course", "0");
 	});
 
 	it("limits the count to a maximum of 99", () => {
 		render(
 			<CourseInput
-				index={0}
-				change={mockChange}
+				change={handleChange}
 				count="1"
-				name="Sample Course"
-				remove={mockRemove}
+				id={id}
+				index={0}
+				item="Sample Course"
+				remove={handleRemove}
 			/>
 		);
 
@@ -161,6 +170,6 @@ describe("CourseInput", () => {
 		fireEvent.click(incrementButton);
 
 		expect(countInput).toHaveValue(99);
-		expect(mockChange).toHaveBeenCalledWith(0, "Sample Course", "99");
+		expect(handleChange).toHaveBeenCalledWith(0, "Sample Course", "99");
 	});
 });

@@ -1,19 +1,18 @@
 "use server";
 
-import createRequest from "@/actions/db/create-request";
-import { schema } from "@/actions/db/create-request.types";
+import { schema } from "@/actions/db/update-slots.schema";
+import updateSlots from "@/actions/db/update-slots";
 import { redirect } from "next/navigation";
 import { typeToFlattenedError } from "zod";
 
 export type PlanFoodFormState = {
 	code: string;
 	errors?: typeToFlattenedError<unknown>; // TODO
-	fields: any;
 	message: string;
 	success: boolean;
 };
 
-const submitRequest = async (
+const submitSlots = async (
 	prevState: PlanFoodFormState,
 	formData: FormData
 ): Promise<PlanFoodFormState> => {
@@ -29,59 +28,68 @@ const submitRequest = async (
 
 	const fields: Record<string, string> = {};
 	for (const key of Object.keys(data)) {
-		if (!key.startsWith("name") && !key.startsWith("quantity")) {
+		if (
+			!key.startsWith("item") &&
+			!key.startsWith("count") &&
+			!key.startsWith("id")
+		) {
 			continue;
 		}
 
 		fields[key] = String(data[key]);
 	}
 
-	const builder = new Map<number, { course: string; count: number }>();
+	const builder = new Map<
+		number,
+		{ course: string; count: number; id: string }
+	>();
 
 	for (const [key, value] of Object.entries(fields)) {
 		const [field, i] = key.split("-");
 
 		const index = Number(i);
-		const currentEntry = builder.get(index) ?? { course: "", count: 0 };
+		const currentEntry = builder.get(index) ?? { course: "", count: 0, id: "" };
 
-		if (field === "quantity") {
+		if (field === "count") {
 			currentEntry.count = Number(value);
 		}
 
-		if (field === "name") {
+		if (field === "item") {
 			currentEntry.course = String(value);
+		}
+
+		if (field === "id") {
+			currentEntry.id = String(value);
 		}
 
 		builder.set(index, currentEntry);
 	}
 
-	const requests: { course: string; count: number }[] = Array.from(
+	const slots: { course: string; count: number; id: string }[] = Array.from(
 		builder.values()
 	);
 
-	const formatted = { code: prevState.code, requests };
+	const formatted = { code: prevState.code, slots };
 	const parsed = schema.safeParse(formatted);
 
 	if (!parsed.success) {
 		return {
 			...prevState,
-			fields,
 			errors: parsed.error.flatten(),
 			message: "There was a problem. Verify entries and try again.",
 			success: false,
 		};
 	}
 
-	const [id] = await createRequest({
+	const result = await updateSlots({
 		...parsed.data,
 		code: prevState.code,
 	});
 
-	if (!id) {
+	if (!result?.length) {
 		return {
 			...prevState,
-			fields,
-			message: "Failed to create request. Please try again.",
+			message: "Failed to update slots. Please try again.",
 			success: false,
 		};
 	}
@@ -89,4 +97,4 @@ const submitRequest = async (
 	redirect(`/event/${prevState.code}`);
 };
 
-export default submitRequest;
+export default submitSlots;

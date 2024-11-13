@@ -1,72 +1,112 @@
 "use client";
 
 import Form from "next/form";
-import { useActionState, useEffect, useMemo, useState } from "react";
+import {
+	Suspense,
+	use,
+	useActionState,
+	useEffect,
+	useMemo,
+	useReducer,
+	useState,
+} from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
-import submitRequest, {
+// TODO: Should this be passed in?
+import submitSlots, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
 import { useSearchParams } from "next/navigation";
 import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
+// TODO: This isn't what's being used.
+import { slot, Slot } from "@/db/schema/slot";
+// TODO: Should this be passed in?
+import deleteSlot from "@/actions/db/delete-slot";
 
-const MAX_REQUESTS = 20;
+const MAX_SLOTS = 20;
 
 const courseSchema = z.strictObject({
+	id: z.string().uuid(),
 	count: z.coerce.number().positive(),
-	name: z.string().trim().min(1),
+	item: z.string().trim().min(1),
 });
 
-const PlanFoodForm = () => {
+type Props = {
+	code: string | null;
+	slots: Slot[];
+	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
+};
+
+const PlanFoodForm = ({
+	code,
+	committedUsersBySlotPromise,
+	slots: prevSlots,
+}: Props) => {
 	const [anchor] = useAnchor();
-	const params = useSearchParams();
+	const searchParams = useSearchParams();
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
 	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<
 		PlanFoodFormState,
 		FormData
-	>(submitRequest, {
-		code: "",
-		fields: {},
+	>(submitSlots, {
+		code: code ?? "",
 		message: "",
 		success: false,
 	});
 
 	useEffect(() => {
-		const code = params.get("code");
-		if (!code) {
+		if (!code || !state) {
 			return;
 		}
 
 		state.code = code;
-	}, [anchor, params, state]);
 
-	const [courses, setCourses] = useState([{ name: "", count: "0" }]);
+		forceUpdate();
+	}, [code, state, searchParams]);
 
-	const addCourse = () => {
-		if (courses.length >= MAX_REQUESTS) {
+	/** TODO: Update this to work without JS. */
+	const [slots, setSlots] = useState<
+		{ item: string; count: string; id: string }[]
+	>(() => {
+		if (prevSlots.length > 0) {
+			return prevSlots.map((slot) => ({
+				item: slot.course,
+				count: slot.count.toString(),
+				id: slot.id,
+			}));
+		}
+
+		return [{ item: "", count: "0", id: crypto.randomUUID() }];
+	});
+
+	const addSlot = () => {
+		if (slots.length >= MAX_SLOTS) {
 			return;
 		}
 
-		setCourses([...courses, { name: "", count: "0" }]);
+		setSlots([...slots, { item: "", count: "0", id: crypto.randomUUID() }]);
 	};
 
-	const removeCourse = (index: number) => {
-		setCourses(courses.filter((_, i) => i !== index));
+	const removeSlot = async (index: number, id: string) => {
+		setSlots(slots.filter((_, i) => i !== index));
+		await deleteSlot({ id });
 	};
 
-	const handleCourseChange = (index: number, name: string, count: string) => {
-		const updatedCourses = [...courses];
-		updatedCourses[index].name = name;
+	const handleSlotChange = (index: number, item: string, count: string) => {
+		const updatedCourses = [...slots];
+		updatedCourses[index].item = item;
 		updatedCourses[index].count = count;
 
-		setCourses(updatedCourses);
+		setSlots(updatedCourses);
 	};
 
-	const coursesValid = useMemo(
-		() => courses.every((course) => courseSchema.safeParse(course).success),
-		[courses]
+	const slotsValid = useMemo(
+		() => slots.every((course) => courseSchema.safeParse(course).success),
+		[slots]
 	);
 
 	return (
@@ -77,36 +117,56 @@ const PlanFoodForm = () => {
 			<h1 className="my-0 text-6xl font-extrabold text-primary">
 				Plan the Food
 			</h1>
-			<h2>Create Your Requests</h2>
+			<h2>Create Your Slots</h2>
 
 			<span className="mb-2 text-secondary">{state.message}</span>
-			{courses.map((course, index) => (
-				<CourseInput
-					key={`${index}-course`}
-					change={handleCourseChange}
-					count={course.count}
-					index={index}
-					name={course.name}
-					remove={removeCourse}
-				/>
+			{slots.map((slot, index) => (
+				<div key={slot.id}>
+					<Suspense key={index} fallback="TODO: Skellington">
+						<CourseInput
+							change={handleSlotChange}
+							count={slot.count}
+							hasCommitments={committedUsersBySlot.has(slot.id)}
+							id={slot.id}
+							index={index}
+							item={slot.item}
+							key={slot.id}
+							remove={removeSlot}
+						/>
+						{committedUsersBySlot.has(slot.id) && (
+							<div className="mt-4 flex w-full items-center justify-center">
+								<span className="text-sm font-light">
+									Existing Commitments:
+								</span>
+								<span className="mx-2">
+									{committedUsersBySlot.get(slot.id)}
+								</span>
+							</div>
+						)}
+					</Suspense>
+					<div className="divider mt-6" />
+				</div>
 			))}
 
 			<div className="mb-4 flex justify-between">
 				<button
 					className="btn btn-secondary w-1/3"
-					onClick={addCourse}
+					onClick={addSlot}
 					type="button"
 				>
-					Add Request
+					Add Slot
 				</button>
-				<Link className="btn btn-accent w-1/3" href={`/event/${state.code}`}>
+				<Link
+					className={`btn btn-accent w-1/3 ${state.code ? "" : "btn-disabled pointer-events-none"}`}
+					href={`/event/${state.code}`}
+				>
 					Skip for Now
 				</Link>
 			</div>
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={isPending || !coursesValid}
+				disabled={isPending || !slotsValid || anchor === "create-event"}
 				type="submit"
 			>
 				Submit and Continue

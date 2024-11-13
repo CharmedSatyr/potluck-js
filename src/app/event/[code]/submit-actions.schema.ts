@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { schema } from "@/actions/db/create-commitment.types";
+import { schema } from "@/actions/db/create-commitment.schema";
 
 export const createCommitmentFormSchema = schema
-	.omit({ createdBy: true, requestId: true })
+	.omit({ createdBy: true, slotId: true })
 	.strip();
 
 export type CreateCommitmentFormData = z.infer<
@@ -13,7 +13,7 @@ export type CreateCommitmentFormState = {
 	fields: Record<string, string>;
 	message: string;
 	path: string;
-	requestId: string;
+	slotId: string;
 	success: boolean;
 };
 

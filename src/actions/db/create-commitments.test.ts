@@ -24,7 +24,7 @@ describe("createCommitment", () => {
 		createdBy: "123e4567-e89b-12d3-a456-426614174000",
 		description: "This is a valid test commitment",
 		quantity: 10,
-		requestId: "123e4567-e89b-12d3-a456-426614174001",
+		slotId: "123e4567-e89b-12d3-a456-426614174001",
 	};
 
 	it("should insert valid data into the database and return the id on success", async () => {
@@ -45,7 +45,7 @@ describe("createCommitment", () => {
 			createdBy: "invalid-uuid",
 			description: "This description is too long".repeat(20),
 			quantity: -10,
-			requestId: "also-invalid-uuid",
+			slotId: "also-invalid-uuid",
 		};
 
 		const error = new ZodError([
@@ -77,7 +77,7 @@ describe("createCommitment", () => {
 				validation: "uuid",
 				code: "invalid_string",
 				message: "Invalid uuid",
-				path: ["requestId"],
+				path: ["slotId"],
 			},
 		]);
 
