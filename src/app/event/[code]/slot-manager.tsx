@@ -35,12 +35,18 @@ const SlotManager = ({
 					const relatedUsers = users
 						.filter((u) => deduplicatedRelatedUsers.has(u.id))
 						.map((u) => ({ id: u.id, image: u.image, name: u.name }));
+					const commitmentTotal = relatedCommitments.reduce(
+						(acc, curr) => acc + curr.quantity,
+						0
+					);
 
 					return (
 						<div key={slot.id} className="join-item border">
 							<SlotContainer
 								avatars={committedUsersBySlot.get(slot.id)}
+								commitmentTotal={commitmentTotal}
 								item={slot.course}
+								slotCount={slot.count}
 							>
 								<h3 className="mt-0">Current Signups</h3>
 								{commitments.length ? (

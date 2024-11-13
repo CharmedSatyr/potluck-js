@@ -5,13 +5,17 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 type Props = {
 	avatars?: JSX.Element;
+	commitmentTotal: number;
 	item: string;
+	slotCount: number;
 };
 
 const SlotContainer = ({
 	avatars,
 	children,
+	commitmentTotal,
 	item,
+	slotCount,
 }: PropsWithChildren<Props>) => {
 	const [expanded, setExpanded] = useState<boolean>(false);
 
@@ -27,6 +31,7 @@ const SlotContainer = ({
 				<div className="w-6/12 text-2xl">{item}</div>
 				{avatars}
 				<div className="flex items-center justify-between">
+					{commitmentTotal} of {slotCount} filled
 					{expanded ? (
 						<ChevronUpIcon className="-mr-6 ml-2 size-6" />
 					) : (
