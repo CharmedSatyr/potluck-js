@@ -15,8 +15,7 @@ const findEventsByUser = async (
 		return await db
 			.select()
 			.from(event)
-			.where(eq(event.createdBy, data.createdBy))
-			.limit(100);
+			.where(eq(event.createdBy, data.createdBy));
 	} catch (err) {
 		console.error(err);
 

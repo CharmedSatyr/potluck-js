@@ -31,9 +31,7 @@ describe("findEventsByUser", () => {
 
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockReturnValueOnce({
-					limit: jest.fn().mockResolvedValueOnce(data),
-				}),
+				where: jest.fn().mockReturnValueOnce(data),
 			}),
 		});
 
@@ -69,9 +67,7 @@ describe("findEventsByUser", () => {
 
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockReturnValueOnce({
-					limit: jest.fn().mockRejectedValueOnce(error),
-				}),
+				where: jest.fn().mockRejectedValueOnce(error),
 			}),
 		});
 
