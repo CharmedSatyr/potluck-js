@@ -5,10 +5,10 @@ import { auth } from "@/auth";
 import { DEV } from "@/utilities/current-env";
 
 type Props = {
-	searchParams: { [key: string]: string }
-}
+	searchParams: Promise<{ [key: string]: string }>;
+};
 
-const StartPage = async ({ searchParams, }: Props) => {
+const StartPage = async ({ searchParams }: Props) => {
 	const session = await auth();
 
 	const submitAction = session?.user?.id ? createEventAction : loginAction;

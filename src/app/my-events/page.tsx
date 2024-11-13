@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import DeleteEventButton from "./delete-event-button";
 import remove from "@/app/my-events/remove-action";
+import eventIsPassed from "@/utilities/event-is-passed";
 
 const MyEvents = async () => {
 	const session = await auth();
@@ -21,7 +22,7 @@ const MyEvents = async () => {
 			<h2>Host</h2>
 			{!hosted.length ? (
 				<div>
-					You haven't hosted any events.{" "}
+					You haven&apos;t hosted any events.{" "}
 					<Link href="/start">Go throw a party!</Link>
 				</div>
 			) : (
@@ -30,12 +31,11 @@ const MyEvents = async () => {
 						<thead>
 							<tr>
 								<th></th>
-								<th>Code</th>
+								<th>Status</th>
 								<th>Name</th>
 								<th>Date</th>
-								<th>Time</th>
 								<th>Location</th>
-								<th>Description</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -43,21 +43,35 @@ const MyEvents = async () => {
 								.toSorted((a, b) =>
 									new Date(a.startDate) > new Date(b.startDate) ? -1 : 1
 								)
-								.map((event) => (
-									<tr key={event.id}>
-										<td>
-											<DeleteEventButton code={event.code} remove={remove} />
-										</td>
-										<td>
-											<Link href={`/event/${event.code}`}>{event.code}</Link>
-										</td>
-										<td>{event.name}</td>
-										<td>{event.startDate}</td>
-										<td>{event.startTime}</td>
-										<td>{event.location}</td>
-										<td>{event.description}</td>
-									</tr>
-								))}
+								.map((event) => {
+									const passed = eventIsPassed(event.startDate);
+
+									return (
+										<tr key={event.id} className={passed ? "bg-base-300" : ""}>
+											<td>
+												<DeleteEventButton code={event.code} remove={remove} />
+											</td>
+											<td>
+												{passed ? (
+													<span className="text-error">Past</span>
+												) : (
+													<span className="text-success">Active</span>
+												)}
+											</td>
+											<td>{event.name}</td>
+											<td>{event.startDate}</td>
+											<td>{event.location}</td>
+											<td>
+												<Link
+													className="btn btn-sm"
+													href={`/event/${event.code}`}
+												>
+													Details
+												</Link>
+											</td>
+										</tr>
+									);
+								})}
 						</tbody>
 					</table>
 				</div>

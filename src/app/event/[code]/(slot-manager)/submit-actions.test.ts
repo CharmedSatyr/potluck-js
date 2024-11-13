@@ -1,7 +1,7 @@
 import {
 	createCommitmentAction,
 	deleteCommitmentAction,
-} from "@/app/event/[code]/submit-actions";
+} from "@/app/event/[code]/(slot-manager)/submit-actions";
 import { auth } from "@/auth";
 import createCommitment from "@/actions/db/create-commitment";
 import deleteCommitment from "@/actions/db/delete-commitment";
@@ -10,7 +10,7 @@ import {
 	CreateCommitmentFormState,
 	DeleteCommitmentFormState,
 	createCommitmentFormSchema,
-} from "@/app/event/[code]/submit-actions.schema";
+} from "@/app/event/[code]/(slot-manager)/submit-actions.schema";
 
 jest.mock("@/auth", () => ({ auth: jest.fn() }));
 jest.mock("@/actions/db/create-commitment", () => jest.fn());

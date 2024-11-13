@@ -13,11 +13,11 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 	return (
 		<>
 			<button
-				className="btn btn-circle btn-ghost btn-sm"
+				className="btn btn-error btn-sm"
 				type="button"
 				onClick={() => dialogRef.current?.showModal()}
 			>
-				✕
+				Delete
 			</button>
 			<dialog ref={dialogRef} className="modal modal-bottom sm:modal-middle">
 				<div className="modal-box">
@@ -37,7 +37,7 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 						</button>
 						<button
 							aria-label="Delete Slot"
-							className="btn btn-secondary"
+							className="btn btn-error"
 							type="button"
 							onClick={() => {
 								remove({ code });
