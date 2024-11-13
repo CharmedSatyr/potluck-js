@@ -61,11 +61,17 @@ const PlanFoodForm = ({
 	});
 
 	useEffect(() => {
-		if (!code || !state) {
+		if (state?.code) {
 			return;
 		}
 
-		state.code = code;
+		const eventCode = code ?? searchParams.get("code");
+
+		if (!eventCode) {
+			return;
+		}
+
+		state.code = eventCode;
 
 		forceUpdate();
 	}, [code, state, searchParams]);
