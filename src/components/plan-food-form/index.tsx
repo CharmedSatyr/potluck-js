@@ -122,16 +122,17 @@ const PlanFoodForm = ({
 			<span className="mb-2 text-secondary">{state.message}</span>
 			{slots.map((slot, index) => (
 				<div key={slot.id}>
-					<CourseInput
-						change={handleSlotChange}
-						count={slot.count}
-						id={slot.id}
-						index={index}
-						item={slot.item}
-						key={slot.id}
-						remove={removeSlot}
-					/>
 					<Suspense key={index} fallback="TODO: Skellington">
+						<CourseInput
+							change={handleSlotChange}
+							count={slot.count}
+							hasCommitments={committedUsersBySlot.has(slot.id)}
+							id={slot.id}
+							index={index}
+							item={slot.item}
+							key={slot.id}
+							remove={removeSlot}
+						/>
 						{committedUsersBySlot.has(slot.id) && (
 							<div className="mt-4 flex w-full items-center justify-center">
 								<span className="text-sm font-light">

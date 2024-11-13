@@ -1,27 +1,36 @@
 import { useRef } from "react";
+import DeleteSlotButton from "./delete-slot-button";
 
 type Props = {
 	change: (index: number, value: string, count: string) => void;
 	count: string;
+	hasCommitments: boolean;
 	id: string;
 	index: number;
 	item: string;
 	remove: (index: number, id: string) => void;
 };
 
-const CourseInput = ({ change, count, id, index, item, remove }: Props) => {
+const CourseInput = ({
+	change,
+	count,
+	hasCommitments,
+	id,
+	index,
+	item,
+	remove,
+}: Props) => {
 	const itemRef = useRef<HTMLInputElement>(null);
 	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			<button
-				onClick={() => remove(index, id)}
-				className="btn btn-circle btn-ghost btn-sm"
-				type="button"
-			>
-				✕
-			</button>
+			<DeleteSlotButton
+				hasCommitments={hasCommitments}
+				id={id}
+				index={index}
+				remove={remove}
+			/>
 			<div className="form-control w-2/3">
 				<label className="label label-text" htmlFor={`item-${index}`}>
 					What&apos;s Needed
