@@ -42,8 +42,8 @@ const EventPage = async ({ params }: Props) => {
 	const rsvpUsers =
 		rsvps.length > 0
 			? await findUsers({
-				users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
-			})
+					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+				})
 			: [];
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
