@@ -33,7 +33,7 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 
 	if (currentResponse !== null && !override) {
 		return (
-			<>
+			<div className="flex flex-col items-center">
 				<div>You will {currentResponse === "yes" ? "" : "not"} attend.</div>
 				<button
 					className="btn btn-accent"
@@ -45,7 +45,7 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 				>
 					Change RSVP
 				</button>
-			</>
+			</div>
 		);
 	}
 
