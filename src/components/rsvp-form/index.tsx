@@ -1,17 +1,20 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import submitAction, {
 	RsvpFormState,
 } from "@/components/rsvp-form/submit-actions";
+import { Rsvp } from "@/db/schema/rsvp";
 
 type Props = {
 	code: string;
+	currentResponse: Rsvp["response"] | null;
 };
 
-const RsvpForm = ({ code }: Props) => {
+const RsvpForm = ({ code, currentResponse }: Props) => {
 	const session = useSession();
+	const [override, setOverride] = useState<boolean>(false);
 
 	const [state, submit, isPending] = useActionState<RsvpFormState, FormData>(
 		submitAction,
@@ -24,8 +27,32 @@ const RsvpForm = ({ code }: Props) => {
 		}
 	);
 
+	useEffect(() => {
+		setOverride(false);
+	}, [currentResponse, isPending, setOverride]);
+
+	if (currentResponse !== null && !override) {
+		return (
+			<>
+				<div>You will {currentResponse === "yes" ? "" : "not"} attend.</div>
+				<button
+					className="btn btn-accent"
+					disabled={isPending}
+					type="button"
+					onClick={() => {
+						setOverride(true);
+					}}
+				>
+					Change RSVP
+				</button>
+			</>
+		);
+	}
+
 	return (
 		<form action={submit} className="form-control max-w-fit gap-2">
+			<h3>Will you attend?</h3>
+
 			<button
 				className="btn btn-primary w-full"
 				data-response="yes"

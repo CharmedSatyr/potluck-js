@@ -6,9 +6,12 @@ import CopyLinkButton from "@/components/copy-link-button";
 import { Event } from "@/db/schema/event";
 import eventIsPassed from "@/utilities/event-is-passed";
 import RsvpForm from "@/components/rsvp-form";
+import { Rsvp } from "@/db/schema/rsvp";
 
 // TODO: Don't pass a whole event to the client.
-export type EventSkeletonProps = Event;
+export type EventSkeletonProps = Event & {
+	rsvpResponse: Rsvp["response"] | null;
+};
 
 export const EventSkeleton = ({
 	createdBy,
@@ -19,6 +22,7 @@ export const EventSkeleton = ({
 	code,
 	startDate,
 	startTime,
+	rsvpResponse,
 }: EventSkeletonProps) => {
 	const session = useSession();
 	const authenticated = session?.status === "authenticated";
@@ -35,8 +39,7 @@ export const EventSkeleton = ({
 				)}
 				{authenticated && !isHost && !isPassed && (
 					<div className="flex flex-col">
-						<p className="font-bold">Will you attend?</p>
-						<RsvpForm code={code} />
+						<RsvpForm code={code} currentResponse={rsvpResponse} />
 					</div>
 				)}
 

@@ -14,7 +14,15 @@ jest.mock(
 		}
 );
 
-jest.mock("@/components/rsvp-form", jest.fn(() => () => <div>RSVP Form</div>))
+jest.mock(
+	"@/components/rsvp-form",
+	jest.fn(
+		() =>
+			function RsvpForm() {
+				return <div>RSVP Form</div>;
+			}
+	)
+);
 
 describe("EventSkeleton Component", () => {
 	const eventProps = {
@@ -54,7 +62,6 @@ describe("EventSkeleton Component", () => {
 		).toBeInTheDocument();
 		expect(screen.getByText(eventProps.description)).toBeInTheDocument();
 	});
-
 
 	it("should render  event details if the user is authenticated and the event is not passed", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({

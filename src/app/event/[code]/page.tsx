@@ -45,10 +45,12 @@ const EventPage = async ({ params }: Props) => {
 					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
 				})
 			: [];
+	const rsvpResponse =
+		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
 
 	return (
 		<div className="flex w-full flex-col justify-center">
-			<EventSkeleton {...event} />
+			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
 
 			<h2>Attendees</h2>
 			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
