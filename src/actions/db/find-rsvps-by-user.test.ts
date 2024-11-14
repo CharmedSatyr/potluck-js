@@ -2,8 +2,7 @@
 
 import { ZodError } from "zod";
 import db from "@/db/connection";
-import findEvent from "@/actions/db/find-event";
-import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
+import findRsvpsByUser from "@/actions/db/find-rsvps-by-user";
 
 jest.mock("@/db/connection");
 jest.mock("@/actions/db/find-event");
@@ -25,11 +24,10 @@ describe("findSlots", () => {
 
 	const id = "605428d7-e305-40c2-8e30-68ead5d7e85b";
 
-	const validData = { eventCode: "CODE1" };
+	const validData = { id };
+	const invalidData: any = { eventCode: "BAD" };
 
-	it("should return RSVPs for a valid event code", async () => {
-		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
-
+	it("should return RSVPs for a valid user id", async () => {
 		const rsvps = [
 			{ id, createdBy: id, eventId: id, response: "yes" },
 			{ id, createdBy: id, eventId: id, response: "no" },
@@ -43,47 +41,42 @@ describe("findSlots", () => {
 			}),
 		});
 
-		const result = await findRsvpsByEvent(validData);
+		const result = await findRsvpsByUser(validData);
 
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
 		expect(db.select).toHaveBeenCalled();
 		expect(result).toEqual(rsvps);
 	});
 
 	it("should return an empty array and log an error if the event code is invalid", async () => {
-		(findEvent as jest.Mock).mockResolvedValueOnce([]);
-
-		const result = await findRsvpsByEvent(validData);
+		const result = await findRsvpsByUser(validData);
 
 		expect(result).toEqual([]);
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
 	});
 
 	it("should return an empty array and log a ZodError if schema validation fails", async () => {
-		const invalidData = { eventCode: "BAD" };
-
 		const error = new ZodError([
 			{
-				code: "too_small",
-				minimum: 5,
-				type: "string",
-				inclusive: true,
-				exact: true,
-				message: "String must contain exactly 5 character(s)",
-				path: ["eventCode"],
+				code: "invalid_type",
+				expected: "string",
+				received: "undefined",
+				path: ["id"],
+				message: "Required",
+			},
+			{
+				code: "unrecognized_keys",
+				keys: ["eventCode"],
+				path: [],
+				message: "Unrecognized key(s) in object: 'eventCode'",
 			},
 		]);
 
-		const result = await findRsvpsByEvent(invalidData);
+		const result = await findRsvpsByUser(invalidData);
 
 		expect(result).toEqual([]);
-		expect(findEvent).not.toHaveBeenCalled();
 		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
 
 	it("should return an empty array and log an error if db query fails", async () => {
-		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
-
 		const error = new Error("DB Error");
 
 		(db.select as jest.Mock).mockReturnValueOnce({
@@ -92,9 +85,8 @@ describe("findSlots", () => {
 			}),
 		});
 
-		const result = await findRsvpsByEvent(validData);
+		const result = await findRsvpsByUser(validData);
 
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
 		expect(db.select).toHaveBeenCalled();
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
