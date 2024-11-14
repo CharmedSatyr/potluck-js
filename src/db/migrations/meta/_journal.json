@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1725668127454,
-      "tag": "0000_slimy_deadpool",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1731434202982,
-      "tag": "0001_new_sabra",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1731527983372,
-      "tag": "0002_smooth_sumo",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1731529250194,
-      "tag": "0003_tan_preak",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1731543792498,
-      "tag": "0004_ancient_matthew_murdock",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1731544318650,
-      "tag": "0005_smart_mandarin",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1731544946989,
-      "tag": "0006_aspiring_jubilee",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1731545648764,
-      "tag": "0007_melodic_mysterio",
+      "when": 1731555662185,
+      "tag": "0000_goofy_juggernaut",
       "breakpoints": true
     }
   ]

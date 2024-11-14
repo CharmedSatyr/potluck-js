@@ -2,7 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import { useActionState } from "react";
-import submitAction, { RsvpFormState } from "@/components/rsvp-form/submit-actions";
+import submitAction, {
+	RsvpFormState,
+} from "@/components/rsvp-form/submit-actions";
 
 type Props = {
 	code: string;
@@ -11,11 +13,14 @@ type Props = {
 const RsvpForm = ({ code }: Props) => {
 	const session = useSession();
 
-	const [, submit, isPending] = useActionState<RsvpFormState, FormData>(submitAction, {
-		code,
-		id: session?.data?.user?.id ?? "",
-		success: false,
-	});
+	const [, submit, isPending] = useActionState<RsvpFormState, FormData>(
+		submitAction,
+		{
+			code,
+			id: session?.data?.user?.id ?? "",
+			success: false,
+		}
+	);
 
 	return (
 		<form action={submit} className="form-control max-w-fit gap-2">

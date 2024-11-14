@@ -26,7 +26,7 @@ const RsvpTable = ({ rsvps, rsvpUsers }: Props) => {
 					{rsvps.map((rsvp) => {
 						const user = rsvpUsers.find((r) => r.id === rsvp.createdBy);
 						return (
-							<tr>
+							<tr key={rsvp.id}>
 								<th>
 									<label>
 										{rsvp.response === "yes" ? (

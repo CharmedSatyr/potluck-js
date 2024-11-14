@@ -1,8 +1,13 @@
-import { uuid, timestamp, pgTable, pgEnum, unique } from "drizzle-orm/pg-core";
+import {
+	uuid,
+	timestamp,
+	pgTable,
+	pgEnum,
+	unique,
+	varchar,
+} from "drizzle-orm/pg-core";
 import { user } from "@/db/schema/auth/user";
 import { event } from "@/db/schema/event";
-
-export const responseEnum = pgEnum("response", ["yes", "no"]);
 
 export const rsvp = pgTable(
 	"rsvp",
@@ -17,7 +22,8 @@ export const rsvp = pgTable(
 		eventId: uuid("event_id")
 			.references(() => event.id, { onDelete: "cascade" })
 			.notNull(),
-		response: responseEnum().notNull(),
+		message: varchar("message", { length: 256 }).notNull(),
+		response: pgEnum("response", ["yes", "no"])().notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),

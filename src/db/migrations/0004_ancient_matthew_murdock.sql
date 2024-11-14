@@ -1,1 +1,0 @@
-ALTER TABLE "rsvp" ADD CONSTRAINT "custom_name" UNIQUE("event_id","user_id");

@@ -4,7 +4,7 @@ import { z } from "zod";
 import db from "@/db/connection";
 import findEvent from "@/actions/db/find-event";
 import { schema } from "@/actions/db/upsert-rsvp.schema";
-import { Rsvp, rsvp } from "@/db/schema/rsvp";
+import { rsvp } from "@/db/schema/rsvp";
 
 const upsertRsvp = async (
 	data: z.infer<typeof schema>
@@ -23,11 +23,15 @@ const upsertRsvp = async (
 			.values({
 				createdBy: data.createdBy,
 				eventId: event.id,
+				message: data.message,
 				response: data.response,
 			})
 			.onConflictDoUpdate({
 				target: [rsvp.createdBy, rsvp.eventId],
-				set: { response: data.response },
+				set: {
+					message: data.message,
+					response: data.response,
+				},
 			})
 			.returning({ id: rsvp.id });
 

@@ -8,10 +8,12 @@ export const schema = z
 	.strictObject({
 		code: code,
 		createdBy: z.string().trim().uuid(),
+		message: z.string().trim().max(256),
 		response: z.enum(["yes", "no"]),
 	})
 	.required() satisfies z.ZodType<{
 	code: Event["code"];
 	createdBy: User["id"];
+	message: Rsvp["message"];
 	response: Rsvp["response"];
 }>;

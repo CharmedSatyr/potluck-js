@@ -1,1 +1,0 @@
-ALTER TABLE "rsvp" ALTER COLUMN "response" SET NOT NULL;
