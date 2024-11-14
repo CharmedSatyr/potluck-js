@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import DeleteEventButton from "./delete-event-button";
 import remove from "@/app/dashboard/remove-action";
 import eventIsPassed from "@/utilities/event-is-passed";
+import findRsvpsByUser from "@/actions/db/find-rsvps-by-user";
+import findEvent from "@/actions/db/find-event";
+import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 
 const Dashboard = async () => {
 	const session = await auth();
@@ -14,6 +17,8 @@ const Dashboard = async () => {
 	}
 
 	const hosted = await findEventsByUser({ createdBy: session.user.id });
+	// TODO: Improve query to grab event data for rsvps.
+	const rsvps = await findEventsByUserWithRsvp({ id: session.user.id });
 
 	return (
 		<div className="w-full">
@@ -78,7 +83,61 @@ const Dashboard = async () => {
 			)}
 
 			<h3>Events You Attended</h3>
-			<p>Coming Soon</p>
+			{!rsvps.length ? (
+				<div>
+					You haven&apos;t attended any events.{" "}
+					<Link href="/start">Go throw a party!</Link>
+				</div>
+			) : (
+				<div className="max-h-96 overflow-x-auto">
+					<table className="table table-pin-rows table-lg">
+						<thead>
+							<tr>
+								<th>Status</th>
+								<th>Name</th>
+								<th>Date</th>
+								<th>Location</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{rsvps
+								.sort((a, b) =>
+									new Date(a.startDate) > new Date(b.startDate) ? -1 : 1
+								)
+								.map((event) => {
+									const passed = eventIsPassed(event.startDate);
+
+									return (
+										<tr
+											key={event.code}
+											className={passed ? "bg-base-300" : ""}
+										>
+											<td>
+												{passed ? (
+													<span className="text-error">Past</span>
+												) : (
+													<span className="text-success">Active</span>
+												)}
+											</td>
+											<td>{event.name}</td>
+											<td>{event.startDate}</td>
+											<td>{event.location}</td>
+											<td>
+												<Link
+													className="btn btn-sm"
+													href={`/event/${event.code}`}
+												>
+													Details
+												</Link>
+											</td>
+										</tr>
+									);
+								})}
+						</tbody>
+					</table>
+				</div>
+			)}
 		</div>
 	);
 };
