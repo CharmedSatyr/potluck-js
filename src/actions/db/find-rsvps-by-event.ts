@@ -10,7 +10,12 @@ import { schema } from "@/actions/db/find-rsvps-by-event.schema";
 const findRsvpsByEvent = async (
 	data: z.infer<typeof schema>
 ): Promise<
-	{ createdBy: Rsvp["createdBy"]; id: Rsvp["id"]; response: Rsvp["response"] }[]
+	{
+		createdBy: Rsvp["createdBy"];
+		id: Rsvp["id"];
+		message: Rsvp["message"];
+		response: Rsvp["response"];
+	}[]
 > => {
 	try {
 		schema.parse(data);
@@ -25,6 +30,7 @@ const findRsvpsByEvent = async (
 			.select({
 				createdBy: rsvp.createdBy,
 				id: rsvp.id,
+				message: rsvp.message,
 				response: rsvp.response,
 			})
 			.from(rsvp)

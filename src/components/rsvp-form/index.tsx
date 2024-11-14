@@ -13,11 +13,13 @@ type Props = {
 const RsvpForm = ({ code }: Props) => {
 	const session = useSession();
 
-	const [, submit, isPending] = useActionState<RsvpFormState, FormData>(
+	const [state, submit, isPending] = useActionState<RsvpFormState, FormData>(
 		submitAction,
 		{
 			code,
+			fields: { message: "" },
 			id: session?.data?.user?.id ?? "",
+			message: "",
 			success: false,
 		}
 	);
@@ -46,13 +48,16 @@ const RsvpForm = ({ code }: Props) => {
 				Decline
 			</button>
 
-			<div>
+			<div className="form-control">
 				<label className="label label-text">Notes</label>
 				<input
 					className="input input-bordered w-full max-w-xs"
+					defaultValue={state.fields.message}
 					maxLength={256}
+					name="message"
 					type="text"
 				/>
+				<span className="text-error">{state.message}</span>
 			</div>
 		</form>
 	);

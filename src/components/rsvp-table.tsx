@@ -6,6 +6,7 @@ type Props = {
 	rsvps: {
 		createdBy: Rsvp["createdBy"];
 		id: Rsvp["id"];
+		message: Rsvp["message"];
 		response: Rsvp["response"];
 	}[];
 	rsvpUsers: User[];
@@ -46,6 +47,7 @@ const RsvpTable = ({ rsvps, rsvpUsers }: Props) => {
 									/>{" "}
 									{user?.name}
 								</td>
+								<td>{rsvp.message}</td>
 							</tr>
 						);
 					})}
