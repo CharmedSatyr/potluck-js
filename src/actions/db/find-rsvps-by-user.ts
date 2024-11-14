@@ -6,7 +6,7 @@ import db from "@/db/connection";
 import { rsvp, Rsvp } from "@/db/schema/rsvp";
 import { schema } from "@/actions/db/find-rsvps-by-user.schema";
 
-const findRsvpsByEvent = async (
+const findRsvpsByUser = async (
 	data: z.infer<typeof schema>
 ): Promise<
 	{
@@ -35,4 +35,4 @@ const findRsvpsByEvent = async (
 	}
 };
 
-export default findRsvpsByEvent;
+export default findRsvpsByUser;
