@@ -8,6 +8,10 @@ import { auth } from "@/auth";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
 import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable from "@/components/commitments-table";
+import RsvpContainer from "@/components/rsvp-container";
+import upsertRsvp from "@/actions/db/upsert-rsvp";
+import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
+import RsvpTable from "@/components/rsvp-table";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -26,6 +30,7 @@ const EventPage = async ({ params }: Props) => {
 	]);
 	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
+	// TODO: Make a query to get commitments with users.
 	const usersToFind = commitments.map((c) => c.createdBy);
 	const users =
 		usersToFind.length > 0
@@ -34,12 +39,25 @@ const EventPage = async ({ params }: Props) => {
 
 	const isPassed = eventIsPassed(event.startDate);
 
+	// TODO: Make a query to get RSVPs with user data
+	const rsvps = await findRsvpsByEvent({ eventCode: code });
+	const rsvpUsers =
+		rsvps.length > 0
+			? await findUsers({
+					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+				})
+			: [];
+
 	return (
 		<div className="flex w-full flex-col justify-center">
+			<RsvpContainer code={code} submitAction={upsertRsvp} />
+
 			<EventSkeleton {...event} />
 
-			<h2 className="mb-0">Food Plan</h2>
+			<h2>Attendees</h2>
+			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
 
+			<h2>Food Plan</h2>
 			{authenticated && !isPassed && (
 				<SlotManager
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
