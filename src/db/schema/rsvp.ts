@@ -17,7 +17,7 @@ export const rsvp = pgTable(
 		eventId: uuid("event_id")
 			.references(() => event.id, { onDelete: "cascade" })
 			.notNull(),
-		response: responseEnum(),
+		response: responseEnum().notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
