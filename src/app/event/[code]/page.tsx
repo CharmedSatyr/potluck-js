@@ -42,8 +42,8 @@ const EventPage = async ({ params }: Props) => {
 	const rsvpUsers =
 		rsvps.length > 0
 			? await findUsers({
-					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
-				})
+				users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+			})
 			: [];
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
@@ -60,7 +60,7 @@ const EventPage = async ({ params }: Props) => {
 			)}
 
 			<h2>Food Plan</h2>
-			{authenticated && !isPassed && (
+			{authenticated && !isPassed && rsvpResponse === "yes" && (
 				<SlotManager
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					commitments={commitments}
@@ -69,7 +69,7 @@ const EventPage = async ({ params }: Props) => {
 				/>
 			)}
 
-			{authenticated && isPassed && (
+			{authenticated && (isPassed || rsvpResponse !== "yes") && (
 				<CommitmentsTable
 					commitments={commitments}
 					slots={slots}
