@@ -33,10 +33,10 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 
 	if (currentResponse !== null && !override) {
 		return (
-			<div className="flex flex-col items-center">
+			<div className="mb-2 flex flex-col items-center">
 				<div>You will {currentResponse === "yes" ? "" : "not"} attend.</div>
 				<button
-					className="btn btn-accent"
+					className="btn btn-accent w-full"
 					disabled={isPending}
 					type="button"
 					onClick={() => {

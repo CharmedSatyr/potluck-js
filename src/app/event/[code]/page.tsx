@@ -53,7 +53,11 @@ const EventPage = async ({ params }: Props) => {
 			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
 
 			<h2>Attendees</h2>
-			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
+			{rsvps.length > 0 ? (
+				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
+			) : (
+				<div>Be the first to sign up!</div>
+			)}
 
 			<h2>Food Plan</h2>
 			{authenticated && !isPassed && (
