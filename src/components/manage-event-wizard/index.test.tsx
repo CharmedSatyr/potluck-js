@@ -33,7 +33,7 @@ describe("ManageEventWizard", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventPromise={eventPromise}
+				eventDataPromise={eventPromise}
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>

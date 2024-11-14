@@ -8,6 +8,8 @@ import { auth } from "@/auth";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
 import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable from "@/components/commitments-table";
+import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
+import RsvpTable from "@/components/rsvp-table";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -26,6 +28,7 @@ const EventPage = async ({ params }: Props) => {
 	]);
 	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
+	// TODO: Make a query to get commitments with users.
 	const usersToFind = commitments.map((c) => c.createdBy);
 	const users =
 		usersToFind.length > 0
@@ -34,13 +37,30 @@ const EventPage = async ({ params }: Props) => {
 
 	const isPassed = eventIsPassed(event.startDate);
 
+	// TODO: Make a query to get RSVPs with user data
+	const rsvps = await findRsvpsByEvent({ eventCode: code });
+	const rsvpUsers =
+		rsvps.length > 0
+			? await findUsers({
+					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+				})
+			: [];
+	const rsvpResponse =
+		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
+
 	return (
 		<div className="flex w-full flex-col justify-center">
-			<EventSkeleton {...event} />
+			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
 
-			<h2 className="mb-0">Food Plan</h2>
+			<h2>Attendees</h2>
+			{rsvps.length > 0 ? (
+				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
+			) : (
+				<div>Be the first to sign up!</div>
+			)}
 
-			{authenticated && !isPassed && (
+			<h2>Food Plan</h2>
+			{authenticated && !isPassed && rsvpResponse === "yes" && (
 				<SlotManager
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					commitments={commitments}
@@ -49,7 +69,7 @@ const EventPage = async ({ params }: Props) => {
 				/>
 			)}
 
-			{authenticated && isPassed && (
+			{authenticated && (isPassed || rsvpResponse !== "yes") && (
 				<CommitmentsTable
 					commitments={commitments}
 					slots={slots}
