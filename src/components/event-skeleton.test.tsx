@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { useSession } from "next-auth/react";
 import EventSkeleton from "@/components/event-skeleton";
 
@@ -13,6 +13,8 @@ jest.mock(
 			return <button>Copy Link</button>;
 		}
 );
+
+jest.mock("@/components/rsvp-form", jest.fn(() => () => <div>RSVP Form</div>))
 
 describe("EventSkeleton Component", () => {
 	const eventProps = {
@@ -33,7 +35,7 @@ describe("EventSkeleton Component", () => {
 		jest.clearAllMocks();
 	});
 
-	it("should render full event details if the user is authenticated and the event is not passed", () => {
+	it("should render full event details if the user is authenticated and the event is not passed", async () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
 			data: { user: { id: "user-999" } },
 			status: "authenticated",
@@ -52,6 +54,7 @@ describe("EventSkeleton Component", () => {
 		).toBeInTheDocument();
 		expect(screen.getByText(eventProps.description)).toBeInTheDocument();
 	});
+
 
 	it("should render  event details if the user is authenticated and the event is not passed", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({

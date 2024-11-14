@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import CopyLinkButton from "@/components/copy-link-button";
 import { Event } from "@/db/schema/event";
 import eventIsPassed from "@/utilities/event-is-passed";
+import RsvpForm from "@/components/rsvp-form";
 
 // TODO: Don't pass a whole event to the client.
 export type EventSkeletonProps = Event;
@@ -31,6 +32,12 @@ export const EventSkeleton = ({
 					<Link className="btn btn-accent mb-2" href={`/event/${code}/edit`}>
 						Edit
 					</Link>
+				)}
+				{authenticated && !isHost && !isPassed && (
+					<div className="flex flex-col">
+						<p className="font-bold">Will you attend?</p>
+						<RsvpForm code={code} />
+					</div>
 				)}
 
 				{code && <CopyLinkButton />}

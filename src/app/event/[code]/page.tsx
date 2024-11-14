@@ -8,7 +8,6 @@ import { auth } from "@/auth";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
 import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable from "@/components/commitments-table";
-import RsvpForm from "@/components/rsvp-form";
 import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
 import RsvpTable from "@/components/rsvp-table";
 
@@ -49,8 +48,6 @@ const EventPage = async ({ params }: Props) => {
 
 	return (
 		<div className="flex w-full flex-col justify-center">
-			<RsvpForm code={code} />
-
 			<EventSkeleton {...event} />
 
 			<h2>Attendees</h2>

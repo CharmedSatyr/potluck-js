@@ -27,6 +27,7 @@ describe("upsertRsvp", () => {
 	const validData: any = {
 		code: "CODE1",
 		createdBy: id,
+		message: "I will be late.",
 		response: "yes",
 	};
 
@@ -71,6 +72,13 @@ describe("upsertRsvp", () => {
 				expected: "string",
 				received: "undefined",
 				path: ["createdBy"],
+				message: "Required",
+			},
+			{
+				code: "invalid_type",
+				expected: "string",
+				received: "undefined",
+				path: ["message"],
 				message: "Required",
 			},
 			{
