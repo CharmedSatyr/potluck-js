@@ -8,7 +8,7 @@ export const schema = z
 	.strictObject({
 		code: code,
 		createdBy: z.string().trim().uuid(),
-		response: z.enum(["attending", "not attending"]),
+		response: z.enum(["yes", "no"]),
 	})
 	.required() satisfies z.ZodType<{
 	code: Event["code"];

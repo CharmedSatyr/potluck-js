@@ -32,10 +32,10 @@ describe("findSlots", () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
 
 		const rsvps = [
-			{ id, createdBy: id, eventId: id, response: "attending" },
-			{ id, createdBy: id, eventId: id, response: "not attending" },
-			{ id, createdBy: id, eventId: id, response: "attending" },
-			{ id, createdBy: id, eventId: id, response: "not attending" },
+			{ id, createdBy: id, eventId: id, response: "yes" },
+			{ id, createdBy: id, eventId: id, response: "no" },
+			{ id, createdBy: id, eventId: id, response: "yes" },
+			{ id, createdBy: id, eventId: id, response: "no" },
 		];
 
 		(db.select as jest.Mock).mockReturnValueOnce({

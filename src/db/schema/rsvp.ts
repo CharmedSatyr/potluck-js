@@ -2,7 +2,7 @@ import { uuid, timestamp, pgTable, pgEnum, unique } from "drizzle-orm/pg-core";
 import { user } from "@/db/schema/auth/user";
 import { event } from "@/db/schema/event";
 
-export const responseEnum = pgEnum("response", ["attending", "not attending"]);
+export const responseEnum = pgEnum("response", ["yes", "no"]);
 
 export const rsvp = pgTable(
 	"rsvp",

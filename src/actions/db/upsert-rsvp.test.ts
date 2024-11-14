@@ -27,7 +27,7 @@ describe("upsertRsvp", () => {
 	const validData: any = {
 		code: "CODE1",
 		createdBy: id,
-		response: "attending",
+		response: "yes",
 	};
 
 	const invalidData: any = {
@@ -74,7 +74,7 @@ describe("upsertRsvp", () => {
 				message: "Required",
 			},
 			{
-				expected: "'attending' | 'not attending'",
+				expected: "'yes' | 'no'",
 				received: "undefined",
 				code: "invalid_type" as "invalid_literal",
 				path: ["response"],
