@@ -11,6 +11,7 @@ const findRsvpsByUser = async (
 ): Promise<
 	{
 		createdBy: Rsvp["createdBy"];
+		eventId: Rsvp["eventId"];
 		id: Rsvp["id"];
 		message: Rsvp["message"];
 		response: Rsvp["response"];
@@ -22,6 +23,7 @@ const findRsvpsByUser = async (
 		return await db
 			.select({
 				createdBy: rsvp.createdBy,
+				eventId: rsvp.eventId,
 				id: rsvp.id,
 				message: rsvp.message,
 				response: rsvp.response,

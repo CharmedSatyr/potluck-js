@@ -29,10 +29,10 @@ describe("findSlots", () => {
 
 	it("should return RSVPs for a valid user id", async () => {
 		const rsvps = [
-			{ id, createdBy: id, eventId: id, response: "yes" },
-			{ id, createdBy: id, eventId: id, response: "no" },
-			{ id, createdBy: id, eventId: id, response: "yes" },
-			{ id, createdBy: id, eventId: id, response: "no" },
+			{ createdBy: id, eventId: id, id, message: "", response: "yes" },
+			{ createdBy: id, eventId: id, id, message: "", response: "no" },
+			{ createdBy: id, eventId: id, id, message: "", response: "yes" },
+			{ createdBy: id, eventId: id, id, message: "", response: "no" },
 		];
 
 		(db.select as jest.Mock).mockReturnValueOnce({
