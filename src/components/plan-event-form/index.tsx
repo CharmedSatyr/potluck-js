@@ -96,7 +96,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 	return (
 		<form
 			action={submit}
-			className="form-control mx-2 w-full"
+			className="form-control mx-2 w-full lg:w-3/4 2xl:w-10/12"
 			name="create-event-form"
 		>
 			<h1 className="mb-4 text-primary">Create an Event</h1>
