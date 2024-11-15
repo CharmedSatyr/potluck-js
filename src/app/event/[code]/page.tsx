@@ -42,11 +42,13 @@ const EventPage = async ({ params }: Props) => {
 	const rsvpUsers =
 		rsvps.length > 0
 			? await findUsers({
-					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
-				})
+				users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+			})
 			: [];
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
+
+	const isHost = event.createdBy === session?.user?.id;
 
 	return (
 		<div className="flex w-full flex-col justify-center">
@@ -60,7 +62,7 @@ const EventPage = async ({ params }: Props) => {
 			)}
 
 			<h2>Food Plan</h2>
-			{authenticated && !isPassed && rsvpResponse === "yes" && (
+			{authenticated && !isPassed && (isHost || rsvpResponse === "yes") && (
 				<SlotManager
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					commitments={commitments}
