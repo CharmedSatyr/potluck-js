@@ -39,8 +39,6 @@ const SlotManager = ({
 
 				const commitmentsStillNeeded = slot.count - relatedCommitments.length;
 
-				console.log('slot:', slot);
-
 				return (
 					<div key={slot.id} className="join-item border">
 						<SlotContainer
