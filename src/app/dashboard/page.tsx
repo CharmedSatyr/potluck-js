@@ -5,11 +5,9 @@ import { redirect } from "next/navigation";
 import DeleteEventButton from "./delete-event-button";
 import remove from "@/app/dashboard/remove-action";
 import eventIsPassed from "@/utilities/event-is-passed";
-import findRsvpsByUser from "@/actions/db/find-rsvps-by-user";
-import findEvent from "@/actions/db/find-event";
 import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 
-const Dashboard = async () => {
+const DashboardPage = async () => {
 	const session = await auth();
 
 	if (!session?.user?.id) {
@@ -24,7 +22,7 @@ const Dashboard = async () => {
 		<div className="w-full">
 			<h1>Dashboard</h1>
 
-			<h2>Events You Created</h2>
+			<h2>Hosting</h2>
 			{!hosted.length ? (
 				<div>
 					You haven&apos;t hosted any events.{" "}
@@ -82,7 +80,7 @@ const Dashboard = async () => {
 				</div>
 			)}
 
-			<h3>Events You Attended</h3>
+			<h2>Attending</h2>
 			{!rsvps.length ? (
 				<div>
 					You haven&apos;t attended any events.{" "}
@@ -142,4 +140,4 @@ const Dashboard = async () => {
 	);
 };
 
-export default Dashboard;
+export default DashboardPage;
