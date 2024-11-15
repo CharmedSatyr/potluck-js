@@ -193,7 +193,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 					<input
 						className="w-full"
 						defaultValue={state?.fields.hosts}
-						id="description-input"
+						id="hosts-input"
 						maxLength={256}
 						name="hosts"
 						placeholder="Non-Discord names or nicknames"
