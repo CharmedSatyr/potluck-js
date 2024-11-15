@@ -33,11 +33,11 @@ const DashboardPage = async () => {
 					<table className="table table-pin-rows table-lg">
 						<thead>
 							<tr>
-								<th></th>
 								<th>Status</th>
 								<th>Name</th>
 								<th>Date</th>
 								<th>Location</th>
+								<th></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -51,9 +51,6 @@ const DashboardPage = async () => {
 
 									return (
 										<tr key={event.id} className={passed ? "bg-base-300" : ""}>
-											<td>
-												<DeleteEventButton code={event.code} remove={remove} />
-											</td>
 											<td>
 												{passed ? (
 													<span className="text-error">Past</span>
@@ -72,6 +69,10 @@ const DashboardPage = async () => {
 													Details
 												</Link>
 											</td>
+											<td>
+												<DeleteEventButton code={event.code} remove={remove} />
+											</td>
+
 										</tr>
 									);
 								})}
