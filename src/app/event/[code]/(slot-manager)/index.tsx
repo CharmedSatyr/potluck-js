@@ -23,7 +23,7 @@ const SlotManager = ({
 
 	return (
 		<div className="join join-vertical w-full border">
-			{slots.map((slot, index) => {
+			{slots.map((slot) => {
 				const relatedCommitments = commitments.filter(
 					(c) => c.slotId === slot.id
 				);
@@ -38,6 +38,8 @@ const SlotManager = ({
 				);
 
 				const commitmentsStillNeeded = slot.count - relatedCommitments.length;
+
+				console.log('slot:', slot);
 
 				return (
 					<div key={slot.id} className="join-item border">
