@@ -73,6 +73,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 			className="flex max-h-96 flex-col justify-between"
 			name="create-event-form"
 		>
+
 			<input
 				className="w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none"
 				defaultValue={state?.fields.name}
@@ -129,7 +130,8 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 			</div>
 
 			<div className="flex flex-col">
-				<div className="flex items-center justify-between">
+				<div className="flex items-center">
+					<p className="my-4 font-bold text-lg">Hosted by</p>&nbsp;
 					<input
 						className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
 						defaultValue={state?.fields.hosts}
