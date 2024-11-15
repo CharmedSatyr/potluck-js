@@ -16,6 +16,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="1"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
@@ -33,6 +34,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="0"
+				hasCommitments={false}
 				id={id}
 				index={1}
 				item="Sample Course"
@@ -52,6 +54,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="0"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
@@ -71,6 +74,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="1"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
@@ -90,6 +94,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="0"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
@@ -111,6 +116,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="1"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
@@ -134,6 +140,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="1"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
@@ -155,6 +162,7 @@ describe("CourseInput", () => {
 			<CourseInput
 				change={handleChange}
 				count="1"
+				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Course"
