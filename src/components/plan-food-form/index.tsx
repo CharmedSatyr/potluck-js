@@ -116,7 +116,9 @@ const PlanFoodForm = ({
 	};
 
 	const slotsValid = useMemo(
-		() => slots.every((course) => courseSchema.safeParse(course).success),
+		() =>
+			slots.length > 0 &&
+			slots.every((course) => courseSchema.safeParse(course).success),
 		[slots]
 	);
 
