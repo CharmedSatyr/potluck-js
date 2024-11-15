@@ -14,8 +14,8 @@ export const createCommitmentAction = async (
 	prevState: CreateCommitmentFormState,
 	formData: FormData
 ): Promise<CreateCommitmentFormState> => {
-	const description = String(formData.get("description"));
-	const quantity = String(formData.get("quantity"));
+	const description = String(formData.get("description") ?? "");
+	const quantity = String(formData.get("quantity") ?? "0");
 
 	const fields = { description, quantity };
 
@@ -61,7 +61,7 @@ export const createCommitmentAction = async (
 	return {
 		...prevState,
 		fields: {
-			item: "",
+			description: "",
 			quantity: "0",
 		},
 		message: "",
