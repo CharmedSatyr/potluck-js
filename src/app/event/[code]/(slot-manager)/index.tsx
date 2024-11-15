@@ -1,10 +1,10 @@
 import { use } from "react";
 import SlotContainer from "@/app/event/[code]/(slot-manager)/slot-container";
-import CreateCommitmentForm from "@/app/event/[code]/(slot-manager)/create-commitment-form";
 import CommitmentsTable from "@/app/event/[code]/(slot-manager)/commitments-table";
 import { Commitment } from "@/db/schema/commitment";
 import { Slot } from "@/db/schema/slot";
 import { User } from "@/db/schema/auth/user";
+import CreateCommitmentForm from "./create-commitment-form";
 
 type Props = {
 	commitments: Commitment[];
@@ -56,7 +56,6 @@ const SlotManager = ({
 							)}
 							<CreateCommitmentForm
 								commitmentsStillNeeded={slot.count - relatedCommitments.length}
-								index={index}
 								slotId={slot.id}
 							/>
 						</SlotContainer>

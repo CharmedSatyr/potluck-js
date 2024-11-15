@@ -1,100 +1,129 @@
 "use client";
 
-import Form from "next/form";
-import { useActionState, useEffect, useState } from "react";
-import { createCommitmentAction } from "@/app/event/[code]/(slot-manager)/submit-actions";
-import {
-	CreateCommitmentFormData,
-	CreateCommitmentFormState,
-	createCommitmentFormSchema,
-} from "@/app/event/[code]/(slot-manager)/submit-actions.schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import QuantityInput from "@/components/quantity-input";
+import { useActionState, useRef } from "react";
+import { createCommitmentAction } from "./submit-actions";
+import { CreateCommitmentFormState } from "./submit-actions.schema";
 import { usePathname } from "next/navigation";
 
 type Props = {
 	commitmentsStillNeeded: number;
-	index: number;
 	slotId: string;
 };
 
-const CreateCommitmentForm = ({
-	commitmentsStillNeeded,
-	index,
-	slotId,
-}: Props) => {
+type Propses = {
+	defaultValue: string;
+};
+
+const CountInput = ({ defaultValue }: Propses) => {
+	const countRef = useRef<HTMLInputElement>(null);
+
+	return (
+		<div className="form-control">
+			<label htmlFor="quantity-input" className="label label-text">
+				Quantity You&apos;ll Bring
+			</label>
+			<div className="join">
+				<button
+					className="btn join-item"
+					onClick={() => {
+						countRef.current?.stepDown();
+					}}
+					type="button"
+				>
+					<svg
+						className="h-3 w-3 text-gray-900 dark:text-white"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 18 2"
+					>
+						<path
+							stroke="currentColor"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
+							d="M1 1h16"
+						/>
+					</svg>
+				</button>
+				<input
+					className="input join-item input-bordered max-w-20"
+					defaultValue={defaultValue}
+					id="quantity-input"
+					inputMode="numeric"
+					max="99"
+					min="1"
+					name="quantity"
+					ref={countRef}
+					required
+					type="number"
+				/>
+				<button
+					className="btn join-item"
+					onClick={() => {
+						countRef.current?.stepUp();
+					}}
+					type="button"
+				>
+					<svg
+						className="h-3 w-3 text-gray-900 dark:text-white"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 18 18"
+					>
+						<path
+							stroke="currentColor"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
+							d="M9 1v16M1 9h16"
+						/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	);
+};
+
+const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 	const path = usePathname();
-	const [commitQuantity, setCommitQuantity] = useState<number>(0);
 
 	const [state, formAction, isPending] = useActionState<
 		CreateCommitmentFormState,
 		FormData
 	>(createCommitmentAction, {
-		fields: {},
+		fields: {
+			description: "",
+			quantity: "0",
+		},
 		message: "",
 		path,
 		slotId,
 		success: false,
 	});
 
-	useEffect(() => {
-		if (!state.success) {
-			return;
-		}
-
-		setCommitQuantity(0);
-	}, [state.success]);
-
-	const form = useForm<CreateCommitmentFormData>({
-		mode: "all",
-		resolver: zodResolver(createCommitmentFormSchema),
-		defaultValues: { description: "", quantity: 0, ...state.fields },
-	});
-	const { register } = form;
-
-	const isButtonDisabled =
-		isPending || commitmentsStillNeeded === 0 || commitQuantity < 1;
+	const isButtonDisabled = isPending || commitmentsStillNeeded === 0;
 
 	return (
-		<Form action={formAction} className="form-control w-full" noValidate>
-			<div className="flex w-full items-end justify-between">
-				<QuantityInput
-					index={index}
-					labelText="Quantity You'll Bring"
-					max={commitmentsStillNeeded}
-					min={1}
-					quantity={commitQuantity}
-					setQuantity={setCommitQuantity}
-				/>
-
-				{/** QuantityInput input value isn't picked up by form.
-				 * TODO: Try react-hook-form Controller on QuantityInput.
-				 */}
-				<input
-					hidden
-					type="number"
-					value={commitQuantity}
-					readOnly
-					{...register("quantity")}
-				/>
-
-				<input
-					className="input-text input input-bordered w-1/2"
-					placeholder="(optional) Add a comment"
-					type="text"
-					{...register("description", {
-						maxLength: 256,
-					})}
-				/>
-				<input
-					disabled={isButtonDisabled}
-					className="btn btn-secondary"
-					type="submit"
-					value="Save"
-				/>
-			</div>
-		</Form>
+		<form action={formAction} className="flex w-full items-end justify-between">
+			<CountInput defaultValue={state.fields.quantity} />
+			<input
+				className="input-text input input-bordered w-1/2"
+				defaultValue={state.fields.description}
+				placeholder="(optional) Add a comment"
+				maxLength={256}
+				name="description"
+				type="text"
+			/>
+			<button
+				className="btn btn-secondary"
+				disabled={isButtonDisabled}
+				type="submit"
+			>
+				Save
+			</button>
+		</form>
 	);
 };
 

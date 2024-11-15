@@ -14,21 +14,18 @@ export const createCommitmentAction = async (
 	prevState: CreateCommitmentFormState,
 	formData: FormData
 ): Promise<CreateCommitmentFormState> => {
-	const data = Object.fromEntries(formData);
+	const description = String(formData.get("description"));
+	const quantity = String(formData.get("quantity"));
 
-	const fields: Record<string, string> = {};
-	for (const key of Object.keys(data)) {
-		fields[key] = data[key] as string;
-	}
+	const fields = { description, quantity };
 
 	const parsed = createCommitmentFormSchema.safeParse(fields);
 
 	if (!parsed.success) {
 		return {
+			...prevState,
 			fields,
 			message: "Invalid form data",
-			path: prevState.path,
-			slotId: prevState.slotId,
 			success: false,
 		};
 	}
@@ -37,10 +34,9 @@ export const createCommitmentAction = async (
 
 	if (!session?.user?.id) {
 		return {
+			...prevState,
 			fields,
 			message: "Not authenticated",
-			path: prevState.path,
-			slotId: prevState.slotId,
 			success: false,
 		};
 	}
@@ -53,10 +49,9 @@ export const createCommitmentAction = async (
 
 	if (!result) {
 		return {
+			...prevState,
 			fields,
 			message: "Failed to create event",
-			path: prevState.path,
-			slotId: prevState.slotId,
 			success: false,
 		};
 	}
@@ -64,10 +59,12 @@ export const createCommitmentAction = async (
 	revalidatePath(prevState.path, "page");
 
 	return {
-		fields,
-		message: "Event created",
-		path: prevState.path,
-		slotId: prevState.slotId,
+		...prevState,
+		fields: {
+			item: "",
+			quantity: "0",
+		},
+		message: "",
 		success: true,
 	};
 };
