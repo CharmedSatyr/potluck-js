@@ -17,6 +17,32 @@ type Props = {
 	) => Promise<PlanEventFormState>;
 };
 
+const FormErrorAlert = ({ text }: { text: string }) => {
+	if (!text) {
+		return null;
+	}
+
+	return (
+		<div role="alert" className="alert mt-2 py-1 text-warning">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				className="h-6 w-6 shrink-0 stroke-current"
+				fill="none"
+				viewBox="0 0 24 24"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth="2"
+					d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+				/>
+			</svg>
+
+			<span>{text}</span>
+		</div>
+	);
+};
+
 const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
@@ -70,93 +96,141 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 	return (
 		<form
 			action={submit}
-			className="flex max-h-96 flex-col justify-between"
+			className="form-control mx-2 w-full"
 			name="create-event-form"
 		>
+			<h1 className="mb-4 text-primary">Create an Event</h1>
 
-			<input
-				className="w-full border-b-2 border-base-100 bg-inherit text-6xl font-extrabold text-primary focus:border-neutral focus:outline-none"
-				defaultValue={state?.fields.name}
-				name="name"
-				placeholder="Untitled Event"
-				required
-				type="text"
-			/>
-			<span className="mb-2 text-secondary">
-				{state?.errors?.fieldErrors.name?.join(" ")}
-			</span>
-
-			<div className="flex items-center justify-between">
-				<input
-					className="border-base-100 bg-inherit text-2xl focus:border-b-2 focus:border-neutral focus:outline-none"
-					data-testid="start-date"
-					defaultValue={state?.fields.startDate}
-					name="startDate"
-					type="date"
-					required
-				/>{" "}
-				<span className="text-2xl font-bold"> at </span>
-				<input
-					className="w-4/12 border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
-					data-testid="start-time"
-					defaultValue={state?.fields.startTime}
-					name="startTime"
-					step={60}
-					required
-					type="time"
-				/>
-			</div>
 			<div>
-				<span className="mt-0 text-secondary">
-					{state?.errors?.fieldErrors.startDate?.join(" ")}
-				</span>
-				<span className="float-right mb-2 mt-0 text-secondary">
-					{state?.errors?.fieldErrors.startTime?.join(" ")}
-				</span>
+				<label className="label label-text" htmlFor="name-input">
+					Event Name
+				</label>
+				<input
+					className={`input input-bordered w-full ${state?.errors?.fieldErrors?.name ? "input-warning" : ""}`}
+					defaultValue={state?.fields.name}
+					id="name-input"
+					maxLength={256}
+					name="name"
+					placeholder="Untitled event"
+					required
+					type="text"
+				/>
+				{state?.errors?.fieldErrors.name && (
+					<FormErrorAlert text={state?.errors?.fieldErrors.name?.join(" ")} />
+				)}
 			</div>
 
-			<div className="mb-4 mt-2">
+			<div className="my-2 flex justify-between">
+				<div className="w-5/12">
+					<label className="label label-text" htmlFor="date-input">
+						Date
+					</label>
+					<input
+						className="input input-bordered w-full"
+						data-testid="start-date"
+						defaultValue={state?.fields.startDate}
+						name="startDate"
+						id="date-input"
+						required
+						type="date"
+					/>
+					{state?.errors?.fieldErrors.startDate && (
+						<FormErrorAlert
+							text={state?.errors?.fieldErrors.startDate?.join(" ")}
+						/>
+					)}
+				</div>
+
+				<div className="w-5/12">
+					<label className="label label-text" htmlFor="time-input">
+						Time
+					</label>
+					<input
+						className="input input-bordered w-full"
+						data-testid="start-time"
+						defaultValue={state?.fields.startTime}
+						id="time-input"
+						name="startTime"
+						required
+						step={60}
+						type="time"
+					/>
+					{state?.errors?.fieldErrors.startTime && (
+						<FormErrorAlert
+							text={state?.errors?.fieldErrors.startTime?.join(" ")}
+						/>
+					)}
+				</div>
+			</div>
+
+			<div className="my-2">
+				<label className="label label-text" htmlFor="location-input">
+					Location
+				</label>
 				<input
-					className="my-2 w-full border-b-2 border-base-100 bg-inherit text-2xl focus:border-neutral focus:outline-none"
+					className="input input-bordered w-full"
 					defaultValue={state?.fields.location}
+					id="location-input"
+					maxLength={256}
 					name="location"
 					placeholder="Place name, address, or link"
 					required
 					type="text"
 				/>
-				<span className="mb-2 text-secondary">
-					{state?.errors?.fieldErrors.location?.join(" ")}
-				</span>
+				{state?.errors?.fieldErrors.location && (
+					<FormErrorAlert
+						text={state?.errors?.fieldErrors.location?.join(" ")}
+					/>
+				)}
 			</div>
 
-			<div className="flex flex-col">
-				<div className="flex items-center">
-					<p className="my-4 font-bold text-lg">Hosted by</p>&nbsp;
+			<div className="my-2">
+				<label className="label label-text" htmlFor="host-input">
+					Hosts
+				</label>
+				<div className="input input-bordered flex w-full items-center gap-2">
+					<div className="badge badge-info gap-2">optional</div>
 					<input
-						className="w-8/12 border-b-2 border-base-100 bg-inherit text-xl focus:border-neutral focus:outline-none"
+						className="w-full"
 						defaultValue={state?.fields.hosts}
+						id="description-input"
+						maxLength={256}
 						name="hosts"
-						placeholder={"(optional) Nickname"}
+						placeholder="Non-Discord names or nicknames"
 						type="text"
 					/>
 				</div>
-				<span className="mb-2 text-secondary">
-					{state?.errors?.fieldErrors.hosts?.join(" ")}
-				</span>
+
+				{state?.errors?.fieldErrors.hosts && (
+					<FormErrorAlert text={state?.errors?.fieldErrors.hosts?.join(" ")} />
+				)}
 			</div>
 
-			<input
-				className="my-2 w-full border-b-2 border-base-100 bg-inherit focus:border-neutral focus:outline-none"
-				defaultValue={state?.fields.description}
-				name="description"
-				placeholder="(optional) Add a description of your event"
-			/>
-			<span className="mb-2 text-secondary">
-				{state?.errors?.fieldErrors.description?.join(" ")}
-			</span>
+			<div className="my-2">
+				<label className="label label-text" htmlFor="description-input">
+					Description
+				</label>
+				<div className="input input-bordered flex w-full items-center gap-2">
+					<div className="badge badge-info gap-2">optional</div>
+					<input
+						className="w-full"
+						defaultValue={state?.fields.description}
+						id="description-input"
+						maxLength={256}
+						name="description"
+						placeholder="Add a description of your event"
+						type="text"
+					/>
+				</div>
+				{state?.errors?.fieldErrors.description && (
+					<FormErrorAlert
+						text={state?.errors?.fieldErrors.description?.join(" ")}
+					/>
+				)}
+			</div>
 
 			<button
-				className="btn btn-primary w-full"
+				className="btn btn-primary my-6 w-full"
 				disabled={isPending || anchor === "plan-food"}
 				type="submit"
 			>
