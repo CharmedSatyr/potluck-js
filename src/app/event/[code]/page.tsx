@@ -71,7 +71,7 @@ const EventPage = async ({ params }: Props) => {
 				/>
 			)}
 
-			{authenticated && (isPassed || rsvpResponse !== "yes") && (
+			{authenticated && !isHost && (isPassed || rsvpResponse !== "yes") && (
 				<CommitmentsTable
 					commitments={commitments}
 					slots={slots}
