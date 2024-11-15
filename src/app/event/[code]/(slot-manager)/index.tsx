@@ -37,6 +37,8 @@ const SlotManager = ({
 					0
 				);
 
+				const commitmentsStillNeeded = slot.count - relatedCommitments.length
+
 				return (
 					<div key={slot.id} className="join-item border">
 						<SlotContainer
@@ -54,10 +56,10 @@ const SlotManager = ({
 							) : (
 								<p>None yet. Be the first!</p>
 							)}
-							<CreateCommitmentForm
-								commitmentsStillNeeded={slot.count - relatedCommitments.length}
+							{commitmentsStillNeeded > 0 && <CreateCommitmentForm
+								commitmentsStillNeeded={commitmentsStillNeeded}
 								slotId={slot.id}
-							/>
+							/>}
 						</SlotContainer>
 					</div>
 				);

@@ -10,11 +10,15 @@ type Props = {
 	slotId: string;
 };
 
-type Propses = {
+type CourseInputProps = {
+	commitmentsStillNeeded: number;
 	defaultValue: string;
 };
 
-const CountInput = ({ defaultValue }: Propses) => {
+const CountInput = ({
+	commitmentsStillNeeded,
+	defaultValue,
+}: CourseInputProps) => {
 	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
@@ -51,7 +55,7 @@ const CountInput = ({ defaultValue }: Propses) => {
 					defaultValue={defaultValue}
 					id="quantity-input"
 					inputMode="numeric"
-					max="99"
+					max={commitmentsStillNeeded}
 					min="1"
 					name="quantity"
 					ref={countRef}
@@ -107,7 +111,10 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 
 	return (
 		<form action={formAction} className="flex w-full items-end justify-between">
-			<CountInput defaultValue={state.fields.quantity} />
+			<CountInput
+				commitmentsStillNeeded={commitmentsStillNeeded}
+				defaultValue={state.fields.quantity}
+			/>
 			<input
 				className="input-text input input-bordered w-1/2"
 				defaultValue={state.fields.description}
