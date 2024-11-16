@@ -45,17 +45,15 @@ describe("EventSkeleton Component", () => {
 
 	it("should render full event details if the user is authenticated and the event is not passed", async () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
+			data: { user: { id: "user-999", image: "https://discord.image" } },
 			status: "authenticated",
 		});
 
-		render(<EventSkeleton {...eventProps} />);
+		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
 
 		expect(screen.getByText(eventProps.code)).toBeInTheDocument();
 		expect(screen.getByText(eventProps.name)).toBeInTheDocument();
-		expect(
-			screen.getByText(`${eventProps.startDate} at ${eventProps.startTime}`)
-		).toBeInTheDocument();
+		expect(screen.getByText("October 30, 2099 at 1:00 PM")).toBeInTheDocument();
 		expect(screen.getByText(eventProps.location)).toBeInTheDocument();
 		expect(
 			screen.getByText(`Hosted by ${eventProps.hosts}`)
@@ -63,19 +61,17 @@ describe("EventSkeleton Component", () => {
 		expect(screen.getByText(eventProps.description)).toBeInTheDocument();
 	});
 
-	it("should render  event details if the user is authenticated and the event is not passed", () => {
+	it("should render event details if the user is authenticated and the event is not passed", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
+			data: { user: { id: "user-999", image: "https://discord.image" } },
 			status: "authenticated",
 		});
 
-		render(<EventSkeleton {...eventProps} />);
+		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
 
 		expect(screen.getByText(eventProps.code)).toBeInTheDocument();
 		expect(screen.getByText(eventProps.name)).toBeInTheDocument();
-		expect(
-			screen.getByText(`${eventProps.startDate} at ${eventProps.startTime}`)
-		).toBeInTheDocument();
+		expect(screen.getByText("October 30, 2099 at 1:00 PM")).toBeInTheDocument();
 		expect(screen.getByText(eventProps.location)).toBeInTheDocument();
 		expect(
 			screen.getByText(`Hosted by ${eventProps.hosts}`)
@@ -88,7 +84,8 @@ describe("EventSkeleton Component", () => {
 			status: "unauthenticated",
 			data: null,
 		});
-		render(<EventSkeleton {...eventProps} />);
+
+		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
 
 		expect(
 			screen.getByText("Sign In to see all the details!")
@@ -107,11 +104,13 @@ describe("EventSkeleton Component", () => {
 
 	it("should render 'Edit' link if the user is the host", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: eventProps.createdBy } },
+			data: {
+				user: { id: eventProps.createdBy, image: "https://discord.image" },
+			},
 			status: "authenticated",
 		});
 
-		render(<EventSkeleton {...eventProps} />);
+		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
 
 		const editLink = screen.getByRole("link", { name: /edit/i });
 
@@ -121,11 +120,11 @@ describe("EventSkeleton Component", () => {
 
 	it("should not render 'Edit' link if the user is not the host", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "other-user-999" } },
+			data: { user: { id: "other-user-999", image: "https://discord.image" } },
 			status: "authenticated",
 		});
 
-		render(<EventSkeleton {...eventProps} />);
+		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
 
 		expect(
 			screen.queryByRole("link", { name: /edit/i })
@@ -134,11 +133,11 @@ describe("EventSkeleton Component", () => {
 
 	it("should render 'CopyLinkButton' if code is present", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
+			data: { user: { id: "user-999", image: "https://discord.image" } },
 			status: "authenticated",
 		});
 
-		render(<EventSkeleton {...eventProps} />);
+		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
 
 		const copyLinkButton = screen.getByRole("button", { name: /copy link/i });
 
@@ -147,11 +146,11 @@ describe("EventSkeleton Component", () => {
 
 	it("should not render 'CopyLinkButton' if no code is present", () => {
 		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999" } },
+			data: { user: { id: "user-999", image: "https://discord.image" } },
 			status: "authenticated",
 		});
 
-		render(<EventSkeleton {...eventProps} code="" />);
+		render(<EventSkeleton {...eventProps} code="" rsvpResponse={null} />);
 
 		expect(
 			screen.queryByRole("button", { name: /copy link/i })

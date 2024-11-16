@@ -7,6 +7,15 @@ import { Event } from "@/db/schema/event";
 import eventIsPassed from "@/utilities/event-is-passed";
 import RsvpForm from "@/components/rsvp-form";
 import { Rsvp } from "@/db/schema/rsvp";
+import Image from "next/image";
+import {
+	CalendarIcon,
+	ClockIcon,
+	MapPinIcon,
+} from "@heroicons/react/24/outline";
+import { formatStartDate } from "@/utilities/format-start-date";
+import { formatStartTime } from "@/utilities/format-start-time";
+import WarningAlert from "@/components/warning-alert";
 
 // TODO: Don't pass a whole event to the client.
 export type EventSkeletonProps = Event & {
@@ -30,7 +39,41 @@ export const EventSkeleton = ({
 	const isPassed = eventIsPassed(startDate);
 
 	return (
-		<div className="w-full">
+		<div className="flex w-full justify-between">
+			<div className="max-w-md">
+				<h1 className="mb-4 text-5xl font-bold text-primary">{name}</h1>
+				<h2 className="my-4">
+					Event Code: <span className="text-secondary">{code}</span>
+				</h2>
+				{authenticated ? (
+					<>
+						<p className="flex items-center gap-2">
+							<CalendarIcon className="h-4 w-4" /> {formatStartDate(startDate)}{" "}
+							at <ClockIcon className="h-4 w-4" /> {formatStartTime(startTime)}
+						</p>
+						<p className="flex items-center gap-2">
+							<MapPinIcon className="h-4 w-4" /> {location}
+						</p>
+						<p className="flex h-6 items-center gap-2">
+							<Image
+								alt={session.data?.user?.name ?? "Avatar"}
+								className="avatar rounded-full border"
+								src={session.data?.user?.image ?? ""}
+								height="20"
+								width="20"
+							/>
+							Hosted by {hosts}
+						</p>
+						<p>{description}</p>
+						{isPassed && (
+							<WarningAlert text="This event takes place in the past." />
+						)}
+					</>
+				) : (
+					<p>Sign In to see all the details!</p>
+				)}
+			</div>
+
 			<div className="float-right flex w-36 flex-col">
 				{isHost && !isPassed && (
 					<Link className="btn btn-accent mb-2" href={`/event/${code}/edit`}>
@@ -45,32 +88,6 @@ export const EventSkeleton = ({
 
 				{code && <CopyLinkButton />}
 			</div>
-
-			{isPassed && <h1 className="text-warning">Past event</h1>}
-
-			{!isPassed && code && (
-				<h1>
-					Event Code: <span className="text-secondary">{code}</span>
-				</h1>
-			)}
-
-			<h1 className="mb-6 w-full text-6xl text-primary">{name}</h1>
-
-			{authenticated ? (
-				<>
-					<h2 className="my-7 font-normal">
-						{startDate} at {startTime}
-					</h2>
-
-					<h2 className="my-6 font-normal">{location}</h2>
-
-					<h3 className="my-4 font-bold">Hosted by {hosts}</h3>
-
-					<div className="my-4">{description}</div>
-				</>
-			) : (
-				<h2 className="my-7 font-bold">Sign In to see all the details!</h2>
-			)}
 		</div>
 	);
 };
