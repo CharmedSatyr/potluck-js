@@ -42,7 +42,7 @@ const CopyLinkButton = ({ className, text }: Props) => {
 	return (
 		<div className="tooltip" data-tip={clicked ? "Copied" : "Copy Link"}>
 			<button
-				className="btn btn-ghost btn-sm text-lg font-bold"
+				className="btn btn-ghost btn-sm text-lg font-bold px-2"
 				onClick={copyWithReset}
 				type="button"
 			>
