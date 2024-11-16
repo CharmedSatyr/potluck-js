@@ -127,12 +127,10 @@ const PlanFoodForm = ({
 	return (
 		<form
 			action={submit}
-			className="form-control w-full lg:w-5/6 xl:w-2/3 2xl:w-1/2"
+			className="form-control mx-2 w-full md:w-11/12 lg:w-9/12 2xl:w-7/12"
 			data-testid="plan-food-form"
 		>
-			<h1 className="my-0 text-6xl font-extrabold text-primary">
-				Plan the Food
-			</h1>
+			<h1 className="my-0 text-primary">Plan the Food</h1>
 			<h2>Create Your Slots</h2>
 
 			<span className="mb-2 text-secondary">{state?.message}</span>

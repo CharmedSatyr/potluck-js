@@ -26,13 +26,15 @@ const CourseInput = ({
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			<DeleteSlotButton
-				hasCommitments={hasCommitments}
-				id={id}
-				index={index}
-				remove={remove}
-			/>
-			<div className="form-control w-2/3">
+			<div className="-mb-8">
+				<DeleteSlotButton
+					hasCommitments={hasCommitments}
+					id={id}
+					index={index}
+					remove={remove}
+				/>
+			</div>
+			<div className="form-control w-7/12">
 				<label className="label label-text" htmlFor={`item-${index}`}>
 					What&apos;s Needed
 				</label>
@@ -57,7 +59,7 @@ const CourseInput = ({
 				</label>
 				<div className="join">
 					<button
-						className="btn join-item"
+						className="btn join-item input-bordered"
 						onClick={() => {
 							countRef.current?.stepDown();
 							change(
@@ -86,7 +88,7 @@ const CourseInput = ({
 						type="number"
 					/>
 					<button
-						className="btn join-item"
+						className="btn join-item input-bordered"
 						onClick={() => {
 							countRef.current?.stepUp();
 							change(

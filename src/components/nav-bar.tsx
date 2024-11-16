@@ -26,7 +26,7 @@ const NavBar = async () => {
 	return (
 		<div className="navbar bg-base-100/80">
 			<div className="flex-1">
-				<Link href="/" className="btn btn-ghost text-xl">
+				<Link href="/" className="btn btn-ghost btn-sm text-xl">
 					{siteMetadata.title}
 				</Link>
 			</div>
