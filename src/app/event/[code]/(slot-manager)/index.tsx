@@ -40,7 +40,7 @@ const SlotManager = ({
 				const commitmentsStillNeeded = slot.count - relatedCommitments.length;
 
 				return (
-					<div key={slot.id} className="join-item border">
+					<div key={slot.id} className="join-item border border-0">
 						<SlotContainer
 							avatars={committedUsersBySlot.get(slot.id)}
 							commitmentTotal={commitmentTotal}

@@ -26,19 +26,19 @@ const CommitmentsTable = ({
 				<thead>
 					<tr>
 						<th></th>
-						<th>Avatar</th>
-						<th>Display Name</th>
+						<th>Name</th>
 						<th>Quantity</th>
-						<th>Description</th>
+						<th>Notes</th>
 					</tr>
 				</thead>
+
 				<tbody>
 					{commitments.map((commitment) => {
 						const [user] = users.filter((u) => u.id === commitment.createdBy);
 						const image = user.image ? (
 							<Image
 								alt={`Avatar for user ${user.name}`}
-								className="avatar my-0 rounded-full border"
+								className="avatar my-0 mr-1 rounded-full border"
 								src={user.image}
 								height={32}
 								width={32}
@@ -54,8 +54,9 @@ const CommitmentsTable = ({
 										<DeleteCommitmentForm id={commitment.id} />
 									)}
 								</td>
-								<td>{image}</td>
-								<td>{user.name}</td>
+								<td>
+									{image} {user.name}
+								</td>
 								<td>{commitment.quantity}</td>
 								<td>{commitment.description}</td>
 							</tr>

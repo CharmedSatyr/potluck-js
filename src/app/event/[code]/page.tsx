@@ -10,6 +10,7 @@ import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable from "@/components/commitments-table";
 import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
 import RsvpTable from "@/components/rsvp-table";
+import { Rsvp } from "@/db/schema/rsvp";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -38,13 +39,20 @@ const EventPage = async ({ params }: Props) => {
 	const isPassed = eventIsPassed(event.startDate);
 
 	// TODO: Make a query to get RSVPs with user data
-	const rsvps = await findRsvpsByEvent({ eventCode: code });
-	const rsvpUsers =
-		rsvps.length > 0
-			? await findUsers({
-				users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
-			})
-			: [];
+	const rsvps = [
+		{
+			createdBy: event.createdBy,
+			id: "1",
+			message: "Event Host",
+			response: "yes",
+		} as Rsvp,
+		...(await findRsvpsByEvent({ eventCode: code })),
+	];
+
+	const rsvpUsers = await findUsers({
+		users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+	});
+
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
 
@@ -54,30 +62,34 @@ const EventPage = async ({ params }: Props) => {
 		<div className="flex w-full flex-col justify-center">
 			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
 
-			<h2>Attendees</h2>
-			{rsvps.length > 0 ? (
-				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
-			) : (
-				<div>Be the first to sign up!</div>
-			)}
+			<h2 className="mb-0">Attendees</h2>
+			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
 
-			<h2>Food Plan</h2>
-			{authenticated && !isPassed && (isHost || rsvpResponse === "yes") && (
-				<SlotManager
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					commitments={commitments}
-					slots={slots}
-					users={users}
-				/>
-			)}
+			{authenticated &&
+				!isPassed &&
+				slots.length > 0 &&
+				(isHost || rsvpResponse === "yes") && (
+					<>
+						<h2>Food Plan</h2>
+						<SlotManager
+							committedUsersBySlotPromise={committedUsersBySlotPromise}
+							commitments={commitments}
+							slots={slots}
+							users={users}
+						/>
+					</>
+				)}
 
-			{authenticated && !isHost && (isPassed || rsvpResponse !== "yes") && (
-				<CommitmentsTable
-					commitments={commitments}
-					slots={slots}
-					users={users}
-				/>
-			)}
+			{authenticated &&
+				!isHost &&
+				slots.length > 0 &&
+				(isPassed || rsvpResponse !== "yes") && (
+					<CommitmentsTable
+						commitments={commitments}
+						slots={slots}
+						users={users}
+					/>
+				)}
 		</div>
 	);
 };

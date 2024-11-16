@@ -10,7 +10,7 @@ const NavBar = async () => {
 
 	if (!session?.user) {
 		return (
-			<div className="navbar">
+			<div className="navbar bg-gray-100/80">
 				<div className="flex-1">
 					<Link href="/" className="btn btn-ghost text-xl">
 						{siteMetadata.title}
@@ -24,24 +24,24 @@ const NavBar = async () => {
 	}
 
 	return (
-		<div className="navbar">
+		<div className="navbar bg-base-100/80">
 			<div className="flex-1">
-				<Link href="/" className="btn btn-ghost text-xl">
+				<Link href="/" className="btn btn-ghost btn-sm text-xl">
 					{siteMetadata.title}
 				</Link>
 			</div>
 
 			<div className="gap-2">
-				<Link className="btn btn-ghost" href="/dashboard">
+				<Link className="btn btn-ghost btn-sm" href="/dashboard">
 					Dashboard
 				</Link>
 
 				<div className="text-sm">Welcome, {session.user.name}</div>
 
-				<div className="avatar w-12">
+				<div className="avatar w-10 rounded-full border">
 					<Image
-						width={128}
-						height={128}
+						width={64}
+						height={64}
 						className="my-0 rounded-full"
 						src={String(session.user.image)}
 						alt={`${session.user.name} Avatar`}

@@ -11,7 +11,7 @@ const SignOut = async () => {
 
 	return (
 		<Form action={signOutAndRevalidate}>
-			<button className="btn btn-secondary" type="submit">
+			<button className="btn btn-sm btn-ghost" type="submit">
 				Sign Out
 			</button>
 		</Form>

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import DeleteSlotButton from "./delete-slot-button";
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 type Props = {
 	change: (index: number, value: string, count: string) => void;
@@ -25,13 +26,15 @@ const CourseInput = ({
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			<DeleteSlotButton
-				hasCommitments={hasCommitments}
-				id={id}
-				index={index}
-				remove={remove}
-			/>
-			<div className="form-control w-2/3">
+			<div className="-mb-8">
+				<DeleteSlotButton
+					hasCommitments={hasCommitments}
+					id={id}
+					index={index}
+					remove={remove}
+				/>
+			</div>
+			<div className="form-control w-7/12">
 				<label className="label label-text" htmlFor={`item-${index}`}>
 					What&apos;s Needed
 				</label>
@@ -56,7 +59,7 @@ const CourseInput = ({
 				</label>
 				<div className="join">
 					<button
-						className="btn join-item"
+						className="btn join-item input-bordered"
 						onClick={() => {
 							countRef.current?.stepDown();
 							change(
@@ -67,21 +70,7 @@ const CourseInput = ({
 						}}
 						type="button"
 					>
-						<svg
-							className="h-3 w-3 text-gray-900 dark:text-white"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 18 2"
-						>
-							<path
-								stroke="currentColor"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M1 1h16"
-							/>
-						</svg>
+						<MinusIcon className="h-4 w-4 text-gray-900 dark:text-white" />
 					</button>
 					<input
 						className="input join-item input-bordered max-w-20"
@@ -99,7 +88,7 @@ const CourseInput = ({
 						type="number"
 					/>
 					<button
-						className="btn join-item"
+						className="btn join-item input-bordered"
 						onClick={() => {
 							countRef.current?.stepUp();
 							change(
@@ -110,21 +99,7 @@ const CourseInput = ({
 						}}
 						type="button"
 					>
-						<svg
-							className="h-3 w-3 text-gray-900 dark:text-white"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 18 18"
-						>
-							<path
-								stroke="currentColor"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M9 1v16M1 9h16"
-							/>
-						</svg>
+						<PlusIcon className="h-4 w-4 text-gray-900 dark:text-white" />
 					</button>
 				</div>
 			</div>
