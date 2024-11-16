@@ -34,13 +34,17 @@ const CopyLinkButton = ({ className }: Props) => {
 
 	const text = clicked ? "Copied" : "Copy Link";
 	const icon = clicked ? (
-		<ClipboardDocumentCheckIcon className={`size-6 ${className}`} />
+		<ClipboardDocumentCheckIcon className={`size-4 ${className}`} />
 	) : (
-		<ClipboardDocumentIcon className={`size-6 ${className}`} />
+		<ClipboardDocumentIcon className={`size-4 ${className}`} />
 	);
 
 	return (
-		<button className="btn btn-ghost" onClick={copyWithReset} type="button">
+		<button
+			className="btn btn-ghost btn-sm"
+			onClick={copyWithReset}
+			type="button"
+		>
 			{text} {icon}
 		</button>
 	);
