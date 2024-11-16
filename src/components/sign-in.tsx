@@ -1,5 +1,5 @@
 import Form from "next/form";
-import signInWithDiscord from "@/actions/auth/sign-in-with-discord";
+import signInWithDiscordAndRevalidate from "@/actions/auth/sign-in-with-discord-and-revalidate";
 import { auth } from "@/auth";
 
 const SignIn = async () => {
@@ -10,7 +10,7 @@ const SignIn = async () => {
 	}
 
 	return (
-		<Form action={signInWithDiscord}>
+		<Form action={signInWithDiscordAndRevalidate}>
 			<button className="btn btn-accent" type="submit">
 				Sign In with Discord
 			</button>
