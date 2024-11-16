@@ -10,6 +10,7 @@ import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable from "@/components/commitments-table";
 import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
 import RsvpTable from "@/components/rsvp-table";
+import { Rsvp } from "@/db/schema/rsvp";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -38,13 +39,20 @@ const EventPage = async ({ params }: Props) => {
 	const isPassed = eventIsPassed(event.startDate);
 
 	// TODO: Make a query to get RSVPs with user data
-	const rsvps = await findRsvpsByEvent({ eventCode: code });
-	const rsvpUsers =
-		rsvps.length > 0
-			? await findUsers({
-					users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
-				})
-			: [];
+	const rsvps = [
+		{
+			createdBy: event.createdBy,
+			id: "1",
+			message: "Event Host",
+			response: "yes",
+		} as Rsvp,
+		...(await findRsvpsByEvent({ eventCode: code })),
+	];
+
+	const rsvpUsers = await findUsers({
+		users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+	});
+
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
 
@@ -55,11 +63,7 @@ const EventPage = async ({ params }: Props) => {
 			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
 
 			<h2>Attendees</h2>
-			{rsvps.length > 0 ? (
-				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
-			) : (
-				<div>Be the first to sign up!</div>
-			)}
+			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
 
 			{authenticated &&
 				!isPassed &&
