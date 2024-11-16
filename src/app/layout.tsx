@@ -33,7 +33,7 @@ const RootLayout = async ({
 					<div className="fixed w-full">
 						<NavBar />
 					</div>
-					<div className="container flex w-full justify-center px-4 pt-24 md:w-10/12 md:px-10">
+					<div className="container flex w-full justify-center px-4 py-24 md:w-10/12 md:px-10">
 						{children}
 					</div>
 				</SessionProvider>
