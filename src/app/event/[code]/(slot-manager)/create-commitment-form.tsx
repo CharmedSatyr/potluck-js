@@ -88,6 +88,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 				commitmentsStillNeeded={commitmentsStillNeeded}
 				defaultValue={state.fields.quantity}
 			/>
+
 			<input
 				className="input-text input input-bordered w-1/2"
 				defaultValue={state.fields.description}
@@ -96,6 +97,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 				name="description"
 				type="text"
 			/>
+
 			<button
 				className="btn btn-secondary"
 				disabled={isButtonDisabled}
