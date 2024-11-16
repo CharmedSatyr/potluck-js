@@ -72,7 +72,6 @@ const DashboardPage = async () => {
 											<td>
 												<DeleteEventButton code={event.code} remove={remove} />
 											</td>
-
 										</tr>
 									);
 								})}
