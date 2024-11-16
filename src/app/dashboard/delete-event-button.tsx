@@ -29,7 +29,7 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 					<div className="modal-action">
 						<button
 							aria-label="Cancel"
-							className="btn"
+							className="btn btn-sm"
 							type="button"
 							onClick={() => dialogRef.current?.close()}
 						>
@@ -37,7 +37,7 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 						</button>
 						<button
 							aria-label="Delete Slot"
-							className="btn btn-error"
+							className="btn btn-error btn-sm"
 							type="button"
 							onClick={() => {
 								remove({ code });

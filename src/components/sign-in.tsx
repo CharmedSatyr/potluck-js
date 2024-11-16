@@ -11,7 +11,7 @@ const SignIn = async () => {
 
 	return (
 		<Form action={signInWithDiscordAndRevalidate}>
-			<button className="btn btn-accent" type="submit">
+			<button className="btn btn-accent btn-sm" type="submit">
 				Sign In with Discord
 			</button>
 		</Form>
