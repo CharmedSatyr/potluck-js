@@ -42,9 +42,9 @@ export const EventSkeleton = ({
 		<div className="flex w-full justify-between">
 			<div className="max-w-md">
 				<h1 className="mb-4 text-5xl font-bold text-primary">{name}</h1>
-				<h2 className="my-4">
+				<p className="my-4 font-bold">
 					Event Code: <span className="text-secondary">{code}</span>
-				</h2>
+				</p>
 				{authenticated ? (
 					<>
 						<p className="flex items-center gap-2">
