@@ -61,23 +61,31 @@ const EventPage = async ({ params }: Props) => {
 				<div>Be the first to sign up!</div>
 			)}
 
-			<h2>Food Plan</h2>
-			{authenticated && !isPassed && (isHost || rsvpResponse === "yes") && (
-				<SlotManager
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					commitments={commitments}
-					slots={slots}
-					users={users}
-				/>
-			)}
+			{authenticated &&
+				!isPassed &&
+				slots.length > 0 &&
+				(isHost || rsvpResponse === "yes") && (
+					<>
+						<h2>Food Plan</h2>
+						<SlotManager
+							committedUsersBySlotPromise={committedUsersBySlotPromise}
+							commitments={commitments}
+							slots={slots}
+							users={users}
+						/>
+					</>
+				)}
 
-			{authenticated && !isHost && (isPassed || rsvpResponse !== "yes") && (
-				<CommitmentsTable
-					commitments={commitments}
-					slots={slots}
-					users={users}
-				/>
-			)}
+			{authenticated &&
+				!isHost &&
+				slots.length > 0 &&
+				(isPassed || rsvpResponse !== "yes") && (
+					<CommitmentsTable
+						commitments={commitments}
+						slots={slots}
+						users={users}
+					/>
+				)}
 		</div>
 	);
 };
