@@ -13,8 +13,8 @@ dotenv.config();
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: siteMetadata.title,
 	description: siteMetadata.description,
+	title: siteMetadata.title,
 };
 
 const RootLayout = async ({
@@ -30,8 +30,10 @@ const RootLayout = async ({
 				className={`${inter.className} prose flex max-w-none flex-col items-center`}
 			>
 				<SessionProvider session={session}>
-					<NavBar />
-					<div className="container flex w-full justify-center px-4 pt-12 md:w-10/12 md:px-10">
+					<div className="fixed w-full">
+						<NavBar />
+					</div>
+					<div className="container flex w-full justify-center px-4 pt-24 md:w-10/12 md:px-10">
 						{children}
 					</div>
 				</SessionProvider>
