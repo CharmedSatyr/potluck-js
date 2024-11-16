@@ -10,11 +10,12 @@ import { useState } from "react";
 
 type Props = {
 	className?: string;
+	text: string;
 };
 
 const TIME_TO_RESET_SECONDS = 8;
 
-const CopyLinkButton = ({ className }: Props) => {
+const CopyLinkButton = ({ className, text }: Props) => {
 	const pathName = usePathname();
 
 	const [clicked, setClicked] = useState<boolean>(false);
@@ -32,7 +33,6 @@ const CopyLinkButton = ({ className }: Props) => {
 		});
 	};
 
-	const text = clicked ? "Copied" : "Copy Link";
 	const icon = clicked ? (
 		<ClipboardDocumentCheckIcon className={`size-4 ${className}`} />
 	) : (
@@ -40,13 +40,15 @@ const CopyLinkButton = ({ className }: Props) => {
 	);
 
 	return (
-		<button
-			className="btn btn-ghost btn-sm"
-			onClick={copyWithReset}
-			type="button"
-		>
-			{text} {icon}
-		</button>
+		<div className="tooltip" data-tip={clicked ? "Copied" : "Copy Link"}>
+			<button
+				className="btn btn-ghost btn-sm text-lg font-bold"
+				onClick={copyWithReset}
+				type="button"
+			>
+				<span className="text-secondary">{text}</span> {icon}
+			</button>
+		</div>
 	);
 };
 

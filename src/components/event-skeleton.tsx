@@ -42,9 +42,10 @@ export const EventSkeleton = ({
 		<div className="flex w-full justify-between">
 			<div className="max-w-md">
 				<h1 className="mb-4 text-5xl font-bold text-primary">{name}</h1>
-				<p className="my-4 font-bold">
-					Event Code: <span className="text-secondary">{code}</span>
-				</p>
+				<div className="font-bold">
+					Event Code: <CopyLinkButton text={code} />
+				</div>
+
 				{authenticated ? (
 					<>
 						<p className="flex items-center gap-2">
@@ -83,13 +84,12 @@ export const EventSkeleton = ({
 						Edit
 					</Link>
 				)}
+
 				{authenticated && !isHost && !isPassed && (
 					<div className="flex flex-col">
 						<RsvpForm code={code} currentResponse={rsvpResponse} />
 					</div>
 				)}
-
-				{code && <CopyLinkButton />}
 			</div>
 		</div>
 	);

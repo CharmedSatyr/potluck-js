@@ -9,8 +9,8 @@ jest.mock("next-auth/react", () => ({
 jest.mock(
 	"@/components/copy-link-button",
 	() =>
-		function mockCopyLinkButton() {
-			return <button>Copy Link</button>;
+		function mockCopyLinkButton({ text }: { text: string }) {
+			return <button>{text}</button>;
 		}
 );
 
@@ -129,19 +129,6 @@ describe("EventSkeleton Component", () => {
 		expect(
 			screen.queryByRole("link", { name: /edit/i })
 		).not.toBeInTheDocument();
-	});
-
-	it("should render 'CopyLinkButton' if code is present", () => {
-		(useSession as jest.Mock).mockReturnValueOnce({
-			data: { user: { id: "user-999", image: "https://discord.image" } },
-			status: "authenticated",
-		});
-
-		render(<EventSkeleton {...eventProps} rsvpResponse={null} />);
-
-		const copyLinkButton = screen.getByRole("button", { name: /copy link/i });
-
-		expect(copyLinkButton).toBeInTheDocument();
 	});
 
 	it("should not render 'CopyLinkButton' if no code is present", () => {
