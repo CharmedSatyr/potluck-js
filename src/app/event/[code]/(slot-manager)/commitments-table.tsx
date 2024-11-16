@@ -49,7 +49,7 @@ const CommitmentsTable = ({
 
 						return (
 							<tr key={commitment.id}>
-								<td>
+								<td className="max-w-4">
 									{id === user.id && (
 										<DeleteCommitmentForm id={commitment.id} />
 									)}
@@ -64,7 +64,7 @@ const CommitmentsTable = ({
 					})}
 				</tbody>
 			</table>
-		</div>
+		</div >
 	);
 };
 

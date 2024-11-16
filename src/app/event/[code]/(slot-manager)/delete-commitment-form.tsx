@@ -16,7 +16,7 @@ const SubmitButton = () => {
 	const { pending } = useFormStatus();
 
 	return (
-		<button className="btn btn-sm" type="submit">
+		<button className="btn btn-sm btn-circle" type="submit">
 			{pending ? "..." : "✕"}
 		</button>
 	);
@@ -35,9 +35,9 @@ const DeleteCommitmentForm = (props: Props) => {
 	);
 
 	return (
-		<Form action={formAction}>
+		<Form action={formAction} className="w-fit">
 			<SubmitButton />
-		</Form>
+		</Form >
 	);
 };
 
