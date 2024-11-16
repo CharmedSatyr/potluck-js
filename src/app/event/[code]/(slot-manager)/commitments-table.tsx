@@ -21,7 +21,7 @@ const CommitmentsTable = ({
 	}
 
 	return (
-		<div className="overflow-x-auto">
+		<div className="overflow-x-auto" id="commitments-table">
 			<table className="table mt-0">
 				<thead>
 					<tr>

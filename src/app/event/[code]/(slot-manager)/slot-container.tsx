@@ -20,7 +20,7 @@ const SlotContainer = ({
 	const [expanded, setExpanded] = useState<boolean>(false);
 
 	return (
-		<div className="collapse w-full">
+		<section className="collapse w-full">
 			<input
 				type="checkbox"
 				checked={expanded}
@@ -28,7 +28,7 @@ const SlotContainer = ({
 			/>
 
 			<div className="collapse-title flex w-full items-center justify-between">
-				<div className="w-6/12 text-2xl">{item}</div>
+				<div className="w-6/12 font-bold">{item}</div>
 				{avatars}
 				<div className="flex items-center justify-between">
 					{commitmentTotal} of {slotCount} filled
@@ -40,7 +40,7 @@ const SlotContainer = ({
 				</div>
 			</div>
 			<div className="collapse-content">{children}</div>
-		</div>
+		</section>
 	);
 };
 

@@ -23,13 +23,13 @@ const CountInput = ({
 	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
-		<div className="form-control">
-			<label htmlFor="quantity-input" className="label label-text">
+		<div className="form-control pl-2">
+			<label className="label label-text" htmlFor="quantity-input">
 				Quantity You&apos;ll Bring
 			</label>
-			<div className="join">
+			<div className="join join-horizontal">
 				<button
-					className="btn join-item"
+					className="btn join-item input-bordered"
 					onClick={() => {
 						countRef.current?.stepDown();
 					}}
@@ -48,9 +48,10 @@ const CountInput = ({
 					ref={countRef}
 					required
 					type="number"
+					style={{ borderRadius: 0 }} // TODO: Join wasn't working properly
 				/>
 				<button
-					className="btn join-item"
+					className="btn join-item input-bordered"
 					onClick={() => {
 						countRef.current?.stepUp();
 					}}

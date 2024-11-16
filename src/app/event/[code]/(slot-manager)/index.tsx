@@ -40,21 +40,29 @@ const SlotManager = ({
 				const commitmentsStillNeeded = slot.count - relatedCommitments.length;
 
 				return (
-					<div key={slot.id} className="join-item border border-0">
+					<div key={slot.id} className="join-item border">
 						<SlotContainer
 							avatars={committedUsersBySlot.get(slot.id)}
 							commitmentTotal={commitmentTotal}
 							item={slot.course}
 							slotCount={slot.count}
 						>
-							<h3 className="mt-0">Current Signups</h3>
-							{commitments.length ? (
+							<label
+								className="label label-text ml-2 px-0 pb-2 pt-0"
+								htmlFor="commitments-table"
+							>
+								Current Signups
+							</label>
+							{relatedCommitments.length > 0 ? (
 								<CommitmentsTable
 									commitments={relatedCommitments}
 									users={relatedUsers}
 								/>
 							) : (
-								<p>None yet. Be the first!</p>
+								<div className="ml-2">
+									<p id="commitments-table">None yet. Be the first!</p>
+									<div className="divider"></div>
+								</div>
 							)}
 							{commitmentsStillNeeded > 0 && (
 								<CreateCommitmentForm
