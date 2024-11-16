@@ -62,7 +62,7 @@ const EventPage = async ({ params }: Props) => {
 		<div className="flex w-full flex-col justify-center">
 			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
 
-			<h2>Attendees</h2>
+			<h2 className="mb-0">Attendees</h2>
 			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
 
 			{authenticated &&
