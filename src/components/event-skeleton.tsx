@@ -74,9 +74,12 @@ export const EventSkeleton = ({
 				)}
 			</div>
 
-			<div className="flex w-36 flex-col">
+			<div className="w-30 flex flex-col">
 				{isHost && !isPassed && (
-					<Link className="btn btn-accent mb-2" href={`/event/${code}/edit`}>
+					<Link
+						className="btn btn-accent btn-xs btn-sm mb-2"
+						href={`/event/${code}/edit`}
+					>
 						Edit
 					</Link>
 				)}
