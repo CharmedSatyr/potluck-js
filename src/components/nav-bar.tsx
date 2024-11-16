@@ -10,7 +10,7 @@ const NavBar = async () => {
 
 	if (!session?.user) {
 		return (
-			<div className="navbar">
+			<div className="navbar bg-gray-100/80">
 				<div className="flex-1">
 					<Link href="/" className="btn btn-ghost text-xl">
 						{siteMetadata.title}
@@ -24,7 +24,7 @@ const NavBar = async () => {
 	}
 
 	return (
-		<div className="navbar">
+		<div className="navbar bg-base-100/80">
 			<div className="flex-1">
 				<Link href="/" className="btn btn-ghost text-xl">
 					{siteMetadata.title}
