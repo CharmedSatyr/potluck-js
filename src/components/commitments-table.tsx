@@ -1,15 +1,13 @@
-import { User } from "@/db/schema/auth/user";
-import { Commitment } from "@/db/schema/commitment";
-import { Slot } from "@/db/schema/slot";
 import Image from "next/image";
+import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 
 type Props = {
-	commitments: Commitment[];
-	slots: Slot[];
-	users: User[];
+	code: string;
 };
 
-const CommitmentsTable = ({ commitments, slots, users }: Props) => {
+const CommitmentsTable = async ({ code }: Props) => {
+	const commitmentsWithDetails = await findCommitmentsWithDetails({ code });
+
 	return (
 		<div className="overflow-x-auto">
 			<table className="table">
@@ -22,24 +20,20 @@ const CommitmentsTable = ({ commitments, slots, users }: Props) => {
 					</tr>
 				</thead>
 				<tbody>
-					{commitments.map((c) => {
-						const user = users.find((u) => u.id === c.createdBy);
-						const course = slots.find((s) => s.id === c.slotId)?.course;
-
-						// TODO: Some fallbacks for missing/deleted users or courses.
+					{commitmentsWithDetails.map((c) => {
 						return (
-							<tr key={c.id}>
+							<tr key={c.commitmentId}>
 								<td className="flex items-center gap-2">
 									<Image
-										alt={`${user?.name}'s avatar`}
+										alt={`${c.user.name}'s Avatar`}
 										className="avatar my-0 rounded-full border"
-										src={user?.image ?? ""}
+										src={c.user.image!}
 										height="20"
 										width="20"
 									/>{" "}
-									{user?.name}
+									{c.user.name}
 								</td>
-								<td>{course}</td>
+								<td>{c.item}</td>
 								<td>{c.quantity}</td>
 								<td>{c.description}</td>
 							</tr>
@@ -52,3 +46,25 @@ const CommitmentsTable = ({ commitments, slots, users }: Props) => {
 };
 
 export default CommitmentsTable;
+
+export const CommitmentsTableFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+			</div>
+		</div>
+	);
+};

@@ -9,7 +9,9 @@ import findUsers from "@/actions/db/find-users";
 import { auth } from "@/auth";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
 import eventIsPassed from "@/utilities/event-is-passed";
-import CommitmentsTable from "@/components/commitments-table";
+import CommitmentsTable, {
+	CommitmentsTableFallback,
+} from "@/components/commitments-table";
 import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
 import RsvpTable from "@/components/rsvp-table";
 import { Rsvp } from "@/db/schema/rsvp";
@@ -68,9 +70,7 @@ const EventPage = async ({ params }: Props) => {
 		<div className="grid-col-3 grid h-full w-full auto-rows-min">
 			<div className="col-span-2 row-span-1">
 				<Suspense fallback={<EventSkeletonFallback />}>
-					<div className="flex">
-						<EventSkeleton code={code} />
-					</div>
+					<EventSkeleton code={code} />
 				</Suspense>
 			</div>
 
@@ -95,7 +95,7 @@ const EventPage = async ({ params }: Props) => {
 			</div>
 
 			<div className="col-span-3 row-span-1">
-				{/** Filter slot manager and commitments table to only show people who rsvp yes! no nonattendees commit. */}
+				{/** TODO: Delete commitments if someone changes RSVP to No. */}
 				{authenticated &&
 					!isPassed &&
 					slots.length > 0 &&
@@ -112,14 +112,12 @@ const EventPage = async ({ params }: Props) => {
 					)}
 
 				{authenticated &&
-					!isHost &&
 					slots.length > 0 &&
+					(!isHost || isPassed) &&
 					(isPassed || rsvpResponse !== "yes") && (
-						<CommitmentsTable
-							commitments={commitments}
-							slots={slots}
-							users={users}
-						/>
+						<Suspense fallback={<CommitmentsTableFallback />}>
+							<CommitmentsTable code={code} />
+						</Suspense>
 					)}
 			</div>
 		</div>
