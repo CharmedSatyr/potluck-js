@@ -1,18 +1,30 @@
+import findRsvpsWithDetails from "@/actions/db/find-rsvps-with-details";
+import findUserByEventCode from "@/actions/db/find-user-by-event-code";
+import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import { Rsvp } from "@/db/schema/rsvp";
-import { User } from "@/db/schema/auth/user";
 
 type Props = {
-	rsvps: {
-		createdBy: Rsvp["createdBy"];
-		id: Rsvp["id"];
-		message: Rsvp["message"];
-		response: Rsvp["response"];
-	}[];
-	rsvpUsers: User[];
+	code: string;
 };
 
-const RsvpTable = ({ rsvps, rsvpUsers }: Props) => {
+const RsvpTable = async ({ code }: Props) => {
+	const [creator] = await findUserByEventCode({ code });
+	<CheckBadgeIcon />;
+	const rsvpsWithDetails = [
+		{
+			id: "1",
+			message: (
+				<span className="flex gap-1">
+					<CheckBadgeIcon className="text-primary" height="20" width="20" />
+					Event Host
+				</span>
+			),
+			response: "yes",
+			user: { image: creator.image, name: creator.name },
+		},
+		...(await findRsvpsWithDetails({ code })),
+	];
+
 	return (
 		<div className="overflow-x-auto">
 			<table className="table">
@@ -24,8 +36,7 @@ const RsvpTable = ({ rsvps, rsvpUsers }: Props) => {
 					</tr>
 				</thead>
 				<tbody>
-					{rsvps.map((rsvp) => {
-						const user = rsvpUsers.find((r) => r.id === rsvp.createdBy);
+					{rsvpsWithDetails.map((rsvp) => {
 						return (
 							<tr key={rsvp.id}>
 								<th>
@@ -39,13 +50,13 @@ const RsvpTable = ({ rsvps, rsvpUsers }: Props) => {
 								</th>
 								<td className="flex items-center gap-2">
 									<Image
-										alt={`${user?.name}'s avatar`}
+										alt={`${rsvp.user.name}'s avatar`}
 										className="avatar my-0 rounded-full border"
-										src={user?.image ?? ""}
+										src={rsvp.user.image!}
 										height="30"
 										width="30"
 									/>{" "}
-									{user?.name}
+									{rsvp.user.name}
 								</td>
 								<td>{rsvp.message}</td>
 							</tr>
@@ -58,3 +69,25 @@ const RsvpTable = ({ rsvps, rsvpUsers }: Props) => {
 };
 
 export default RsvpTable;
+
+export const RsvpTableFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-8 w-1/3" />
+			</div>
+		</div>
+	);
+};

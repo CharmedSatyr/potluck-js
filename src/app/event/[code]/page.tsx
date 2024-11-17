@@ -13,7 +13,7 @@ import CommitmentsTable, {
 	CommitmentsTableFallback,
 } from "@/components/commitments-table";
 import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
-import RsvpTable from "@/components/rsvp-table";
+import RsvpTable, { RsvpTableFallback } from "@/components/rsvp-table";
 import { Rsvp } from "@/db/schema/rsvp";
 import RsvpForm from "@/components/rsvp-form";
 import Link from "next/link";
@@ -57,10 +57,6 @@ const EventPage = async ({ params }: Props) => {
 		...(await findRsvpsByEvent({ eventCode: code })),
 	];
 
-	const rsvpUsers = await findUsers({
-		users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
-	});
-
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
 
@@ -91,7 +87,9 @@ const EventPage = async ({ params }: Props) => {
 
 			<div className="col-span-3 row-span-1">
 				<h2>Attendees</h2>
-				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
+				<Suspense fallback={<RsvpTableFallback />}>
+					<RsvpTable code={code} />
+				</Suspense>
 			</div>
 
 			<div className="col-span-3 row-span-1">
@@ -116,6 +114,7 @@ const EventPage = async ({ params }: Props) => {
 					(!isHost || isPassed) &&
 					(isPassed || rsvpResponse !== "yes") && (
 						<Suspense fallback={<CommitmentsTableFallback />}>
+							<h2>Commitments</h2>
 							<CommitmentsTable code={code} />
 						</Suspense>
 					)}
