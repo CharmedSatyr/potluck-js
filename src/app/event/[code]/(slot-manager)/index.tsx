@@ -60,7 +60,9 @@ const SlotManager = ({
 								/>
 							) : (
 								<div className="ml-2">
-									<p id="commitments-table" className="my-2">None yet. Be the first!</p>
+									<p id="commitments-table" className="my-2">
+										None yet. Be the first!
+									</p>
 									<div className="divider"></div>
 								</div>
 							)}

@@ -1,12 +1,5 @@
-"use client";
-
-import Link from "next/link";
-import { useSession } from "next-auth/react";
 import CopyLinkButton from "@/components/copy-link-button";
-import { Event } from "@/db/schema/event";
 import eventIsPassed from "@/utilities/event-is-passed";
-import RsvpForm from "@/components/rsvp-form";
-import { Rsvp } from "@/db/schema/rsvp";
 import Image from "next/image";
 import {
 	CalendarIcon,
@@ -17,25 +10,32 @@ import { formatStartDate } from "@/utilities/format-start-date";
 import { formatStartTime } from "@/utilities/format-start-time";
 import WarningAlert from "@/components/warning-alert";
 
-// TODO: Don't pass a whole event to the client.
-export type EventSkeletonProps = Event & {
-	rsvpResponse: Rsvp["response"] | null;
+type Props = {
+	authenticated: boolean;
+	code: string;
+	creator: {
+		image: string;
+		name: string;
+	};
+	description: string;
+	hosts: string;
+	location: string;
+	name: string;
+	startDate: string;
+	startTime: string;
 };
 
 export const EventSkeleton = ({
-	createdBy,
+	authenticated,
+	code,
+	creator,
 	description,
 	hosts,
 	location,
 	name,
-	code,
 	startDate,
 	startTime,
-	rsvpResponse,
-}: EventSkeletonProps) => {
-	const session = useSession();
-	const authenticated = session?.status === "authenticated";
-	const isHost = session?.data?.user?.id === createdBy;
+}: Props) => {
 	const isPassed = eventIsPassed(startDate);
 
 	return (
@@ -57,9 +57,9 @@ export const EventSkeleton = ({
 						</p>
 						<p className="flex h-6 items-center gap-2">
 							<Image
-								alt={session.data?.user?.name ?? "Avatar"}
+								alt={`${creator.name}'s Avatar`}
 								className="avatar rounded-full border"
-								src={session.data?.user?.image ?? ""}
+								src={creator.image}
 								height="20"
 								width="20"
 							/>
@@ -72,23 +72,6 @@ export const EventSkeleton = ({
 					</>
 				) : (
 					<p>Sign In to see all the details!</p>
-				)}
-			</div>
-
-			<div className="w-30 flex flex-col">
-				{isHost && !isPassed && (
-					<Link
-						className="btn btn-accent btn-xs btn-sm mb-2"
-						href={`/event/${code}/edit`}
-					>
-						Edit
-					</Link>
-				)}
-
-				{authenticated && !isHost && !isPassed && (
-					<div className="flex flex-col">
-						<RsvpForm code={code} currentResponse={rsvpResponse} />
-					</div>
 				)}
 			</div>
 		</div>

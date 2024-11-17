@@ -64,7 +64,7 @@ const CommitmentsTable = ({
 					})}
 				</tbody>
 			</table>
-		</div >
+		</div>
 	);
 };
 

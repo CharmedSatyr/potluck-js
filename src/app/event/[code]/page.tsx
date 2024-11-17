@@ -11,6 +11,8 @@ import CommitmentsTable from "@/components/commitments-table";
 import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
 import RsvpTable from "@/components/rsvp-table";
 import { Rsvp } from "@/db/schema/rsvp";
+import RsvpForm from "@/components/rsvp-form";
+import Link from "next/link";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -53,43 +55,79 @@ const EventPage = async ({ params }: Props) => {
 		users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
 	});
 
+	const creator = rsvpUsers[0];
+
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
 
 	const isHost = event.createdBy === session?.user?.id;
 
+	const { description, hosts, location, name, startDate, startTime } = event;
+
 	return (
-		<div className="flex w-full flex-col justify-center">
-			<EventSkeleton {...event} rsvpResponse={rsvpResponse} />
+		<div className="grid-col-3 grid h-full w-full auto-rows-min">
+			<div className="col-span-2 row-span-1">
+				<EventSkeleton
+					authenticated={authenticated}
+					code={code}
+					creator={{ image: creator.image!, name: creator.name! }}
+					description={description}
+					hosts={hosts}
+					location={location}
+					name={name}
+					startDate={startDate}
+					startTime={startTime}
+				/>
+			</div>
 
-			<h2 className="mb-0">Attendees</h2>
-			<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
+			<div className="col-span-1 row-span-1">
+				{authenticated && isHost && !isPassed && (
+					<Link
+						className="btn btn-accent w-full float-right lg:w-1/2"
+						href={`/event/${code}/edit`}
+					>
+						Edit
+					</Link>
+				)}
 
-			{authenticated &&
-				!isPassed &&
-				slots.length > 0 &&
-				(isHost || rsvpResponse === "yes") && (
-					<>
-						<h2>Food Plan</h2>
-						<SlotManager
-							committedUsersBySlotPromise={committedUsersBySlotPromise}
+				{authenticated && !isHost && !isPassed && (
+					<RsvpForm code={code} currentResponse={rsvpResponse} />
+				)}
+			</div>
+
+			<div className="col-span-3 row-span-1">
+				<h2>Attendees</h2>
+				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
+			</div>
+
+			<div className="col-span-3 row-span-1">
+				{/** Filter slot manager and commitments table to only show people who rsvp yes! no nonattendees commit. */}
+				{authenticated &&
+					!isPassed &&
+					slots.length > 0 &&
+					(isHost || rsvpResponse === "yes") && (
+						<>
+							<h2>Food Plan</h2>
+							<SlotManager
+								committedUsersBySlotPromise={committedUsersBySlotPromise}
+								commitments={commitments}
+								slots={slots}
+								users={users}
+							/>
+						</>
+					)}
+
+				{authenticated &&
+					!isHost &&
+					slots.length > 0 &&
+					(isPassed || rsvpResponse !== "yes") && (
+						<CommitmentsTable
 							commitments={commitments}
 							slots={slots}
 							users={users}
 						/>
-					</>
-				)}
-
-			{authenticated &&
-				!isHost &&
-				slots.length > 0 &&
-				(isPassed || rsvpResponse !== "yes") && (
-					<CommitmentsTable
-						commitments={commitments}
-						slots={slots}
-						users={users}
-					/>
-				)}
+					)}
+			</div>
 		</div>
 	);
 };

@@ -33,7 +33,7 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 
 	if (currentResponse !== null && !override) {
 		return (
-			<div className="mb-2 flex flex-col items-center">
+			<div className="text-center float-right">
 				<p>You will {currentResponse === "yes" ? "" : "not"} attend.</p>
 				<button
 					className="btn btn-accent w-full"
@@ -50,8 +50,8 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 	}
 
 	return (
-		<form action={submit} className="form-control max-w-fit gap-2">
-			<h3>Will you attend?</h3>
+		<form action={submit} className="form-control text-center float-right gap-2">
+			<h3 className="mt-0">Will you attend?</h3>
 
 			<button
 				className="btn btn-primary w-full"
