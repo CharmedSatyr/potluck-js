@@ -63,14 +63,14 @@ const EventPage = async ({ params }: Props) => {
 	const isHost = event.createdBy === session?.user?.id;
 
 	return (
-		<div className="grid-col-3 grid h-full w-full auto-rows-min">
-			<div className="col-span-2 row-span-1">
+		<div className="grid-col-3 grid h-full w-full lg:w-3/4 2xl:w-1/2 auto-rows-min container">
+			<section className="col-span-2 row-span-1">
 				<Suspense fallback={<EventSkeletonFallback />}>
 					<EventSkeleton code={code} />
 				</Suspense>
-			</div>
+			</section>
 
-			<div className="col-span-1 row-span-1">
+			<section className="col-span-1 row-span-1">
 				{authenticated && isHost && !isPassed && (
 					<Link
 						className="btn btn-accent float-right w-full lg:w-1/2"
@@ -83,16 +83,16 @@ const EventPage = async ({ params }: Props) => {
 				{authenticated && !isHost && !isPassed && (
 					<RsvpForm code={code} currentResponse={rsvpResponse} />
 				)}
-			</div>
+			</section>
 
-			<div className="col-span-3 row-span-1">
+			<section className="col-span-3 row-span-1">
 				<h2>Attendees</h2>
 				<Suspense fallback={<RsvpTableFallback />}>
 					<RsvpTable code={code} />
 				</Suspense>
-			</div>
+			</section>
 
-			<div className="col-span-3 row-span-1">
+			<section className="col-span-3 row-span-1">
 				{/** TODO: Delete commitments if someone changes RSVP to No. */}
 				{authenticated &&
 					!isPassed &&
@@ -118,7 +118,7 @@ const EventPage = async ({ params }: Props) => {
 							<CommitmentsTable code={code} />
 						</Suspense>
 					)}
-			</div>
+			</section>
 		</div>
 	);
 };
