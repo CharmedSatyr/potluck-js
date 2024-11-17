@@ -1,5 +1,3 @@
-"use server";
-
 import findCommitments from "@/actions/db/find-commitments";
 import findSlots from "@/actions/db/find-slots";
 import findUsers from "@/actions/db/find-users";

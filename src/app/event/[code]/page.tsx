@@ -2,7 +2,9 @@ import findSlots from "@/actions/db/find-slots";
 import findEvent from "@/actions/db/find-event";
 import findCommitments from "@/actions/db/find-commitments";
 import SlotManager from "@/app/event/[code]/(slot-manager)/index";
-import EventSkeleton from "@/components/event-skeleton";
+import EventSkeleton, {
+	EventSkeletonFallback,
+} from "@/components/event-skeleton";
 import findUsers from "@/actions/db/find-users";
 import { auth } from "@/auth";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
@@ -13,6 +15,7 @@ import RsvpTable from "@/components/rsvp-table";
 import { Rsvp } from "@/db/schema/rsvp";
 import RsvpForm from "@/components/rsvp-form";
 import Link from "next/link";
+import { Suspense } from "react";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -23,6 +26,7 @@ const EventPage = async ({ params }: Props) => {
 	const authenticated = Boolean(session?.user?.id);
 
 	const { code } = await params;
+
 	// TODO: Use the new hotness (`use`) to pass these into components as promises.
 	const [[event], slots, commitments] = await Promise.all([
 		findEvent({ code }),
@@ -55,35 +59,25 @@ const EventPage = async ({ params }: Props) => {
 		users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
 	});
 
-	const creator = rsvpUsers[0];
-
 	const rsvpResponse =
 		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
 
 	const isHost = event.createdBy === session?.user?.id;
 
-	const { description, hosts, location, name, startDate, startTime } = event;
-
 	return (
 		<div className="grid-col-3 grid h-full w-full auto-rows-min">
 			<div className="col-span-2 row-span-1">
-				<EventSkeleton
-					authenticated={authenticated}
-					code={code}
-					creator={{ image: creator.image!, name: creator.name! }}
-					description={description}
-					hosts={hosts}
-					location={location}
-					name={name}
-					startDate={startDate}
-					startTime={startTime}
-				/>
+				<Suspense fallback={<EventSkeletonFallback />}>
+					<div className="flex">
+						<EventSkeleton code={code} />
+					</div>
+				</Suspense>
 			</div>
 
 			<div className="col-span-1 row-span-1">
 				{authenticated && isHost && !isPassed && (
 					<Link
-						className="btn btn-accent w-full float-right lg:w-1/2"
+						className="btn btn-accent float-right w-full lg:w-1/2"
 						href={`/event/${code}/edit`}
 					>
 						Edit
