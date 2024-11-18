@@ -1,19 +1,18 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useActionState, useEffect, useState } from "react";
+import { use, useActionState, useEffect, useState } from "react";
 import submitAction, {
 	RsvpFormState,
 } from "@/components/rsvp-form/submit-actions";
-import { Rsvp } from "@/db/schema/rsvp";
 
 type Props = {
 	code: string;
-	currentResponse: Rsvp["response"] | null;
+	currentRsvpPromise: Promise<{ response: "yes" | "no" }[]>;
 };
 
-const RsvpForm = ({ code, currentResponse }: Props) => {
-	const session = useSession();
+const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
+	const [currentRsvp] = use(currentRsvpPromise);
+
 	const [override, setOverride] = useState<boolean>(false);
 
 	const [state, submit, isPending] = useActionState<RsvpFormState, FormData>(
@@ -21,7 +20,6 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 		{
 			code,
 			fields: { message: "" },
-			id: session?.data?.user?.id ?? "",
 			message: "",
 			success: false,
 		}
@@ -29,12 +27,12 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 
 	useEffect(() => {
 		setOverride(false);
-	}, [currentResponse, isPending, setOverride]);
+	}, [currentRsvp, isPending, setOverride]);
 
-	if (currentResponse !== null && !override) {
+	if (currentRsvp?.response && !override) {
 		return (
 			<div className="float-right text-center">
-				<p>You will {currentResponse === "yes" ? "" : "not"} attend.</p>
+				<p>You will {currentRsvp.response === "yes" ? "" : "not"} attend.</p>
 				<button
 					className="btn btn-accent w-full"
 					disabled={isPending}
@@ -94,3 +92,14 @@ const RsvpForm = ({ code, currentResponse }: Props) => {
 };
 
 export default RsvpForm;
+
+export const RsvpFormFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="skeleton h-12 w-full" />
+			<div className="skeleton h-8 w-full" />
+			<div className="skeleton h-8 w-full" />
+			<div className="skeleton h-8 w-full" />
+		</div>
+	);
+};

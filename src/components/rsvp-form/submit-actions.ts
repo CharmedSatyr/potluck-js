@@ -3,11 +3,11 @@
 import formSchema from "@/components/rsvp-form/submit-actions.schema";
 import upsertRsvp from "@/actions/db/upsert-rsvp";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 export type RsvpFormState = {
 	code: string;
 	fields: { message: string };
-	id: string;
 	message: string;
 	success: boolean;
 };
@@ -21,9 +21,20 @@ const submitAction = async (
 	const message = String(formData.get("message"));
 	const response = formData.get("response");
 
+	const session = await auth();
+
+	if (!session?.user?.id) {
+		return {
+			...prevState,
+			fields: { message },
+			message: ERROR_MESSAGE,
+			success: false,
+		};
+	}
+
 	const formatted = {
 		code: prevState.code,
-		createdBy: prevState.id,
+		createdBy: session.user.id,
 		message,
 		response,
 	};

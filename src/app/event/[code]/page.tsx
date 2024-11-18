@@ -12,12 +12,11 @@ import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable, {
 	CommitmentsTableFallback,
 } from "@/components/commitments-table";
-import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
 import RsvpTable, { RsvpTableFallback } from "@/components/rsvp-table";
-import { Rsvp } from "@/db/schema/rsvp";
-import RsvpForm from "@/components/rsvp-form";
+import RsvpForm, { RsvpFormFallback } from "@/components/rsvp-form";
 import Link from "next/link";
 import { Suspense } from "react";
+import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -46,24 +45,32 @@ const EventPage = async ({ params }: Props) => {
 
 	const isPassed = eventIsPassed(event.startDate);
 
-	// TODO: Make a query to get RSVPs with user data
-	const rsvps = [
-		{
-			createdBy: event.createdBy,
-			id: "1",
-			message: "Event Host",
-			response: "yes",
-		} as Rsvp,
-		...(await findRsvpsByEvent({ eventCode: code })),
-	];
-
-	const rsvpResponse =
-		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
-
 	const isHost = event.createdBy === session?.user?.id;
 
+	const [rsvpResponse] = await findUserEventRsvp({
+		code,
+		createdBy: session!.user!.id!,
+	});
+
+	// TODO: Make this better.
+	const isVisible = {
+		attendees: authenticated,
+		commitmentsTable:
+			authenticated &&
+			slots.length > 0 &&
+			(isPassed || rsvpResponse?.response !== "yes") &&
+			(!isHost || isPassed),
+		rsvpForm: authenticated && !isHost && !isPassed,
+		editButton: authenticated && isHost && !isPassed,
+		slotManager:
+			authenticated &&
+			slots.length > 0 &&
+			(isHost || rsvpResponse?.response === "yes") &&
+			!isPassed,
+	};
+
 	return (
-		<div className="grid-col-3 grid h-full w-full lg:w-3/4 2xl:w-1/2 auto-rows-min container">
+		<div className="grid-col-3 grid h-full w-full auto-rows-min lg:w-3/4 2xl:w-1/2">
 			<section className="col-span-2 row-span-1">
 				<Suspense fallback={<EventSkeletonFallback />}>
 					<EventSkeleton code={code} />
@@ -71,7 +78,7 @@ const EventPage = async ({ params }: Props) => {
 			</section>
 
 			<section className="col-span-1 row-span-1">
-				{authenticated && isHost && !isPassed && (
+				{isVisible.editButton && (
 					<Link
 						className="btn btn-accent float-right w-full lg:w-1/2"
 						href={`/event/${code}/edit`}
@@ -80,44 +87,48 @@ const EventPage = async ({ params }: Props) => {
 					</Link>
 				)}
 
-				{authenticated && !isHost && !isPassed && (
-					<RsvpForm code={code} currentResponse={rsvpResponse} />
+				{isVisible.rsvpForm && (
+					<Suspense fallback={<RsvpFormFallback />}>
+						<RsvpForm
+							code={code}
+							currentRsvpPromise={findUserEventRsvp({
+								code,
+								createdBy: session!.user!.id!,
+							})}
+						/>
+					</Suspense>
 				)}
 			</section>
 
-			<section className="col-span-3 row-span-1">
-				<h2>Attendees</h2>
-				<Suspense fallback={<RsvpTableFallback />}>
-					<RsvpTable code={code} />
-				</Suspense>
-			</section>
+			{isVisible.attendees && (
+				<section className="col-span-3 row-span-1">
+					<h2>Attendees</h2>
+					<Suspense fallback={<RsvpTableFallback />}>
+						<RsvpTable code={code} />
+					</Suspense>
+				</section>
+			)}
 
+			{/** TODO: Delete commitments if someone changes RSVP to No. */}
 			<section className="col-span-3 row-span-1">
-				{/** TODO: Delete commitments if someone changes RSVP to No. */}
-				{authenticated &&
-					!isPassed &&
-					slots.length > 0 &&
-					(isHost || rsvpResponse === "yes") && (
-						<>
-							<h2>Food Plan</h2>
-							<SlotManager
-								committedUsersBySlotPromise={committedUsersBySlotPromise}
-								commitments={commitments}
-								slots={slots}
-								users={users}
-							/>
-						</>
-					)}
+				{isVisible.slotManager && (
+					<Suspense>
+						<h2>Food Plan</h2>
+						<SlotManager
+							committedUsersBySlotPromise={committedUsersBySlotPromise}
+							commitments={commitments}
+							slots={slots}
+							users={users}
+						/>
+					</Suspense>
+				)}
 
-				{authenticated &&
-					slots.length > 0 &&
-					(!isHost || isPassed) &&
-					(isPassed || rsvpResponse !== "yes") && (
-						<Suspense fallback={<CommitmentsTableFallback />}>
-							<h2>Commitments</h2>
-							<CommitmentsTable code={code} />
-						</Suspense>
-					)}
+				{isVisible.commitmentsTable && (
+					<Suspense fallback={<CommitmentsTableFallback />}>
+						<h2>Commitments</h2>
+						<CommitmentsTable code={code} />
+					</Suspense>
+				)}
 			</section>
 		</div>
 	);
