@@ -1,8 +1,12 @@
 import SlotContainer from "@/app/event/[code]/(slot-manager)/slot-container";
 import CreateCommitmentForm from "@/app/event/[code]/(slot-manager)/create-commitment-form";
 import findSlotContainerDetails from "@/actions/db/find-slot-container-details";
-import CommitmentsTable from "@/components/commitments-table";
+import CommitmentsTable, {
+	CommitmentsTableFallback,
+} from "@/components/commitments-table";
 import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
+import { Suspense } from "react";
+import SlideIn from "@/components/slide-in";
 
 type Props = {
 	code: string;
@@ -38,11 +42,16 @@ const SlotManager = async ({ code }: Props) => {
 							</label>
 
 							{totalCommitments > 0 ? (
-								<CommitmentsTable
-									commitmentsWithDetails={commitmentsWithDetails.filter(
-										(c) => c.slotId === slotId
-									)}
-								/>
+								// TODO: Restore the delete button! You lost it!
+								<SlideIn>
+									<Suspense fallback={<CommitmentsTableFallback />}>
+										<CommitmentsTable
+											commitmentsWithDetails={commitmentsWithDetails.filter(
+												(c) => c.slotId === slotId
+											)}
+										/>
+									</Suspense>
+								</SlideIn>
 							) : (
 								<div className="ml-2">
 									<p className="my-2">None yet. Be the first!</p>
