@@ -12,6 +12,10 @@ const SlotManager = async ({ code }: Props) => {
 	const commitmentsWithDetails = await findCommitmentsWithDetails({ code });
 	const details = await findSlotContainerDetails({ code });
 
+	if (!details?.length) {
+		return <div>No plans yet. Ask the host to add some signup slots!</div>;
+	}
+
 	return (
 		<div className="join join-vertical w-full border">
 			{details.map((detail) => {
