@@ -8,19 +8,19 @@ type Props = {
 };
 
 const SlotManager = async ({ code }: Props) => {
-	const slotContainerDetails = await findSlotContainerDetails({ code });
+	const details = await findSlotContainerDetails({ code });
 
 	return (
 		<div className="join join-vertical w-full border">
-			{slotContainerDetails.map((detail) => {
-				const { commitmentCount, item, requestedCount, slotId, users } = detail;
+			{details.map((detail) => {
+				const { item, requestedCount, slotId, totalCommitments, users } = detail;
 
 				return (
 					<div key={detail.slotId} className="join-item border">
 						<SlotContainer
-							commitmentTotal={commitmentCount}
 							item={item}
 							requestedCount={requestedCount}
+							totalCommitments={totalCommitments}
 							users={users}
 						>
 							<label
@@ -30,7 +30,7 @@ const SlotManager = async ({ code }: Props) => {
 								Current Signups
 							</label>
 
-							{detail.commitmentCount > 0 ? (
+							{totalCommitments > 0 ? (
 								<CommitmentsTable code={code} />
 							) : (
 								<div className="ml-2">
@@ -41,9 +41,9 @@ const SlotManager = async ({ code }: Props) => {
 								</div>
 							)}
 
-							{requestedCount - commitmentCount > 0 && (
+							{requestedCount - totalCommitments > 0 && (
 								<CreateCommitmentForm
-									commitmentsStillNeeded={requestedCount - commitmentCount}
+									commitmentsStillNeeded={requestedCount - totalCommitments}
 									slotId={slotId}
 								/>
 							)}

@@ -9,11 +9,12 @@ import { Slot, slot } from "@/db/schema/slot";
 import findEvent from "@/actions/db/find-event";
 import { User, user } from "@/db/schema/auth/user";
 
-type CommitmentsWithDetails = {
+type CommitmentWithDetails = {
 	commitmentId: Commitment["id"];
 	description: Commitment["description"];
 	item: Slot["course"];
 	quantity: Commitment["quantity"];
+	slotId: Slot["id"];
 	user: {
 		image: User["image"];
 		name: User["name"];
@@ -22,7 +23,7 @@ type CommitmentsWithDetails = {
 
 const findCommitmentsWithDetails = async (
 	data: z.infer<typeof schema>
-): Promise<CommitmentsWithDetails[]> => {
+): Promise<CommitmentWithDetails[]> => {
 	try {
 		schema.parse(data);
 
@@ -34,6 +35,7 @@ const findCommitmentsWithDetails = async (
 				description: commitment.description,
 				item: slot.course,
 				quantity: commitment.quantity,
+				slotId: slot.id,
 				user: {
 					image: user.image,
 					name: user.name,

@@ -5,44 +5,44 @@ import { PropsWithChildren, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 type Props = {
-	commitmentTotal: number;
 	item: string;
 	requestedCount: number;
+	totalCommitments: number;
 	users: {
-		commitmentQuantity: number;
 		id: string;
 		image: string | null;
 		name: string | null;
+		commitments: number;
 	}[];
 };
 
 const Avatars = ({ users }: { users: Props["users"] }) => {
-	return users.map((user) =>
-		user.image ? (
-			<div key={user.id} className="indicator">
+	return users.map(({ id, image, name, commitments }) =>
+		image ? (
+			<div key={id} className="indicator">
 				<Image
-					alt={`Avatar for user ${user.name}`}
+					alt={`Avatar for user ${name}`}
 					className="avatar my-0 rounded-full border"
-					src={user.image}
+					src={image} // TODO: Use a static import
 					height={40}
-					title={`${user.name} is bringing ${user.commitmentQuantity}`}
+					title={`${name} is bringing ${commitments}`}
 					width={40}
 				/>
 				<span className="badge indicator-item badge-primary badge-sm">
-					{user.commitmentQuantity}
+					{commitments}
 				</span>
 			</div>
 		) : (
-			<div key={user.id} className="skeleton h-8 w-8 rounded-full border" />
+			<div key={id} className="skeleton h-8 w-8 rounded-full border" />
 		)
 	);
 };
 
 const SlotContainer = ({
 	children,
-	commitmentTotal,
 	item,
 	requestedCount,
+	totalCommitments,
 	users,
 }: PropsWithChildren<Props>) => {
 	const [expanded, setExpanded] = useState<boolean>(false);
@@ -61,7 +61,7 @@ const SlotContainer = ({
 				<Avatars users={users} />
 
 				<div className="flex items-center justify-between">
-					{commitmentTotal} of {requestedCount} filled
+					{totalCommitments} of {requestedCount} filled
 					{expanded ? (
 						<ChevronUpIcon className="-mr-6 ml-2 size-6" />
 					) : (

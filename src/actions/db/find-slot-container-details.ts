@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { count, eq, sql } from "drizzle-orm";
+import { eq, sum } from "drizzle-orm";
 import db from "@/db/connection";
 import findEvent from "@/actions/db/find-event";
 import { slot, Slot } from "@/db/schema/slot";
@@ -10,21 +10,21 @@ import { commitment } from "@/db/schema/commitment";
 import { User, user } from "@/db/schema/auth/user";
 
 type SlotContainerDetails = {
-	commitmentCount: number;
 	slotId: Slot["id"];
 	item: Slot["course"];
 	requestedCount: Slot["count"];
+	totalCommitments: number;
 	users: {
-		commitmentQuantity: number;
 		id: User["id"];
 		image: User["image"];
 		name: User["name"];
+		commitments: number;
 	}[];
-};
+}[];
 
 const findSlotContainerDetails = async (
 	data: z.infer<typeof schema>
-): Promise<SlotContainerDetails[]> => {
+): Promise<SlotContainerDetails> => {
 	try {
 		schema.parse(data);
 
@@ -34,35 +34,46 @@ const findSlotContainerDetails = async (
 			return [];
 		}
 
-		return await db
+		const users = await db
 			.select({
-				commitmentCount: count(commitment),
+				commitments: sum(commitment.quantity).mapWith(Number),
 				slotId: slot.id,
-				item: slot.course,
-				requestedCount: slot.count,
-				users: sql<
-					{
-						commitmentQuantity: number;
-						id: string;
-						image: string;
-						name: string;
-					}[]
-				>`
-				JSON_AGG(
-				  JSON_BUILD_OBJECT(
-				  	'id', ${user.id},
-					'image', ${user.image},
-					'name', ${user.name},
-					'commitmentQuantity', ${commitment.quantity}
-				  )
-				) 
-			  `.as("users"),
+				user: { id: user.id, image: user.image, name: user.name },
 			})
 			.from(slot)
 			.where(eq(slot.eventId, event.id))
-			.innerJoin(commitment, eq(commitment.slotId, slot.id))
-			.innerJoin(user, eq(commitment.createdBy, user.id))
+			.leftJoin(commitment, eq(commitment.slotId, slot.id))
+			.innerJoin(user, eq(user.id, commitment.createdBy))
+			.groupBy(slot.id, user.id);
+
+		const slots = await db
+			.select({
+				slotId: slot.id,
+				item: slot.course,
+				requestedCount: slot.count,
+				totalCommitments: sum(commitment.quantity).mapWith(Number),
+			})
+			.from(slot)
+			.where(eq(slot.eventId, event.id))
+			.leftJoin(commitment, eq(commitment.slotId, slot.id))
 			.groupBy(slot.id);
+
+		// TODO: `users` and `slots` queries should be combined,
+		// but there is a known issue where column references
+		// become ambiguous in subqueries in Drizzle.
+		// https://github.com/drizzle-team/drizzle-orm/issues/2772
+		// https://github.com/drizzle-team/drizzle-orm/issues/1242
+		return slots.map((slot) => ({
+			...slot,
+			users: users
+				.filter((user) => user.slotId === slot.slotId)
+				.map(({ commitments, user }) => ({
+					id: user.id,
+					image: user.image,
+					name: user.name,
+					commitments,
+				})),
+		}));
 	} catch (err) {
 		console.error(err);
 

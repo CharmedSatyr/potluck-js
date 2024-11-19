@@ -11,6 +11,16 @@ jest.mock("@/db/connection", () => ({
 jest.mock("@/actions/db/find-event");
 
 describe("findCommitmentsWithDetails", () => {
+	let errorLogger: jest.SpyInstance;
+
+	beforeAll(() => {
+		errorLogger = jest.spyOn(console, "error").mockImplementation(() => {});
+	});
+
+	afterAll(() => {
+		errorLogger.mockRestore();
+	});
+
 	const validData = { code: "CODE1" };
 	const event = { id: 1 };
 	const commitmentsWithDetails = [
@@ -19,6 +29,7 @@ describe("findCommitmentsWithDetails", () => {
 			description: "Bring cookies",
 			item: "Snickerdoodles",
 			quantity: 12,
+			slotId: "7e6c6edd-abe0-4001-aeab-764ee74cd33e",
 			user: {
 				image: "https://example.com/avatar.png",
 				name: "Test User",
@@ -50,6 +61,7 @@ describe("findCommitmentsWithDetails", () => {
 			description: commitment.description,
 			item: slot.course,
 			quantity: commitment.quantity,
+			slotId: slot.id,
 			user: {
 				image: user.image,
 				name: user.name,
