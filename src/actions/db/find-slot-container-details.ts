@@ -58,13 +58,14 @@ const findSlotContainerDetails = async (
 			.leftJoin(commitment, eq(commitment.slotId, slot.id))
 			.groupBy(slot.id);
 
-		// TODO: `users` and `slots` queries should be combined,
-		// but there is a known issue where column references
+		// TODO: `users` and `slots` queries should be combined.
+		// There is a known issue where column references
 		// become ambiguous in subqueries in Drizzle.
 		// https://github.com/drizzle-team/drizzle-orm/issues/2772
 		// https://github.com/drizzle-team/drizzle-orm/issues/1242
 		return slots.map((slot) => ({
 			...slot,
+			totalCommitments: slot.totalCommitments ?? 0,
 			users: users
 				.filter((user) => user.slotId === slot.slotId)
 				.map(({ commitments, user }) => ({
