@@ -12,11 +12,11 @@ const findEventsByUserWithRsvp = async (
 ): Promise<
 	{
 		code: Event["code"];
+		description: Event["location"];
+		location: Event["location"];
 		name: Event["name"];
 		startDate: Event["startDate"];
 		startTime: Event["startTime"];
-		location: Event["location"];
-		description: Event["location"];
 	}[]
 > => {
 	try {
@@ -27,15 +27,16 @@ const findEventsByUserWithRsvp = async (
 		return await db
 			.select({
 				code,
+				description,
+				location,
 				name,
 				startDate,
 				startTime,
-				location,
-				description,
 			})
 			.from(rsvp)
 			.where(eq(rsvp.createdBy, data.id))
-			.innerJoin(event, eq(event.id, rsvp.eventId));
+			.innerJoin(event, eq(event.id, rsvp.eventId))
+			.orderBy(event.startDate, event.startTime);
 	} catch (err) {
 		console.error(err);
 

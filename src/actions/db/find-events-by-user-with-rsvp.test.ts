@@ -35,7 +35,9 @@ describe("findEventsByUserWithRsvp", () => {
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
 				where: jest.fn().mockReturnValueOnce({
-					innerJoin: jest.fn().mockReturnValueOnce(data),
+					innerJoin: jest.fn().mockReturnValueOnce({
+						orderBy: jest.fn().mockReturnValueOnce(data),
+					}),
 				}),
 			}),
 		});
@@ -69,7 +71,9 @@ describe("findEventsByUserWithRsvp", () => {
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
 				where: jest.fn().mockReturnValueOnce({
-					innerJoin: jest.fn().mockRejectedValueOnce(error),
+					innerJoin: jest.fn().mockReturnValueOnce({
+						orderBy: jest.fn().mockRejectedValueOnce(error),
+					}),
 				}),
 			}),
 		});
