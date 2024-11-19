@@ -4,6 +4,6 @@ import { code } from "@/validation/code.schema";
 
 export const schema = z
 	.strictObject({
-		eventCode: code,
+		code,
 	})
-	.required() satisfies z.ZodType<{ eventCode: Event["code"] }>;
+	.required() satisfies z.ZodType<{ code: Event["code"] }>;

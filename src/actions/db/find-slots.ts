@@ -11,7 +11,7 @@ const findSlots = async (data: z.infer<typeof schema>): Promise<Slot[]> => {
 	try {
 		schema.parse(data);
 
-		const [event] = await findEvent({ code: data.eventCode });
+		const [event] = await findEvent({ code: data.code });
 
 		if (!event) {
 			return [];
