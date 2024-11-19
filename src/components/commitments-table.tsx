@@ -14,6 +14,11 @@ type Props = {
 };
 
 const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
+	if (!commitmentsWithDetails?.length) {
+		return <p>No plans yet!</p>
+
+	}
+
 	return (
 		<div className="overflow-x-auto">
 			<table className="table">
