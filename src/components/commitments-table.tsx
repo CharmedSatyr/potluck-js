@@ -15,8 +15,7 @@ type Props = {
 
 const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 	if (!commitmentsWithDetails?.length) {
-		return <p>No plans yet!</p>
-
+		return <p>No plans yet!</p>;
 	}
 
 	return (
