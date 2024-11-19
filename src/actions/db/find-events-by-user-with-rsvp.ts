@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { schema } from "@/actions/db/find-events-by-user-with-rsvp.schema";
 import db from "@/db/connection";
 import { Event, event } from "@/db/schema/event";
@@ -36,7 +36,7 @@ const findEventsByUserWithRsvp = async (
 			.from(rsvp)
 			.where(eq(rsvp.createdBy, data.id))
 			.innerJoin(event, eq(event.id, rsvp.eventId))
-			.orderBy(event.startDate, event.startTime);
+			.orderBy(desc(event.startDate), desc(event.startTime));
 	} catch (err) {
 		console.error(err);
 
