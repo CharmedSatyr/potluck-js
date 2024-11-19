@@ -55,7 +55,7 @@ const AttendeesSection = ({ code }: { code: string }) => (
 const CommitmentsSection = async ({ code }: { code: string }) => (
 	<section className="col-span-3 row-span-1">
 		<Suspense fallback={<CommitmentsTableFallback />}>
-			<h2>Commitments</h2>
+			<h2>On the Menu</h2>
 			<CommitmentsTable
 				commitmentsWithDetails={await findCommitmentsWithDetails({
 					code,
@@ -98,7 +98,7 @@ const FoodPlanSection = ({ code }: { code: string }) => {
 	return (
 		<section className="col-span-3 row-span-1">
 			<Suspense fallback={<SlotManagerFallback />}>
-				<h2>Food Plan</h2>
+				<h2>On the Menu</h2>
 				<SlotManager code={code} />
 			</Suspense>
 		</section>
@@ -114,8 +114,8 @@ const LoggedOutView = ({ code }: { code: string }) => (
 const PassedView = ({ code }: { code: string }) => (
 	<Grid>
 		<EventSection code={code} />
-		<AttendeesSection code={code} />
 		<CommitmentsSection code={code} />
+		<AttendeesSection code={code} />
 	</Grid>
 );
 
@@ -123,8 +123,8 @@ const HostView = async ({ code }: { code: string }) => (
 	<Grid>
 		<EventSection code={code} />
 		<ManageEventSection code={code} />
-		<AttendeesSection code={code} />
 		<FoodPlanSection code={code} />
+		<AttendeesSection code={code} />
 	</Grid>
 );
 
@@ -138,8 +138,8 @@ const GuestView = async ({
 	<Grid>
 		<EventSection code={code} />
 		<RsvpSection code={code} userId={userId} />
-		<AttendeesSection code={code} />
 		<FoodPlanSection code={code} />
+		<AttendeesSection code={code} />
 	</Grid>
 );
 
@@ -179,8 +179,8 @@ const EventPage = async ({ params }: Props) => {
 		<Grid>
 			<EventSection code={code} />
 			<RsvpSection code={code} userId={session.user.id} />
-			<AttendeesSection code={code} />
 			<CommitmentsSection code={code} />
+			<AttendeesSection code={code} />
 		</Grid>
 	);
 };
