@@ -154,7 +154,7 @@ const DashboardPage = async () => {
 
 	return (
 		<div className="w-full">
-			<h1>Dashboard</h1>
+			<h1 className="text-primary">Dashboard</h1>
 
 			<SlideIn>
 				<h2>Hosting</h2>
