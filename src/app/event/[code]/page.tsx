@@ -54,8 +54,8 @@ const AttendeesSection = ({ code }: { code: string }) => (
 // TODO: Fallback text in commitments table in case of no slots
 const CommitmentsSection = async ({ code }: { code: string }) => (
 	<section className="col-span-3 row-span-1">
+		<h2>On the Menu</h2>
 		<Suspense fallback={<CommitmentsTableFallback />}>
-			<h2>On the Menu</h2>
 			<CommitmentsTable
 				commitmentsWithDetails={await findCommitmentsWithDetails({
 					code,
@@ -69,7 +69,7 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 const ManageEventSection = ({ code }: { code: string }) => (
 	<section className="col-span-1 row-span-1">
 		<Link
-			className="btn btn-accent float-right w-full lg:w-1/2"
+			className="btn btn-accent float-right w-28"
 			href={`/event/${code}/edit`}
 		>
 			Edit
@@ -97,8 +97,8 @@ const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
 const FoodPlanSection = ({ code }: { code: string }) => {
 	return (
 		<section className="col-span-3 row-span-1">
+			<h2>On the Menu</h2>
 			<Suspense fallback={<SlotManagerFallback />}>
-				<h2>On the Menu</h2>
 				<SlotManager code={code} />
 			</Suspense>
 		</section>
