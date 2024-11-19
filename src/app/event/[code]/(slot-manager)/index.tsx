@@ -1,51 +1,27 @@
-import { use } from "react";
 import SlotContainer from "@/app/event/[code]/(slot-manager)/slot-container";
-import CommitmentsTable from "@/app/event/[code]/(slot-manager)/commitments-table";
-import { Commitment } from "@/db/schema/commitment";
-import { Slot } from "@/db/schema/slot";
-import { User } from "@/db/schema/auth/user";
-import CreateCommitmentForm from "./create-commitment-form";
+import CreateCommitmentForm from "@/app/event/[code]/(slot-manager)/create-commitment-form";
+import findSlotContainerDetails from "@/actions/db/find-slot-container-details";
+import CommitmentsTable from "@/components/commitments-table";
 
 type Props = {
-	commitments: Commitment[];
-	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
-	slots: Slot[];
-	users: User[];
+	code: string;
 };
 
-const SlotManager = ({
-	committedUsersBySlotPromise,
-	commitments,
-	slots,
-	users,
-}: Props) => {
-	const committedUsersBySlot = use(committedUsersBySlotPromise);
+const SlotManager = async ({ code }: Props) => {
+	const slotContainerDetails = await findSlotContainerDetails({ code });
 
 	return (
 		<div className="join join-vertical w-full border">
-			{slots.map((slot) => {
-				const relatedCommitments = commitments.filter(
-					(c) => c.slotId === slot.id
-				);
-				const eventUsers = relatedCommitments.map((c) => c.createdBy);
-				const deduplicatedRelatedUsers = new Set(eventUsers);
-				const relatedUsers = users
-					.filter((u) => deduplicatedRelatedUsers.has(u.id))
-					.map((u) => ({ id: u.id, image: u.image, name: u.name }));
-				const commitmentTotal = relatedCommitments.reduce(
-					(acc, curr) => acc + curr.quantity,
-					0
-				);
-
-				const commitmentsStillNeeded = slot.count - relatedCommitments.length;
+			{slotContainerDetails.map((detail) => {
+				const { commitmentCount, item, requestedCount, slotId, users } = detail;
 
 				return (
-					<div key={slot.id} className="join-item border">
+					<div key={detail.slotId} className="join-item border">
 						<SlotContainer
-							avatars={committedUsersBySlot.get(slot.id)}
-							commitmentTotal={commitmentTotal}
-							item={slot.course}
-							slotCount={slot.count}
+							commitmentTotal={commitmentCount}
+							item={item}
+							requestedCount={requestedCount}
+							users={users}
 						>
 							<label
 								className="label label-text ml-2 px-0 pb-2 pt-0"
@@ -53,11 +29,9 @@ const SlotManager = ({
 							>
 								Current Signups
 							</label>
-							{relatedCommitments.length > 0 ? (
-								<CommitmentsTable
-									commitments={relatedCommitments}
-									users={relatedUsers}
-								/>
+
+							{detail.commitmentCount > 0 ? (
+								<CommitmentsTable code={code} />
 							) : (
 								<div className="ml-2">
 									<p id="commitments-table" className="my-2">
@@ -66,10 +40,11 @@ const SlotManager = ({
 									<div className="divider"></div>
 								</div>
 							)}
-							{commitmentsStillNeeded > 0 && (
+
+							{requestedCount - commitmentCount > 0 && (
 								<CreateCommitmentForm
-									commitmentsStillNeeded={commitmentsStillNeeded}
-									slotId={slot.id}
+									commitmentsStillNeeded={requestedCount - commitmentCount}
+									slotId={slotId}
 								/>
 							)}
 						</SlotContainer>
