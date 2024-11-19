@@ -18,6 +18,7 @@ import { PropsWithChildren, Suspense } from "react";
 import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
 import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 import { notFound } from "next/navigation";
+import SlideIn from "@/components/slide-in";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -44,23 +45,27 @@ const EventSection = ({ code }: { code: string }) => (
 
 const AttendeesSection = ({ code }: { code: string }) => (
 	<section className="col-span-3 row-span-1">
-		<h2>Attendees</h2>
-		<Suspense fallback={<RsvpTableFallback />}>
-			<RsvpTable code={code} />
-		</Suspense>
+		<SlideIn>
+			<h2>Attendees</h2>
+			<Suspense fallback={<RsvpTableFallback />}>
+				<RsvpTable code={code} />
+			</Suspense>
+		</SlideIn>
 	</section>
 );
 
 const CommitmentsSection = async ({ code }: { code: string }) => (
 	<section className="col-span-3 row-span-1">
-		<h2>On the Menu</h2>
-		<Suspense fallback={<CommitmentsTableFallback />}>
-			<CommitmentsTable
-				commitmentsWithDetails={await findCommitmentsWithDetails({
-					code,
-				})}
-			/>
-		</Suspense>
+		<SlideIn>
+			<h2>On the Menu</h2>
+			<Suspense fallback={<CommitmentsTableFallback />}>
+				<CommitmentsTable
+					commitmentsWithDetails={await findCommitmentsWithDetails({
+						code,
+					})}
+				/>
+			</Suspense>
+		</SlideIn>
 	</section>
 );
 
@@ -94,10 +99,12 @@ const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
 const FoodPlanSection = ({ code }: { code: string }) => {
 	return (
 		<section className="col-span-3 row-span-1">
-			<h2>On the Menu</h2>
-			<Suspense fallback={<SlotManagerFallback />}>
-				<SlotManager code={code} />
-			</Suspense>
+			<SlideIn>
+				<h2>On the Menu</h2>
+				<Suspense fallback={<SlotManagerFallback />}>
+					<SlotManager code={code} />
+				</Suspense>
+			</SlideIn>
 		</section>
 	);
 };

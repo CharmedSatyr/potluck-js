@@ -12,4 +12,17 @@
 	input[type="number"] {
 		-moz-appearance: textfield;
 	}
+
+	.slide-in {
+		transform: translateY(8%);
+		opacity: 0;
+		transition:
+			transform 0.3s ease-out,
+			opacity 0.3s ease-out;
+	}
+
+	.slide-in.visible {
+		transform: translateX(0);
+		opacity: 1;
+	}
 }
