@@ -1,21 +1,49 @@
 "use client";
 
-import { PropsWithChildren, Suspense, useState } from "react";
+import Image from "next/image";
+import { PropsWithChildren, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 type Props = {
-	avatars?: JSX.Element;
-	commitmentTotal: number;
 	item: string;
-	slotCount: number;
+	requestedCount: number;
+	totalCommitments: number;
+	users: {
+		id: string;
+		image: string | null;
+		name: string | null;
+		commitments: number;
+	}[];
+};
+
+const Avatars = ({ users }: { users: Props["users"] }) => {
+	return users.map(({ id, image, name, commitments }) =>
+		image ? (
+			<div key={id} className="indicator">
+				<Image
+					alt={`Avatar for user ${name}`}
+					className="avatar my-0 rounded-full border"
+					src={image} // TODO: Use a static import
+					height={40}
+					title={`${name} is bringing ${commitments}`}
+					width={40}
+				/>
+				<span className="badge indicator-item badge-primary badge-sm">
+					{commitments}
+				</span>
+			</div>
+		) : (
+			<div key={id} className="skeleton h-8 w-8 rounded-full border" />
+		)
+	);
 };
 
 const SlotContainer = ({
-	avatars,
 	children,
-	commitmentTotal,
 	item,
-	slotCount,
+	requestedCount,
+	totalCommitments,
+	users,
 }: PropsWithChildren<Props>) => {
 	const [expanded, setExpanded] = useState<boolean>(false);
 
@@ -29,9 +57,11 @@ const SlotContainer = ({
 
 			<div className="collapse-title flex w-full items-center justify-between">
 				<div className="w-6/12 font-bold">{item}</div>
-				{avatars}
+
+				<Avatars users={users} />
+
 				<div className="flex items-center justify-between">
-					{commitmentTotal} of {slotCount} filled
+					{totalCommitments} of {requestedCount} filled
 					{expanded ? (
 						<ChevronUpIcon className="-mr-6 ml-2 size-6" />
 					) : (

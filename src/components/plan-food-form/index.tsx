@@ -131,7 +131,7 @@ const PlanFoodForm = ({
 			data-testid="plan-food-form"
 		>
 			<h1 className="my-0 text-primary">Plan the Food</h1>
-			<h2>Create Your Slots</h2>
+			<h2>Create Signup Slots</h2>
 
 			<span className="mb-2 text-secondary">{state?.message}</span>
 			{slots.map((slot, index) => (

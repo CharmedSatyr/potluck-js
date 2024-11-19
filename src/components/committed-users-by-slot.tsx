@@ -34,14 +34,16 @@ const Avatars = ({ committedUsers }: Props) => {
 	);
 };
 
-const committedUsersBySlot = async (
+// TODO: There is something better now. See the slot manager.
+/** @deprecated */
+const CommittedUsersBySlot = async (
 	code: string
 ): Promise<Map<string, JSX.Element>> => {
 	if (!code) {
 		return new Map();
 	}
 
-	const slots = await findSlots({ eventCode: code });
+	const slots = await findSlots({ code });
 	const commitments = await findCommitments({ eventCode: code });
 	const usersToFind = commitments.map((c) => c.createdBy);
 
@@ -80,4 +82,4 @@ const committedUsersBySlot = async (
 	return map;
 };
 
-export default committedUsersBySlot;
+export default CommittedUsersBySlot;

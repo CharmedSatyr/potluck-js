@@ -1,51 +1,34 @@
-import { use } from "react";
 import SlotContainer from "@/app/event/[code]/(slot-manager)/slot-container";
-import CommitmentsTable from "@/app/event/[code]/(slot-manager)/commitments-table";
-import { Commitment } from "@/db/schema/commitment";
-import { Slot } from "@/db/schema/slot";
-import { User } from "@/db/schema/auth/user";
-import CreateCommitmentForm from "./create-commitment-form";
+import CreateCommitmentForm from "@/app/event/[code]/(slot-manager)/create-commitment-form";
+import findSlotContainerDetails from "@/actions/db/find-slot-container-details";
+import CommitmentsTable from "@/components/commitments-table";
+import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 
 type Props = {
-	commitments: Commitment[];
-	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
-	slots: Slot[];
-	users: User[];
+	code: string;
 };
 
-const SlotManager = ({
-	committedUsersBySlotPromise,
-	commitments,
-	slots,
-	users,
-}: Props) => {
-	const committedUsersBySlot = use(committedUsersBySlotPromise);
+const SlotManager = async ({ code }: Props) => {
+	const commitmentsWithDetails = await findCommitmentsWithDetails({ code });
+	const details = await findSlotContainerDetails({ code });
+
+	if (!details?.length) {
+		return <div>No plans yet. Ask the host to add some signup slots!</div>;
+	}
 
 	return (
 		<div className="join join-vertical w-full border">
-			{slots.map((slot) => {
-				const relatedCommitments = commitments.filter(
-					(c) => c.slotId === slot.id
-				);
-				const eventUsers = relatedCommitments.map((c) => c.createdBy);
-				const deduplicatedRelatedUsers = new Set(eventUsers);
-				const relatedUsers = users
-					.filter((u) => deduplicatedRelatedUsers.has(u.id))
-					.map((u) => ({ id: u.id, image: u.image, name: u.name }));
-				const commitmentTotal = relatedCommitments.reduce(
-					(acc, curr) => acc + curr.quantity,
-					0
-				);
-
-				const commitmentsStillNeeded = slot.count - relatedCommitments.length;
+			{details.map((detail) => {
+				const { item, requestedCount, slotId, totalCommitments, users } =
+					detail;
 
 				return (
-					<div key={slot.id} className="join-item border">
+					<div key={slotId} className="join-item border">
 						<SlotContainer
-							avatars={committedUsersBySlot.get(slot.id)}
-							commitmentTotal={commitmentTotal}
-							item={slot.course}
-							slotCount={slot.count}
+							item={item}
+							requestedCount={requestedCount}
+							totalCommitments={totalCommitments}
+							users={users}
 						>
 							<label
 								className="label label-text ml-2 px-0 pb-2 pt-0"
@@ -53,23 +36,24 @@ const SlotManager = ({
 							>
 								Current Signups
 							</label>
-							{relatedCommitments.length > 0 ? (
+
+							{totalCommitments > 0 ? (
 								<CommitmentsTable
-									commitments={relatedCommitments}
-									users={relatedUsers}
+									commitmentsWithDetails={commitmentsWithDetails.filter(
+										(c) => c.slotId === slotId
+									)}
 								/>
 							) : (
 								<div className="ml-2">
-									<p id="commitments-table" className="my-2">
-										None yet. Be the first!
-									</p>
+									<p className="my-2">None yet. Be the first!</p>
 									<div className="divider"></div>
 								</div>
 							)}
-							{commitmentsStillNeeded > 0 && (
+
+							{requestedCount - totalCommitments > 0 && (
 								<CreateCommitmentForm
-									commitmentsStillNeeded={commitmentsStillNeeded}
-									slotId={slot.id}
+									commitmentsStillNeeded={requestedCount - totalCommitments}
+									slotId={slotId}
 								/>
 							)}
 						</SlotContainer>
@@ -81,3 +65,29 @@ const SlotManager = ({
 };
 
 export default SlotManager;
+
+export const SlotManagerFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-1/2" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-1/4" />
+			</div>
+
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-2/3" />
+				<div className="skeleton h-16 w-1/3" />
+			</div>
+
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-1/2" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-1/4" />
+			</div>
+		</div>
+	);
+};

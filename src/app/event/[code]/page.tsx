@@ -1,134 +1,184 @@
-import findSlots from "@/actions/db/find-slots";
 import findEvent from "@/actions/db/find-event";
-import findCommitments from "@/actions/db/find-commitments";
-import SlotManager from "@/app/event/[code]/(slot-manager)/index";
-import EventSkeleton from "@/components/event-skeleton";
-import findUsers from "@/actions/db/find-users";
+import SlotManager, {
+	SlotManagerFallback,
+} from "@/app/event/[code]/(slot-manager)/index";
+import EventSkeleton, {
+	EventHeader,
+	EventSkeletonFallback,
+} from "@/components/event-skeleton";
 import { auth } from "@/auth";
-import committedUsersBySlot from "@/components/committed-users-by-slot";
 import eventIsPassed from "@/utilities/event-is-passed";
-import CommitmentsTable from "@/components/commitments-table";
-import findRsvpsByEvent from "@/actions/db/find-rsvps-by-event";
-import RsvpTable from "@/components/rsvp-table";
-import { Rsvp } from "@/db/schema/rsvp";
-import RsvpForm from "@/components/rsvp-form";
+import CommitmentsTable, {
+	CommitmentsTableFallback,
+} from "@/components/commitments-table";
+import RsvpTable, { RsvpTableFallback } from "@/components/rsvp-table";
+import RsvpForm, { RsvpFormFallback } from "@/components/rsvp-form";
 import Link from "next/link";
+import { PropsWithChildren, Suspense } from "react";
+import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
+import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
+import { notFound } from "next/navigation";
 
-type Props = {
-	params: Promise<{ code: string }>;
+type Props = { params: Promise<{ code: string }> };
+
+const Grid = ({ children }: PropsWithChildren) => (
+	<div className="grid-col-3 grid h-full w-full auto-rows-min lg:w-3/4 2xl:w-1/2">
+		{children}
+	</div>
+);
+
+const EventTitleSection = ({ code }: { code: string }) => (
+	<section className="col-span-3 row-span-1">
+		<EventHeader code={code} name="Something's Happening..." />
+		<p>Sign in to see all the details!</p>
+	</section>
+);
+
+const EventSection = ({ code }: { code: string }) => (
+	<section className="col-span-2 row-span-1 h-72">
+		<Suspense fallback={<EventSkeletonFallback />}>
+			<EventSkeleton code={code} />
+		</Suspense>
+	</section>
+);
+
+const AttendeesSection = ({ code }: { code: string }) => (
+	<section className="col-span-3 row-span-1">
+		<h2>Attendees</h2>
+		<Suspense fallback={<RsvpTableFallback />}>
+			<RsvpTable code={code} />
+		</Suspense>
+	</section>
+);
+
+const CommitmentsSection = async ({ code }: { code: string }) => (
+	<section className="col-span-3 row-span-1">
+		<h2>On the Menu</h2>
+		<Suspense fallback={<CommitmentsTableFallback />}>
+			<CommitmentsTable
+				commitmentsWithDetails={await findCommitmentsWithDetails({
+					code,
+				})}
+			/>
+		</Suspense>
+	</section>
+);
+
+// TODO: Add Delete Button
+const ManageEventSection = ({ code }: { code: string }) => (
+	<section className="col-span-1 row-span-1">
+		<Link
+			className="btn btn-accent float-right w-28"
+			href={`/event/${code}/edit`}
+		>
+			Edit
+		</Link>
+	</section>
+);
+
+// TODO: Delete commitments if someone changes RSVP to No.
+const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
+	<section className="col-span-1 row-span-1">
+		<Suspense fallback={<RsvpFormFallback />}>
+			<RsvpForm
+				code={code}
+				currentRsvpPromise={findUserEventRsvp({
+					code,
+					createdBy: userId,
+				})}
+			/>
+		</Suspense>
+	</section>
+);
+
+const FoodPlanSection = ({ code }: { code: string }) => {
+	return (
+		<section className="col-span-3 row-span-1">
+			<h2>On the Menu</h2>
+			<Suspense fallback={<SlotManagerFallback />}>
+				<SlotManager code={code} />
+			</Suspense>
+		</section>
+	);
 };
 
+const LoggedOutView = ({ code }: { code: string }) => (
+	<Grid>
+		<EventTitleSection code={code} />
+	</Grid>
+);
+
+const PassedView = ({ code }: { code: string }) => (
+	<Grid>
+		<EventSection code={code} />
+		<CommitmentsSection code={code} />
+		<AttendeesSection code={code} />
+	</Grid>
+);
+
+const HostView = async ({ code }: { code: string }) => (
+	<Grid>
+		<EventSection code={code} />
+		<ManageEventSection code={code} />
+		<FoodPlanSection code={code} />
+		<AttendeesSection code={code} />
+	</Grid>
+);
+
+const GuestView = async ({
+	code,
+	userId,
+}: {
+	code: string;
+	userId: string;
+}) => (
+	<Grid>
+		<EventSection code={code} />
+		<RsvpSection code={code} userId={userId} />
+		<FoodPlanSection code={code} />
+		<AttendeesSection code={code} />
+	</Grid>
+);
+
 const EventPage = async ({ params }: Props) => {
-	const session = await auth();
-	const authenticated = Boolean(session?.user?.id);
-
 	const { code } = await params;
-	// TODO: Use the new hotness (`use`) to pass these into components as promises.
-	const [[event], slots, commitments] = await Promise.all([
-		findEvent({ code }),
-		findSlots({ eventCode: code }),
-		findCommitments({ eventCode: code }),
-	]);
-	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
-	// TODO: Make a query to get commitments with users.
-	const usersToFind = commitments.map((c) => c.createdBy);
-	const users =
-		usersToFind.length > 0
-			? await findUsers({ users: usersToFind as [string, ...string[]] })
-			: [];
+	const [event] = await findEvent({ code });
 
-	const isPassed = eventIsPassed(event.startDate);
+	if (!event) {
+		return notFound();
+	}
 
-	// TODO: Make a query to get RSVPs with user data
-	const rsvps = [
-		{
-			createdBy: event.createdBy,
-			id: "1",
-			message: "Event Host",
-			response: "yes",
-		} as Rsvp,
-		...(await findRsvpsByEvent({ eventCode: code })),
-	];
+	const session = await auth();
 
-	const rsvpUsers = await findUsers({
-		users: rsvps.map((rsvp) => rsvp.createdBy) as [string, ...string[]],
+	if (!session?.user?.id) {
+		return <LoggedOutView code={code} />;
+	}
+
+	if (eventIsPassed(event.startDate)) {
+		return <PassedView code={code} />;
+	}
+
+	if (event.createdBy === session.user.id) {
+		return <HostView code={code} />;
+	}
+
+	const [rsvpResponse] = await findUserEventRsvp({
+		code,
+		createdBy: session!.user!.id!,
 	});
 
-	const creator = rsvpUsers[0];
-
-	const rsvpResponse =
-		rsvps.find((r) => r.createdBy === session?.user?.id)?.response ?? null;
-
-	const isHost = event.createdBy === session?.user?.id;
-
-	const { description, hosts, location, name, startDate, startTime } = event;
+	if (rsvpResponse?.response === "yes") {
+		return <GuestView code={code} userId={session.user.id} />;
+	}
 
 	return (
-		<div className="grid-col-3 grid h-full w-full auto-rows-min">
-			<div className="col-span-2 row-span-1">
-				<EventSkeleton
-					authenticated={authenticated}
-					code={code}
-					creator={{ image: creator.image!, name: creator.name! }}
-					description={description}
-					hosts={hosts}
-					location={location}
-					name={name}
-					startDate={startDate}
-					startTime={startTime}
-				/>
-			</div>
-
-			<div className="col-span-1 row-span-1">
-				{authenticated && isHost && !isPassed && (
-					<Link
-						className="btn btn-accent w-full float-right lg:w-1/2"
-						href={`/event/${code}/edit`}
-					>
-						Edit
-					</Link>
-				)}
-
-				{authenticated && !isHost && !isPassed && (
-					<RsvpForm code={code} currentResponse={rsvpResponse} />
-				)}
-			</div>
-
-			<div className="col-span-3 row-span-1">
-				<h2>Attendees</h2>
-				<RsvpTable rsvps={rsvps} rsvpUsers={rsvpUsers} />
-			</div>
-
-			<div className="col-span-3 row-span-1">
-				{/** Filter slot manager and commitments table to only show people who rsvp yes! no nonattendees commit. */}
-				{authenticated &&
-					!isPassed &&
-					slots.length > 0 &&
-					(isHost || rsvpResponse === "yes") && (
-						<>
-							<h2>Food Plan</h2>
-							<SlotManager
-								committedUsersBySlotPromise={committedUsersBySlotPromise}
-								commitments={commitments}
-								slots={slots}
-								users={users}
-							/>
-						</>
-					)}
-
-				{authenticated &&
-					!isHost &&
-					slots.length > 0 &&
-					(isPassed || rsvpResponse !== "yes") && (
-						<CommitmentsTable
-							commitments={commitments}
-							slots={slots}
-							users={users}
-						/>
-					)}
-			</div>
-		</div>
+		<Grid>
+			<EventSection code={code} />
+			<RsvpSection code={code} userId={session.user.id} />
+			<CommitmentsSection code={code} />
+			<AttendeesSection code={code} />
+		</Grid>
 	);
 };
 

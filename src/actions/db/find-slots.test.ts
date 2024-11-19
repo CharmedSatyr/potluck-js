@@ -23,7 +23,7 @@ describe("findSlots", () => {
 		jest.clearAllMocks();
 	});
 
-	const validData = { eventCode: "CODE1" };
+	const validData = { code: "CODE1" };
 
 	it("should return slots for a valid event code", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
@@ -38,7 +38,7 @@ describe("findSlots", () => {
 
 		const result = await findSlots(validData);
 
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
+		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.select).toHaveBeenCalled();
 		expect(result).toEqual(mockSlots);
 	});
@@ -49,11 +49,11 @@ describe("findSlots", () => {
 		const result = await findSlots(validData);
 
 		expect(result).toEqual([]);
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
+		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 	});
 
 	it("should return an empty array and log a ZodError if schema validation fails", async () => {
-		const invalidData = { eventCode: "BAD" };
+		const invalidData = { code: "BAD" };
 
 		const error = new ZodError([
 			{
@@ -63,7 +63,7 @@ describe("findSlots", () => {
 				inclusive: true,
 				exact: true,
 				message: "String must contain exactly 5 character(s)",
-				path: ["eventCode"],
+				path: ["code"],
 			},
 		]);
 
@@ -87,7 +87,7 @@ describe("findSlots", () => {
 
 		const result = await findSlots(validData);
 
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.eventCode });
+		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.select).toHaveBeenCalled();
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
