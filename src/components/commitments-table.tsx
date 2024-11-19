@@ -1,13 +1,19 @@
 import Image from "next/image";
-import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 
 type Props = {
-	code: string;
+	commitmentsWithDetails: {
+		commitmentId: string;
+		description: string;
+		item: string;
+		quantity: number;
+		user: {
+			image: string | null;
+			name: string | null;
+		};
+	}[];
 };
 
-const CommitmentsTable = async ({ code }: Props) => {
-	const commitmentsWithDetails = await findCommitmentsWithDetails({ code });
-
+const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 	return (
 		<div className="overflow-x-auto">
 			<table className="table">

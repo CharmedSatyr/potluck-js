@@ -2,21 +2,24 @@ import SlotContainer from "@/app/event/[code]/(slot-manager)/slot-container";
 import CreateCommitmentForm from "@/app/event/[code]/(slot-manager)/create-commitment-form";
 import findSlotContainerDetails from "@/actions/db/find-slot-container-details";
 import CommitmentsTable from "@/components/commitments-table";
+import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 
 type Props = {
 	code: string;
 };
 
 const SlotManager = async ({ code }: Props) => {
+	const commitmentsWithDetails = await findCommitmentsWithDetails({ code });
 	const details = await findSlotContainerDetails({ code });
 
 	return (
 		<div className="join join-vertical w-full border">
 			{details.map((detail) => {
-				const { item, requestedCount, slotId, totalCommitments, users } = detail;
+				const { item, requestedCount, slotId, totalCommitments, users } =
+					detail;
 
 				return (
-					<div key={detail.slotId} className="join-item border">
+					<div key={slotId} className="join-item border">
 						<SlotContainer
 							item={item}
 							requestedCount={requestedCount}
@@ -31,12 +34,14 @@ const SlotManager = async ({ code }: Props) => {
 							</label>
 
 							{totalCommitments > 0 ? (
-								<CommitmentsTable code={code} />
+								<CommitmentsTable
+									commitmentsWithDetails={commitmentsWithDetails.filter(
+										(c) => c.slotId === slotId
+									)}
+								/>
 							) : (
 								<div className="ml-2">
-									<p id="commitments-table" className="my-2">
-										None yet. Be the first!
-									</p>
+									<p className="my-2">None yet. Be the first!</p>
 									<div className="divider"></div>
 								</div>
 							)}
@@ -56,3 +61,29 @@ const SlotManager = async ({ code }: Props) => {
 };
 
 export default SlotManager;
+
+export const SlotManagerFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-1/2" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-1/4" />
+			</div>
+
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-2/3" />
+				<div className="skeleton h-16 w-1/3" />
+			</div>
+
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-1/2" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-16 shrink-0 rounded-full" />
+				<div className="skeleton h-16 w-1/4" />
+			</div>
+		</div>
+	);
+};
