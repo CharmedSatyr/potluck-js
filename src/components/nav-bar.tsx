@@ -22,6 +22,10 @@ const NavBar = async () => {
 				</div>
 			) : (
 				<div className="gap-2">
+					<Link className="btn btn-ghost btn-sm" href="/start">
+						Create Event
+					</Link>
+
 					<Link className="btn btn-ghost btn-sm" href="/dashboard">
 						Dashboard
 					</Link>
