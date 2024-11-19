@@ -51,7 +51,6 @@ const AttendeesSection = ({ code }: { code: string }) => (
 	</section>
 );
 
-// TODO: Fallback text in commitments table in case of no slots
 const CommitmentsSection = async ({ code }: { code: string }) => (
 	<section className="col-span-3 row-span-1">
 		<h2>On the Menu</h2>
@@ -92,8 +91,6 @@ const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
 	</section>
 );
 
-// TODO: Have a fallback text in slotmanager in case there are no slots.
-// and a loding fallback.
 const FoodPlanSection = ({ code }: { code: string }) => {
 	return (
 		<section className="col-span-3 row-span-1">

@@ -34,13 +34,11 @@ export const event = pgTable(
 		createdBy: uuid("user_id")
 			.references(() => user.id, { onDelete: "cascade" })
 			.notNull(),
-		// TODO: Add custom field (link or text)
 		description: text("description").notNull(),
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 256 }).notNull(),
 		name: varchar("name", { length: 256 }).notNull(),
-		// TODO: RSVP options (yes, maybe, no)
 		startDate: date("startDate").notNull(),
 		startTime: time("startTime", { withTimezone: false }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
