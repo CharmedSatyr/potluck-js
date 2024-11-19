@@ -10,17 +10,14 @@ type Props = {
 
 const EditEventPage = async ({ params }: Props) => {
 	const { code } = await params;
-	const eventDataPromise = findEvent({ code: code });
-	const slotsPromise = findSlots({ eventCode: code });
-	const committedUsersBySlotPromise = committedUsersBySlot(code);
 
 	return (
 		<div className="flex h-full w-full flex-col items-center">
 			<ManageEventWizard
 				code={code}
-				committedUsersBySlotPromise={committedUsersBySlotPromise}
-				eventDataPromise={eventDataPromise}
-				slotsPromise={slotsPromise}
+				committedUsersBySlotPromise={committedUsersBySlot(code)}
+				eventDataPromise={findEvent({ code })}
+				slotsPromise={findSlots({ code })}
 				submitAction={updateEventAction}
 			/>
 		</div>
