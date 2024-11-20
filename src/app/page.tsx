@@ -19,7 +19,7 @@ const Home = () => {
 					</div>
 					<div className="flex w-1/2 flex-col justify-around">
 						<h1 className="mb-0 text-5xl font-bold leading-normal">
-							Gather your party, and roll for dinner!
+							Gather your party, and roll for an epic meal.
 						</h1>
 						<p>
 							<span className="text-primary">{siteMetadata.title}</span> makes it easy
