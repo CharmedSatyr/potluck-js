@@ -22,8 +22,8 @@ const Home = () => {
 							Gather your party, and roll for an epic meal.
 						</h1>
 						<p>
-							<span className="text-primary">{siteMetadata.title}</span> makes it easy
-							for you and your friends to plan shared meals.{" "}
+							<span className="text-primary">{siteMetadata.title}</span> makes
+							it easy for you and your friends to plan shared meals.{" "}
 							<span className="text-info">In active development</span> by and
 							for tabletop gamers who enjoy cooking and eating with their
 							friends.
