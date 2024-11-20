@@ -1,3 +1,5 @@
+import DeleteCommitmentForm from "@/app/event/[code]/(slot-manager)/delete-commitment-form";
+import { auth } from "@/auth";
 import Image from "next/image";
 
 type Props = {
@@ -7,6 +9,7 @@ type Props = {
 		item: string;
 		quantity: number;
 		user: {
+			id: string | null;
 			image: string | null;
 			name: string | null;
 		};
@@ -18,11 +21,14 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 		return <p>No plans yet!</p>;
 	}
 
+	const session = await auth();
+
 	return (
 		<div className="overflow-x-auto">
 			<table className="table">
 				<thead>
 					<tr>
+						<th></th>
 						<th>User</th>
 						<th>Item</th>
 						<th>Quantity</th>
@@ -33,6 +39,11 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 					{commitmentsWithDetails.map((c) => {
 						return (
 							<tr key={c.commitmentId}>
+								<td>
+									{c.user.id === session?.user?.id && (
+										<DeleteCommitmentForm id={c.commitmentId} />
+									)}
+								</td>
 								<td className="flex items-center gap-2">
 									<Image
 										alt={`${c.user.name}'s Avatar`}

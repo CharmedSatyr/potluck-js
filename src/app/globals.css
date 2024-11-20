@@ -13,6 +13,7 @@
 		-moz-appearance: textfield;
 	}
 
+	/* Convert to tailwind classes */
 	.slide-in {
 		transform: translateY(8%);
 		opacity: 0;

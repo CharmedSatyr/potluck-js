@@ -42,7 +42,6 @@ const SlotManager = async ({ code }: Props) => {
 							</label>
 
 							{totalCommitments > 0 ? (
-								// TODO: Restore the delete button! You lost it!
 								<SlideIn>
 									<Suspense fallback={<CommitmentsTableFallback />}>
 										<CommitmentsTable

@@ -16,6 +16,7 @@ type CommitmentWithDetails = {
 	quantity: Commitment["quantity"];
 	slotId: Slot["id"];
 	user: {
+		id: User["id"];
 		image: User["image"];
 		name: User["name"];
 	};
@@ -37,6 +38,7 @@ const findCommitmentsWithDetails = async (
 				quantity: commitment.quantity,
 				slotId: slot.id,
 				user: {
+					id: user.id,
 					image: user.image,
 					name: user.name,
 				},

@@ -31,6 +31,7 @@ describe("findCommitmentsWithDetails", () => {
 			quantity: 12,
 			slotId: "7e6c6edd-abe0-4001-aeab-764ee74cd33e",
 			user: {
+				id: "7e6c6edd-abe0-4001-aeab-764ee74cd33e",
 				image: "https://example.com/avatar.png",
 				name: "Test User",
 			},
@@ -63,6 +64,7 @@ describe("findCommitmentsWithDetails", () => {
 			quantity: commitment.quantity,
 			slotId: slot.id,
 			user: {
+				id: user.id,
 				image: user.image,
 				name: user.name,
 			},
