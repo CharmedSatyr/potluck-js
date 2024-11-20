@@ -1,6 +1,8 @@
 "use client";
 
-import PlanEventForm from "@/components/plan-event-form";
+import PlanEventForm, {
+	PlanEventFormFallback,
+} from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
 import {
@@ -37,7 +39,7 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id="create-event"
 				>
-					<Suspense>
+					<Suspense fallback={<PlanEventFormFallback />}>
 						<PlanEventForm
 							code={code}
 							eventDataPromise={eventDataPromise}

@@ -214,3 +214,32 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 };
 
 export default PlanEventForm;
+
+export const PlanEventFormFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-16 w-full" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-14 w-full" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-14 w-1/2" />
+				<div className="skeleton h-14 w-1/2" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-14 w-full" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-14 w-full" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-14 w-full" />
+			</div>
+			<div className="flex justify-around gap-2">
+				<div className="skeleton h-14 w-full" />
+			</div>
+		</div>
+	);
+};
