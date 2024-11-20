@@ -1,4 +1,4 @@
-import DeleteCommitmentForm from "@/app/event/[code]/(slot-manager)/delete-commitment-form";
+import DeleteCommitmentForm from "@/components/slot-manager/delete-commitment-form";
 import { auth } from "@/auth";
 import Image from "next/image";
 

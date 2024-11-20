@@ -1,7 +1,5 @@
 import findEvent from "@/actions/db/find-event";
-import SlotManager, {
-	SlotManagerFallback,
-} from "@/app/event/[code]/(slot-manager)/index";
+import SlotManager, { SlotManagerFallback } from "@/components/slot-manager";
 import EventSkeleton, {
 	EventHeader,
 	EventSkeletonFallback,
@@ -172,7 +170,7 @@ const EventPage = async ({ params }: Props) => {
 
 	const [rsvpResponse] = await findUserEventRsvp({
 		code,
-		createdBy: session!.user!.id!,
+		createdBy: session.user.id,
 	});
 
 	if (rsvpResponse?.response === "yes") {

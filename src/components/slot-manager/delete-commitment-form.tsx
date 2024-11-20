@@ -5,8 +5,8 @@ import { useFormStatus } from "react-dom";
 import Form from "next/form";
 import { usePathname } from "next/navigation";
 import { Commitment } from "@/db/schema/commitment";
-import { deleteCommitmentAction } from "@/app/event/[code]/(slot-manager)/submit-actions";
-import { DeleteCommitmentFormState } from "@/app/event/[code]/(slot-manager)/submit-actions.schema";
+import { deleteCommitmentAction } from "@/components/slot-manager/submit-actions";
+import { DeleteCommitmentFormState } from "@/components/slot-manager/submit-actions.schema";
 
 type Props = {
 	id: Commitment["id"];
