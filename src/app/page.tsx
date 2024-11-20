@@ -19,7 +19,7 @@ const Home = () => {
 						<h1 className="text-5xl mt-8 font-bold leading-normal">Gather your party, and roll for dinner!</h1>
 						<p>
 							<span className="text-primary">Potluck Quest</span> makes it easy for you and your friends to plan
-							shared meals. In development by and for tabletop gamers who enjoy cooking and eating with their friends.
+							shared meals. <span className="text-info">In active development</span> by and for tabletop gamers who enjoy cooking and eating with their friends.
 						</p>
 
 						<div className="mt-12 flex min-h-60 w-full justify-center">
