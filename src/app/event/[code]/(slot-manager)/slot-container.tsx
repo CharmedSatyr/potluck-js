@@ -50,6 +50,7 @@ const SlotContainer = ({
 	return (
 		<section className="collapse w-full">
 			<input
+				aria-label="expand-slot-container"
 				type="checkbox"
 				checked={expanded}
 				onChange={() => setExpanded(!expanded)}

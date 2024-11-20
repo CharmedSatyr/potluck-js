@@ -59,6 +59,7 @@ const CourseInput = ({
 				</label>
 				<div className="join">
 					<button
+						aria-label={`decrement-count-${index}-button`}
 						className="btn join-item input-bordered"
 						onClick={() => {
 							countRef.current?.stepDown();
@@ -88,6 +89,7 @@ const CourseInput = ({
 						type="number"
 					/>
 					<button
+						aria-label={`increment-count-${index}-button`}
 						className="btn join-item input-bordered"
 						onClick={() => {
 							countRef.current?.stepUp();
