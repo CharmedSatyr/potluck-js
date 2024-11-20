@@ -22,13 +22,6 @@ const GotoEventForm = () => {
 
 	return (
 		<form className="form-control" action={formAction}>
-			<button
-				disabled={isPending}
-				className="btn btn-secondary mb-2 text-2xl"
-				type="submit"
-			>
-				Find an Event
-			</button>
 			<input
 				className="input input-bordered w-full"
 				defaultValue={state?.code ? state.code : undefined}
@@ -37,6 +30,13 @@ const GotoEventForm = () => {
 				name="code"
 				placeholder="238JK"
 			/>
+			<button
+				disabled={isPending}
+				className="btn btn-secondary mt-2 text-xl"
+				type="submit"
+			>
+				Find an Event
+			</button>
 			<output aria-live="polite">{state?.message}</output>
 		</form>
 	);
