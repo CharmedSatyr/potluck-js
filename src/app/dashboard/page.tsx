@@ -50,6 +50,7 @@ const HostingTable = async () => {
 				<thead>
 					<tr>
 						<th>Status</th>
+						<th>Code</th>
 						<th>Name</th>
 						<th>Date</th>
 						<th>Location</th>
@@ -70,6 +71,7 @@ const HostingTable = async () => {
 										<span className="text-success">Active</span>
 									)}
 								</td>
+								<td className="font-bold">{event.code}</td>
 								<td>{event.name}</td>
 								<td>{event.startDate}</td>
 								<td>{event.location}</td>
@@ -109,6 +111,7 @@ const AttendingTable = async () => {
 				<thead>
 					<tr>
 						<th>Status</th>
+						<th>Code</th>
 						<th>Name</th>
 						<th>Date</th>
 						<th>Location</th>
@@ -128,6 +131,7 @@ const AttendingTable = async () => {
 										<span className="text-success">Active</span>
 									)}
 								</td>
+								<td className="font-bold">{event.code}</td>
 								<td>{event.name}</td>
 								<td>{event.startDate}</td>
 								<td>{event.location}</td>
