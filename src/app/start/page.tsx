@@ -36,7 +36,7 @@ const StartPage = async ({ searchParams }: Props) => {
 	}
 
 	return (
-		<div className="flex h-full w-full flex-col items-center">
+		<main className="flex h-full w-full flex-col items-center">
 			<ManageEventWizard
 				code={code}
 				committedUsersBySlotPromise={Promise.resolve(new Map())}
@@ -44,7 +44,7 @@ const StartPage = async ({ searchParams }: Props) => {
 				slotsPromise={Promise.resolve([])}
 				submitAction={submitAction}
 			/>
-		</div>
+		</main>
 	);
 };
 

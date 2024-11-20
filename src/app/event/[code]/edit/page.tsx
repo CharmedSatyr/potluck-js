@@ -12,7 +12,7 @@ const EditEventPage = async ({ params }: Props) => {
 	const { code } = await params;
 
 	return (
-		<div className="flex h-full w-full flex-col items-center">
+		<main className="flex h-full w-full flex-col items-center">
 			<ManageEventWizard
 				code={code}
 				committedUsersBySlotPromise={committedUsersBySlot(code)}
@@ -20,7 +20,7 @@ const EditEventPage = async ({ params }: Props) => {
 				slotsPromise={findSlots({ code })}
 				submitAction={updateEventAction}
 			/>
-		</div>
+		</main>
 	);
 };
 

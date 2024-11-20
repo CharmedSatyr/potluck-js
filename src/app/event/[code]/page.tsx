@@ -23,9 +23,9 @@ import SlideIn from "@/components/slide-in";
 type Props = { params: Promise<{ code: string }> };
 
 const Grid = ({ children }: PropsWithChildren) => (
-	<div className="grid-col-3 grid h-full w-full auto-rows-min lg:w-3/4 2xl:w-1/2">
+	<main className="grid-col-3 grid h-full w-full auto-rows-min lg:w-3/4 2xl:w-1/2">
 		{children}
-	</div>
+	</main>
 );
 
 const EventTitleSection = ({ code }: { code: string }) => (

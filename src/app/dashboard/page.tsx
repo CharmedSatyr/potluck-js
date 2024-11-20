@@ -157,7 +157,7 @@ const DashboardPage = async () => {
 	}
 
 	return (
-		<div className="w-full">
+		<main className="w-full">
 			<h1 className="text-primary">Dashboard</h1>
 
 			<SlideIn>
@@ -173,7 +173,7 @@ const DashboardPage = async () => {
 					<AttendingTable />
 				</Suspense>
 			</SlideIn>
-		</div>
+		</main>
 	);
 };
 
