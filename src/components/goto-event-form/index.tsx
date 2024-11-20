@@ -37,6 +37,7 @@ const GotoEventForm = () => {
 			>
 				Find an Event
 			</button>
+			{/** TODO: More of these alerts should use output, and this one should use the warning icon. */}
 			<output aria-live="polite">{state?.message}</output>
 		</form>
 	);
