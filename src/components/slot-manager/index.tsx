@@ -21,7 +21,7 @@ const SlotManager = async ({ code }: Props) => {
 	}
 
 	return (
-		<section className="join join-vertical w-full border">
+		<section className="join join-vertical w-full">
 			{details.map((detail) => {
 				const { item, requestedCount, slotId, totalCommitments, users } =
 					detail;
