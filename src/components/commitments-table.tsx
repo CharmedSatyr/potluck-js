@@ -49,7 +49,7 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 										<DeleteCommitmentForm id={c.commitmentId} />
 									)}
 								</td>
-								<td className="flex items-center gap-2">
+								<td className="text-center">
 									<Image
 										alt={`${c.user.name}'s Avatar`}
 										className="avatar my-0 rounded-full border"
