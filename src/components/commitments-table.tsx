@@ -23,15 +23,20 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 
 	const session = await auth();
 
+	const singleItem = commitmentsWithDetails.every(
+		(c) => c.item === commitmentsWithDetails[0].item
+	);
+
 	return (
 		<div className="overflow-x-auto">
-			<table className="table">
+			<table className="table table-sm md:table-md">
 				<thead>
 					<tr>
 						<th></th>
 						<th>User</th>
-						<th>Item</th>
-						<th>Quantity</th>
+						{!singleItem && <th>Item</th>}
+						<th className="md:hidden">#</th>
+						<th className="hidden md:block">Quantity</th>
 						<th>Description</th>
 					</tr>
 				</thead>
@@ -54,7 +59,7 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 									/>{" "}
 									{c.user.name}
 								</td>
-								<td>{c.item}</td>
+								{!singleItem && <td>{c.item}</td>}
 								<td>{c.quantity}</td>
 								<td>{c.description}</td>
 							</tr>
