@@ -34,7 +34,7 @@ const EventTitleSection = ({ code }: { code: string }) => (
 );
 
 const EventSection = ({ code }: { code: string }) => (
-	<section className="col-span-2 row-span-1 h-72">
+	<section className="col-span-2 row-span-1 min-h-72">
 		<Suspense fallback={<EventSkeletonFallback />}>
 			<EventSkeleton code={code} />
 		</Suspense>
