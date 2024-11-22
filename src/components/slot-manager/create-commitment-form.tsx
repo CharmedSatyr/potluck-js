@@ -88,7 +88,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 			action={formAction}
 			className="flex w-full flex-wrap items-end justify-between gap-2"
 		>
-			<label className="label label-text">Sign Up</label>
+			<label className="label label-text ml-2">Sign Up</label>
 			<div className="input input-bordered flex w-full items-center gap-2">
 				<span className="badge badge-info gap-2">optional</span>
 				<input
