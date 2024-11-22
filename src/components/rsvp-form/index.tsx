@@ -77,10 +77,13 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 			</button>
 
 			<div className="form-control">
-				<label className="label label-text">Notes</label>
+				<label className="label label-text" htmlFor="rsvp-message">
+					Notes
+				</label>
 				<input
 					className="input input-bordered w-full max-w-xs"
 					defaultValue={state.fields.message}
+					id="rsvp-message"
 					maxLength={256}
 					name="message"
 					type="text"
