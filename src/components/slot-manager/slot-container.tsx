@@ -63,7 +63,7 @@ const SlotContainer = ({
 					<Avatars users={users} />
 				</div>
 
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between text-sm md:text-base">
 					{totalCommitments} of {requestedCount} filled
 					{expanded ? (
 						<ChevronUpIcon className="-mr-6 ml-2 size-4" />

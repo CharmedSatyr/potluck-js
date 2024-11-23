@@ -88,32 +88,36 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 			action={formAction}
 			className="flex w-full flex-wrap items-end justify-between gap-2"
 		>
-			<label className="label label-text ml-2">Sign Up</label>
-			<div className="input input-bordered flex w-full items-center gap-2">
-				<span className="badge badge-info gap-2">optional</span>
-				<input
-					aria-label="item-description"
-					className="w-fit"
-					defaultValue={state?.fields.hosts}
-					maxLength={256}
-					name="description"
-					placeholder="Add a description"
-					type="text"
-				/>
+			<div className="w-full md:order-last">
+				<label className="label label-text ml-2">Sign Up</label>
+				<div className="input input-bordered flex w-full items-center gap-2">
+					<span className="badge badge-info gap-2">optional</span>
+					<input
+						aria-label="item-description"
+						className="text-sm"
+						defaultValue={state?.fields.hosts}
+						maxLength={256}
+						name="description"
+						placeholder="Add a description"
+						type="text"
+					/>
+				</div>
 			</div>
 
-			<CountInput
-				commitmentsStillNeeded={commitmentsStillNeeded}
-				defaultValue={state.fields.quantity}
-			/>
+			<div className="order-last flex w-full items-end justify-between">
+				<CountInput
+					commitmentsStillNeeded={commitmentsStillNeeded}
+					defaultValue={state.fields.quantity}
+				/>
 
-			<button
-				className="btn btn-secondary w-5/12"
-				disabled={isButtonDisabled}
-				type="submit"
-			>
-				Save
-			</button>
+				<button
+					className="btn btn-secondary w-1/3"
+					disabled={isButtonDisabled}
+					type="submit"
+				>
+					Save
+				</button>
+			</div>
 		</form>
 	);
 };
