@@ -71,7 +71,7 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 const ManageEventSection = ({ code }: { code: string }) => (
 	<section className="w-full md:w-1/3">
 		<Link
-			className="btn btn-accent float-right w-28"
+			className="btn btn-accent w-full md:float-right md:w-28"
 			href={`/event/${code}/edit`}
 		>
 			Edit
