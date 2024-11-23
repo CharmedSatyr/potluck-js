@@ -27,7 +27,7 @@ const RsvpTable = async ({ code }: Props) => {
 
 	return (
 		<div className="overflow-x-auto">
-			<table className="table table-xs">
+			<table className="table table-xs md:table-md">
 				<thead>
 					<tr>
 						<th>RSVP</th>
@@ -42,17 +42,17 @@ const RsvpTable = async ({ code }: Props) => {
 								<th>
 									<label>
 										{rsvp.response === "yes" ? (
-											<div className="badge badge-success badge-sm">
+											<div className="badge badge-success badge-sm md:badge-md">
 												Attending
 											</div>
 										) : (
-											<div className="badge badge-neutral badge-sm">
+											<div className="badge badge-neutral badge-sm md:badge-md">
 												Not Attending
 											</div>
 										)}
 									</label>
 								</th>
-								<td className="">
+								<td>
 									<Image
 										alt={`${rsvp.user.name}'s avatar`}
 										className="avatar rounded-full border"
