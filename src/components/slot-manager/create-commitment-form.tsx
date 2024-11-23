@@ -89,7 +89,6 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 			className="flex w-full flex-wrap items-end justify-between gap-2 md:flex-nowrap"
 		>
 			<div className="md:max-w-1/2 order-1 w-full md:order-2">
-				<label className="label label-text ml-2">Sign Up</label>
 				<div className="input input-bordered flex w-full items-center gap-2">
 					<span className="badge badge-info badge-sm md:badge-md">
 						Optional
