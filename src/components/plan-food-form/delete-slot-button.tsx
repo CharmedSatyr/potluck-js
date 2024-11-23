@@ -15,15 +15,17 @@ const DynamicButton = ({
 	return (
 		<>
 			<button
-				onClick={onClick}
 				className="btn btn-warning sm:hidden"
+				data-testid="remove-slot"
+				onClick={onClick}
 				type="button"
 			>
 				Remove Slot
 			</button>
 			<button
-				onClick={onClick}
 				className="btn btn-circle btn-ghost btn-sm hidden sm:inline"
+				data-testid="x-slot"
+				onClick={onClick}
 				type="button"
 			>
 				✕
