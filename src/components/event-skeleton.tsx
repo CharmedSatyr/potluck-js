@@ -20,7 +20,9 @@ type Props = {
 export const EventHeader = ({ code, name }: { code: string; name: string }) => {
 	return (
 		<>
-			<h1 className="mb-4 text-6xl font-bold text-primary">{name}</h1>
+			<h1 className="mb-4 text-5xl font-bold text-primary md:text-6xl">
+				{name}
+			</h1>
 			<div className="font-bold">
 				Event Code: <CopyLinkButton text={code} />
 			</div>
