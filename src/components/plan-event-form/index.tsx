@@ -81,7 +81,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 					Event Name
 				</label>
 				<input
-					className={`input input-bordered w-full ${state?.errors?.fieldErrors?.name ? "input-warning" : ""}`}
+					className={`input input-bordered w-full text-sm md:text-base ${state?.errors?.fieldErrors?.name ? "input-warning" : ""}`}
 					defaultValue={state?.fields.name}
 					id="name-input"
 					maxLength={256}
@@ -101,7 +101,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 						Date
 					</label>
 					<input
-						className="input input-bordered w-full"
+						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-date"
 						defaultValue={state?.fields.startDate}
 						name="startDate"
@@ -117,11 +117,11 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 				</div>
 
 				<div className="w-5/12">
-					<label className="label label-text" htmlFor="time-input">
+					<label className="label label-text text-sm" htmlFor="time-input">
 						Time
 					</label>
 					<input
-						className="input input-bordered w-full"
+						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-time"
 						defaultValue={state?.fields.startTime}
 						id="time-input"
@@ -143,7 +143,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 					Location
 				</label>
 				<input
-					className="input input-bordered w-full"
+					className="input input-bordered w-full text-sm md:text-base"
 					defaultValue={state?.fields.location}
 					id="location-input"
 					maxLength={256}
@@ -161,7 +161,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 				<label className="label label-text" htmlFor="host-input">
 					Hosts
 				</label>
-				<div className="input input-bordered flex w-full items-center gap-2">
+				<div className="input input-bordered flex w-full items-center gap-2 text-sm md:text-base">
 					<span className="badge badge-info badge-sm gap-2 md:badge-md">
 						Optional
 					</span>
@@ -171,7 +171,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 						id="hosts-input"
 						maxLength={256}
 						name="hosts"
-						placeholder="Non-Discord names or nicknames"
+						placeholder="Defaults to Discord username"
 						type="text"
 					/>
 				</div>
@@ -185,7 +185,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 				<label className="label label-text" htmlFor="description-input">
 					Description
 				</label>
-				<div className="input input-bordered flex w-full items-center gap-2">
+				<div className="input input-bordered flex w-full items-center gap-2 text-sm md:text-base">
 					<span className="badge badge-info badge-sm gap-2 md:badge-md">
 						Optional
 					</span>

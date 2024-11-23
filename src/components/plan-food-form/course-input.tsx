@@ -25,8 +25,8 @@ const CourseInput = ({
 	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
-		<div className="flex w-full items-center justify-between">
-			<div className="-mb-8">
+		<div className="flex w-full flex-wrap items-end justify-between sm:flex-nowrap sm:items-center">
+			<div className="mb:0 order-3 sm:order-1 sm:-mb-8">
 				<DeleteSlotButton
 					hasCommitments={hasCommitments}
 					id={id}
@@ -34,12 +34,13 @@ const CourseInput = ({
 					remove={remove}
 				/>
 			</div>
-			<div className="form-control w-7/12">
+
+			<div className="form-control order-2 w-full sm:order-2 sm:w-7/12">
 				<label className="label label-text" htmlFor={`item-${index}`}>
 					What&apos;s Needed
 				</label>
 				<input
-					className="input-text input input-bordered"
+					className="input-text input input-bordered text-sm sm:text-base"
 					id={`item-${index}`}
 					maxLength={256}
 					minLength={1}
@@ -53,7 +54,8 @@ const CourseInput = ({
 					value={item}
 				/>
 			</div>
-			<div className="form-control">
+
+			<div className="form-control order-2 sm:order-3">
 				<label className="label label-text" htmlFor={`count-${index}`}>
 					Signups Needed
 				</label>
