@@ -24,7 +24,7 @@ const CountInput = ({
 
 	return (
 		<div className="form-control md:pl-2">
-			<label className="label label-text" htmlFor="quantity-input">
+			<label className="label label-text pl-2" htmlFor="quantity-input">
 				Quantity You&apos;ll Bring
 			</label>
 			<div className="join join-horizontal">
