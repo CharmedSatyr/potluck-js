@@ -163,7 +163,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 				</label>
 				<div className="input input-bordered flex w-full items-center gap-2">
 					<span className="badge badge-info badge-sm gap-2 md:badge-md">
-						optional
+						Optional
 					</span>
 					<input
 						className="w-full"
@@ -187,7 +187,7 @@ const PlanEventForm = ({ code, eventDataPromise, submitAction }: Props) => {
 				</label>
 				<div className="input input-bordered flex w-full items-center gap-2">
 					<span className="badge badge-info badge-sm gap-2 md:badge-md">
-						optional
+						Optional
 					</span>
 					<input
 						className="w-full"

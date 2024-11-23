@@ -92,7 +92,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 				<label className="label label-text ml-2">Sign Up</label>
 				<div className="input input-bordered flex w-full items-center gap-2">
 					<span className="badge badge-info badge-sm md:badge-md">
-						optional
+						Optional
 					</span>
 					<input
 						aria-label="item-description"
