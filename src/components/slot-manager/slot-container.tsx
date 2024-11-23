@@ -28,7 +28,7 @@ const Avatars = ({ users }: { users: Props["users"] }) => {
 					title={`${name} is bringing ${commitments}`}
 					width={40}
 				/>
-				<span className="badge indicator-item badge-primary badge-xs md:badge-sm">
+				<span className="badge indicator-item badge-primary badge-sm md:badge-md">
 					{commitments}
 				</span>
 			</div>
