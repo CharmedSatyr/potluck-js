@@ -17,6 +17,7 @@ import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
 import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
+import DeleteEventButton from "@/components/delete-event-button";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -67,15 +68,12 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 	</section>
 );
 
-// TODO: Add Delete Button
 const ManageEventSection = ({ code }: { code: string }) => (
-	<section className="w-full md:w-1/3">
-		<Link
-			className="btn btn-accent w-full md:float-right md:w-28"
-			href={`/event/${code}/edit`}
-		>
+	<section className="flex w-full flex-col gap-2 md:w-1/3 md:items-end md:justify-start">
+		<Link className="btn btn-accent md:w-28" href={`/event/${code}/edit`}>
 			Edit
 		</Link>
+		<DeleteEventButton code={code} />
 	</section>
 );
 

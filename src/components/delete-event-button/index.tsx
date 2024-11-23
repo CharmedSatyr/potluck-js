@@ -1,19 +1,20 @@
 "use client";
 
 import { useRef } from "react";
+import remove from "@/components/delete-event-button/remove-action";
 
 type Props = {
+	className?: string;
 	code: string;
-	remove: ({ code }: { code: string }) => Promise<void>;
 };
 
-const DeleteEventButton = ({ code, remove }: Props) => {
+const DeleteEventButton = ({ className, code }: Props) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	return (
 		<>
 			<button
-				className="btn btn-error btn-sm"
+				className={`btn btn-error w-full md:float-right md:w-28 ${className}`}
 				type="button"
 				onClick={() => dialogRef.current?.showModal()}
 			>
@@ -26,6 +27,7 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 						Are you sure you want to delete this event? This action cannot be
 						undone.
 					</p>
+					<p>You are responsible for communicating any changes to attendees.</p>
 					<div className="modal-action">
 						<button
 							aria-label="Cancel"
@@ -39,8 +41,8 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 							aria-label="Delete Slot"
 							className="btn btn-error btn-sm"
 							type="button"
-							onClick={() => {
-								remove({ code });
+							onClick={async () => {
+								await remove({ code });
 								dialogRef.current?.close();
 							}}
 						>

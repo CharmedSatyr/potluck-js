@@ -6,8 +6,8 @@ import eventIsPassed from "@/utilities/event-is-passed";
 import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 import { Suspense } from "react";
 import SlideIn from "@/components/slide-in";
-import DeleteEventButton from "./delete-event-button";
-import remove from "./remove-action";
+import DeleteEventButton from "../../components/delete-event-button";
+import remove from "../../components/delete-event-button/remove-action";
 
 const TableFallback = () => {
 	return (
@@ -73,7 +73,7 @@ const HostingTable = async () => {
 								<td>{event.startDate}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 								<td className="hidden md:table-cell">
-									<DeleteEventButton code={event.code} remove={remove} />
+									<DeleteEventButton className="btn-sm" code={event.code} />
 								</td>
 							</tr>
 						);
