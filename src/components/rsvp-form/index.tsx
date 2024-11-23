@@ -32,7 +32,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 
 	if (currentRsvp?.response && !override) {
 		return (
-			<div className="w-full text-center">
+			<div className="float-right w-full text-center md:max-w-40">
 				<p className="flex items-center justify-center gap-1">
 					<CheckCircleIcon className="size-6 text-success" /> You will{" "}
 					{currentRsvp.response === "yes" ? "" : "not"} attend.

@@ -20,21 +20,21 @@ import SlideIn from "@/components/slide-in";
 
 type Props = { params: Promise<{ code: string }> };
 
-const Grid = ({ children }: PropsWithChildren) => (
-	<main className="container flex h-full w-full flex-col lg:w-3/4 2xl:w-1/2">
+const Container = ({ children }: PropsWithChildren) => (
+	<main className="container flex h-full w-full flex-wrap lg:w-3/4 2xl:w-1/2">
 		{children}
 	</main>
 );
 
 const EventTitleSection = ({ code }: { code: string }) => (
-	<section className="">
+	<section className="w-full">
 		<EventHeader code={code} name="Something's Happening..." />
 		<p>Sign in to see all the details!</p>
 	</section>
 );
 
 const EventSection = ({ code }: { code: string }) => (
-	<section className="min-h-72">
+	<section className="min-h-72 w-full md:w-2/3">
 		<Suspense fallback={<EventSkeletonFallback />}>
 			<EventSkeleton code={code} />
 		</Suspense>
@@ -42,7 +42,7 @@ const EventSection = ({ code }: { code: string }) => (
 );
 
 const AttendeesSection = ({ code }: { code: string }) => (
-	<section className="">
+	<section className="w-full">
 		<SlideIn>
 			<h2>Attendees</h2>
 			<Suspense fallback={<RsvpTableFallback />}>
@@ -53,7 +53,7 @@ const AttendeesSection = ({ code }: { code: string }) => (
 );
 
 const CommitmentsSection = async ({ code }: { code: string }) => (
-	<section className="">
+	<section className="w-full">
 		<SlideIn>
 			<h2>On the Menu</h2>
 			<Suspense fallback={<CommitmentsTableFallback />}>
@@ -69,7 +69,7 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 
 // TODO: Add Delete Button
 const ManageEventSection = ({ code }: { code: string }) => (
-	<section className="">
+	<section className="w-full md:w-1/3">
 		<Link
 			className="btn btn-accent float-right w-28"
 			href={`/event/${code}/edit`}
@@ -81,7 +81,7 @@ const ManageEventSection = ({ code }: { code: string }) => (
 
 // TODO: Delete commitments if someone changes RSVP to No.
 const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
-	<section>
+	<section className="w-full md:w-1/3">
 		<Suspense fallback={<RsvpFormFallback />}>
 			<RsvpForm
 				code={code}
@@ -96,7 +96,7 @@ const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
 
 const FoodPlanSection = ({ code }: { code: string }) => {
 	return (
-		<section className="">
+		<section className="w-full">
 			<SlideIn>
 				<h2>On the Menu</h2>
 				<Suspense fallback={<SlotManagerFallback />}>
@@ -108,26 +108,26 @@ const FoodPlanSection = ({ code }: { code: string }) => {
 };
 
 const LoggedOutView = ({ code }: { code: string }) => (
-	<Grid>
+	<Container>
 		<EventTitleSection code={code} />
-	</Grid>
+	</Container>
 );
 
 const PassedView = ({ code }: { code: string }) => (
-	<Grid>
+	<Container>
 		<EventSection code={code} />
 		<CommitmentsSection code={code} />
 		<AttendeesSection code={code} />
-	</Grid>
+	</Container>
 );
 
 const HostView = async ({ code }: { code: string }) => (
-	<Grid>
+	<Container>
 		<EventSection code={code} />
 		<ManageEventSection code={code} />
 		<FoodPlanSection code={code} />
 		<AttendeesSection code={code} />
-	</Grid>
+	</Container>
 );
 
 const GuestView = async ({
@@ -137,12 +137,12 @@ const GuestView = async ({
 	code: string;
 	userId: string;
 }) => (
-	<Grid>
+	<Container>
 		<EventSection code={code} />
 		<RsvpSection code={code} userId={userId} />
 		<FoodPlanSection code={code} />
 		<AttendeesSection code={code} />
-	</Grid>
+	</Container>
 );
 
 const EventPage = async ({ params }: Props) => {
@@ -178,12 +178,12 @@ const EventPage = async ({ params }: Props) => {
 	}
 
 	return (
-		<Grid>
+		<Container>
 			<EventSection code={code} />
 			<RsvpSection code={code} userId={session.user.id} />
 			<CommitmentsSection code={code} />
 			<AttendeesSection code={code} />
-		</Grid>
+		</Container>
 	);
 };
 
