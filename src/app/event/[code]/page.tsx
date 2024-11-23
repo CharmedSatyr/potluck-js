@@ -21,20 +21,20 @@ import SlideIn from "@/components/slide-in";
 type Props = { params: Promise<{ code: string }> };
 
 const Grid = ({ children }: PropsWithChildren) => (
-	<main className="grid-col-3 grid h-full w-full auto-rows-min lg:w-3/4 2xl:w-1/2">
+	<main className="container flex h-full w-full flex-col lg:w-3/4 2xl:w-1/2">
 		{children}
 	</main>
 );
 
 const EventTitleSection = ({ code }: { code: string }) => (
-	<section className="col-span-3 row-span-1">
+	<section className="">
 		<EventHeader code={code} name="Something's Happening..." />
 		<p>Sign in to see all the details!</p>
 	</section>
 );
 
 const EventSection = ({ code }: { code: string }) => (
-	<section className="col-span-2 row-span-1 min-h-72">
+	<section className="min-h-72">
 		<Suspense fallback={<EventSkeletonFallback />}>
 			<EventSkeleton code={code} />
 		</Suspense>
@@ -42,7 +42,7 @@ const EventSection = ({ code }: { code: string }) => (
 );
 
 const AttendeesSection = ({ code }: { code: string }) => (
-	<section className="col-span-3 row-span-1">
+	<section className="">
 		<SlideIn>
 			<h2>Attendees</h2>
 			<Suspense fallback={<RsvpTableFallback />}>
@@ -53,7 +53,7 @@ const AttendeesSection = ({ code }: { code: string }) => (
 );
 
 const CommitmentsSection = async ({ code }: { code: string }) => (
-	<section className="col-span-3 row-span-1">
+	<section className="">
 		<SlideIn>
 			<h2>On the Menu</h2>
 			<Suspense fallback={<CommitmentsTableFallback />}>
@@ -69,7 +69,7 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 
 // TODO: Add Delete Button
 const ManageEventSection = ({ code }: { code: string }) => (
-	<section className="col-span-1 row-span-1">
+	<section className="">
 		<Link
 			className="btn btn-accent float-right w-28"
 			href={`/event/${code}/edit`}
@@ -81,7 +81,7 @@ const ManageEventSection = ({ code }: { code: string }) => (
 
 // TODO: Delete commitments if someone changes RSVP to No.
 const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
-	<section className="col-span-1 row-span-1">
+	<section>
 		<Suspense fallback={<RsvpFormFallback />}>
 			<RsvpForm
 				code={code}
@@ -96,7 +96,7 @@ const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
 
 const FoodPlanSection = ({ code }: { code: string }) => {
 	return (
-		<section className="col-span-3 row-span-1">
+		<section className="">
 			<SlideIn>
 				<h2>On the Menu</h2>
 				<Suspense fallback={<SlotManagerFallback />}>

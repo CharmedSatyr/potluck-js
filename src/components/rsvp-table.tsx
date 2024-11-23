@@ -55,7 +55,7 @@ const RsvpTable = async ({ code }: Props) => {
 								<td className="">
 									<Image
 										alt={`${rsvp.user.name}'s avatar`}
-										className="avatar my-0 rounded-full border"
+										className="avatar rounded-full border"
 										src={rsvp.user.image!}
 										height="30"
 										width="30"
