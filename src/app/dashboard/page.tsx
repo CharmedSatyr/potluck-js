@@ -6,6 +6,8 @@ import eventIsPassed from "@/utilities/event-is-passed";
 import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 import { Suspense } from "react";
 import SlideIn from "@/components/slide-in";
+import DeleteEventButton from "./delete-event-button";
+import remove from "./remove-action";
 
 const TableFallback = () => {
 	return (
@@ -44,12 +46,14 @@ const HostingTable = async () => {
 
 	return (
 		<div className="max-h-96 overflow-x-auto">
-			<table className="table table-pin-rows table-xs md:table-lg">
+			<table className="table table-pin-rows table-sm md:table-lg">
 				<thead>
 					<tr>
 						<th>Code</th>
 						<th>Name</th>
 						<th>Date</th>
+						<th className="hidden md:table-cell">Location</th>
+						<th className="hidden md:table-cell"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -67,6 +71,10 @@ const HostingTable = async () => {
 								</td>
 								<td>{event.name}</td>
 								<td>{event.startDate}</td>
+								<td className="hidden md:table-cell">{event.location}</td>
+								<td className="hidden md:table-cell">
+									<DeleteEventButton code={event.code} remove={remove} />
+								</td>
 							</tr>
 						);
 					})}
@@ -91,12 +99,13 @@ const AttendingTable = async () => {
 
 	return (
 		<div className="max-h-96 overflow-x-auto">
-			<table className="table table-pin-rows table-xs md:table-lg">
+			<table className="table table-pin-rows table-sm md:table-lg">
 				<thead>
 					<tr>
 						<th>Code</th>
 						<th>Name</th>
 						<th>Date</th>
+						<th className="hidden md:table-cell">Location</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -114,6 +123,7 @@ const AttendingTable = async () => {
 								</td>
 								<td>{event.name}</td>
 								<td>{event.startDate}</td>
+								<td className="hidden md:table-cell">{event.location}</td>
 							</tr>
 						);
 					})}
