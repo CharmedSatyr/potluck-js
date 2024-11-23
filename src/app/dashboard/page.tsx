@@ -2,8 +2,6 @@ import findEventsByUser from "@/actions/db/find-events-by-user";
 import { auth } from "@/auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import DeleteEventButton from "./delete-event-button";
-import remove from "@/app/dashboard/remove-action";
 import eventIsPassed from "@/utilities/event-is-passed";
 import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 import { Suspense } from "react";
@@ -46,16 +44,12 @@ const HostingTable = async () => {
 
 	return (
 		<div className="max-h-96 overflow-x-auto">
-			<table className="table table-pin-rows table-lg">
+			<table className="table table-pin-rows table-xs md:table-lg">
 				<thead>
 					<tr>
-						<th>Status</th>
 						<th>Code</th>
 						<th>Name</th>
 						<th>Date</th>
-						<th>Location</th>
-						<th></th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,25 +58,15 @@ const HostingTable = async () => {
 
 						return (
 							<tr key={event.id} className={passed ? "bg-base-300" : ""}>
-								<td>
-									{passed ? (
-										<span className="text-error">Past</span>
-									) : (
-										<span className="text-success">Active</span>
-									)}
-								</td>
-								<td className="font-bold">{event.code}</td>
-								<td>{event.name}</td>
-								<td>{event.startDate}</td>
-								<td>{event.location}</td>
-								<td>
+								<td className="font-bold">
 									<Link className="btn btn-sm" href={`/event/${event.code}`}>
-										Details
+										<span className={passed ? "text-error" : "text-success"}>
+											{event.code}
+										</span>
 									</Link>
 								</td>
-								<td>
-									<DeleteEventButton code={event.code} remove={remove} />
-								</td>
+								<td>{event.name}</td>
+								<td>{event.startDate}</td>
 							</tr>
 						);
 					})}
@@ -107,15 +91,12 @@ const AttendingTable = async () => {
 
 	return (
 		<div className="max-h-96 overflow-x-auto">
-			<table className="table table-pin-rows table-lg">
+			<table className="table table-pin-rows table-xs md:table-lg">
 				<thead>
 					<tr>
-						<th>Status</th>
 						<th>Code</th>
 						<th>Name</th>
 						<th>Date</th>
-						<th>Location</th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -124,22 +105,15 @@ const AttendingTable = async () => {
 
 						return (
 							<tr key={event.code} className={passed ? "bg-base-300" : ""}>
-								<td>
-									{passed ? (
-										<span className="text-error">Past</span>
-									) : (
-										<span className="text-success">Active</span>
-									)}
-								</td>
-								<td className="font-bold">{event.code}</td>
-								<td>{event.name}</td>
-								<td>{event.startDate}</td>
-								<td>{event.location}</td>
-								<td>
+								<td className="font-bold">
 									<Link className="btn btn-sm" href={`/event/${event.code}`}>
-										Details
+										<span className={passed ? "text-error" : "text-success"}>
+											{event.code}
+										</span>
 									</Link>
 								</td>
+								<td>{event.name}</td>
+								<td>{event.startDate}</td>
 							</tr>
 						);
 					})}

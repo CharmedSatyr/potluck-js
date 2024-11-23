@@ -13,7 +13,7 @@ const DeleteEventButton = ({ code, remove }: Props) => {
 	return (
 		<>
 			<button
-				className="btn btn-error btn-sm"
+				className="btn btn-error btn-xs md:btn-sm"
 				type="button"
 				onClick={() => dialogRef.current?.showModal()}
 			>
