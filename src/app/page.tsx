@@ -5,6 +5,34 @@ import Image from "next/image";
 
 const Home = () => {
 	return (
+		<main className="-z-10">
+			<div className="hero">
+				<div className="hero-content mb-2 flex-col rounded-xl text-center">
+					<h1 className="mb-0 text-5xl font-bold leading-tight">
+						Gather your party, and roll for an epic meal.
+					</h1>
+
+					<p>
+						<span className="text-primary">{siteMetadata.title}</span> makes it
+						easy for you and your friends to plan shared meals.{" "}
+						<span className="text-info">In active development</span> by and for
+						tabletop gamers who enjoy cooking and eating with their friends.
+					</p>
+				</div>
+			</div>
+
+			<div className="flex flex-col gap-2 text-center">
+				<Link href="/start" className="btn btn-primary w-full text-xl">
+					<button className="h-full w-full" type="button">
+						Create an Event
+					</button>
+				</Link>
+				<div className="divider-base divider">OR</div>
+				<GotoEventForm />
+			</div>
+		</main>
+	);
+	return (
 		<main>
 			<div className="hero min-h-full rounded-lg bg-base-300 px-24 py-16">
 				<div className="hero-content flex-col justify-between lg:flex-row-reverse">
