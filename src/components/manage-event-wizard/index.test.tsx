@@ -5,7 +5,7 @@ import {
 	waitFor,
 	act,
 } from "@testing-library/react";
-import ManageEventWizard from "@/components/manage-event-wizard";
+import ManageEventWizard, { Step } from "@/components/manage-event-wizard";
 import useAnchor from "@/hooks/use-anchor";
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
@@ -31,7 +31,7 @@ describe("ManageEventWizard", () => {
 	const committedUsersBySlotPromise = Promise.resolve(new Map());
 
 	beforeEach(() => {
-		(useAnchor as jest.Mock).mockReturnValue(["create-event", jest.fn()]);
+		(useAnchor as jest.Mock).mockReturnValue([Step.CREATE_EVENT, jest.fn()]);
 		(PlanEventForm as jest.Mock).mockReturnValue(<div>Create Event Form</div>);
 		(PlanFoodForm as jest.Mock).mockReturnValue(<div>Plan Food Form</div>);
 	});
@@ -116,7 +116,7 @@ describe("ManageEventWizard", () => {
 	it("should scroll to the correct section when button is clicked", () => {
 		const scrollToAnchor = jest.fn();
 		(useAnchor as jest.Mock).mockReturnValueOnce([
-			"create-event",
+			Step.CREATE_EVENT,
 			scrollToAnchor,
 		]);
 

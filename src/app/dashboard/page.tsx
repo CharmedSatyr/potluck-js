@@ -6,7 +6,7 @@ import eventIsPassed from "@/utilities/event-is-passed";
 import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 import { Suspense } from "react";
 import SlideIn from "@/components/slide-in";
-import DeleteEventButton from "../../components/delete-event-button";
+import DeleteEventButton from "@/components/delete-event-button";
 
 const TableFallback = () => {
 	return (

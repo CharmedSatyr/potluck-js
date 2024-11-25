@@ -9,6 +9,7 @@ import {
 } from "@/app/start/submit-actions.schema";
 import WarningAlert from "@/components/warning-alert";
 import { DiscordIcon } from "@/components/icons/discord";
+import { Step } from "@/components/manage-event-wizard";
 
 type Props = {
 	code: string | null;
@@ -55,8 +56,8 @@ const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 	}, [code, state]);
 
 	useEffect(() => {
-		if (anchor === "plan-food") {
-			scrollToAnchor("plan-food");
+		if (anchor === Step.PLAN_FOOD) {
+			scrollToAnchor(Step.PLAN_FOOD);
 			return;
 		}
 
@@ -71,7 +72,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 		state.next = false;
 
 		const query = "?" + createQueryString("code", state.code);
-		scrollToAnchor("plan-food", query);
+		scrollToAnchor(Step.PLAN_FOOD, query);
 	}, [anchor, createQueryString, scrollToAnchor, state]);
 
 	return (
@@ -214,7 +215,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 
 			<button
 				className="btn btn-primary my-6 w-full"
-				disabled={isPending || anchor === "plan-food"}
+				disabled={isPending || anchor === Step.PLAN_FOOD}
 				type="submit"
 			>
 				{loggedIn ? (

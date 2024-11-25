@@ -22,6 +22,11 @@ type Props = {
 	) => Promise<PlanEventFormState>;
 };
 
+export enum Step {
+	CREATE_EVENT = "create-event",
+	PLAN_FOOD = "plan-food",
+}
+
 const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
@@ -40,7 +45,7 @@ const ManageEventWizard = ({
 			<div className="carousel w-full">
 				<div
 					className="carousel-item flex w-full justify-center"
-					id="create-event"
+					id={Step.CREATE_EVENT}
 				>
 					<PlanEventForm
 						code={code}
@@ -52,7 +57,7 @@ const ManageEventWizard = ({
 
 				<div
 					className="carousel-item flex w-full justify-center"
-					id="plan-food"
+					id={Step.PLAN_FOOD}
 				>
 					<PlanFoodForm
 						code={code}
@@ -66,13 +71,13 @@ const ManageEventWizard = ({
 			<div className="steps my-8 w-full">
 				<button
 					className="step step-secondary"
-					onClick={() => scrollToAnchor("create-event")}
+					onClick={() => scrollToAnchor(Step.CREATE_EVENT)}
 				>
 					Create an Event
 				</button>
 				<button
-					className={`step ${anchor === "plan-food" ? "step-secondary" : ""}`}
-					onClick={() => scrollToAnchor("plan-food")}
+					className={`step ${anchor === Step.PLAN_FOOD ? "step-secondary" : ""}`}
+					onClick={() => scrollToAnchor(Step.PLAN_FOOD)}
 				>
 					Plan the Food
 				</button>

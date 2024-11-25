@@ -22,6 +22,7 @@ import { z } from "zod";
 import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
+import { Step } from "@/components/manage-event-wizard";
 
 const MAX_SLOTS = 20;
 
@@ -118,7 +119,7 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const disableButtons = isPending || anchor === "create-event";
+	const disableButtons = isPending || anchor === Step.CREATE_EVENT;
 
 	return (
 		<form
