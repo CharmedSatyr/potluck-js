@@ -32,8 +32,8 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 
 	if (currentRsvp?.response && !override) {
 		return (
-			<div className="float-right w-full text-center md:max-w-40">
-				<p className="flex items-center justify-center gap-1">
+			<div className="w-full text-center md:float-right md:max-w-40">
+				<p className="flex w-full items-center justify-center gap-1">
 					<CheckCircleIcon className="size-6 text-success" /> You will{" "}
 					{currentRsvp.response === "yes" ? "" : "not"} attend.
 				</p>
@@ -54,7 +54,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 	return (
 		<form
 			action={submit}
-			className="form-control float-right gap-2 text-center"
+			className="form-control w-full gap-2 text-center md:float-right md:max-w-40"
 		>
 			<h3 className="mt-0">Will you attend?</h3>
 
@@ -85,7 +85,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 					Notes
 				</label>
 				<input
-					className="input input-bordered w-full max-w-xs"
+					className="input input-bordered w-full md:max-w-xs"
 					defaultValue={state.fields.message}
 					id="rsvp-message"
 					maxLength={256}
@@ -102,8 +102,8 @@ export default RsvpForm;
 
 export const RsvpFormFallback = () => {
 	return (
-		<div className="flex w-full flex-col gap-4">
-			<div className="skeleton h-12 w-full" />
+		<div className="mt-4 flex w-full flex-col gap-4 md:float-right md:max-w-40">
+			<div className="skeleton h-10 w-full" />
 			<div className="skeleton h-8 w-full" />
 			<div className="skeleton h-8 w-full" />
 			<div className="skeleton h-8 w-full" />
