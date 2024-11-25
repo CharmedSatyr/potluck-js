@@ -5,13 +5,23 @@ import findSlots from "@/actions/db/find-slots";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
 import { Suspense } from "react";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 type Props = {
 	params: Promise<{ code: string }>;
 };
 
 const EditEventPage = async ({ params }: Props) => {
+	const session = await auth();
+
+	const loggedIn = Boolean(session?.user?.id);
+
 	const { code } = await params;
+
+	if (!loggedIn) {
+		redirect(`/event/${code}`);
+	}
 
 	return (
 		<main className="flex h-full w-full flex-col items-center">
@@ -20,6 +30,7 @@ const EditEventPage = async ({ params }: Props) => {
 					code={code}
 					committedUsersBySlotPromise={committedUsersBySlot(code)}
 					eventDataPromise={findEvent({ code })}
+					loggedIn={loggedIn}
 					slotsPromise={findSlots({ code })}
 					submitAction={updateEventAction}
 				/>

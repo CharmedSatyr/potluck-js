@@ -12,8 +12,9 @@ type Props = {
 
 const StartPage = async ({ searchParams }: Props) => {
 	const session = await auth();
+	const loggedIn = Boolean(session?.user?.id);
 
-	const submitAction = session?.user?.id ? createEventAction : loginAction;
+	const submitAction = loggedIn ? createEventAction : loginAction;
 
 	const params = await searchParams;
 	const { code, source } = params;
@@ -44,6 +45,7 @@ const StartPage = async ({ searchParams }: Props) => {
 					code={code}
 					committedUsersBySlotPromise={Promise.resolve(new Map())}
 					eventDataPromise={Promise.resolve([values])}
+					loggedIn={loggedIn}
 					slotsPromise={Promise.resolve([])}
 					submitAction={submitAction}
 				/>

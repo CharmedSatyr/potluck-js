@@ -14,6 +14,7 @@ type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	eventDataPromise: Promise<PlanEventFormData[]>;
+	loggedIn: boolean;
 	slotsPromise: Promise<Slot[]>;
 	submitAction: (
 		prevState: PlanEventFormState,
@@ -25,6 +26,7 @@ const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
 	eventDataPromise,
+	loggedIn,
 	slotsPromise,
 	submitAction,
 }: Props) => {
@@ -43,6 +45,7 @@ const ManageEventWizard = ({
 					<PlanEventForm
 						code={code}
 						eventData={eventData}
+						loggedIn={loggedIn}
 						submitAction={submitAction}
 					/>
 				</div>

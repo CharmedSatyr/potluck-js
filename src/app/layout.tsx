@@ -25,7 +25,7 @@ const RootLayout = async ({
 			<body
 				className={`${inter.className} prose flex max-w-none flex-col items-center`}
 			>
-				<div className="fixed w-full z-50">
+				<div className="fixed z-50 w-full">
 					<NavBar />
 				</div>
 				<div className="container flex w-full justify-center px-4 py-24 md:w-10/12 md:px-10">

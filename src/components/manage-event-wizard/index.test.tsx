@@ -43,6 +43,7 @@ describe("ManageEventWizard", () => {
 					code={code}
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					eventDataPromise={eventDataPromise}
+					loggedIn={true}
 					slotsPromise={slotsPromise}
 					submitAction={submitAction}
 				/>
@@ -61,6 +62,7 @@ describe("ManageEventWizard", () => {
 					code={code}
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					eventDataPromise={eventDataPromise}
+					loggedIn={true}
 					slotsPromise={slotsPromise}
 					submitAction={submitAction}
 				/>
@@ -80,6 +82,7 @@ describe("ManageEventWizard", () => {
 					code={code}
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					eventDataPromise={eventDataPromise}
+					loggedIn={true}
 					slotsPromise={slotsPromise}
 					submitAction={submitAction}
 				/>
@@ -100,6 +103,7 @@ describe("ManageEventWizard", () => {
 				code={code}
 				committedUsersBySlotPromise={committedUsersBySlotPromise}
 				eventDataPromise={eventDataPromise}
+				loggedIn={true}
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>
@@ -121,6 +125,7 @@ describe("ManageEventWizard", () => {
 				code={code}
 				committedUsersBySlotPromise={committedUsersBySlotPromise}
 				eventDataPromise={eventDataPromise}
+				loggedIn={true}
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>

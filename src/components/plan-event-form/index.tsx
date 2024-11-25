@@ -8,17 +8,19 @@ import {
 	PlanEventFormState,
 } from "@/app/start/submit-actions.schema";
 import WarningAlert from "../warning-alert";
+import { DiscordIcon } from "../icons/discord";
 
 type Props = {
 	code: string | null;
 	eventData: PlanEventFormData;
+	loggedIn: boolean;
 	submitAction: (
 		prevState: PlanEventFormState,
 		formData: FormData
 	) => Promise<PlanEventFormState>;
 };
 
-const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
+const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor, scrollToAnchor] = useAnchor();
@@ -209,7 +211,13 @@ const PlanEventForm = ({ code, eventData, submitAction }: Props) => {
 				disabled={isPending || anchor === "plan-food"}
 				type="submit"
 			>
-				Next
+				{loggedIn ? (
+					"Next"
+				) : (
+					<>
+						Sign In with Discord <DiscordIcon className="size-4" />
+					</>
+				)}
 			</button>
 		</form>
 	);
