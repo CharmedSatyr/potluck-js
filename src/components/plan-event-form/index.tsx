@@ -15,13 +15,20 @@ type Props = {
 	code: string | null;
 	eventData: PlanEventFormData;
 	loggedIn: boolean;
+	mode: "create" | "edit";
 	submitAction: (
 		prevState: PlanEventFormState,
 		formData: FormData
 	) => Promise<PlanEventFormState>;
 };
 
-const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
+const PlanEventForm = ({
+	code,
+	eventData,
+	loggedIn,
+	mode,
+	submitAction,
+}: Props) => {
 	const path = usePathname();
 	const searchParams = useSearchParams();
 	const [anchor, scrollToAnchor] = useAnchor();
@@ -81,7 +88,14 @@ const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 			className="form-control mx-2 w-full lg:w-3/4 2xl:w-10/12"
 			name="create-event-form"
 		>
-			<h1 className="mb-4 text-primary">Create an Event</h1>
+			{mode === "create" && (
+				<h1 className="mb-4 text-primary">Create an Event</h1>
+			)}
+			{mode === "edit" && (
+				<h1 className="mb-4 text-primary">
+					Edit Event: <span className="text-secondary">{code}</span>
+				</h1>
+			)}
 
 			<div>
 				<label className="label label-text" htmlFor="name-input">

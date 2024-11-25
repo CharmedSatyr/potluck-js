@@ -31,6 +31,7 @@ const EditEventPage = async ({ params }: Props) => {
 					committedUsersBySlotPromise={committedUsersBySlot(code)}
 					eventDataPromise={findEvent({ code })}
 					loggedIn={loggedIn}
+					mode="edit"
 					slotsPromise={findSlots({ code })}
 					submitAction={updateEventAction}
 				/>

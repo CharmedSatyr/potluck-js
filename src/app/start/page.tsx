@@ -46,6 +46,7 @@ const StartPage = async ({ searchParams }: Props) => {
 					committedUsersBySlotPromise={Promise.resolve(new Map())}
 					eventDataPromise={Promise.resolve([values])}
 					loggedIn={loggedIn}
+					mode="create"
 					slotsPromise={Promise.resolve([])}
 					submitAction={submitAction}
 				/>
