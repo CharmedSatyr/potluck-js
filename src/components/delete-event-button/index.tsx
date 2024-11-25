@@ -42,6 +42,7 @@ const DeleteEventButton = ({ className, code }: Props) => {
 							className="btn btn-error btn-sm"
 							type="button"
 							onClick={async () => {
+								// TODO: useActionState so button can be disabled, etc.
 								await remove({ code });
 								dialogRef.current?.close();
 							}}

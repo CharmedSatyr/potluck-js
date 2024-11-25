@@ -25,6 +25,7 @@ export const updateEventAction = async (
 		return {
 			...prevState,
 			message: "Missing event code",
+			next: false,
 			success: false,
 		};
 	}
@@ -33,6 +34,7 @@ export const updateEventAction = async (
 		return {
 			...prevState,
 			message: "No changes detected",
+			next: false,
 			success: true,
 		};
 	}
@@ -43,6 +45,7 @@ export const updateEventAction = async (
 		return {
 			...prevState,
 			message: "Invalid form data",
+			next: false,
 			success: false,
 		};
 	}
@@ -53,6 +56,7 @@ export const updateEventAction = async (
 		return {
 			...prevState,
 			message: "Not authenticated",
+			next: false,
 			success: false,
 		};
 	}
@@ -67,6 +71,7 @@ export const updateEventAction = async (
 		return {
 			...prevState,
 			message: "Failed to update event",
+			next: false,
 			success: false,
 		};
 	}
@@ -76,8 +81,8 @@ export const updateEventAction = async (
 	return {
 		...prevState,
 		code: result.code,
-		fields: {},
 		message: "Event updated",
+		next: true,
 		success: true,
 	};
 };
