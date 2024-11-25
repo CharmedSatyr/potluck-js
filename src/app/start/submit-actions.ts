@@ -43,6 +43,7 @@ export const createEventAction = async (
 			fields,
 			errors: parsed.error.flatten(),
 			message: "Invalid form data",
+			next: false,
 			success: false,
 		};
 	}
@@ -54,6 +55,7 @@ export const createEventAction = async (
 			...prevState,
 			fields,
 			message: "Not authenticated",
+			next: false,
 			success: false,
 		};
 	}
@@ -69,6 +71,7 @@ export const createEventAction = async (
 			...prevState,
 			fields,
 			message: "Failed to create event",
+			next: false,
 			success: false,
 		};
 	}
@@ -77,6 +80,7 @@ export const createEventAction = async (
 		...prevState,
 		code: result.code,
 		message: "Event created",
+		next: true,
 		success: true,
 	};
 };

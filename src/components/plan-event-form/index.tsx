@@ -7,8 +7,8 @@ import {
 	PlanEventFormData,
 	PlanEventFormState,
 } from "@/app/start/submit-actions.schema";
-import WarningAlert from "../warning-alert";
-import { DiscordIcon } from "../icons/discord";
+import WarningAlert from "@/components/warning-alert";
+import { DiscordIcon } from "@/components/icons/discord";
 
 type Props = {
 	code: string | null;
@@ -41,6 +41,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 	>(submitAction, {
 		fields: eventData,
 		message: "",
+		next: false,
 		path,
 		success: false,
 	});
@@ -54,15 +55,20 @@ const PlanEventForm = ({ code, eventData, loggedIn, submitAction }: Props) => {
 	}, [code, state]);
 
 	useEffect(() => {
+		if (anchor === "plan-food") {
+			scrollToAnchor("plan-food");
+			return;
+		}
+
+		if (!state?.next) {
+			return;
+		}
+
 		if (!state?.code) {
 			return;
 		}
 
-		if (anchor !== "plan-food" && !state.success) {
-			return;
-		}
-
-		state.success = false;
+		state.next = false;
 
 		const query = "?" + createQueryString("code", state.code);
 		scrollToAnchor("plan-food", query);
