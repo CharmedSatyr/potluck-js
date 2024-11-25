@@ -11,7 +11,7 @@ const CreateEventButton = () => (
 
 const StartCta = () => {
 	return (
-		<div className="w-full xl:p-10">
+		<div className="z-90 w-full xl:p-10">
 			<div className="flex flex-col gap-2 text-center md:hidden">
 				<CreateEventButton />
 
@@ -35,10 +35,10 @@ const StartCta = () => {
 
 const Home = () => {
 	return (
-		<main className="-z-10 rounded-xl bg-base-300 py-10 xl:flex">
-			<div className="h-full xl:h-1/2">
-				<div className="hero">
-					<div className="hero-content flex-col rounded-xl text-center xl:mx-10">
+		<main>
+			<div className="hero h-full bg-base-300 py-10 xl:flex">
+				<div className="hero-content rounded-xl text-center">
+					<div className="flex-col xl:mx-10 xl:w-1/2">
 						<h1 className="mb-0 text-4xl font-bold leading-tight sm:text-5xl">
 							Gather your party, and roll for an epic meal.
 						</h1>
@@ -63,17 +63,17 @@ const Home = () => {
 
 						<StartCta />
 					</div>
-				</div>
-			</div>
 
-			<div className="hidden h-full w-full items-center justify-center xl:flex 2xl:justify-center">
-				<div className="relative h-80 w-80 2xl:h-96 2xl:w-96">
-					<Image
-						alt={`${siteMetadata.title} logo`}
-						className="m-0 rounded-lg shadow-2xl"
-						src="/static/potluck-quest.png"
-						fill
-					/>
+					<div className="hidden h-full w-1/2 items-center justify-center xl:flex">
+						<div className="relative h-96 w-96">
+							<Image
+								alt={`${siteMetadata.title} logo`}
+								className="m-0 rounded-lg shadow-2xl"
+								src="/static/potluck-quest.png"
+								fill
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</main>
