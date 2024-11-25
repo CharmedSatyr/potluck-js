@@ -14,8 +14,8 @@ jest.mock("@/actions/db/delete-slot");
 jest.mock("@/components/plan-food-form/submit-actions");
 
 describe("PlanFoodForm", () => {
-	const committedUsersBySlotPromise = Promise.resolve(new Map());
-	const slotsPromise = Promise.resolve([]);
+	const committedUsersBySlot = new Map();
+	const slots: Slot[] = [];
 
 	beforeEach(() => {
 		(submitSlots as jest.Mock).mockReturnValue({
@@ -30,8 +30,8 @@ describe("PlanFoodForm", () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					slotsPromise={slotsPromise}
+					committedUsersBySlot={committedUsersBySlot}
+					slots={slots}
 				/>
 			);
 		});
@@ -52,8 +52,8 @@ describe("PlanFoodForm", () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					slotsPromise={slotsPromise}
+					committedUsersBySlot={committedUsersBySlot}
+					slots={slots}
 				/>
 			);
 		});
@@ -67,16 +67,16 @@ describe("PlanFoodForm", () => {
 	});
 
 	it("removes a slot when the remove button is clicked", async () => {
-		const slotsWithInitialData = Promise.resolve([
+		const slotsWithInitialData = [
 			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
-		]); // TODO: Don't use Slot type.
+		]; // TODO: Don't use Slot type.
 
 		await act(async () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					slotsPromise={slotsWithInitialData}
+					committedUsersBySlot={committedUsersBySlot}
+					slots={slotsWithInitialData}
 				/>
 			);
 		});
@@ -93,8 +93,8 @@ describe("PlanFoodForm", () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					slotsPromise={slotsPromise}
+					committedUsersBySlot={committedUsersBySlot}
+					slots={slots}
 				/>
 			);
 		});
@@ -119,14 +119,12 @@ describe("PlanFoodForm", () => {
 
 		const maxSlots = new Array(20).fill(null).map(() => genRandItem());
 
-		const maxSlotsPromise = Promise.resolve(maxSlots);
-
 		await act(async () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					slotsPromise={maxSlotsPromise}
+					committedUsersBySlot={committedUsersBySlot}
+					slots={maxSlots}
 				/>
 			);
 		});
@@ -137,16 +135,14 @@ describe("PlanFoodForm", () => {
 	});
 
 	it("disables submit button if slots are invalid", async () => {
-		const invalidSlots = Promise.resolve([
-			{ id: "testSlotId", course: "", count: 0 } as Slot,
-		]); // Invalid slot
+		const invalidSlots = [{ id: "testSlotId", course: "", count: 0 } as Slot];
 
 		await act(async () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersBySlotPromise}
-					slotsPromise={invalidSlots}
+					committedUsersBySlot={committedUsersBySlot}
+					slots={invalidSlots}
 				/>
 			);
 		});
@@ -159,19 +155,19 @@ describe("PlanFoodForm", () => {
 	});
 
 	it("displays commitment information if a slot has commitments", async () => {
-		const committedUsersWithSlot = Promise.resolve(
-			new Map([["testSlotId", <span key="123">Committed User</span>]])
-		);
-		const slotsWithCommitment = Promise.resolve([
-			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
+		const committedUsersWithSlot = new Map([
+			["testSlotId", <span key="123">Committed User</span>],
 		]);
+		const slotsWithCommitment = [
+			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
+		];
 
 		await act(async () => {
 			render(
 				<PlanFoodForm
 					code="testCode"
-					committedUsersBySlotPromise={committedUsersWithSlot}
-					slotsPromise={slotsWithCommitment}
+					committedUsersBySlot={committedUsersWithSlot}
+					slots={slotsWithCommitment}
 				/>
 			);
 		});

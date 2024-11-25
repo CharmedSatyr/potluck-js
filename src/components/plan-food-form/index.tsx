@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	use,
 	useActionState,
 	useCallback,
 	useEffect,
@@ -34,21 +33,18 @@ const courseSchema = z.strictObject({
 
 type Props = {
 	code: string | null;
-	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
-	slotsPromise: Promise<Slot[]>;
+	committedUsersBySlot: Map<string, JSX.Element>;
+	slots: Slot[];
 };
 
 const PlanFoodForm = ({
 	code,
-	committedUsersBySlotPromise,
-	slotsPromise,
+	committedUsersBySlot,
+	slots: prevSlots,
 }: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-	const committedUsersBySlot = use(committedUsersBySlotPromise);
-	const prevSlots = use(slotsPromise);
 
 	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<

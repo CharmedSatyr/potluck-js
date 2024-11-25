@@ -3,6 +3,8 @@ import { createEventAction, loginAction } from "@/app/start/submit-actions";
 import { PlanEventFormData } from "@/app/start/submit-actions.schema";
 import { auth } from "@/auth";
 import { DEV } from "@/utilities/current-env";
+import { Suspense } from "react";
+import { PlanEventFormFallback } from "@/components/plan-event-form";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
@@ -13,7 +15,7 @@ const StartPage = async ({ searchParams }: Props) => {
 
 	const submitAction = session?.user?.id ? createEventAction : loginAction;
 
-	const params = await searchParams; // NOSONAR
+	const params = await searchParams;
 	const { code, source } = params;
 
 	const values: PlanEventFormData = {
@@ -37,13 +39,15 @@ const StartPage = async ({ searchParams }: Props) => {
 
 	return (
 		<main className="flex h-full w-full flex-col items-center">
-			<ManageEventWizard
-				code={code}
-				committedUsersBySlotPromise={Promise.resolve(new Map())}
-				eventDataPromise={Promise.resolve([values])}
-				slotsPromise={Promise.resolve([])}
-				submitAction={submitAction}
-			/>
+			<Suspense fallback={<PlanEventFormFallback />}>
+				<ManageEventWizard
+					code={code}
+					committedUsersBySlotPromise={Promise.resolve(new Map())}
+					eventDataPromise={Promise.resolve([values])}
+					slotsPromise={Promise.resolve([])}
+					submitAction={submitAction}
+				/>
+			</Suspense>
 		</main>
 	);
 };

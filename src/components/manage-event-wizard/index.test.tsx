@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+	render,
+	screen,
+	fireEvent,
+	waitFor,
+	act,
+} from "@testing-library/react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import useAnchor from "@/hooks/use-anchor";
 import PlanEventForm from "@/components/plan-event-form";
@@ -11,7 +17,7 @@ jest.mock("@/components/plan-food-form");
 describe("ManageEventWizard", () => {
 	const code = "CODE1";
 	const submitAction = jest.fn();
-	const eventPromise = Promise.resolve([
+	const eventDataPromise = Promise.resolve([
 		{
 			name: "",
 			location: "",
@@ -22,6 +28,7 @@ describe("ManageEventWizard", () => {
 		},
 	]);
 	const slotsPromise = Promise.resolve([]);
+	const committedUsersBySlotPromise = Promise.resolve(new Map());
 
 	beforeEach(() => {
 		(useAnchor as jest.Mock).mockReturnValue(["create-event", jest.fn()]);
@@ -30,30 +37,35 @@ describe("ManageEventWizard", () => {
 	});
 
 	it("should render CreateEventForm and PlanFoodForm", async () => {
-		render(
-			<ManageEventWizard
-				code={code}
-				eventDataPromise={eventPromise}
-				slotsPromise={slotsPromise}
-				submitAction={submitAction}
-			/>
-		);
-
+		await act(async () => {
+			render(
+				<ManageEventWizard
+					code={code}
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					eventDataPromise={eventDataPromise}
+					slotsPromise={slotsPromise}
+					submitAction={submitAction}
+				/>
+			);
+		});
 		await waitFor(() => {
 			expect(screen.getByText("Create Event Form")).toBeInTheDocument();
 			expect(screen.getByText("Plan Food Form")).toBeInTheDocument();
 		});
 	});
 
-	it("should pass through the submitAction to CreateEventForm", () => {
-		render(
-			<ManageEventWizard
-				code={code}
-				eventPromise={eventPromise}
-				slotsPromise={slotsPromise}
-				submitAction={submitAction}
-			/>
-		);
+	it("should pass through the submitAction to CreateEventForm", async () => {
+		await act(async () => {
+			render(
+				<ManageEventWizard
+					code={code}
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					eventDataPromise={eventDataPromise}
+					slotsPromise={slotsPromise}
+					submitAction={submitAction}
+				/>
+			);
+		});
 
 		expect(PlanEventForm).toHaveBeenCalled();
 		expect((PlanEventForm as jest.Mock).mock.calls[0][0]).toMatchObject({
@@ -62,14 +74,17 @@ describe("ManageEventWizard", () => {
 	});
 
 	it("should highlight the create event button initially", async () => {
-		render(
-			<ManageEventWizard
-				code={code}
-				eventPromise={eventPromise}
-				slotsPromise={slotsPromise}
-				submitAction={submitAction}
-			/>
-		);
+		await act(async () => {
+			render(
+				<ManageEventWizard
+					code={code}
+					committedUsersBySlotPromise={committedUsersBySlotPromise}
+					eventDataPromise={eventDataPromise}
+					slotsPromise={slotsPromise}
+					submitAction={submitAction}
+				/>
+			);
+		});
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
 		expect(screen.getByText(/plan the food/i)).not.toHaveClass(
@@ -83,7 +98,8 @@ describe("ManageEventWizard", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventPromise={eventPromise}
+				committedUsersBySlotPromise={committedUsersBySlotPromise}
+				eventDataPromise={eventDataPromise}
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>
@@ -103,7 +119,8 @@ describe("ManageEventWizard", () => {
 		render(
 			<ManageEventWizard
 				code={code}
-				eventPromise={eventPromise}
+				committedUsersBySlotPromise={committedUsersBySlotPromise}
+				eventDataPromise={eventDataPromise}
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>
