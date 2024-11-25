@@ -4,7 +4,7 @@ import { use, useActionState, useEffect, useState } from "react";
 import submitAction, {
 	RsvpFormState,
 } from "@/components/rsvp-form/submit-actions";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 type Props = {
 	code: string;
@@ -34,8 +34,16 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 		return (
 			<div className="w-full text-center md:float-right md:max-w-40">
 				<p className="flex w-full items-center justify-center gap-1">
-					<CheckCircleIcon className="size-6 text-success" /> You will{" "}
-					{currentRsvp.response === "yes" ? "" : "not"} attend.
+					{currentRsvp.response === "yes" ? (
+						<>
+							<CheckCircleIcon className="size-6 text-success" /> You will
+							attend.
+						</>
+					) : (
+						<>
+							<XCircleIcon className="size-6 text-error" /> You will not attend.
+						</>
+					)}
 				</p>
 				<button
 					className="btn btn-accent w-full"
