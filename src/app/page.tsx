@@ -11,7 +11,7 @@ const CreateEventButton = () => (
 
 const StartCta = () => {
 	return (
-		<div className="z-90 w-full xl:p-10">
+		<div className="w-full xl:p-10">
 			<div className="flex flex-col gap-2 text-center md:hidden">
 				<CreateEventButton />
 
