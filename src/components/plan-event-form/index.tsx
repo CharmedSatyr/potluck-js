@@ -10,6 +10,7 @@ import {
 import WarningAlert from "@/components/warning-alert";
 import { DiscordIcon } from "@/components/icons/discord";
 import { Step } from "@/components/manage-event-wizard";
+import LoadingIndicator from "../loading-indicator";
 
 type Props = {
 	code: string | null;
@@ -232,9 +233,9 @@ const PlanEventForm = ({
 				disabled={isPending || anchor === Step.PLAN_FOOD}
 				type="submit"
 			>
-				{loggedIn ? (
-					"Next"
-				) : (
+				{isPending && <LoadingIndicator size={10} />}
+				{loggedIn && !isPending && "Next"}
+				{!loggedIn && !isPending && (
 					<>
 						Sign In with Discord <DiscordIcon className="size-4" />
 					</>
