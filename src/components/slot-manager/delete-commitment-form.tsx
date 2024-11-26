@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Commitment } from "@/db/schema/commitment";
 import { deleteCommitmentAction } from "@/components/slot-manager/submit-actions";
 import { DeleteCommitmentFormState } from "@/components/slot-manager/submit-actions.schema";
+import LoadingIndicator from "../loading-indicator";
 
 type Props = {
 	id: Commitment["id"];
@@ -17,7 +18,7 @@ const SubmitButton = () => {
 
 	return (
 		<button className="btn btn-circle btn-xs md:btn-sm" type="submit">
-			{pending ? "..." : "✕"}
+			{pending ? <LoadingIndicator size={4} /> : "✕"}
 		</button>
 	);
 };

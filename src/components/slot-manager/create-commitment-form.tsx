@@ -5,6 +5,7 @@ import { createCommitmentAction } from "./submit-actions";
 import { CreateCommitmentFormState } from "./submit-actions.schema";
 import { usePathname } from "next/navigation";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import LoadingIndicator from "../loading-indicator";
 
 type Props = {
 	commitmentsStillNeeded: number;
@@ -117,7 +118,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 				disabled={isButtonDisabled}
 				type="submit"
 			>
-				Save
+				{isPending ? <LoadingIndicator size={8} /> : "Save"}
 			</button>
 		</form>
 	);
