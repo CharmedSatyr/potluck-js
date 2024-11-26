@@ -6,6 +6,7 @@ import Form from "next/form";
 import signOutAndRevalidate from "@/actions/auth/sign-out-and-revalidate";
 import { PropsWithChildren } from "react";
 import {
+	ArrowRightStartOnRectangleIcon,
 	CalendarDateRangeIcon,
 	TableCellsIcon,
 } from "@heroicons/react/24/outline";
@@ -24,23 +25,42 @@ const LoggedOutContent = () => {
 	);
 };
 
+const CreateEventLink = () => (
+	<Link href="/start" className="text-nowrap no-underline">
+		<CalendarDateRangeIcon className="size-4" />
+		Create Event
+	</Link>
+);
+
+const DashboardLink = () => (
+	<Link href="/dashboard" className="text-nowrap no-underline">
+		<TableCellsIcon className="size-4" />
+		Dashboard
+	</Link>
+);
+
+const Signout = () => (
+	<Form action={signOutAndRevalidate} className="w-full">
+		<button className="m-0 w-full min-w-28 p-0" type="submit">
+			<a className="w-full no-underline">
+				<ArrowRightStartOnRectangleIcon className="-ml-8 mr-1 inline-block size-5" />{" "}
+				Sign Out
+			</a>
+		</button>
+	</Form>
+);
+
 const LoggedInContent = ({ image, name }: { image: string; name: string }) => {
 	return (
-		<div className="navbar-end flex-none">
+		<div className="navbar-end w-3/4">
 			<ul className="menu menu-horizontal items-center">
 				<li className="hidden lg:inline-block">
-					<Link href="/start" className="no-underline">
-						<CalendarDateRangeIcon className="size-4" />
-						Create Event
-					</Link>
+					<CreateEventLink />
 				</li>
 				<li className="hidden lg:inline-block">
-					<Link href="/dashboard" className="no-underline">
-						<TableCellsIcon className="size-4" />
-						Dashboard
-					</Link>
+					<DashboardLink />
 				</li>
-				<li className="hidden text-sm sm:inline-block">Welcome, {name}</li>
+				<li className="hidden text-sm sm:inline-flex">Welcome, {name}</li>
 
 				<li>
 					<details className="dropdown dropdown-end">
@@ -58,26 +78,16 @@ const LoggedInContent = ({ image, name }: { image: string; name: string }) => {
 						</summary>
 						<ul
 							tabIndex={0}
-							className="dropdown-content rounded-t-none bg-base-300"
+							className="dropdown-content w-fit rounded-t-none bg-base-300"
 						>
 							<li className="lg:hidden">
-								<Link href="/start" className="text-nowrap no-underline">
-									Create Event
-								</Link>
+								<CreateEventLink />
 							</li>
 							<li className="lg:hidden">
-								<Link href="/dashboard" className="text-nowrap no-underline">
-									Dashboard
-								</Link>
+								<DashboardLink />
 							</li>
 							<li>
-								<Form action={signOutAndRevalidate}>
-									<button className="text-nowrap" type="submit">
-										<a href="" className="no-underline">
-											Sign Out
-										</a>
-									</button>
-								</Form>
+								<Signout />
 							</li>
 						</ul>
 					</details>
