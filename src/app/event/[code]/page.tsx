@@ -70,10 +70,17 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 
 const ManageEventSection = ({ code }: { code: string }) => (
 	<section className="flex w-full flex-col gap-2 md:w-1/3 md:items-end md:justify-start">
-		<Link className="btn btn-accent md:w-28" href={`/event/${code}/edit`}>
-			Edit
-		</Link>
-		<DeleteEventButton code={code} />
+		<SlideIn>
+			<Link
+				className="btn btn-accent mb-2 w-full md:w-28"
+				href={`/event/${code}/edit`}
+			>
+				Edit
+			</Link>
+		</SlideIn>
+		<SlideIn>
+			<DeleteEventButton code={code} />
+		</SlideIn>
 	</section>
 );
 
