@@ -17,46 +17,53 @@ const Nav = async () => {
 				</Link>
 			</div>
 
-			<div className="navbar-end gap-2">
-				<div className="text-sm hidden md:inline-block">Welcome, {session?.user?.name}</div>
-				<div className="dropdown dropdown-end">
-					<div
-						tabIndex={0}
-						role="button"
-						className="avatar btn btn-circle btn-ghost"
-					>
-						<div className="w-10 rounded-full border">
-							<Image
-								width={64}
-								height={64}
-								className="my-0"
-								src={String(session?.user?.image)}
-								alt={`${session?.user?.name} Avatar`}
-								priority
-							/>
-						</div>
-					</div>
-					<ul
-						tabIndex={0}
-						className="menu dropdown-content menu-sm z-[1] mt-2 w-fit rounded-box bg-base-300 p-2 shadow"
-					>
-						<li>
-							<Link href="/start" className="no-underline text-nowrap">
-								Create Event
-							</Link>
-						</li>
-						<li>
-							<Link href="/dashboard" className="no-underline text-nowrap">
-								Dashboard
-							</Link>
-						</li>
-						<li>
-							<Form action={signOutAndRevalidate} className="w-full">
-								<button className="text-nowrap" type="submit"><a href="" className="no-underline">Sign Out</a></button>
-							</Form>
-						</li>
-					</ul>
-				</div>
+			<div className="flex-none navbar-end">
+				<ul className="menu menu-horizontal items-center">
+					<li className="hidden text-sm md:inline-block">
+						Welcome, {session?.user?.name}
+					</li>
+
+					<li>
+						<details className="dropdown dropdown-end">
+							<summary role="button" tabIndex={0}>
+								<div className="w-10 rounded-full border">
+									<Image
+										width={64}
+										height={64}
+										className="m-0 rounded-full p-0"
+										src={String(session?.user?.image)}
+										alt={`${session?.user?.name} Avatar`}
+										priority
+									/>
+								</div>
+							</summary>
+							<ul
+								tabIndex={0}
+								className="dropdown-content rounded-t-none bg-base-300"
+							>
+								<li>
+									<Link href="/start" className="text-nowrap no-underline">
+										Create Event
+									</Link>
+								</li>
+								<li>
+									<Link href="/dashboard" className="text-nowrap no-underline">
+										Dashboard
+									</Link>
+								</li>
+								<li>
+									<Form action={signOutAndRevalidate}>
+										<button className="text-nowrap" type="submit">
+											<a href="" className="no-underline">
+												Sign Out
+											</a>
+										</button>
+									</Form>
+								</li>
+							</ul>
+						</details>
+					</li>
+				</ul>
 			</div>
 		</div>
 	);
