@@ -41,7 +41,8 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 						</>
 					) : (
 						<>
-							<XCircleIcon className="size-6 text-error" /> You won't attend.
+							<XCircleIcon className="size-6 text-error" /> You won&apos;t
+							attend.
 						</>
 					)}
 				</p>
