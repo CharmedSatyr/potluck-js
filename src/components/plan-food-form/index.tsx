@@ -24,6 +24,7 @@ import { Slot } from "@/db/schema/slot";
 import deleteSlot from "@/actions/db/delete-slot";
 import { Step } from "@/components/manage-event-wizard";
 import LoadingIndicator from "../loading-indicator";
+import WarningAlert from "../warning-alert";
 
 const MAX_SLOTS = 20;
 
@@ -131,7 +132,7 @@ const PlanFoodForm = ({
 			<h1 className="my-0 text-primary">Plan the Food</h1>
 			<h2>Create Signup Slots</h2>
 
-			<span className="mb-2 text-secondary">{state?.message}</span>
+			<WarningAlert text={state?.message} />
 			{slots.map((slot, index) => (
 				<div key={slot.id}>
 					<CourseInput

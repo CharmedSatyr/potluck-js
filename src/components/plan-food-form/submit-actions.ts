@@ -19,7 +19,8 @@ const submitSlots = async (
 	if (!prevState.code) {
 		return {
 			...prevState,
-			message: "Event code missing. Please refresh the page and try again.",
+			message:
+				"Event code missing. Please ensure you've saved an event and try again.",
 			success: false,
 		};
 	}
