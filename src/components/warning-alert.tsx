@@ -10,10 +10,14 @@ const WarningAlert = ({ text }: Props) => {
 	}
 
 	return (
-		<div role="alert" className="alert mt-2 py-1 text-warning">
+		<output
+			aria-live="polite"
+			role="status"
+			className="alert mt-2 py-1 text-warning"
+		>
 			<ExclamationTriangleIcon className="h-6 w-6" />
 			<span>{text}</span>
-		</div>
+		</output>
 	);
 };
 
