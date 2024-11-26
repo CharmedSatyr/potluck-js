@@ -40,7 +40,7 @@ const GotoEventForm = () => {
 				className="btn btn-secondary mt-2 text-xl"
 				type="submit"
 			>
-				{isPending ? <LoadingIndicator className="size-10" /> : "Find an Event"}
+				{isPending ? <LoadingIndicator size={10} /> : "Find an Event"}
 			</button>
 			<WarningAlert text={state?.message} />
 		</form>
