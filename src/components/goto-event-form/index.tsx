@@ -26,7 +26,7 @@ const GotoEventForm = () => {
 	return (
 		<form className="form-control" action={formAction}>
 			<div className="input input-bordered flex w-full items-center">
-				<MagnifyingGlassIcon className="mr-6 size-6" />
+				<MagnifyingGlassIcon className="mr-2 size-6" />
 				<input
 					defaultValue={state?.code ? state.code : undefined}
 					minLength={EVENT_CODE_LENGTH}
