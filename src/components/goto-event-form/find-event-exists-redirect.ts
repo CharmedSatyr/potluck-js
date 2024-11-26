@@ -9,14 +9,10 @@ const findEventExistsRedirect = async (
 	_: GotoEventFormState,
 	formData: FormData
 ): Promise<GotoEventFormState> => {
-	const data = Object.fromEntries(formData);
+	const code = String(formData.get("code"));
 
-	const fields: Record<string, string> = {};
-	for (const key of Object.keys(data)) {
-		fields[key] = String(data[key]);
-	}
-
-	const parsed = schema.strip().safeParse(fields);
+	const fields = { code: code.toUpperCase() };
+	const parsed = schema.safeParse(fields);
 
 	if (!parsed.success) {
 		return {

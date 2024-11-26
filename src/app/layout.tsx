@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
 import * as dotenv from "dotenv";
-import NavBar from "@/components/nav-bar";
 import siteMetadata from "@/data/site-metadata";
+import NavBar from "@/components/nav-bar";
 
 dotenv.config();
 
@@ -25,10 +25,10 @@ const RootLayout = async ({
 			<body
 				className={`${inter.className} prose flex max-w-none flex-col items-center`}
 			>
-				<div className="fixed w-full">
+				<div className="fixed z-50 w-full">
 					<NavBar />
 				</div>
-				<div className="container flex w-full justify-center px-4 py-24 md:w-10/12 md:px-10">
+				<div className="container flex w-full justify-center px-4 py-24 md:w-10/12 md:px-10 lg:w-9/12 2xl:w-8/12">
 					{children}
 				</div>
 			</body>

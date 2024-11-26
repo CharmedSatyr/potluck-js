@@ -23,8 +23,8 @@ const CountInput = ({
 	const countRef = useRef<HTMLInputElement>(null);
 
 	return (
-		<div className="form-control pl-2">
-			<label className="label label-text" htmlFor="quantity-input">
+		<div className="form-control md:pl-2">
+			<label className="label label-text pl-2" htmlFor="quantity-input">
 				Quantity You&apos;ll Bring
 			</label>
 			<div className="join join-horizontal">
@@ -84,23 +84,36 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 	const isButtonDisabled = isPending || commitmentsStillNeeded === 0;
 
 	return (
-		<form action={formAction} className="flex w-full items-end justify-between">
-			<CountInput
-				commitmentsStillNeeded={commitmentsStillNeeded}
-				defaultValue={state.fields.quantity}
-			/>
+		<form
+			action={formAction}
+			className="flex w-full flex-wrap items-end justify-between gap-2 md:flex-nowrap"
+		>
+			<div className="md:max-w-1/2 order-1 w-full md:order-2">
+				<div className="input input-bordered flex w-full items-center gap-2">
+					<span className="badge badge-info badge-sm md:badge-md">
+						Optional
+					</span>
+					<input
+						aria-label="item-description"
+						className="text-sm"
+						defaultValue={state?.fields.hosts}
+						maxLength={256}
+						name="description"
+						placeholder="Add a description"
+						type="text"
+					/>
+				</div>
+			</div>
 
-			<input
-				className="input-text input input-bordered w-1/2"
-				defaultValue={state.fields.description}
-				placeholder="(optional) Add a comment"
-				maxLength={256}
-				name="description"
-				type="text"
-			/>
+			<div className="order-2 md:order-1">
+				<CountInput
+					commitmentsStillNeeded={commitmentsStillNeeded}
+					defaultValue={state.fields.quantity}
+				/>
+			</div>
 
 			<button
-				className="btn btn-secondary"
+				className="btn btn-secondary order-3 w-1/3 md:max-w-32"
 				disabled={isButtonDisabled}
 				type="submit"
 			>

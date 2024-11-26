@@ -14,7 +14,7 @@ const RsvpTable = async ({ code }: Props) => {
 		{
 			id: "1",
 			message: (
-				<span className="flex gap-1">
+				<span className="flex items-center gap-1">
 					<CheckBadgeIcon className="text-primary" height="20" width="20" />
 					Event Host
 				</span>
@@ -27,7 +27,7 @@ const RsvpTable = async ({ code }: Props) => {
 
 	return (
 		<div className="overflow-x-auto">
-			<table className="table">
+			<table className="table table-xs md:table-md">
 				<thead>
 					<tr>
 						<th>RSVP</th>
@@ -42,16 +42,20 @@ const RsvpTable = async ({ code }: Props) => {
 								<th>
 									<label>
 										{rsvp.response === "yes" ? (
-											<div className="badge badge-success">Attending</div>
+											<div className="badge badge-success badge-sm md:badge-md">
+												Attending
+											</div>
 										) : (
-											<div className="badge badge-neutral">Not Attending</div>
+											<div className="badge badge-neutral badge-sm md:badge-md">
+												Not Attending
+											</div>
 										)}
 									</label>
 								</th>
-								<td className="flex items-center gap-2">
+								<td>
 									<Image
 										alt={`${rsvp.user.name}'s avatar`}
-										className="avatar my-0 rounded-full border"
+										className="avatar rounded-full border"
 										src={rsvp.user.image!}
 										height="30"
 										width="30"

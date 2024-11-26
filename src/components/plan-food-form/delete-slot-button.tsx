@@ -7,30 +7,44 @@ type Props = {
 	remove: (index: number, id: string) => void;
 };
 
+const DynamicButton = ({
+	onClick,
+}: {
+	onClick: () => void | Props["remove"];
+}) => {
+	return (
+		<>
+			<button
+				className="btn btn-warning sm:hidden"
+				data-testid="remove-slot"
+				onClick={onClick}
+				type="button"
+			>
+				Remove Slot
+			</button>
+			<button
+				className="btn btn-circle btn-ghost btn-sm hidden sm:inline"
+				data-testid="x-slot"
+				onClick={onClick}
+				type="button"
+			>
+				✕
+			</button>
+		</>
+	);
+};
+
 const DeleteSlotButton = ({ hasCommitments, id, index, remove }: Props) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	if (!hasCommitments) {
-		return (
-			<button
-				onClick={() => remove(index, id)}
-				className="btn btn-circle btn-ghost btn-sm"
-				type="button"
-			>
-				✕
-			</button>
-		);
+		return <DynamicButton onClick={() => remove(index, id)} />;
 	}
 
 	return (
 		<>
-			<button
-				className="btn btn-circle btn-ghost btn-sm"
-				type="button"
-				onClick={() => dialogRef.current?.showModal()}
-			>
-				✕
-			</button>
+			<DynamicButton onClick={() => dialogRef.current?.showModal()} />
+
 			<dialog ref={dialogRef} className="modal modal-bottom sm:modal-middle">
 				<div className="modal-box">
 					<h3 className="text-lg font-bold">Delete Slot Confirmation</h3>

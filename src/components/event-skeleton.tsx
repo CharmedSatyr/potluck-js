@@ -20,7 +20,9 @@ type Props = {
 export const EventHeader = ({ code, name }: { code: string; name: string }) => {
 	return (
 		<>
-			<h1 className="mb-4 text-6xl font-bold text-primary">{name}</h1>
+			<h1 className="mb-4 text-5xl font-bold text-primary md:text-6xl">
+				{name}
+			</h1>
 			<div className="font-bold">
 				Event Code: <CopyLinkButton text={code} />
 			</div>
@@ -68,7 +70,7 @@ export default EventSkeleton;
 
 export const EventSkeletonFallback = () => {
 	return (
-		<div className="flex w-full flex-col gap-4">
+		<div className="mb-2 flex w-full flex-col gap-4">
 			<div className="skeleton h-12 w-3/4" />
 			<div className="skeleton h-8 w-1/2" />
 			<div className="flex gap-2">

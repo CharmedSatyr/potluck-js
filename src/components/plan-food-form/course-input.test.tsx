@@ -102,7 +102,7 @@ describe("CourseInput", () => {
 			/>
 		);
 
-		const incrementButton = screen.getAllByRole("button")[2];
+		const incrementButton = screen.getAllByRole("button")[3];
 		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.click(incrementButton);
@@ -124,7 +124,7 @@ describe("CourseInput", () => {
 			/>
 		);
 
-		const decrementButton = screen.getAllByRole("button")[1];
+		const decrementButton = screen.getAllByRole("button")[2];
 		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.change(countInput, { target: { value: "2" } });
@@ -148,7 +148,7 @@ describe("CourseInput", () => {
 			/>
 		);
 
-		const decrementButton = screen.getAllByRole("button")[1];
+		const decrementButton = screen.getAllByRole("button")[2];
 		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.click(decrementButton);
@@ -170,7 +170,7 @@ describe("CourseInput", () => {
 			/>
 		);
 
-		const incrementButton = screen.getAllByRole("button")[2];
+		const incrementButton = screen.getAllByRole("button")[3];
 		const countInput = screen.getByRole("spinbutton");
 
 		fireEvent.change(countInput, { target: { value: "99" } });

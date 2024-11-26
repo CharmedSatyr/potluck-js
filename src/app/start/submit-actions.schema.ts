@@ -11,6 +11,7 @@ export type PlanEventFormState = {
 	errors?: typeToFlattenedError<EventUserValues>;
 	fields: Record<string, string>;
 	message: string;
+	next: boolean;
 	path: string;
 	success: boolean;
 };

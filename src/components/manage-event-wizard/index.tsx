@@ -1,8 +1,6 @@
 "use client";
 
-import PlanEventForm, {
-	PlanEventFormFallback,
-} from "@/components/plan-event-form";
+import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
 import {
@@ -10,12 +8,14 @@ import {
 	PlanEventFormState,
 } from "@/app/start/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
-import { Suspense } from "react";
+import { use } from "react";
 
 type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	eventDataPromise: Promise<PlanEventFormData[]>;
+	loggedIn: boolean;
+	mode: "create" | "edit";
 	slotsPromise: Promise<Slot[]>;
 	submitAction: (
 		prevState: PlanEventFormState,
@@ -23,42 +23,50 @@ type Props = {
 	) => Promise<PlanEventFormState>;
 };
 
+export enum Step {
+	CREATE_EVENT = "create-event",
+	PLAN_FOOD = "plan-food",
+}
+
 const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
 	eventDataPromise,
+	loggedIn,
+	mode,
 	slotsPromise,
 	submitAction,
 }: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
+	const [eventData] = use(eventDataPromise);
+	const slots = use(slotsPromise);
+	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
 	return (
 		<>
 			<div className="carousel w-full">
 				<div
 					className="carousel-item flex w-full justify-center"
-					id="create-event"
+					id={Step.CREATE_EVENT}
 				>
-					<Suspense fallback={<PlanEventFormFallback />}>
-						<PlanEventForm
-							code={code}
-							eventDataPromise={eventDataPromise}
-							submitAction={submitAction}
-						/>
-					</Suspense>
+					<PlanEventForm
+						code={code}
+						eventData={eventData}
+						loggedIn={loggedIn}
+						mode={mode}
+						submitAction={submitAction}
+					/>
 				</div>
 
 				<div
 					className="carousel-item flex w-full justify-center"
-					id="plan-food"
+					id={Step.PLAN_FOOD}
 				>
-					<Suspense>
-						<PlanFoodForm
-							code={code}
-							slotsPromise={slotsPromise}
-							committedUsersBySlotPromise={committedUsersBySlotPromise}
-						/>
-					</Suspense>
+					<PlanFoodForm
+						code={code}
+						slots={slots}
+						committedUsersBySlot={committedUsersBySlot}
+					/>
 				</div>
 			</div>
 
@@ -66,13 +74,13 @@ const ManageEventWizard = ({
 			<div className="steps my-8 w-full">
 				<button
 					className="step step-secondary"
-					onClick={() => scrollToAnchor("create-event")}
+					onClick={() => scrollToAnchor(Step.CREATE_EVENT)}
 				>
 					Create an Event
 				</button>
 				<button
-					className={`step ${anchor === "plan-food" ? "step-secondary" : ""}`}
-					onClick={() => scrollToAnchor("plan-food")}
+					className={`step ${anchor === Step.PLAN_FOOD ? "step-secondary" : ""}`}
+					onClick={() => scrollToAnchor(Step.PLAN_FOOD)}
 				>
 					Plan the Food
 				</button>

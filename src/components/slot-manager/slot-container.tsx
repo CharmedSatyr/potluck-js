@@ -22,13 +22,13 @@ const Avatars = ({ users }: { users: Props["users"] }) => {
 			<div key={id} className="indicator">
 				<Image
 					alt={`Avatar for user ${name}`}
-					className="avatar my-0 rounded-full border"
+					className="avatar my-0 size-8 rounded-full border md:size-10"
 					src={image} // TODO: Use a static import
 					height={40}
 					title={`${name} is bringing ${commitments}`}
 					width={40}
 				/>
-				<span className="badge indicator-item badge-primary badge-sm">
+				<span className="badge indicator-item badge-primary badge-sm md:badge-md">
 					{commitments}
 				</span>
 			</div>
@@ -57,16 +57,18 @@ const SlotContainer = ({
 			/>
 
 			<div className="collapse-title flex w-full items-center justify-between">
-				<div className="w-6/12 font-bold">{item}</div>
+				<div className="font-bold md:w-6/12">{item}</div>
 
-				<Avatars users={users} />
+				<div className="hidden sm:flex sm:gap-4">
+					<Avatars users={users} />
+				</div>
 
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between text-sm md:text-base">
 					{totalCommitments} of {requestedCount} filled
 					{expanded ? (
-						<ChevronUpIcon className="-mr-6 ml-2 size-6" />
+						<ChevronUpIcon className="-mr-6 ml-2 size-4" />
 					) : (
-						<ChevronDownIcon className="-mr-6 ml-2 size-6" />
+						<ChevronDownIcon className="-mr-6 ml-2 size-4" />
 					)}
 				</div>
 			</div>

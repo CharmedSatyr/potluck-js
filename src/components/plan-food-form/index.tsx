@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	use,
 	useActionState,
 	useCallback,
 	useEffect,
@@ -23,6 +22,7 @@ import { z } from "zod";
 import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
+import { Step } from "@/components/manage-event-wizard";
 
 const MAX_SLOTS = 20;
 
@@ -34,21 +34,18 @@ const courseSchema = z.strictObject({
 
 type Props = {
 	code: string | null;
-	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
-	slotsPromise: Promise<Slot[]>;
+	committedUsersBySlot: Map<string, JSX.Element>;
+	slots: Slot[];
 };
 
 const PlanFoodForm = ({
 	code,
-	committedUsersBySlotPromise,
-	slotsPromise,
+	committedUsersBySlot,
+	slots: prevSlots,
 }: Props) => {
 	const [anchor] = useAnchor();
 	const searchParams = useSearchParams();
 	const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-	const committedUsersBySlot = use(committedUsersBySlotPromise);
-	const prevSlots = use(slotsPromise);
 
 	// TODO: Add loading indicator when pending.
 	const [state, submit, isPending] = useActionState<
@@ -122,7 +119,7 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const disableButtons = isPending || anchor === "create-event";
+	const disableButtons = isPending || anchor === Step.CREATE_EVENT;
 
 	return (
 		<form
