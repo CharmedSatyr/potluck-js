@@ -17,7 +17,7 @@ import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
 import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
-import DeleteEventButton from "@/components/delete-event-button";
+import DeleteEventForm from "@/components/delete-event-button";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -79,7 +79,7 @@ const ManageEventSection = ({ code }: { code: string }) => (
 			</Link>
 		</SlideIn>
 		<SlideIn>
-			<DeleteEventButton code={code} />
+			<DeleteEventForm code={code} redirect={true} />
 		</SlideIn>
 	</section>
 );

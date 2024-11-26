@@ -1,24 +1,50 @@
 "use client";
 
-import { useRef } from "react";
-import remove from "@/components/delete-event-button/remove-action";
+import { useActionState, useEffect, useRef } from "react";
+import deleteEventAction from "@/components/delete-event-button/delete-event-action";
+import Form from "next/form";
+import LoadingIndicator from "../loading-indicator";
+import { DeleteEventState } from "./delete-event-action.types";
 
 type Props = {
 	className?: string;
 	code: string;
+	redirect: boolean;
 };
 
-const DeleteEventButton = ({ className, code }: Props) => {
+const DeleteEventForm = ({ className, code, redirect }: Props) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
+	const [state, submit, isPending] = useActionState<DeleteEventState, FormData>(
+		deleteEventAction,
+		{
+			code,
+			redirect,
+			success: false,
+		}
+	);
+
+	useEffect(() => {
+		if (!dialogRef.current?.open) {
+			return;
+		}
+
+		if (!state.success) {
+			return;
+		}
+
+		dialogRef.current.close();
+	}, [dialogRef.current, state.success]);
+
 	return (
-		<>
+		<Form action={submit}>
 			<button
 				className={`btn btn-error w-full md:float-right md:w-28 ${className}`}
+				disabled={dialogRef.current?.open}
 				type="button"
 				onClick={() => dialogRef.current?.showModal()}
 			>
-				Delete
+				{isPending ? <LoadingIndicator size={10} /> : "Delete"}
 			</button>
 			<dialog ref={dialogRef} className="modal modal-bottom sm:modal-middle">
 				<div className="modal-box">
@@ -40,20 +66,15 @@ const DeleteEventButton = ({ className, code }: Props) => {
 						<button
 							aria-label="Delete Slot"
 							className="btn btn-error btn-sm"
-							type="button"
-							onClick={async () => {
-								// TODO: useActionState so button can be disabled, etc.
-								await remove({ code });
-								dialogRef.current?.close();
-							}}
+							type="submit"
 						>
-							Delete Event
+							{isPending ? <LoadingIndicator size={8} /> : "Delete Event"}
 						</button>
 					</div>
 				</div>
 			</dialog>
-		</>
+		</Form>
 	);
 };
 
-export default DeleteEventButton;
+export default DeleteEventForm;
