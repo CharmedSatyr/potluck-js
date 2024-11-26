@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { DEV } from "@/utilities/current-env";
 import { Suspense } from "react";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
+import ErrorBoundary from "@/components/error-boundary";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
@@ -40,17 +41,19 @@ const StartPage = async ({ searchParams }: Props) => {
 
 	return (
 		<main className="flex h-full w-full flex-col items-center">
-			<Suspense fallback={<PlanEventFormFallback />}>
-				<ManageEventWizard
-					code={code}
-					committedUsersBySlotPromise={Promise.resolve(new Map())}
-					eventDataPromise={Promise.resolve([values])}
-					loggedIn={loggedIn}
-					mode="create"
-					slotsPromise={Promise.resolve([])}
-					submitAction={submitAction}
-				/>
-			</Suspense>
+			<ErrorBoundary>
+				<Suspense fallback={<PlanEventFormFallback />}>
+					<ManageEventWizard
+						code={code}
+						committedUsersBySlotPromise={Promise.resolve(new Map())}
+						eventDataPromise={Promise.resolve([values])}
+						loggedIn={loggedIn}
+						mode="create"
+						slotsPromise={Promise.resolve([])}
+						submitAction={submitAction}
+					/>
+				</Suspense>
+			</ErrorBoundary>
 		</main>
 	);
 };

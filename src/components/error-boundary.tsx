@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Component, PropsWithChildren } from "react";
 
 class ErrorBoundary extends Component<PropsWithChildren, any, any> {
@@ -22,7 +24,7 @@ class ErrorBoundary extends Component<PropsWithChildren, any, any> {
 			// You can render any custom fallback UI
 			return (
 				<div>
-					<h2>Oops, there is an error!</h2>
+					<h2>Something went wrong!</h2>
 					<button
 						type="button"
 						onClick={() => this.setState({ hasError: false })}

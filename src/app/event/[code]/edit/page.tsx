@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import ErrorBoundary from "@/components/error-boundary";
 
 type Props = {
 	params: Promise<{ code: string }>;
@@ -25,17 +26,19 @@ const EditEventPage = async ({ params }: Props) => {
 
 	return (
 		<main className="flex h-full w-full flex-col items-center">
-			<Suspense fallback={<PlanEventFormFallback />}>
-				<ManageEventWizard
-					code={code}
-					committedUsersBySlotPromise={committedUsersBySlot(code)}
-					eventDataPromise={findEvent({ code })}
-					loggedIn={loggedIn}
-					mode="edit"
-					slotsPromise={findSlots({ code })}
-					submitAction={updateEventAction}
-				/>
-			</Suspense>
+			<ErrorBoundary>
+				<Suspense fallback={<PlanEventFormFallback />}>
+					<ManageEventWizard
+						code={code}
+						committedUsersBySlotPromise={committedUsersBySlot(code)}
+						eventDataPromise={findEvent({ code })}
+						loggedIn={loggedIn}
+						mode="edit"
+						slotsPromise={findSlots({ code })}
+						submitAction={updateEventAction}
+					/>
+				</Suspense>
+			</ErrorBoundary>
 		</main>
 	);
 };
