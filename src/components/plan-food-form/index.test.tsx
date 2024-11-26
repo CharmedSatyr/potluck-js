@@ -43,7 +43,7 @@ describe("PlanFoodForm", () => {
 			screen.getByRole("button", { name: /Add Slot/i })
 		).toBeInTheDocument();
 		expect(
-			screen.getByRole("button", { name: /Submit and Continue/i })
+			screen.getByRole("button", { name: /Save and Continue/i })
 		).toBeInTheDocument();
 	});
 
@@ -148,7 +148,7 @@ describe("PlanFoodForm", () => {
 		});
 
 		const submitButton = screen.getByRole("button", {
-			name: /Submit and Continue/i,
+			name: /Save and Continue/i,
 		});
 
 		expect(submitButton).toBeDisabled();

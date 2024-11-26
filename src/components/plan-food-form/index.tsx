@@ -23,6 +23,7 @@ import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
 import { Step } from "@/components/manage-event-wizard";
+import LoadingIndicator from "../loading-indicator";
 
 const MAX_SLOTS = 20;
 
@@ -175,7 +176,7 @@ const PlanFoodForm = ({
 				disabled={disableButtons || !slotsValid}
 				type="submit"
 			>
-				Submit and Continue
+				{isPending ? <LoadingIndicator size={10} /> : "Save and Continue"}
 			</button>
 		</form>
 	);
