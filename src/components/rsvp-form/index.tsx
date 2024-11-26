@@ -33,7 +33,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 	if (currentRsvp?.response && !override) {
 		return (
 			<div className="w-full text-center md:float-right md:max-w-40">
-				<p className="flex w-full items-center justify-center gap-1">
+				<p className="flex w-full items-center justify-center gap-1 text-nowrap">
 					{currentRsvp.response === "yes" ? (
 						<>
 							<CheckCircleIcon className="size-6 text-success" /> You will
@@ -41,7 +41,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 						</>
 					) : (
 						<>
-							<XCircleIcon className="size-6 text-error" /> You will not attend.
+							<XCircleIcon className="size-6 text-error" /> You won't attend.
 						</>
 					)}
 				</p>

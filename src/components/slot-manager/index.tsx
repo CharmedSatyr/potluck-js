@@ -27,7 +27,7 @@ const SlotManager = async ({ code }: Props) => {
 					detail;
 
 				return (
-					<div key={slotId} className="join-item border">
+					<div key={slotId} className="join-item rounded-lg border">
 						<SlotContainer
 							item={item}
 							requestedCount={requestedCount}
