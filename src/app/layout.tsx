@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
 import * as dotenv from "dotenv";
-import NavBar from "@/components/nav-bar";
 import siteMetadata from "@/data/site-metadata";
+import NavBar from "@/components/nav-bar";
 
 dotenv.config();
 
