@@ -9,7 +9,7 @@ type Props = {
 
 const RsvpTable = async ({ code }: Props) => {
 	const [creator] = await findUserByEventCode({ code });
-	<CheckBadgeIcon />;
+
 	const rsvpsWithDetails = [
 		{
 			id: "1",
