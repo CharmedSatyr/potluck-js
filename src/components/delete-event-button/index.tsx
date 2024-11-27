@@ -34,7 +34,7 @@ const DeleteEventForm = ({ className, code, redirect }: Props) => {
 		}
 
 		dialogRef.current.close();
-	}, [dialogRef.current, state.success]);
+	}, [state.success]);
 
 	return (
 		<Form action={submit}>
