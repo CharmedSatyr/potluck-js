@@ -5,6 +5,8 @@ import submitAction, {
 	RsvpFormState,
 } from "@/components/rsvp-form/submit-actions";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import LoadingIndicator from "@/components/loading-indicator";
+import WarningAlert from "@/components/warning-alert";
 
 type Props = {
 	code: string;
@@ -28,9 +30,9 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 
 	useEffect(() => {
 		setOverride(false);
-	}, [currentRsvp, isPending, setOverride]);
+	}, [currentRsvp, setOverride]);
 
-	if (currentRsvp?.response && !override) {
+	if (currentRsvp?.response && !override && !isPending) {
 		return (
 			<div className="w-full text-center md:float-right md:max-w-40">
 				<p className="flex w-full items-center justify-center gap-1 text-nowrap">
@@ -54,7 +56,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 						setOverride(true);
 					}}
 				>
-					Change RSVP
+					{isPending ? <LoadingIndicator size={6} /> : "Change RSVP"}
 				</button>
 			</div>
 		);
@@ -75,7 +77,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 				type="submit"
 				value="yes"
 			>
-				Accept
+				{isPending ? <LoadingIndicator size={6} /> : "Accept"}
 			</button>
 
 			<button
@@ -86,7 +88,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 				type="submit"
 				value="no"
 			>
-				Decline
+				{isPending ? <LoadingIndicator size={6} /> : "Decline"}
 			</button>
 
 			<div className="form-control">
@@ -96,12 +98,13 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 				<input
 					className="input input-bordered w-full md:max-w-xs"
 					defaultValue={state.fields.message}
+					disabled={isPending}
 					id="rsvp-message"
 					maxLength={256}
 					name="message"
 					type="text"
 				/>
-				<span className="text-error">{state.message}</span>
+				<WarningAlert text={state.message} />
 			</div>
 		</form>
 	);
