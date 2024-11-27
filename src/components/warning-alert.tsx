@@ -1,7 +1,7 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 type Props = {
-	text: string;
+	text?: string;
 };
 
 const WarningAlert = ({ text }: Props) => {

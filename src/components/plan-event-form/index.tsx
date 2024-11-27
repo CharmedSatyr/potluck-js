@@ -112,9 +112,7 @@ const PlanEventForm = ({
 					required
 					type="text"
 				/>
-				{state?.errors?.fieldErrors.name && (
-					<WarningAlert text={state?.errors?.fieldErrors.name?.join(" ")} />
-				)}
+				<WarningAlert text={state?.errors?.fieldErrors.name?.join(" ")} />
 			</div>
 
 			<div className="my-2 flex justify-between">
@@ -131,11 +129,9 @@ const PlanEventForm = ({
 						required
 						type="date"
 					/>
-					{state?.errors?.fieldErrors.startDate && (
-						<WarningAlert
-							text={state?.errors?.fieldErrors.startDate?.join(" ")}
-						/>
-					)}
+					<WarningAlert
+						text={state?.errors?.fieldErrors.startDate?.join(" ")}
+					/>
 				</div>
 
 				<div className="w-5/12">
@@ -152,11 +148,9 @@ const PlanEventForm = ({
 						step={60}
 						type="time"
 					/>
-					{state?.errors?.fieldErrors.startTime && (
-						<WarningAlert
-							text={state?.errors?.fieldErrors.startTime?.join(" ")}
-						/>
-					)}
+					<WarningAlert
+						text={state?.errors?.fieldErrors.startTime?.join(" ")}
+					/>
 				</div>
 			</div>
 
@@ -174,9 +168,7 @@ const PlanEventForm = ({
 					required
 					type="text"
 				/>
-				{state?.errors?.fieldErrors.location && (
-					<WarningAlert text={state?.errors?.fieldErrors.location?.join(" ")} />
-				)}
+				<WarningAlert text={state?.errors?.fieldErrors.location?.join(" ")} />
 			</div>
 
 			<div className="my-2">
@@ -197,10 +189,7 @@ const PlanEventForm = ({
 						type="text"
 					/>
 				</div>
-
-				{state?.errors?.fieldErrors.hosts && (
-					<WarningAlert text={state?.errors?.fieldErrors.hosts?.join(" ")} />
-				)}
+				<WarningAlert text={state?.errors?.fieldErrors.hosts?.join(" ")} />
 			</div>
 
 			<div className="my-2">
@@ -221,11 +210,9 @@ const PlanEventForm = ({
 						type="text"
 					/>
 				</div>
-				{state?.errors?.fieldErrors.description && (
-					<WarningAlert
-						text={state?.errors?.fieldErrors.description?.join(" ")}
-					/>
-				)}
+				<WarningAlert
+					text={state?.errors?.fieldErrors.description?.join(" ")}
+				/>
 			</div>
 
 			<button
