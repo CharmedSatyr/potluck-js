@@ -1,5 +1,5 @@
 import { PlanEventFormFallback } from "@/components/plan-event-form";
 
-const Loading = () => <PlanEventFormFallback />
+const Loading = () => <PlanEventFormFallback />;
 
 export default Loading;
