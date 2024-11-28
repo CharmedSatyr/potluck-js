@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import {
 	PlanEventFormData,
 	PlanEventFormState,
-} from "@/app/start/submit-actions.schema";
+} from "@/app/plan/submit-actions.schema";
 import WarningAlert from "@/components/warning-alert";
 import { DiscordIcon } from "@/components/icons/discord";
 import { Step } from "@/components/manage-event-wizard";

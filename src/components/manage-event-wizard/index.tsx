@@ -6,7 +6,7 @@ import useAnchor from "@/hooks/use-anchor";
 import {
 	PlanEventFormData,
 	PlanEventFormState,
-} from "@/app/start/submit-actions.schema";
+} from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
 import { use } from "react";
 
