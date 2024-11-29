@@ -1,4 +1,4 @@
-"use client";
+"use chat";
 
 import usePlanFoodSuggestions from "@/hooks/use-plan-food-suggestions";
 import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
@@ -43,6 +43,7 @@ const Results = ({
 					<InformationCircleIcon className="mr-2 inline size-6 text-info" />
 					{suggestions.advice}
 				</p>
+
 				<h3 className="m-0">What to Request:</h3>
 				<div className="overflow-x-auto">
 					<table className="table table-xs">
@@ -91,9 +92,8 @@ const Suggestions = ({ eventData }: { eventData: Props }) => {
 		return null;
 	}
 
-	if (result) {
+	if (result && !pending) {
 		try {
-			console.log("Result:", typeof result, result);
 			const suggestions = JSON.parse(result);
 			return <Results suggestions={suggestions} reset={reset} />;
 		} catch (err) {

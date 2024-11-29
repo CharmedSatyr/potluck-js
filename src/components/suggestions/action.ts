@@ -1,19 +1,21 @@
-import { NextResponse } from "next/server";
-import { OpenAI } from "openai";
+"use server";
 
-const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
-});
+import { streamObject } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { createStreamableValue } from "ai/rsc";
+import { suggestions } from "@/validation/suggestions.schema";
+import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
 
-export async function POST(req: Request) {
-	try {
-		const { eventData, attendees } = await req.json();
+export async function generate(
+	eventData: PlanEventFormData,
+	attendees: number
+) {
+	"use server";
 
-		const prompt = `
-		You are being used to help users of Potluck Quest, a fantasy-themed application intended to help groups plan potluck meals.
-		Although it may be used by players at a tabletop game session, anyone can use it!
+	const stream = createStreamableValue();
 
-		The user has indicated they need help planning their meal.
+	const prompt = `
+		A user has indicated they need help planning their meal.
 
 		They expect ${attendees} attendees to be present.
 
@@ -32,20 +34,22 @@ export async function POST(req: Request) {
 		Do not wrap the JSON in backticks or a code block.
 		`;
 
-		const response = await openai.chat.completions.create({
-			model: "gpt-4o-mini",
-			messages: [{ role: "user", content: prompt }],
-			max_tokens: 200,
+	(async () => {
+		const { partialObjectStream } = streamObject({
+			model: openai("gpt-4-turbo"),
+			system: `You are being used to help users of Potluck Quest,
+            a fantasy-themed application intended to help groups plan potluck meals.
+            Although it may be used by players at a tabletop game session, anyone can use it!`,
+			prompt,
+			schema: suggestions,
 		});
 
-		return NextResponse.json({
-			suggestions: response.choices[0].message.content,
-		});
-	} catch (error) {
-		console.error("Error fetching suggestions:", error);
-		return NextResponse.json(
-			{ error: "Failed to get suggestions" },
-			{ status: 500 }
-		);
-	}
+		for await (const partialObject of partialObjectStream) {
+			stream.update(partialObject);
+		}
+
+		stream.done();
+	})();
+
+	return { object: stream.value };
 }

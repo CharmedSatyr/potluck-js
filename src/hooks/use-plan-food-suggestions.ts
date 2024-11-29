@@ -1,34 +1,33 @@
 "use client";
 
+import { generate } from "@/components/suggestions/action";
 import { useState } from "react";
+import { readStreamableValue } from "ai/rsc";
+import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
 
-const usePlanFoodSuggestions = (eventData: object, attendees: number) => {
+const usePlanFoodSuggestions = (
+	eventData: PlanEventFormData,
+	attendees: number
+) => {
 	const [pending, setPending] = useState(false);
-	const [suggestions, setSuggestions] = useState<string | null>(null);
+	const [suggestions, setSuggestions] = useState<string>("");
 
-	const reset = () => setSuggestions(null);
+	const reset = () => setSuggestions("");
 
 	const fetchSuggestions = async () => {
 		setPending(true);
-		try {
-			const response = await fetch("/api/get-suggestions", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ eventData, attendees }),
-			});
 
-			if (!response.ok) {
-				throw new Error("Failed to fetch suggestions");
+		const { object } = await generate(eventData, attendees);
+
+		for await (const partialObject of readStreamableValue(object)) {
+			if (!partialObject) {
+				return;
 			}
 
-			const data = await response.json();
-
-			setSuggestions(data.suggestions);
-		} catch (error) {
-			console.error("Error:", error);
-		} finally {
-			setPending(false);
+			setSuggestions(JSON.stringify(partialObject, null, 2));
 		}
+
+		setPending(false);
 	};
 
 	return { suggestions, fetchSuggestions, pending, reset };

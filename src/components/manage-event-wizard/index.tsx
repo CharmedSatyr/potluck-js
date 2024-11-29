@@ -8,7 +8,7 @@ import {
 	PlanEventFormState,
 } from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
-import { use } from "react";
+import { Suspense, use } from "react";
 import Suggestions from "@/components/suggestions";
 
 type Props = {
@@ -65,7 +65,9 @@ const ManageEventWizard = ({
 				>
 					<h1 className="text-primary">Plan the Food</h1>
 
-					<Suggestions eventData={eventData} />
+					<Suspense>
+						<Suggestions eventData={eventData} />
+					</Suspense>
 
 					<PlanFoodForm
 						code={code}
