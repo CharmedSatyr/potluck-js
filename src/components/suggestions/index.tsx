@@ -2,9 +2,9 @@
 
 import usePlanFoodSuggestions from "@/hooks/use-plan-food-suggestions";
 import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
-import LoadingIndicator from "./loading-indicator";
+import LoadingIndicator from "../loading-indicator";
 import { useState } from "react";
-import WarningAlert from "./warning-alert";
+import WarningAlert from "../warning-alert";
 
 type Props = {
 	name: string;
@@ -98,7 +98,18 @@ const Suggestions = ({ eventData }: { eventData: Props }) => {
 			return <Results suggestions={suggestions} reset={reset} />;
 		} catch (err) {
 			console.log("Failed to fetch AI suggestions", err);
-			return <WarningAlert text={String(err)} />;
+			return (
+				<>
+					<WarningAlert text={String(err)} />
+					<button
+						className="btn btn-warning btn-sm"
+						onClick={reset}
+						type="button"
+					>
+						Reset Suggestions
+					</button>
+				</>
+			);
 		}
 	}
 
