@@ -37,9 +37,6 @@ describe("PlanFoodForm", () => {
 		});
 
 		expect(
-			screen.getByRole("heading", { name: /Plan the Food/i })
-		).toBeInTheDocument();
-		expect(
 			screen.getByRole("button", { name: /Add Slot/i })
 		).toBeInTheDocument();
 		expect(

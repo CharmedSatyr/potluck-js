@@ -9,7 +9,7 @@ import {
 } from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
 import { use } from "react";
-import Suggestions from "@/components/plan-food-form/suggestions";
+import Suggestions from "@/components/suggestions";
 
 type Props = {
 	code: string | null;

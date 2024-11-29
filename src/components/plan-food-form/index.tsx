@@ -129,7 +129,6 @@ const PlanFoodForm = ({
 			className="form-control mx-2 w-full md:w-11/12 lg:w-9/12 2xl:w-7/12"
 			data-testid="plan-food-form"
 		>
-			<h1 className="my-0 text-primary">Plan the Food</h1>
 			<h2>Create Signup Slots</h2>
 
 			<WarningAlert text={state?.message} />

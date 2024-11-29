@@ -44,6 +44,7 @@ describe("ManageEventWizard", () => {
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					eventDataPromise={eventDataPromise}
 					loggedIn={true}
+					mode="create"
 					slotsPromise={slotsPromise}
 					submitAction={submitAction}
 				/>
@@ -63,6 +64,7 @@ describe("ManageEventWizard", () => {
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					eventDataPromise={eventDataPromise}
 					loggedIn={true}
+					mode="create"
 					slotsPromise={slotsPromise}
 					submitAction={submitAction}
 				/>
@@ -83,6 +85,7 @@ describe("ManageEventWizard", () => {
 					committedUsersBySlotPromise={committedUsersBySlotPromise}
 					eventDataPromise={eventDataPromise}
 					loggedIn={true}
+					mode="create"
 					slotsPromise={slotsPromise}
 					submitAction={submitAction}
 				/>
@@ -90,7 +93,7 @@ describe("ManageEventWizard", () => {
 		});
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
-		expect(screen.getByText(/plan the food/i)).not.toHaveClass(
+		expect(screen.getAllByText(/plan the food/i)[1]).not.toHaveClass(
 			"step-secondary"
 		);
 	});
@@ -104,13 +107,16 @@ describe("ManageEventWizard", () => {
 				committedUsersBySlotPromise={committedUsersBySlotPromise}
 				eventDataPromise={eventDataPromise}
 				loggedIn={true}
+				mode="create"
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>
 		);
 
 		expect(screen.getByText(/create an event/i)).toHaveClass("step-secondary");
-		expect(screen.getByText(/plan the food/i)).toHaveClass("step-secondary");
+		expect(screen.getAllByText(/plan the food/i)[1]).toHaveClass(
+			"step-secondary"
+		);
 	});
 
 	it("should scroll to the correct section when button is clicked", () => {
@@ -126,6 +132,7 @@ describe("ManageEventWizard", () => {
 				committedUsersBySlotPromise={committedUsersBySlotPromise}
 				eventDataPromise={eventDataPromise}
 				loggedIn={true}
+				mode="create"
 				slotsPromise={slotsPromise}
 				submitAction={submitAction}
 			/>
