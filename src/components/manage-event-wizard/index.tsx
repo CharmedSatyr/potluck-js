@@ -9,6 +9,7 @@ import {
 } from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
 import { use } from "react";
+import Suggestions from "@/components/plan-food-form/suggestions";
 
 type Props = {
 	code: string | null;
@@ -59,9 +60,13 @@ const ManageEventWizard = ({
 				</div>
 
 				<div
-					className="carousel-item flex w-full justify-center"
+					className="carousel-item flex w-full flex-col items-center justify-center"
 					id={Step.PLAN_FOOD}
 				>
+					<h1 className="text-primary">Plan the Food</h1>
+
+					<Suggestions eventData={eventData} />
+
 					<PlanFoodForm
 						code={code}
 						slots={slots}
