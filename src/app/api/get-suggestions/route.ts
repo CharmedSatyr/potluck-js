@@ -7,17 +7,27 @@ const openai = new OpenAI({
 
 export async function POST(req: Request) {
 	try {
-		const { eventData } = await req.json();
+		const { eventData, attendees } = await req.json();
 
 		const prompt = `
-		Event Data:
-		${eventData}
+		You are being used to help users of Potluck Quest, a fantasy-themed application intended to help groups plan potluck meals.
+		Although it may be used by players at a tabletop game session, anyone can use it!
 
-		Prompt:
-		- Give one sentence of general advice for organizing a potluck event with the given data, 
-		and suggest how many dishes of what type should be requested for the expected number of guests.
+		The user has indicated they need help planning their meal.
 
-		- Please provide a JSON response with the format:
+		They expect ${attendees} attendees to be present.
+
+		The name of this event is ${eventData.name}.
+		The following description of the event has been provided: ${eventData.description}.
+		The event is being hosted by ${eventData.hosts} (this is probably the user who needs planning help).
+		The event's location has been listed as ${eventData.location} and will start at ${eventData.startTime} on ${eventData.startDate}.
+
+		Provide advice about the type and number of items (dishes, drinks, utensils, etc.) they should request from attendees,
+		given the expected number attending. Expect the location to be a personal residence unless otherwise indicated.
+		Use the event details to make appropriate and creative suggestions. For example, if it's a birthday party, it might be a good
+		idea for someone to bring a cake or cupcakes, candles, etc.
+
+		Please provide a JSON response with the format:
 		{ "advice": string, "dishes": { "type": string; "count": number }[] }
 		Do not wrap the JSON in backticks or a code block.
 		`;
@@ -27,8 +37,6 @@ export async function POST(req: Request) {
 			messages: [{ role: "user", content: prompt }],
 			max_tokens: 200,
 		});
-
-		console.log("Full response.choices:", response.choices);
 
 		return NextResponse.json({
 			suggestions: response.choices[0].message.content,
