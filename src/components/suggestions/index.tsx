@@ -116,9 +116,12 @@ const Suggestions = ({ eventData }: { eventData: Props }) => {
 
 			<div className="flex items-end justify-center">
 				<div className="form-control">
-					<label className="label label-text">Estimated attendees</label>
+					<label className="label label-text" htmlFor="attendees">
+						Estimated attendees
+					</label>
 					<input
 						className="input-text input input-bordered w-48 text-sm sm:text-base"
+						id="attendees"
 						onChange={(e) => setAttendees(e?.target?.value)}
 						type="number"
 						value={attendees}
