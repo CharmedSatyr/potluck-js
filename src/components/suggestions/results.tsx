@@ -44,7 +44,7 @@ const Results = ({
 					{suggestions.advice}
 				</p>
 
-				<h3 className="m-0">What to Request:</h3>
+				<h3 className="m-0 text-lg">What to Request</h3>
 				<div className="overflow-x-auto">
 					<table className="table table-xs">
 						<thead>
