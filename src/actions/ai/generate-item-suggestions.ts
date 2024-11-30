@@ -31,10 +31,12 @@ export const generateItemSuggestions = async (
   1. Provide a brief paragraph offering general advice and tips for the event, tailored to the type of the gathering. This section should:
      - Be conversational and engaging.
      - Avoid listing specific items.
+     - Avoid restating the location if it appears to be a street address.
      - Highlight themes or special considerations based on the name and description, where applicable (e.g., birthday parties, holidays, dietary preferences).
 
   2. Separately, provide a detailed table-like breakdown of the exact items to request from attendees. For each item type (e.g., main dishes, sides, desserts, beverages, supplies), suggest quantities proportional to the number of attendees. This list should:
      - Avoid repeating information from the advice section.
+     - Potentially provide examples of creative, theme-appropriate dish ideas.
      - Be concise and specific.
 
   The response should be easy to parse, with the advice and items clearly separated.
