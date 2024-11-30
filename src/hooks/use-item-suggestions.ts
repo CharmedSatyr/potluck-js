@@ -4,11 +4,9 @@ import { useState } from "react";
 import { readStreamableValue } from "ai/rsc";
 import { generateItemSuggestions } from "@/actions/ai/generate-item-suggestions";
 import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
+import findEvent from "@/actions/db/find-event";
 
-const useItemSuggestions = (
-	eventData: PlanEventFormData,
-	attendees: number
-) => {
+const useItemSuggestions = (code: string, attendees: number) => {
 	const [pending, setPending] = useState(false);
 	const [suggestions, setSuggestions] = useState<string>("");
 
@@ -17,7 +15,9 @@ const useItemSuggestions = (
 	const fetchSuggestions = async () => {
 		setPending(true);
 
-		const { object } = await generateItemSuggestions(eventData, attendees);
+		const [event] = await findEvent({ code });
+
+		const { object } = await generateItemSuggestions(event, attendees);
 
 		for await (const partialObject of readStreamableValue(object)) {
 			if (!partialObject) {

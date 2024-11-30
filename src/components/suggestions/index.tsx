@@ -8,29 +8,17 @@ import FailureWarning from "@/components/suggestions/failure-warning";
 
 type Props = {
 	attendees: string;
+	code: string;
 	setAttendees: Dispatch<SetStateAction<string>>;
-	eventData: {
-		name: string;
-		description: string;
-		hosts: string;
-		location: string;
-		startDate: string;
-		startTime: string;
-	};
 	hookReturn: any;
 };
 
-const Suggestions = ({
-	attendees,
-	setAttendees,
-	eventData,
-	hookReturn,
-}: Props) => {
+const Suggestions = ({ attendees, code, hookReturn, setAttendees }: Props) => {
 	const { suggestions: result, fetchSuggestions, pending, reset } = hookReturn;
 
 	// TODO: Use a form/useActionState.
 
-	if (!eventData) {
+	if (!code) {
 		return null;
 	}
 
@@ -57,13 +45,9 @@ const Suggestions = ({
 	);
 };
 
-const SuggestionsContainer = ({
-	eventData,
-}: {
-	eventData: Props["eventData"];
-}) => {
+const SuggestionsContainer = ({ code }: { code: string }) => {
 	const [attendees, setAttendees] = useState<string>("0");
-	const hookReturn = useItemSuggestions(eventData, Number(attendees));
+	const hookReturn = useItemSuggestions(code, Number(attendees));
 
 	return (
 		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
@@ -75,9 +59,9 @@ const SuggestionsContainer = ({
 			>
 				<Suggestions
 					attendees={attendees}
-					setAttendees={setAttendees}
-					eventData={eventData}
+					code={code}
 					hookReturn={hookReturn}
+					setAttendees={setAttendees}
 				/>
 			</div>
 		</div>
