@@ -172,7 +172,7 @@ const PlanEventForm = ({
 			</div>
 
 			<div className="my-2">
-				<label className="label label-text" htmlFor="host-input">
+				<label className="label label-text" htmlFor="hosts-input">
 					Hosts
 				</label>
 				<div className="input input-bordered flex w-full items-center gap-2 text-sm md:text-base">
