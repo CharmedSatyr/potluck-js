@@ -8,8 +8,9 @@ export const suggestionsSchema = z.strictObject({
 	items: z
 		.array(
 			z.strictObject({
-				type: z.string().trim().max(250),
 				count: z.number().max(999),
+				id: z.string().uuid(),
+				type: z.string().trim().max(250),
 			})
 		)
 		.describe(

@@ -1,87 +1,32 @@
 "use chat";
 
 import usePlanFoodSuggestions from "@/hooks/use-plan-food-suggestions";
-import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
-import LoadingIndicator from "../loading-indicator";
-import { useState } from "react";
-import WarningAlert from "../warning-alert";
-import { z } from "zod";
-import { suggestionsSchema } from "@/validation/suggestions.schema";
+import { Dispatch, SetStateAction, useState } from "react";
+import Results from "@/components/suggestions/results";
+import Prompt from "@/components/suggestions/prompt";
+import FailureWarning from "@/components/suggestions/failure-warning";
 
 type Props = {
-	name: string;
-	description: string;
-	hosts: string;
-	location: string;
-	startDate: string;
-	startTime: string;
+	attendees: string;
+	setAttendees: Dispatch<SetStateAction<string>>;
+	eventData: {
+		name: string;
+		description: string;
+		hosts: string;
+		location: string;
+		startDate: string;
+		startTime: string;
+	};
+	hookReturn: any;
 };
 
-const Results = ({
-	suggestions,
-	reset,
-}: {
-	suggestions: z.infer<typeof suggestionsSchema>;
-	reset: () => void;
-}) => {
-	if (!suggestions) {
-		return null;
-	}
-
-	return (
-		<div className="collapse w-full bg-base-300">
-			<input type="checkbox" />
-			<div className="collapse-title bg-gradient-to-r from-yellow-100 to-orange-400 bg-clip-text text-xl font-medium text-transparent">
-				<BoltIcon className="mr-2 inline size-5 text-yellow-200" />
-				Suggestions
-			</div>
-			<div className="collapse-content">
-				<p>
-					<InformationCircleIcon className="mr-2 inline size-6 text-info" />
-					{suggestions.advice}
-				</p>
-
-				<h3 className="m-0">What to Request:</h3>
-				<div className="overflow-x-auto">
-					<table className="table table-xs">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Type</th>
-								<th>Count</th>
-							</tr>
-						</thead>
-						<tbody>
-							{suggestions.items.map((item, i) => (
-								<tr key={i}>
-									<th>{i + 1}</th>
-									<td>{item.type}</td>
-									<td>{item.count}</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
-				<button
-					className="btn btn-warning btn-sm"
-					onClick={reset}
-					type="button"
-				>
-					Reset Suggestions
-				</button>
-			</div>
-		</div>
-	);
-};
-
-const Suggestions = ({ eventData }: { eventData: Props }) => {
-	const [attendees, setAttendees] = useState<string>("0");
-	const {
-		suggestions: result,
-		fetchSuggestions,
-		pending,
-		reset,
-	} = usePlanFoodSuggestions(eventData, Number(attendees));
+const Suggestions = ({
+	attendees,
+	setAttendees,
+	eventData,
+	hookReturn,
+}: Props) => {
+	const { suggestions: result, fetchSuggestions, pending, reset } = hookReturn;
 
 	// TODO: Use a form/useActionState.
 
@@ -95,57 +40,48 @@ const Suggestions = ({ eventData }: { eventData: Props }) => {
 			return <Results suggestions={suggestions} reset={reset} />;
 		} catch (err) {
 			console.log("Failed to fetch AI suggestions", err);
+
 			return (
-				<>
-					<WarningAlert text={String(err)} />
-					<button
-						className="btn btn-warning btn-sm"
-						onClick={reset}
-						type="button"
-					>
-						Reset Suggestions
-					</button>
-				</>
+				<FailureWarning errorMessage={JSON.stringify(err)} reset={reset} />
 			);
 		}
 	}
 
 	return (
-		<aside className="w-fit rounded-xl bg-base-300 p-6 text-center shadow-xl">
-			<h3 className="mb-4 mt-0">Need help planning your meal?</h3>
-
-			<div className="flex items-end justify-center">
-				<div className="form-control">
-					<label className="label label-text" htmlFor="attendees">
-						Estimated attendees
-					</label>
-					<input
-						className="input-text input input-bordered w-48 text-sm sm:text-base"
-						id="attendees"
-						onChange={(e) => setAttendees(e?.target?.value)}
-						type="number"
-						value={attendees}
-					/>
-				</div>
-
-				<button
-					className="w-46 btn btn-info ml-2"
-					type="button"
-					disabled={pending || !attendees || attendees === "0"}
-					onClick={fetchSuggestions}
-				>
-					{pending ? (
-						<LoadingIndicator size={6} />
-					) : (
-						<>
-							<BoltIcon className="size-5" />
-							Get AI Suggestions
-						</>
-					)}
-				</button>
-			</div>
-		</aside>
+		<Prompt
+			attendees={attendees}
+			fetchSuggestions={fetchSuggestions}
+			pending={pending}
+			setAttendees={setAttendees}
+		/>
 	);
 };
 
-export default Suggestions;
+const SuggestionsContainer = ({
+	eventData,
+}: {
+	eventData: Props["eventData"];
+}) => {
+	const [attendees, setAttendees] = useState<string>("0");
+	const hookReturn = usePlanFoodSuggestions(eventData, Number(attendees));
+
+	return (
+		<div className="rounded-lg bg-base-300 p-8 shadow-xl">
+			<div
+				className="transition-all duration-300 ease-in-out"
+				style={{
+					maxWidth: hookReturn.suggestions ? "screen" : "400px",
+				}}
+			>
+				<Suggestions
+					attendees={attendees}
+					setAttendees={setAttendees}
+					eventData={eventData}
+					hookReturn={hookReturn}
+				/>
+			</div>
+		</div>
+	);
+};
+
+export default SuggestionsContainer;
