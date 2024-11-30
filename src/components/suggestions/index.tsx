@@ -1,6 +1,6 @@
 "use chat";
 
-import usePlanFoodSuggestions from "@/hooks/use-plan-food-suggestions";
+import useItemSuggestions from "@/hooks/use-item-suggestions";
 import { Dispatch, SetStateAction, useState } from "react";
 import Results from "@/components/suggestions/results";
 import Prompt from "@/components/suggestions/prompt";
@@ -63,14 +63,14 @@ const SuggestionsContainer = ({
 	eventData: Props["eventData"];
 }) => {
 	const [attendees, setAttendees] = useState<string>("0");
-	const hookReturn = usePlanFoodSuggestions(eventData, Number(attendees));
+	const hookReturn = useItemSuggestions(eventData, Number(attendees));
 
 	return (
-		<div className="rounded-lg bg-base-300 p-8 shadow-xl">
+		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
 			<div
 				className="transition-all duration-300 ease-in-out"
 				style={{
-					maxWidth: hookReturn.suggestions ? "screen" : "400px",
+					maxWidth: hookReturn.suggestions && !hookReturn.pending ? 800 : 400,
 				}}
 			>
 				<Suggestions

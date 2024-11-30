@@ -1,6 +1,8 @@
 import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { z } from "zod";
 import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 
 const Results = ({
 	suggestions,
@@ -9,16 +11,32 @@ const Results = ({
 	suggestions: z.infer<typeof suggestionsSchema>;
 	reset: () => void;
 }) => {
+	const [expanded, setExpanded] = useState<boolean>(true);
+
 	if (!suggestions) {
 		return null;
 	}
 
 	return (
 		<div className="collapse w-full bg-base-300">
-			<input type="checkbox" />
-			<div className="collapse-title bg-gradient-to-r from-yellow-100 to-orange-400 bg-clip-text text-xl font-medium text-transparent">
-				<BoltIcon className="mr-2 inline size-5 text-yellow-200" />
-				Suggestions
+			<input
+				type="checkbox"
+				checked={expanded}
+				onChange={() => setExpanded(!expanded)}
+			/>
+
+			<div className="collapse-title flex w-full items-center justify-between">
+				<div className="flex items-center bg-gradient-to-r from-yellow-100 to-orange-400 bg-clip-text text-xl font-medium text-transparent">
+					<BoltIcon className="mr-2 inline size-5 text-yellow-200" />
+					Suggestions <div className="badge badge-info ml-2">beta</div>
+				</div>
+				<div>
+					{expanded ? (
+						<ChevronUpIcon className="size-5" />
+					) : (
+						<ChevronDownIcon className="size-5" />
+					)}
+				</div>
 			</div>
 			<div className="collapse-content">
 				<p>
@@ -38,7 +56,7 @@ const Results = ({
 						</thead>
 						<tbody>
 							{suggestions.items.map((item, i) => (
-								<tr key={i}>
+								<tr key={item.id}>
 									<th>{i + 1}</th>
 									<td>{item.type}</td>
 									<td>{item.count}</td>
