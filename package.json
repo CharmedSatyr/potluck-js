@@ -19,10 +19,12 @@
 		"test:staged": "jest --findRelatedTests"
 	},
 	"dependencies": {
+		"@ai-sdk/openai": "^1.0.5",
 		"@auth/drizzle-adapter": "^1.7.4",
 		"@heroicons/react": "^2.2.0",
 		"@neondatabase/serverless": "^0.10.3",
 		"@next/env": "^15.0.3",
+		"ai": "^4.0.9",
 		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.36.3",
 		"next": "^15.0.3",
