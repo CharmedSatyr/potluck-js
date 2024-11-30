@@ -28,6 +28,7 @@ const Prompt = ({
 						className="input-text input input-bordered w-40 text-sm sm:text-base"
 						disabled={pending}
 						id="attendees"
+						min={0}
 						onChange={(e) => setAttendees(e?.target?.value)}
 						type="number"
 						value={attendees}

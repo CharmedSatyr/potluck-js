@@ -54,7 +54,7 @@ const SuggestionsContainer = ({ code }: { code: string }) => {
 			<div
 				className="transition-all duration-300 ease-in-out"
 				style={{
-					maxWidth: hookReturn.suggestions && !hookReturn.pending ? 800 : 400,
+					maxWidth: hookReturn.suggestions && !hookReturn.pending ? 720 : 420,
 				}}
 			>
 				<Suggestions
