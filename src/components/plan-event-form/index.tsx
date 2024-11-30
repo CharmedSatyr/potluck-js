@@ -103,6 +103,7 @@ const PlanEventForm = ({
 					Event Name
 				</label>
 				<input
+					autoComplete="off"
 					className={`input input-bordered w-full text-sm md:text-base ${state?.errors?.fieldErrors?.name ? "input-warning" : ""}`}
 					defaultValue={state?.fields.name}
 					id="name-input"
