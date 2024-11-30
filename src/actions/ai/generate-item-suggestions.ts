@@ -37,6 +37,7 @@ export const generateItemSuggestions = async (
   2. Separately, provide a detailed table-like breakdown of the exact items to request from attendees. For each item type (e.g., main dishes, sides, desserts, beverages, supplies), suggest quantities proportional to the number of attendees. This list should:
      - Avoid repeating information from the advice section.
      - Potentially provide examples of creative, theme-appropriate dish ideas.
+     - Do not include the count in the type field.
      - Be concise and specific.
 
   The response should be easy to parse, with the advice and items clearly separated.
