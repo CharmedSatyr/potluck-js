@@ -23,8 +23,8 @@ import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
 import { Step } from "@/components/manage-event-wizard";
-import LoadingIndicator from "../loading-indicator";
-import WarningAlert from "../warning-alert";
+import LoadingIndicator from "@/components/loading-indicator";
+import WarningAlert from "@/components/warning-alert";
 
 const MAX_SLOTS = 20;
 
