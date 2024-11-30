@@ -10,6 +10,7 @@ import {
 import { Slot } from "@/db/schema/slot";
 import { Suspense, use } from "react";
 import Suggestions from "@/components/suggestions";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
 	code: string | null;
@@ -43,6 +44,8 @@ const ManageEventWizard = ({
 	const slots = use(slotsPromise);
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
+	code = code ?? useSearchParams().get("code");
+
 	return (
 		<>
 			<div className="carousel w-full">
@@ -65,9 +68,7 @@ const ManageEventWizard = ({
 				>
 					<h1 className="text-primary">Plan the Food</h1>
 
-					<Suspense>
-						<Suggestions eventData={eventData} />
-					</Suspense>
+					<Suspense>{code && <Suggestions code={code} />}</Suspense>
 
 					<PlanFoodForm
 						code={code}
