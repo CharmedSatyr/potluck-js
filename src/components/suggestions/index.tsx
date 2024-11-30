@@ -5,6 +5,8 @@ import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import LoadingIndicator from "../loading-indicator";
 import { useState } from "react";
 import WarningAlert from "../warning-alert";
+import { z } from "zod";
+import { suggestionsSchema } from "@/validation/suggestions.schema";
 
 type Props = {
 	name: string;
@@ -15,16 +17,11 @@ type Props = {
 	startTime: string;
 };
 
-type Suggestions = {
-	advice: string;
-	dishes: { type: string; count: number }[];
-};
-
 const Results = ({
 	suggestions,
 	reset,
 }: {
-	suggestions: Suggestions;
+	suggestions: z.infer<typeof suggestionsSchema>;
 	reset: () => void;
 }) => {
 	if (!suggestions) {
@@ -55,11 +52,11 @@ const Results = ({
 							</tr>
 						</thead>
 						<tbody>
-							{suggestions.dishes.map((dish, i) => (
+							{suggestions.items.map((item, i) => (
 								<tr key={i}>
 									<th>{i + 1}</th>
-									<td>{dish.type}</td>
-									<td>{dish.count}</td>
+									<td>{item.type}</td>
+									<td>{item.count}</td>
 								</tr>
 							))}
 						</tbody>

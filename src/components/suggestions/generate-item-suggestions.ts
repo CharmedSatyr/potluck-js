@@ -3,7 +3,7 @@
 import { streamObject } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { createStreamableValue } from "ai/rsc";
-import { suggestions } from "@/validation/suggestions.schema";
+import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
 
 export async function generate(
@@ -42,7 +42,7 @@ export async function generate(
 			model: openai("gpt-4o-mini"),
 			system,
 			prompt,
-			schema: suggestions,
+			schema: suggestionsSchema,
 		});
 
 		for await (const partialObject of partialObjectStream) {

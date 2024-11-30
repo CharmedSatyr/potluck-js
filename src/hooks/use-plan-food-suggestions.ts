@@ -1,6 +1,6 @@
 "use client";
 
-import { generate } from "@/components/suggestions/action";
+import { generate } from "@/components/suggestions/generate-item-suggestions";
 import { useState } from "react";
 import { readStreamableValue } from "ai/rsc";
 import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
