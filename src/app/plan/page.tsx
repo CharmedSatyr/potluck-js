@@ -1,5 +1,4 @@
 import ManageEventWizard from "@/components/manage-event-wizard";
-import { createEventAction, loginAction } from "@/app/plan/submit-actions";
 import { auth } from "@/auth";
 import { DEV } from "@/utilities/current-env";
 import { Suspense } from "react";
@@ -14,8 +13,6 @@ type Props = {
 const StartPage = async ({ searchParams }: Props) => {
 	const session = await auth();
 	const loggedIn = Boolean(session?.user?.id);
-
-	const submitAction = loggedIn ? createEventAction : loginAction;
 
 	const params = await searchParams;
 	const { code } = params;
@@ -48,7 +45,6 @@ const StartPage = async ({ searchParams }: Props) => {
 						loggedIn={loggedIn}
 						mode="create"
 						slotsPromise={Promise.resolve([])}
-						submitAction={submitAction}
 					/>
 				</Suspense>
 			</ErrorBoundary>

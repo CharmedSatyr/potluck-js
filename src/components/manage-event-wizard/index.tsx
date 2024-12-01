@@ -3,25 +3,18 @@
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import useAnchor from "@/hooks/use-anchor";
-import {
-	PlanEventFormData,
-	PlanEventFormState,
-} from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
 import { Suspense, use, useState } from "react";
 import Suggestions from "@/components/suggestions";
+import { EventData } from "@/@types/event";
 
 type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
-	eventDataPromise: Promise<PlanEventFormData[]>;
+	eventDataPromise: Promise<EventData[]>;
 	loggedIn: boolean;
 	mode: "create" | "edit";
 	slotsPromise: Promise<Slot[]>;
-	submitAction: (
-		prevState: PlanEventFormState,
-		formData: FormData
-	) => Promise<PlanEventFormState>;
 };
 
 export enum Step {
@@ -72,7 +65,9 @@ const ManageEventWizard = ({
 					<h1 className="text-primary">Plan the Food</h1>
 
 					<Suspense>
-						{eventData && <Suggestions eventData={eventData} populate={populate} />}
+						{eventData && (
+							<Suggestions eventData={eventData} populate={populate} />
+						)}
 					</Suspense>
 
 					<PlanFoodForm
