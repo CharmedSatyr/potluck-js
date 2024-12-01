@@ -1,11 +1,11 @@
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { createEventAction, loginAction } from "@/app/plan/submit-actions";
-import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
 import { auth } from "@/auth";
 import { DEV } from "@/utilities/current-env";
 import { Suspense } from "react";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
 import ErrorBoundary from "@/components/error-boundary";
+import { EventData } from "@/@types/event";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
@@ -20,7 +20,7 @@ const StartPage = async ({ searchParams }: Props) => {
 	const params = await searchParams;
 	const { code } = params;
 
-	const values: PlanEventFormData = {
+	const values: EventData = {
 		description: "",
 		hosts: "",
 		location: DEV ? "123 Main Street" : "",
@@ -34,7 +34,7 @@ const StartPage = async ({ searchParams }: Props) => {
 		if (!searchValue) {
 			continue;
 		}
-		values[key as keyof PlanEventFormData] = searchValue;
+		values[key as keyof EventData] = searchValue;
 	}
 
 	return (

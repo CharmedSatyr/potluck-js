@@ -8,9 +8,8 @@ import {
 	PlanEventFormState,
 } from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
-import { Suspense, use, useEffect, useState } from "react";
+import { Suspense, use, useState } from "react";
 import Suggestions from "@/components/suggestions";
-import { useSearchParams } from "next/navigation";
 
 type Props = {
 	code: string | null;
@@ -37,19 +36,15 @@ const ManageEventWizard = ({
 	loggedIn,
 	mode,
 	slotsPromise,
-	submitAction,
 }: Props) => {
 	const [anchor, scrollToAnchor] = useAnchor();
 	const [eventData] = use(eventDataPromise);
 	const slots = use(slotsPromise);
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
-	const params = useSearchParams();
 
 	const [suggestedSlots, setSuggestedSlots] = useState<
 		{ count: number; id: string; item: string }[]
 	>([]);
-
-	code = code ?? params.get("code");
 
 	const populate = (items: { count: number; id: string; item: string }[]) => {
 		setSuggestedSlots(items);
@@ -67,7 +62,6 @@ const ManageEventWizard = ({
 						eventData={eventData}
 						loggedIn={loggedIn}
 						mode={mode}
-						submitAction={submitAction}
 					/>
 				</div>
 
@@ -78,13 +72,14 @@ const ManageEventWizard = ({
 					<h1 className="text-primary">Plan the Food</h1>
 
 					<Suspense>
-						{code && <Suggestions code={code} populate={populate} />}
+						{eventData && <Suggestions eventData={eventData} populate={populate} />}
 					</Suspense>
 
 					<PlanFoodForm
 						code={code}
-						slots={[...slots, ...suggestedSlots]}
 						committedUsersBySlot={committedUsersBySlot}
+						eventData={eventData}
+						slots={[...slots, ...suggestedSlots]}
 					/>
 				</div>
 			</div>

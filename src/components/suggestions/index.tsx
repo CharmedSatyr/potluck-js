@@ -3,10 +3,11 @@ import { Dispatch, SetStateAction, useState } from "react";
 import Results from "@/components/suggestions/results";
 import Prompt from "@/components/suggestions/prompt";
 import FailureWarning from "@/components/suggestions/failure-warning";
+import { EventData } from "@/@types/event";
 
 type Props = {
 	attendees: string;
-	code: string;
+	eventData: EventData;
 	hookReturn: {
 		suggestions: string;
 		fetchSuggestions: () => Promise<void>;
@@ -19,7 +20,7 @@ type Props = {
 
 const Suggestions = ({
 	attendees,
-	code,
+	eventData,
 	hookReturn,
 	populate,
 	setAttendees,
@@ -28,7 +29,7 @@ const Suggestions = ({
 
 	// TODO: Use a form/useActionState?
 
-	if (!code) {
+	if (!eventData) {
 		return null;
 	}
 
@@ -59,14 +60,14 @@ const Suggestions = ({
 
 // TODO: not unknown.
 const SuggestionsContainer = ({
-	code,
+	eventData,
 	populate,
 }: {
-	code: string;
+	eventData: EventData;
 	populate: (items: { count: number; id: string; item: string }[]) => void;
 }) => {
 	const [attendees, setAttendees] = useState<string>("0");
-	const hookReturn = useSlotSuggestions(code, Number(attendees));
+	const hookReturn = useSlotSuggestions(eventData, Number(attendees));
 
 	return (
 		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
@@ -78,7 +79,7 @@ const SuggestionsContainer = ({
 			>
 				<Suggestions
 					attendees={attendees}
-					code={code}
+					eventData={eventData}
 					hookReturn={hookReturn}
 					populate={populate}
 					setAttendees={setAttendees}

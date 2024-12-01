@@ -23,6 +23,7 @@ import deleteSlot from "@/actions/db/delete-slot";
 import { Step } from "@/components/manage-event-wizard";
 import LoadingIndicator from "@/components/loading-indicator";
 import WarningAlert from "@/components/warning-alert";
+import { EventData } from "@/@types/event";
 
 const MAX_SLOTS = 20;
 
@@ -35,12 +36,14 @@ const slotSchema = z.strictObject({
 type Props = {
 	code: string | null;
 	committedUsersBySlot: Map<string, JSX.Element>;
+	eventData: EventData;
 	slots: { id: string; item: string; count: number }[];
 };
 
 const PlanFoodForm = ({
 	code,
 	committedUsersBySlot,
+	eventData,
 	slots: prevSlots,
 }: Props) => {
 	const [anchor] = useAnchor();
@@ -200,6 +203,14 @@ const PlanFoodForm = ({
 					Skip for Now
 				</Link>
 			</div>
+
+			<input
+				defaultValue={JSON.stringify(eventData)}
+				hidden
+				name="eventData"
+				required
+				type="text"
+			/>
 
 			<button
 				className="btn btn-primary w-full"

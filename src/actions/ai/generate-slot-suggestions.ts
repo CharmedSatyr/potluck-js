@@ -4,10 +4,10 @@ import { streamObject } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { createStreamableValue } from "ai/rsc";
 import { suggestionsSchema } from "@/validation/suggestions.schema";
-import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
+import { EventData } from "@/@types/event";
 
 export const generateItemSuggestions = async (
-	eventData: PlanEventFormData,
+	eventData: EventData,
 	attendees: number
 ) => {
 	const stream = createStreamableValue();
