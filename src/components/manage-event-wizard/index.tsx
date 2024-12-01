@@ -8,7 +8,7 @@ import {
 	PlanEventFormState,
 } from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
-import { Suspense, use } from "react";
+import { Suspense, use, useEffect, useState } from "react";
 import Suggestions from "@/components/suggestions";
 import { useSearchParams } from "next/navigation";
 
@@ -43,8 +43,17 @@ const ManageEventWizard = ({
 	const [eventData] = use(eventDataPromise);
 	const slots = use(slotsPromise);
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
+	const params = useSearchParams();
 
-	code = code ?? useSearchParams().get("code");
+	const [suggestedSlots, setSuggestedSlots] = useState<
+		{ count: number; id: string; item: string }[]
+	>([]);
+
+	code = code ?? params.get("code");
+
+	const populate = (items: { count: number; id: string; item: string }[]) => {
+		setSuggestedSlots(items);
+	};
 
 	return (
 		<>
@@ -68,11 +77,17 @@ const ManageEventWizard = ({
 				>
 					<h1 className="text-primary">Plan the Food</h1>
 
-					<Suspense>{code && <Suggestions code={code} />}</Suspense>
+					<Suspense>
+						{code && <Suggestions code={code} populate={populate} />}
+					</Suspense>
 
 					<PlanFoodForm
 						code={code}
-						slots={slots}
+						// TODO: Fix db schema
+						slots={[
+							...slots.map((slot) => ({ ...slot, item: slot.course })),
+							...suggestedSlots,
+						]}
 						committedUsersBySlot={committedUsersBySlot}
 					/>
 				</div>

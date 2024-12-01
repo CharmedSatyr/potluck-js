@@ -5,11 +5,13 @@ import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
 const Results = ({
-	suggestions,
+	populate,
 	reset,
+	suggestions,
 }: {
-	suggestions: z.infer<typeof suggestionsSchema>;
+	populate: (items: { count: number; id: string; item: string }[]) => void;
 	reset: () => void;
+	suggestions: z.infer<typeof suggestionsSchema>;
 }) => {
 	const [expanded, setExpanded] = useState<boolean>(true);
 
@@ -55,23 +57,36 @@ const Results = ({
 							</tr>
 						</thead>
 						<tbody>
-							{suggestions.items.map((item, i) => (
-								<tr key={item.id}>
+							{suggestions.slots.map((slot, i) => (
+								<tr key={slot.id}>
 									<th>{i + 1}</th>
-									<td>{item.type}</td>
-									<td>{item.count}</td>
+									<td>{slot.item}</td>
+									<td>{slot.count}</td>
 								</tr>
 							))}
 						</tbody>
 					</table>
 				</div>
-				<button
-					className="btn btn-warning btn-sm"
-					onClick={reset}
-					type="button"
-				>
-					Reset Suggestions
-				</button>
+				<div className="flex w-full justify-between">
+					<button
+						className="btn btn-secondary btn-sm"
+						onClick={() => {
+							setExpanded(false);
+
+							populate(suggestions.slots);
+						}}
+						type="button"
+					>
+						Use Suggestions
+					</button>
+					<button
+						className="btn btn-warning btn-sm"
+						onClick={reset}
+						type="button"
+					>
+						Reset
+					</button>
+				</div>
 			</div>
 		</div>
 	);

@@ -1,6 +1,4 @@
-"use chat";
-
-import useItemSuggestions from "@/hooks/use-item-suggestions";
+import useSlotSuggestions from "@/hooks/use-slot-suggestions";
 import { Dispatch, SetStateAction, useState } from "react";
 import Results from "@/components/suggestions/results";
 import Prompt from "@/components/suggestions/prompt";
@@ -9,14 +7,26 @@ import FailureWarning from "@/components/suggestions/failure-warning";
 type Props = {
 	attendees: string;
 	code: string;
+	hookReturn: {
+		suggestions: string;
+		fetchSuggestions: () => Promise<void>;
+		pending: boolean;
+		reset: () => void;
+	};
+	populate: (items: { count: number; id: string; item: string }[]) => void;
 	setAttendees: Dispatch<SetStateAction<string>>;
-	hookReturn: any;
 };
 
-const Suggestions = ({ attendees, code, hookReturn, setAttendees }: Props) => {
+const Suggestions = ({
+	attendees,
+	code,
+	hookReturn,
+	populate,
+	setAttendees,
+}: Props) => {
 	const { suggestions: result, fetchSuggestions, pending, reset } = hookReturn;
 
-	// TODO: Use a form/useActionState.
+	// TODO: Use a form/useActionState?
 
 	if (!code) {
 		return null;
@@ -25,7 +35,9 @@ const Suggestions = ({ attendees, code, hookReturn, setAttendees }: Props) => {
 	if (result && !pending) {
 		try {
 			const suggestions = JSON.parse(result);
-			return <Results suggestions={suggestions} reset={reset} />;
+			return (
+				<Results populate={populate} reset={reset} suggestions={suggestions} />
+			);
 		} catch (err) {
 			console.log("Failed to fetch AI suggestions", err);
 
@@ -45,9 +57,16 @@ const Suggestions = ({ attendees, code, hookReturn, setAttendees }: Props) => {
 	);
 };
 
-const SuggestionsContainer = ({ code }: { code: string }) => {
+// TODO: not unknown.
+const SuggestionsContainer = ({
+	code,
+	populate,
+}: {
+	code: string;
+	populate: (items: { count: number; id: string; item: string }[]) => void;
+}) => {
 	const [attendees, setAttendees] = useState<string>("0");
-	const hookReturn = useItemSuggestions(code, Number(attendees));
+	const hookReturn = useSlotSuggestions(code, Number(attendees));
 
 	return (
 		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
@@ -61,6 +80,7 @@ const SuggestionsContainer = ({ code }: { code: string }) => {
 					attendees={attendees}
 					code={code}
 					hookReturn={hookReturn}
+					populate={populate}
 					setAttendees={setAttendees}
 				/>
 			</div>

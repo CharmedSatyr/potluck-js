@@ -5,12 +5,12 @@ export const suggestionsSchema = z.strictObject({
 			A helpful, unformatted message indicating an approach to meal planning
 			for this event given the particular event details, and themed for Potluck Quest.
 		`),
-	items: z
+	slots: z
 		.array(
 			z.strictObject({
 				count: z.number().max(999),
 				id: z.string().uuid(),
-				type: z.string().trim().max(500),
+				item: z.string().trim().max(500),
 			})
 		)
 		.describe(

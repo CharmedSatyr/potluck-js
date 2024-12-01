@@ -10,7 +10,7 @@ import useAnchor from "@/hooks/use-anchor";
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import Suggestions from "@/components/suggestions";
-import useItemSuggestions from "@/hooks/use-item-suggestions";
+import useSlotSuggestions from "@/hooks/use-slot-suggestions";
 
 jest.mock("@/hooks/use-anchor");
 jest.mock("@/components/plan-event-form");
