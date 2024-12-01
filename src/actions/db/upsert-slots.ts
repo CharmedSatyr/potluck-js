@@ -30,9 +30,7 @@ const buildConflictUpdateColumns = <
 
 const upsertSlots = async (
 	data: z.infer<typeof schema>
-): Promise<
-	{ course: Slot["course"]; count: Slot["count"]; id: Slot["id"] }[]
-> => {
+): Promise<{ item: Slot["item"]; count: Slot["count"]; id: Slot["id"] }[]> => {
 	try {
 		schema.parse(data);
 
@@ -52,10 +50,10 @@ const upsertSlots = async (
 			.values(values)
 			.onConflictDoUpdate({
 				target: slot.id,
-				set: buildConflictUpdateColumns(slot, ["course", "count"]),
+				set: buildConflictUpdateColumns(slot, ["count", "item"]),
 			})
 			.returning({
-				course: slot.course,
+				item: slot.item,
 				count: slot.count,
 				id: slot.id,
 			});

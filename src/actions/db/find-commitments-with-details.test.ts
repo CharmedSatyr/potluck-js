@@ -60,7 +60,7 @@ describe("findCommitmentsWithDetails", () => {
 		expect(db.select).toHaveBeenCalledWith({
 			commitmentId: commitment.id,
 			description: commitment.description,
-			item: slot.course,
+			item: slot.item,
 			quantity: commitment.quantity,
 			slotId: slot.id,
 			user: {

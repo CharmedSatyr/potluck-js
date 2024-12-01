@@ -42,21 +42,21 @@ const submitSlots = async (
 
 	const builder = new Map<
 		number,
-		{ course: string; count: number; id: string }
+		{ item: string; count: number; id: string }
 	>();
 
 	for (const [key, value] of Object.entries(fields)) {
 		const [field, i] = key.split("-");
 
 		const index = Number(i);
-		const currentEntry = builder.get(index) ?? { course: "", count: 0, id: "" };
+		const currentEntry = builder.get(index) ?? { item: "", count: 0, id: "" };
 
 		if (field === "count") {
 			currentEntry.count = Number(value);
 		}
 
 		if (field === "item") {
-			currentEntry.course = String(value);
+			currentEntry.item = String(value);
 		}
 
 		if (field === "id") {
@@ -66,7 +66,7 @@ const submitSlots = async (
 		builder.set(index, currentEntry);
 	}
 
-	const slots: { course: string; count: number; id: string }[] = Array.from(
+	const slots: { item: string; count: number; id: string }[] = Array.from(
 		builder.values()
 	);
 

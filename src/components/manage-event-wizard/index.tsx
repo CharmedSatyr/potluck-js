@@ -83,11 +83,7 @@ const ManageEventWizard = ({
 
 					<PlanFoodForm
 						code={code}
-						// TODO: Fix db schema
-						slots={[
-							...slots.map((slot) => ({ ...slot, item: slot.course })),
-							...suggestedSlots,
-						]}
+						slots={[...slots, ...suggestedSlots]}
 						committedUsersBySlot={committedUsersBySlot}
 					/>
 				</div>

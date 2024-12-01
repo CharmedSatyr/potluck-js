@@ -27,22 +27,22 @@ describe("upsertSlots", () => {
 	const validData: any = {
 		code: "CODE1",
 		slots: [
-			{ count: 5, course: "Apple", id },
-			{ count: 3, course: "Banana", id },
+			{ count: 5, item: "Apple", id },
+			{ count: 3, item: "Banana", id },
 		],
 	};
 
 	const invalidData: any = {
 		code: "CODE1",
-		slots: [{ count: 0, course: "" }],
+		slots: [{ count: 0, item: "" }],
 	};
 
 	it("should insert slots into the database and return the created ids on success", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: "123" }]);
 
 		const returning = [
-			{ count: 5, course: "Apple", id },
-			{ count: 3, course: "Banana", id },
+			{ count: 5, item: "Apple", id },
+			{ count: 3, item: "Banana", id },
 		];
 
 		(db.insert as jest.Mock).mockReturnValueOnce({
@@ -81,20 +81,20 @@ describe("upsertSlots", () => {
 				path: ["slots", 0, "count"],
 			},
 			{
+				code: "invalid_type",
+				expected: "string",
+				received: "undefined",
+				path: ["slots", 0, "id"],
+				message: "Required",
+			},
+			{
 				code: "too_small",
 				minimum: 1,
 				type: "string",
 				inclusive: true,
 				exact: false,
 				message: "String must contain at least 1 character(s)",
-				path: ["slots", 0, "course"],
-			},
-			{
-				code: "invalid_type",
-				expected: "string",
-				received: "undefined",
-				path: ["slots", 0, "id"],
-				message: "Required",
+				path: ["slots", 0, "item"],
 			},
 		]);
 

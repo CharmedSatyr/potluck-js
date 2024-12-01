@@ -8,6 +8,13 @@
       "when": 1731555662185,
       "tag": "0000_goofy_juggernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1733059073308,
+      "tag": "0001_optimal_menace",
+      "breakpoints": true
     }
   ]
 }

@@ -68,7 +68,7 @@ describe("PlanFoodForm", () => {
 	
 	it.skip("removes a slot when the remove button is clicked", async () => {
 		const slotsWithInitialData = [
-			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
+			{ id: "testSlotId", item: "Sample", count: 1 } as Slot,
 		]; // TODO: Don't use Slot type.
 	
 		await act(async () => {
@@ -113,7 +113,7 @@ describe("PlanFoodForm", () => {
 		const genRandItem = () =>
 			({
 				id: `${counter++}`,
-				course: "test",
+				item: "test",
 				count: 1,
 			}) as Slot;
 	
@@ -135,7 +135,7 @@ describe("PlanFoodForm", () => {
 	});
 	
 	it.skip("disables submit button if slots are invalid", async () => {
-		const invalidSlots = [{ id: "testSlotId", course: "", count: 0 } as Slot];
+		const invalidSlots = [{ id: "testSlotId", item: "", count: 0 } as Slot];
 	
 		await act(async () => {
 			render(
@@ -159,7 +159,7 @@ describe("PlanFoodForm", () => {
 			["testSlotId", <span key="123">Committed User</span>],
 		]);
 		const slotsWithCommitment = [
-			{ id: "testSlotId", course: "Sample", count: 1 } as Slot,
+			{ id: "testSlotId", item: "Sample", count: 1 } as Slot,
 		];
 	
 		await act(async () => {

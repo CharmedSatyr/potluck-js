@@ -33,7 +33,7 @@ describe("upsertRsvp", () => {
 
 	const invalidData: any = {
 		code: "CODE1",
-		slots: [{ count: 0, course: "" }],
+		slots: [{ count: 0, item: "" }],
 	};
 
 	it("should insert an RSVP into the database and return a success object on success", async () => {

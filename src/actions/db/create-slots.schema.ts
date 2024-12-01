@@ -10,7 +10,7 @@ export const schema = z
 			.array(
 				z.strictObject({
 					count: z.number().positive(),
-					course: z.string().trim().min(1),
+					item: z.string().trim().min(1),
 				})
 			)
 			.nonempty(),

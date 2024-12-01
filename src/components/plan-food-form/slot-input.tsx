@@ -12,7 +12,7 @@ type Props = {
 	remove: (index: number, id: string) => void;
 };
 
-const CourseInput = ({
+const SlotInput = ({
 	change,
 	count,
 	hasCommitments,
@@ -118,4 +118,4 @@ const CourseInput = ({
 	);
 };
 
-export default CourseInput;
+export default SlotInput;

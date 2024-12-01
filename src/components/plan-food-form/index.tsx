@@ -8,7 +8,7 @@ import {
 	useReducer,
 	useState,
 } from "react";
-import CourseInput from "@/components/plan-food-form/course-input";
+import SlotInput from "@/components/plan-food-form/slot-input";
 import { v4 as uuidv4 } from "uuid"; // TODO: ew ew ew
 // TODO: Should this be passed in?
 import submitSlots, {
@@ -26,7 +26,7 @@ import WarningAlert from "@/components/warning-alert";
 
 const MAX_SLOTS = 20;
 
-const courseSchema = z.strictObject({
+const slotSchema = z.strictObject({
 	id: z.string().uuid(),
 	count: z.coerce.number().positive(),
 	item: z.string().trim().min(1),
@@ -137,17 +137,17 @@ const PlanFoodForm = ({
 	);
 
 	const handleSlotChange = (index: number, item: string, count: string) => {
-		const updatedCourses = [...slots];
-		updatedCourses[index].item = item;
-		updatedCourses[index].count = count;
+		const updatedSlots = [...slots];
+		updatedSlots[index].item = item;
+		updatedSlots[index].count = count;
 
-		setSlots(updatedCourses);
+		setSlots(updatedSlots);
 	};
 
 	const slotsValid = useMemo(
 		() =>
 			slots.length > 0 &&
-			slots.every((course) => courseSchema.safeParse(course).success),
+			slots.every((slot) => slotSchema.safeParse(slot).success),
 		[slots]
 	);
 
@@ -164,7 +164,7 @@ const PlanFoodForm = ({
 			<WarningAlert text={state?.message} />
 			{slots.map((slot, index) => (
 				<div key={slot.id}>
-					<CourseInput
+					<SlotInput
 						change={handleSlotChange}
 						count={slot.count}
 						hasCommitments={committedUsersBySlot.has(slot.id)}

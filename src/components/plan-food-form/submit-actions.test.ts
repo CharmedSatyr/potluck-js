@@ -50,8 +50,8 @@ describe("submitSlots", () => {
 			fieldErrors: {
 				slots: [
 					"Expected number, received nan",
-					"String must contain at least 1 character(s)",
 					"Invalid uuid",
+					"String must contain at least 1 character(s)",
 				],
 			},
 			formErrors: [],
