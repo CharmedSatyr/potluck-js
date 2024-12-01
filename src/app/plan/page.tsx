@@ -18,7 +18,7 @@ const StartPage = async ({ searchParams }: Props) => {
 	const submitAction = loggedIn ? createEventAction : loginAction;
 
 	const params = await searchParams;
-	const { code, source } = params;
+	const { code } = params;
 
 	const values: PlanEventFormData = {
 		description: "",
@@ -29,14 +29,12 @@ const StartPage = async ({ searchParams }: Props) => {
 		startTime: DEV ? "12:00" : "",
 	};
 
-	if (source === "discord") {
-		for (const key in values) {
-			const searchValue = params[key];
-			if (!searchValue) {
-				continue;
-			}
-			values[key as keyof PlanEventFormData] = searchValue;
+	for (const key in values) {
+		const searchValue = params[key];
+		if (!searchValue) {
+			continue;
 		}
+		values[key as keyof PlanEventFormData] = searchValue;
 	}
 
 	return (
