@@ -38,7 +38,7 @@ const HostingTable = async () => {
 		return (
 			<div>
 				You haven&apos;t hosted any events.{" "}
-				<Link href="/start">Go throw a party!</Link>
+				<Link href="/plan">Go throw a party!</Link>
 			</div>
 		);
 	}
@@ -95,7 +95,7 @@ const AttendingTable = async () => {
 		return (
 			<div>
 				You haven&apos;t attended any events.{" "}
-				<Link href="/start">Go throw a party!</Link>
+				<Link href="/plan">Go throw a party!</Link>
 			</div>
 		);
 	}

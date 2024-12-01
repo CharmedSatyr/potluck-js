@@ -9,7 +9,7 @@ import {
 	useState,
 } from "react";
 import CourseInput from "@/components/plan-food-form/course-input";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; // TODO: ew ew ew
 // TODO: Should this be passed in?
 import submitSlots, {
 	PlanFoodFormState,
@@ -18,13 +18,11 @@ import { useSearchParams } from "next/navigation";
 import useAnchor from "@/hooks/use-anchor";
 import Link from "next/link";
 import { z } from "zod";
-// TODO: This isn't what's being used.
-import { Slot } from "@/db/schema/slot";
 // TODO: Should this be passed in?
 import deleteSlot from "@/actions/db/delete-slot";
 import { Step } from "@/components/manage-event-wizard";
-import LoadingIndicator from "../loading-indicator";
-import WarningAlert from "../warning-alert";
+import LoadingIndicator from "@/components/loading-indicator";
+import WarningAlert from "@/components/warning-alert";
 
 const MAX_SLOTS = 20;
 
@@ -37,7 +35,7 @@ const courseSchema = z.strictObject({
 type Props = {
 	code: string | null;
 	committedUsersBySlot: Map<string, JSX.Element>;
-	slots: Slot[];
+	slots: { id: string; item: string; count: number }[];
 };
 
 const PlanFoodForm = ({
@@ -81,14 +79,46 @@ const PlanFoodForm = ({
 	>(() => {
 		if (prevSlots.length > 0) {
 			return prevSlots.map((slot) => ({
-				item: slot.course,
 				count: slot.count.toString(),
 				id: slot.id,
+				item: slot.item,
 			}));
 		}
 
 		return [{ item: "", count: "0", id: uuidv4() }];
 	});
+
+	useEffect(() => {
+		const filtered = slots.filter(
+			(slot) => slot.count !== "0" && slot.item !== ""
+		);
+		// TODO: ChatGPT comes out with uuids like uuid-1, uuid-2...
+		const uuid = z.string().uuid();
+		const propSlots = prevSlots.map((slot) => {
+			if (!uuid.safeParse(slot.id).success) {
+				return { ...slot, id: uuidv4(), count: slot.count.toString() };
+			}
+
+			return { ...slot, count: slot.count.toString() };
+		});
+
+		const newSlots = [];
+
+		if (filtered.length) {
+			newSlots.push(...filtered);
+		}
+
+		if (propSlots.length) {
+			newSlots.push(...propSlots);
+		}
+
+		if (!newSlots.length) {
+			return;
+		}
+
+		setSlots(newSlots);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [prevSlots]);
 
 	const addSlot = () => {
 		if (slots.length >= MAX_SLOTS) {
@@ -129,7 +159,6 @@ const PlanFoodForm = ({
 			className="form-control mx-2 w-full md:w-11/12 lg:w-9/12 2xl:w-7/12"
 			data-testid="plan-food-form"
 		>
-			<h1 className="my-0 text-primary">Plan the Food</h1>
 			<h2>Create Signup Slots</h2>
 
 			<WarningAlert text={state?.message} />

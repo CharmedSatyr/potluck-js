@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-const protectedRoutes = new Set(["/start/plan-food"]);
+const protectedRoutes = new Set(["/plan/plan-food"]);
 
 export const middleware = auth((request) => {
 	if (!request.auth && protectedRoutes.has(request.nextUrl.pathname)) {

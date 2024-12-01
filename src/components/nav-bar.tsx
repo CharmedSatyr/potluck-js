@@ -26,7 +26,7 @@ const LoggedOutContent = () => {
 };
 
 const CreateEventLink = () => (
-	<Link href="/start" className="text-nowrap no-underline">
+	<Link href="/plan" className="text-nowrap no-underline">
 		<CalendarDateRangeIcon className="size-4" />
 		Create Event
 	</Link>

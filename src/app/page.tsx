@@ -4,7 +4,7 @@ import siteMetadata from "@/data/site-metadata";
 import Image from "next/image";
 
 const CreateEventButton = () => (
-	<Link href="/start" className="btn btn-primary text-xl">
+	<Link href="/plan" className="btn btn-primary text-xl">
 		Create an Event
 	</Link>
 );

@@ -6,9 +6,11 @@ import useAnchor from "@/hooks/use-anchor";
 import {
 	PlanEventFormData,
 	PlanEventFormState,
-} from "@/app/start/submit-actions.schema";
+} from "@/app/plan/submit-actions.schema";
 import { Slot } from "@/db/schema/slot";
-import { use } from "react";
+import { Suspense, use, useEffect, useState } from "react";
+import Suggestions from "@/components/suggestions";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
 	code: string | null;
@@ -41,6 +43,17 @@ const ManageEventWizard = ({
 	const [eventData] = use(eventDataPromise);
 	const slots = use(slotsPromise);
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
+	const params = useSearchParams();
+
+	const [suggestedSlots, setSuggestedSlots] = useState<
+		{ count: number; id: string; item: string }[]
+	>([]);
+
+	code = code ?? params.get("code");
+
+	const populate = (items: { count: number; id: string; item: string }[]) => {
+		setSuggestedSlots(items);
+	};
 
 	return (
 		<>
@@ -59,12 +72,22 @@ const ManageEventWizard = ({
 				</div>
 
 				<div
-					className="carousel-item flex w-full justify-center"
+					className="carousel-item flex w-full flex-col items-center justify-center"
 					id={Step.PLAN_FOOD}
 				>
+					<h1 className="text-primary">Plan the Food</h1>
+
+					<Suspense>
+						{code && <Suggestions code={code} populate={populate} />}
+					</Suspense>
+
 					<PlanFoodForm
 						code={code}
-						slots={slots}
+						// TODO: Fix db schema
+						slots={[
+							...slots.map((slot) => ({ ...slot, item: slot.course })),
+							...suggestedSlots,
+						]}
 						committedUsersBySlot={committedUsersBySlot}
 					/>
 				</div>

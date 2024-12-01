@@ -1,6 +1,6 @@
 import ManageEventWizard from "@/components/manage-event-wizard";
-import { createEventAction, loginAction } from "@/app/start/submit-actions";
-import { PlanEventFormData } from "@/app/start/submit-actions.schema";
+import { createEventAction, loginAction } from "@/app/plan/submit-actions";
+import { PlanEventFormData } from "@/app/plan/submit-actions.schema";
 import { auth } from "@/auth";
 import { DEV } from "@/utilities/current-env";
 import { Suspense } from "react";
