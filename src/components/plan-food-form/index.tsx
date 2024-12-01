@@ -116,12 +116,9 @@ const PlanFoodForm = ({
 			return;
 		}
 
-		if (JSON.stringify(slots) === JSON.stringify(newSlots)) {
-			return;
-		}
-
 		setSlots(newSlots);
-	}, [prevSlots, slots]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [prevSlots]);
 
 	const addSlot = () => {
 		if (slots.length >= MAX_SLOTS) {
