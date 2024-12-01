@@ -1,7 +1,7 @@
 "use server";
 
-import { schema } from "@/actions/db/update-slots.schema";
-import updateSlots from "@/actions/db/update-slots";
+import { schema } from "@/actions/db/upsert-slots.schema";
+import upsertSlots from "@/actions/db/upsert-slots";
 import { redirect } from "next/navigation";
 import { typeToFlattenedError } from "zod";
 
@@ -82,7 +82,7 @@ const submitSlots = async (
 		};
 	}
 
-	const result = await updateSlots({
+	const result = await upsertSlots({
 		...parsed.data,
 		code: prevState.code,
 	});

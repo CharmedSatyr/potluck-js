@@ -2,10 +2,10 @@ import submitSlots, {
 	PlanFoodFormState,
 } from "@/components/plan-food-form/submit-actions";
 import { redirect } from "next/navigation";
-import updateSlots from "@/actions/db/update-slots";
+import upsertSlots from "@/actions/db/upsert-slots";
 
 jest.mock("next/navigation");
-jest.mock("@/actions/db/update-slots");
+jest.mock("@/actions/db/upsert-slots");
 
 describe("submitSlots", () => {
 	let prevState: PlanFoodFormState;
@@ -17,7 +17,7 @@ describe("submitSlots", () => {
 			success: true,
 		};
 
-		(updateSlots as jest.Mock).mockResolvedValue([
+		(upsertSlots as jest.Mock).mockResolvedValue([
 			"e444d290-6723-44ed-a90f-5915ce7efcd5",
 		]);
 	});
@@ -58,13 +58,13 @@ describe("submitSlots", () => {
 		});
 	});
 
-	it("returns an error if updateSlots fails to return an ID", async () => {
+	it("returns an error if upsertSlots fails to return an ID", async () => {
 		const formData = new FormData();
 		formData.append("count-1", "3");
 		formData.append("id-1", id);
 		formData.append("item-1", "Main Course");
 
-		(updateSlots as jest.Mock).mockResolvedValue(null);
+		(upsertSlots as jest.Mock).mockResolvedValue(null);
 
 		const result = await submitSlots(prevState, formData);
 

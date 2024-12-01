@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import db from "@/db/connection";
-import { schema } from "@/actions/db/update-slots.schema";
+import { schema } from "@/actions/db/upsert-slots.schema";
 import findEvent from "@/actions/db/find-event";
 import { slot, Slot } from "@/db/schema/slot";
 import { getTableColumns, SQL, sql } from "drizzle-orm";
@@ -28,7 +28,7 @@ const buildConflictUpdateColumns = <
 	);
 };
 
-const updateSlots = async (
+const upsertSlots = async (
 	data: z.infer<typeof schema>
 ): Promise<
 	{ course: Slot["course"]; count: Slot["count"]; id: Slot["id"] }[]
@@ -66,4 +66,4 @@ const updateSlots = async (
 	}
 };
 
-export default updateSlots;
+export default upsertSlots;
