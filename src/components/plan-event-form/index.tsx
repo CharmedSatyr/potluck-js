@@ -9,7 +9,6 @@ import { EventData } from "@/@types/event";
 type Props = {
 	code: string | null;
 	eventData: EventData;
-	loggedIn: boolean;
 	mode: "create" | "edit";
 };
 
