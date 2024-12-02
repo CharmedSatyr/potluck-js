@@ -1,20 +1,20 @@
 "use client";
 
+import { Suspense, use, useState } from "react";
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
-import useAnchor from "@/hooks/use-anchor";
-import { Slot } from "@/db/schema/slot";
-import { Suspense, use, useState } from "react";
 import Suggestions from "@/components/suggestions";
+import useAnchor from "@/hooks/use-anchor";
 import { EventData } from "@/@types/event";
+import { SlotData } from "@/@types/slot";
+import { WizardMode } from "@/@types/wizard-mode";
 
 type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	eventDataPromise: Promise<EventData[]>;
-	loggedIn: boolean;
-	mode: "create" | "edit";
-	slotsPromise: Promise<Slot[]>;
+	mode: WizardMode;
+	slotsPromise: Promise<SlotData[]>;
 };
 
 export enum Step {
@@ -26,7 +26,6 @@ const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
 	eventDataPromise,
-	loggedIn,
 	mode,
 	slotsPromise,
 }: Props) => {
@@ -35,11 +34,9 @@ const ManageEventWizard = ({
 	const slots = use(slotsPromise);
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
-	const [suggestedSlots, setSuggestedSlots] = useState<
-		{ count: number; id: string; item: string }[]
-	>([]);
+	const [suggestedSlots, setSuggestedSlots] = useState<SlotData[]>([]);
 
-	const populate = (items: { count: number; id: string; item: string }[]) => {
+	const populate = (items: SlotData[]) => {
 		setSuggestedSlots(items);
 	};
 
@@ -50,12 +47,7 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id={Step.CREATE_EVENT}
 				>
-					<PlanEventForm
-						code={code}
-						eventData={eventData}
-						loggedIn={loggedIn}
-						mode={mode}
-					/>
+					<PlanEventForm code={code} eventData={eventData} mode={mode} />
 				</div>
 
 				<div
@@ -71,7 +63,6 @@ const ManageEventWizard = ({
 					</Suspense>
 
 					<PlanFoodForm
-						code={code}
 						committedUsersBySlot={committedUsersBySlot}
 						eventData={eventData}
 						slots={[...slots, ...suggestedSlots]}
