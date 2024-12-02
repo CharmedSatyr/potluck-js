@@ -18,7 +18,6 @@ import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-detai
 import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
-import { buildParamsFromEventData } from "@/utilities/build-params-from-data";
 import { EventData } from "@/@types/event";
 
 type Props = { params: Promise<{ code: string }> };
