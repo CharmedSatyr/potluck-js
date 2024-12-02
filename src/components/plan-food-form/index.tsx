@@ -1,108 +1,47 @@
 "use client";
 
-import {
-	useActionState,
-	useCallback,
-	useEffect,
-	useMemo,
-	useReducer,
-	useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import SlotInput from "@/components/plan-food-form/slot-input";
-import { v4 as uuidv4 } from "uuid"; // TODO: ew ew ew
-// TODO: Should this be passed in?
-import submitSlots, {
-	PlanFoodFormState,
-} from "@/components/plan-food-form/submit-actions";
-import { useSearchParams } from "next/navigation";
-import useAnchor from "@/hooks/use-anchor";
-import Link from "next/link";
-import { z } from "zod";
-// TODO: Should this be passed in?
+import { v4 as uuidv4 } from "uuid";
 import deleteSlot from "@/actions/db/delete-slot";
-import { Step } from "@/components/manage-event-wizard";
-import LoadingIndicator from "@/components/loading-indicator";
-import WarningAlert from "@/components/warning-alert";
 import { EventData } from "@/@types/event";
-
-const MAX_SLOTS = 20;
-
-const slotSchema = z.strictObject({
-	id: z.string().uuid(),
-	count: z.coerce.number().positive(),
-	item: z.string().trim().min(1),
-});
+import { MAX_SLOTS } from "@/constants/max-slots";
+import { SlotData } from "@/@types/slot";
+import { schema as slotSchema } from "@/validation/slot.schema"
 
 type Props = {
-	code: string | null;
 	committedUsersBySlot: Map<string, JSX.Element>;
 	eventData: EventData;
-	slots: { id: string; item: string; count: number }[];
+	slots: SlotData[];
 };
 
 const PlanFoodForm = ({
-	code,
 	committedUsersBySlot,
 	eventData,
 	slots: prevSlots,
 }: Props) => {
-	const [anchor] = useAnchor();
-	const searchParams = useSearchParams();
-	const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-	// TODO: Add loading indicator when pending.
-	const [state, submit, isPending] = useActionState<
-		PlanFoodFormState,
-		FormData
-	>(submitSlots, {
-		code: code ?? "",
-		message: "",
-		success: false,
-	});
-
-	useEffect(() => {
-		if (state?.code) {
-			return;
-		}
-
-		const eventCode = code ?? searchParams.get("code");
-
-		if (!eventCode) {
-			return;
-		}
-
-		state.code = eventCode;
-
-		forceUpdate();
-	}, [code, state, searchParams]);
-
-	/** TODO: Update this to work without JS. */
 	const [slots, setSlots] = useState<
-		{ item: string; count: string; id: string }[]
+		{ count: string; id?: string; item: string; key: string }[]
 	>(() => {
 		if (prevSlots.length > 0) {
 			return prevSlots.map((slot) => ({
 				count: slot.count.toString(),
 				id: slot.id,
 				item: slot.item,
+				key: uuidv4(),
 			}));
 		}
 
-		return [{ item: "", count: "0", id: uuidv4() }];
+		return [{ count: "0", item: "", key: uuidv4() }];
 	});
 
 	useEffect(() => {
 		const filtered = slots.filter(
 			(slot) => slot.count !== "0" && slot.item !== ""
 		);
-		// TODO: ChatGPT comes out with uuids like uuid-1, uuid-2...
-		const uuid = z.string().uuid();
-		const propSlots = prevSlots.map((slot) => {
-			if (!uuid.safeParse(slot.id).success) {
-				return { ...slot, id: uuidv4(), count: slot.count.toString() };
-			}
 
-			return { ...slot, count: slot.count.toString() };
+		const propSlots = prevSlots.map((slot) => {
+			return { ...slot, count: slot.count.toString(), key: uuidv4() };
 		});
 
 		const newSlots = [];
@@ -128,12 +67,17 @@ const PlanFoodForm = ({
 			return;
 		}
 
-		setSlots([...slots, { item: "", count: "0", id: uuidv4() }]);
+		setSlots([...slots, { count: "0", item: "", key: uuidv4() }]);
 	};
 
 	const removeSlot = useCallback(
-		async (index: number, id: string) => {
+		async (index: number, id?: string) => {
 			setSlots(slots.filter((_, i) => i !== index));
+
+			if (!id) {
+				return;
+			}
+
 			await deleteSlot({ id });
 		},
 		[slots]
@@ -154,33 +98,33 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const disableButtons = isPending || anchor === Step.CREATE_EVENT;
+	const disableButtons = !eventData;
 
 	return (
 		<form
-			action={submit}
+			action="/plan/confirm"
 			className="form-control mx-2 w-full md:w-11/12 lg:w-9/12 2xl:w-7/12"
 			data-testid="plan-food-form"
 		>
 			<h2>Create Signup Slots</h2>
 
-			<WarningAlert text={state?.message} />
 			{slots.map((slot, index) => (
-				<div key={slot.id}>
+				<div key={slot.key}>
 					<SlotInput
 						change={handleSlotChange}
 						count={slot.count}
-						hasCommitments={committedUsersBySlot.has(slot.id)}
+						hasCommitments={committedUsersBySlot.has(slot.id ?? "")}
 						id={slot.id}
 						index={index}
 						item={slot.item}
-						key={slot.id}
 						remove={removeSlot}
 					/>
-					{committedUsersBySlot.has(slot.id) && (
+					{committedUsersBySlot.has(slot.id ?? "") && (
 						<div className="mt-4 flex w-full items-center justify-center">
 							<span className="text-sm font-light">Existing Commitments:</span>
-							<span className="mx-2">{committedUsersBySlot.get(slot.id)}</span>
+							<span className="mx-2">
+								{committedUsersBySlot.get(slot.id ?? "")}
+							</span>
 						</div>
 					)}
 					<div className="divider mt-6" />
@@ -196,19 +140,48 @@ const PlanFoodForm = ({
 				>
 					Add Slot
 				</button>
-				<Link
-					className={`btn btn-accent w-1/3 ${!state.code || disableButtons ? "btn-disabled pointer-events-none" : ""}`}
-					href={`/event/${state.code}`}
+				<button
+					className={`btn btn-accent w-1/3 ${disableButtons ? "btn-disabled pointer-events-none" : ""}`}
+					formNoValidate={true}
 				>
 					Skip for Now
-				</Link>
+				</button>
 			</div>
 
 			<input
-				defaultValue={JSON.stringify(eventData)}
+				autoComplete="off"
+				defaultValue={eventData.name}
 				hidden
-				name="eventData"
+				name="name"
 				required
+				type="text"
+			/>
+			<input
+				defaultValue={eventData.startDate}
+				hidden
+				name="startDate"
+				required
+				type="date"
+			/>
+			<input
+				defaultValue={eventData.startTime}
+				hidden
+				name="startTime"
+				required
+				type="time"
+			/>
+			<input
+				defaultValue={eventData.location}
+				hidden
+				name="location"
+				required
+				type="text"
+			/>
+			<input defaultValue={eventData.hosts} hidden name="hosts" type="text" />
+			<input
+				defaultValue={eventData.description}
+				hidden
+				name="description"
 				type="text"
 			/>
 
@@ -217,7 +190,7 @@ const PlanFoodForm = ({
 				disabled={disableButtons || !slotsValid}
 				type="submit"
 			>
-				{isPending ? <LoadingIndicator size={10} /> : "Save and Continue"}
+				Save and Continue
 			</button>
 		</form>
 	);
