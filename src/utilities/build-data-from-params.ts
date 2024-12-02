@@ -11,9 +11,11 @@ const testVals: EventData = {
 	startTime: "12:00",
 };
 
-export const buildEventDataFromParams = (params: {
-	[key: string]: string;
-}): EventData => {
+export const buildEventDataFromParams = async (
+	paramsPromise: Promise<{
+		[key: string]: string;
+	}>
+): Promise<EventData[]> => {
 	const eventData: EventData = {
 		description: "",
 		hosts: "",
@@ -22,6 +24,8 @@ export const buildEventDataFromParams = (params: {
 		startDate: "",
 		startTime: "",
 	};
+
+	const params = await paramsPromise;
 
 	Object.keys(eventData).forEach((key) => {
 		const searchValue = params[key];
@@ -33,15 +37,19 @@ export const buildEventDataFromParams = (params: {
 	});
 
 	if (DEV) {
-		//return testVals;
+		//return [testVals];
 	}
 
-	return eventData;
+	return [eventData];
 };
 
-export const buildSlotDataFromParams = (params: {
-	[key: string]: string;
-}): SlotData[] => {
+export const buildSlotDataFromParams = async (
+	paramsPromise: Promise<{
+		[key: string]: string;
+	}>
+): Promise<SlotData[]> => {
+	const params = await paramsPromise;
+
 	const fields: Record<string, string> = {};
 
 	for (const key of Object.keys(params)) {
