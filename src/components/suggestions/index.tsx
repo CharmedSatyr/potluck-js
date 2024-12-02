@@ -7,7 +7,6 @@ import { EventData } from "@/@types/event";
 
 type Props = {
 	attendees: string;
-	eventData: EventData;
 	hookReturn: {
 		suggestions: string;
 		fetchSuggestions: () => Promise<void>;
@@ -20,7 +19,6 @@ type Props = {
 
 const Suggestions = ({
 	attendees,
-	eventData,
 	hookReturn,
 	populate,
 	setAttendees,
@@ -28,11 +26,6 @@ const Suggestions = ({
 	const { suggestions: result, fetchSuggestions, pending, reset } = hookReturn;
 
 	// TODO: Use a form/useActionState?
-
-	if (!eventData) {
-		return null;
-	}
-
 	if (result && !pending) {
 		try {
 			const suggestions = JSON.parse(result);
@@ -69,6 +62,10 @@ const SuggestionsContainer = ({
 	const [attendees, setAttendees] = useState<string>("0");
 	const hookReturn = useSlotSuggestions(eventData, Number(attendees));
 
+	if (eventData) {
+		return null;
+	}
+
 	return (
 		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
 			<div
@@ -79,7 +76,6 @@ const SuggestionsContainer = ({
 			>
 				<Suggestions
 					attendees={attendees}
-					eventData={eventData}
 					hookReturn={hookReturn}
 					populate={populate}
 					setAttendees={setAttendees}
