@@ -50,8 +50,6 @@ const Page = async ({ params, searchParams }: Props) => {
 		// TODO: Add handling if problem adding slots.
 	}
 
-	revalidatePath(`/event/${code}`, "page");
-
 	redirect(`/event/${code}`);
 };
 
