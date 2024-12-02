@@ -23,9 +23,7 @@ import { EventData } from "@/@types/event";
 type Props = { params: Promise<{ code: string }> };
 
 const Container = ({ children }: PropsWithChildren) => (
-	<main className="container flex h-full w-full flex-wrap lg:w-3/4 2xl:w-1/2">
-		{children}
-	</main>
+	<main className="container flex h-full w-full flex-wrap">{children}</main>
 );
 
 const EventTitleSection = ({ code }: { code: string }) => (
