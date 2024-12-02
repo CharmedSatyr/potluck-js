@@ -22,6 +22,28 @@ export enum Step {
 	PLAN_FOOD = "plan-food",
 }
 
+const ProgressIndicator = () => {
+	const [anchor, scrollToAnchor] = useAnchor();
+
+	/* Add a hover state to make it clearer you can click. */
+	return (
+		<div className="steps my-8 w-full">
+			<button
+				className="step step-secondary"
+				onClick={() => scrollToAnchor(Step.CREATE_EVENT)}
+			>
+				Create an Event
+			</button>
+			<button
+				className={`step ${anchor === Step.PLAN_FOOD ? "step-secondary" : ""}`}
+				onClick={() => scrollToAnchor(Step.PLAN_FOOD)}
+			>
+				Plan the Food
+			</button>
+		</div>
+	);
+};
+
 const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
@@ -29,14 +51,13 @@ const ManageEventWizard = ({
 	mode,
 	slotsPromise,
 }: Props) => {
-	const [anchor, scrollToAnchor] = useAnchor();
 	const [eventData] = use(eventDataPromise);
 	const slots = use(slotsPromise);
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
 	const [suggestedSlots, setSuggestedSlots] = useState<SlotData[]>([]);
 
-	const populate = (items: SlotData[]) => {
+	const populateSuggestedSlots = (items: SlotData[]) => {
 		setSuggestedSlots(items);
 	};
 
@@ -58,7 +79,10 @@ const ManageEventWizard = ({
 
 					<Suspense>
 						{eventData && (
-							<Suggestions eventData={eventData} populate={populate} />
+							<Suggestions
+								eventData={eventData}
+								populate={populateSuggestedSlots}
+							/>
 						)}
 					</Suspense>
 
@@ -70,21 +94,7 @@ const ManageEventWizard = ({
 				</div>
 			</div>
 
-			{/* Add a hover state to make it clearer you can click. */}
-			<div className="steps my-8 w-full">
-				<button
-					className="step step-secondary"
-					onClick={() => scrollToAnchor(Step.CREATE_EVENT)}
-				>
-					Create an Event
-				</button>
-				<button
-					className={`step ${anchor === Step.PLAN_FOOD ? "step-secondary" : ""}`}
-					onClick={() => scrollToAnchor(Step.PLAN_FOOD)}
-				>
-					Plan the Food
-				</button>
-			</div>
+			<ProgressIndicator />
 		</>
 	);
 };
