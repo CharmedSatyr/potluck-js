@@ -16,18 +16,14 @@ const Page = async ({ searchParams }: Props) => {
 
 	const params = await searchParams;
 
-	const eventData = buildEventDataFromParams(params);
-
-	const search = new URLSearchParams();
-	for (const field in params) {
-		search.append(field, String(params[field]));
-	}
+	const queryString = "?" + new URLSearchParams(params).toString();
 
 	if (!session?.user?.id) {
 		// TODO: Add some error messaging via toast
-		redirect("/plan".concat("?", search.toString()));
+		redirect("/plan".concat(queryString));
 	}
 
+	const [eventData] = await buildEventDataFromParams(searchParams);
 	const [{ code }] = await createEvent({
 		...eventData,
 		createdBy: session.user.id,
@@ -35,10 +31,10 @@ const Page = async ({ searchParams }: Props) => {
 
 	if (!code) {
 		// TODO: Add some error messaging via toast
-		redirect("/plan".concat("?", search.toString()));
+		redirect("/plan".concat(queryString));
 	}
 
-	const slotData = buildSlotDataFromParams(params);
+	const slotData = await buildSlotDataFromParams(searchParams);
 
 	if (slotData.length > 0) {
 		await createSlots({
