@@ -1,5 +1,5 @@
 import { EventData } from "@/@types/event";
-import { NewSlotData } from "@/@types/slot";
+import { SlotData } from "@/@types/slot";
 import { DEV } from "@/utilities/current-env";
 
 const testVals: EventData = {
@@ -39,20 +39,24 @@ export const buildEventDataFromParams = (params: {
 	return values;
 };
 
-export const buildNewSlotDataFromParams = (params: {
+export const buildSlotDataFromParams = (params: {
 	[key: string]: string;
-}): NewSlotData[] => {
+}): SlotData[] => {
 	const fields: Record<string, string> = {};
 
 	for (const key of Object.keys(params)) {
-		if (!key.startsWith("item") && !key.startsWith("count")) {
+		if (
+			!key.startsWith("count") &&
+			!key.startsWith("id") &&
+			!key.startsWith("item")
+		) {
 			continue;
 		}
 
 		fields[key] = params[key];
 	}
 
-	const builder = new Map<number, { item: string; count: number }>();
+	const builder = new Map<number, SlotData>();
 
 	for (const [key, value] of Object.entries(fields)) {
 		const [field, i] = key.split("-");
@@ -62,6 +66,10 @@ export const buildNewSlotDataFromParams = (params: {
 
 		if (field === "count") {
 			currentEntry.count = Number(value);
+		}
+
+		if (field === "id") {
+			currentEntry.id = value;
 		}
 
 		if (field === "item") {
