@@ -1,27 +1,15 @@
-"use client";
-
-import { useEffect } from "react";
-import useAnchor from "@/hooks/use-anchor";
-import { Step } from "@/components/manage-event-wizard";
 import Form from "next/form";
 import { EventData } from "@/@types/event";
+import { WizardMode } from "@/@types/wizard-mode";
+import { Step } from "@/components/manage-event-wizard";
 
 type Props = {
 	code: string | null;
 	eventData: EventData;
-	mode: "create" | "edit";
+	mode: WizardMode;
 };
 
 const PlanEventForm = ({ code, eventData, mode }: Props) => {
-	const [anchor, scrollToAnchor] = useAnchor();
-
-	useEffect(() => {
-		if (anchor === Step.PLAN_FOOD) {
-			scrollToAnchor(Step.PLAN_FOOD);
-			return;
-		}
-	}, [anchor, scrollToAnchor]);
-
 	return (
 		<Form
 			action={`/plan#${Step.PLAN_FOOD}`}
@@ -143,11 +131,7 @@ const PlanEventForm = ({ code, eventData, mode }: Props) => {
 				</div>
 			</div>
 
-			<button
-				className="btn btn-primary my-6 w-full"
-				disabled={anchor === Step.PLAN_FOOD}
-				type="submit"
-			>
+			<button className="btn btn-primary my-6 w-full" type="submit">
 				Next
 			</button>
 		</Form>
