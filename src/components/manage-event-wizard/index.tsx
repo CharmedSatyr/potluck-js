@@ -1,7 +1,9 @@
 "use client";
 
 import { Suspense, use, useEffect, useState } from "react";
-import PlanEventForm from "@/components/plan-event-form";
+import PlanEventForm, {
+	PlanEventFormFallback,
+} from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import Suggestions from "@/components/suggestions";
 import useAnchor from "@/hooks/use-anchor";
@@ -61,7 +63,6 @@ const ManageEventWizard = ({
 }: Props) => {
 	const [eventData] = use(eventDataPromise);
 	const slots = use(slotsPromise);
-	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
 	const [suggestedSlots, setSuggestedSlots] = useState<SlotData[]>([]);
 
@@ -76,12 +77,14 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id={Step.CREATE_EVENT}
 				>
-					<PlanEventForm
-						code={code}
-						eventData={eventData}
-						loggedIn={loggedIn}
-						mode={mode}
-					/>
+					<Suspense fallback={<PlanEventFormFallback />}>
+						<PlanEventForm
+							code={code}
+							eventData={eventData}
+							loggedIn={loggedIn}
+							mode={mode}
+						/>
+					</Suspense>
 				</div>
 
 				<div
@@ -99,11 +102,16 @@ const ManageEventWizard = ({
 						)}
 					</Suspense>
 
-					<PlanFoodForm
-						committedUsersBySlot={committedUsersBySlot}
-						eventData={eventData}
-						slots={[...slots, ...suggestedSlots]}
-					/>
+					<Suspense>
+						<PlanFoodForm
+							code={code}
+							committedUsersBySlotPromise={committedUsersBySlotPromise}
+							eventData={eventData}
+							mode={mode}
+							slots={slots}
+							suggestedSlots={suggestedSlots}
+						/>
+					</Suspense>
 				</div>
 			</div>
 

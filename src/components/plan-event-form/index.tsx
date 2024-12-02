@@ -22,11 +22,21 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 	const pathname = usePathname();
 	const [, login, isPending] = useActionState(loginAction, { path: pathname });
 
-	const action = loggedIn ? `/plan#${Step.PLAN_FOOD}` : login;
+	const determineAction = () => {
+		if (mode === "create") {
+			return loggedIn ? `/plan#${Step.PLAN_FOOD}` : login;
+		}
+
+		if (mode === "edit") {
+			return `/event/${code}/edit#${Step.PLAN_FOOD}`;
+		}
+
+		return "";
+	};
 
 	return (
 		<Form
-			action={action}
+			action={determineAction()}
 			className="form-control mx-2 w-full lg:w-3/4 2xl:w-10/12"
 			name="create-event-form"
 		>

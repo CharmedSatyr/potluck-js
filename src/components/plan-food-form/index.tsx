@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useState } from "react";
 import SlotInput from "@/components/plan-food-form/slot-input";
 import { v4 as uuidv4 } from "uuid";
 import deleteSlot from "@/actions/db/delete-slot";
@@ -8,18 +8,27 @@ import { EventData } from "@/@types/event";
 import { MAX_SLOTS } from "@/constants/max-slots";
 import { SlotData } from "@/@types/slot";
 import { schema as slotSchema } from "@/validation/slot.schema";
+import { WizardMode } from "@/@types/wizard-mode";
 
 type Props = {
-	committedUsersBySlot: Map<string, JSX.Element>;
+	code: string | null;
+	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	eventData: EventData;
+	mode: WizardMode;
 	slots: SlotData[];
+	suggestedSlots: SlotData[];
 };
 
 const PlanFoodForm = ({
-	committedUsersBySlot,
+	code,
+	committedUsersBySlotPromise,
 	eventData,
+	mode,
 	slots: prevSlots,
+	suggestedSlots,
 }: Props) => {
+	const committedUsersBySlot = use(committedUsersBySlotPromise);
+
 	const [slots, setSlots] = useState<
 		{ count: string; id?: string; item: string; key: string }[]
 	>(() => {
@@ -36,31 +45,20 @@ const PlanFoodForm = ({
 	});
 
 	useEffect(() => {
-		const filtered = slots.filter(
+		const current = slots.filter(
 			(slot) => slot.count !== "0" && slot.item !== ""
 		);
 
-		const propSlots = prevSlots.map((slot) => {
+		const suggested = suggestedSlots.map((slot) => {
 			return { ...slot, count: slot.count.toString(), key: uuidv4() };
 		});
 
-		const newSlots = [];
-
-		if (filtered.length) {
-			newSlots.push(...filtered);
-		}
-
-		if (propSlots.length) {
-			newSlots.push(...propSlots);
-		}
-
-		if (!newSlots.length) {
+		if (!suggested.length) {
 			return;
 		}
 
-		setSlots(newSlots);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [prevSlots]);
+		setSlots([...current, ...suggested]);
+	}, [setSlots, slots, suggestedSlots]);
 
 	const addSlot = () => {
 		if (slots.length >= MAX_SLOTS) {
@@ -100,9 +98,21 @@ const PlanFoodForm = ({
 
 	const disableButtons = !eventData;
 
+	const determineAction = () => {
+		if (mode === "create") {
+			return "/plan/confirm";
+		}
+
+		if (mode === "edit") {
+			return `/event/${code}/edit/confirm`;
+		}
+
+		return "";
+	};
+
 	return (
 		<form
-			action="/plan/confirm"
+			action={determineAction()}
 			className="form-control mx-2 w-full md:w-11/12 lg:w-9/12 2xl:w-7/12"
 			data-testid="plan-food-form"
 		>
