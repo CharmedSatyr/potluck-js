@@ -6,6 +6,7 @@ import {
 	buildSlotDataFromParams,
 } from "@/utilities/build-data-from-params";
 import ErrorBoundary from "@/components/error-boundary";
+import { auth } from "@/auth";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
@@ -14,6 +15,8 @@ type Props = {
 const PlanPage = async ({ searchParams }: Props) => {
 	const params = await searchParams;
 	const { code } = params;
+	const session = await auth();
+	const loggedIn = Boolean(session?.user?.id);
 
 	const eventData = buildEventDataFromParams(params);
 	const slotData = buildSlotDataFromParams(params);
@@ -26,6 +29,7 @@ const PlanPage = async ({ searchParams }: Props) => {
 						code={code}
 						committedUsersBySlotPromise={Promise.resolve(new Map())}
 						eventDataPromise={Promise.resolve([eventData])}
+						loggedIn={loggedIn}
 						mode="create"
 						slotsPromise={Promise.resolve(slotData)}
 					/>

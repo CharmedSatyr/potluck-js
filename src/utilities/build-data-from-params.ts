@@ -5,16 +5,16 @@ import { DEV } from "@/utilities/current-env";
 const testVals: EventData = {
 	description: "A beautiful walk in the park.",
 	hosts: "Winston Churchill and Elon Musk",
-	location: DEV ? "123 Main Street" : "",
-	name: DEV ? "Test Event" : "",
-	startDate: DEV ? "2025-01-09" : "",
-	startTime: DEV ? "12:00" : "",
+	location: "123 Main Street",
+	name: "Test Event",
+	startDate: "2025-01-09",
+	startTime: "12:00",
 };
 
 export const buildEventDataFromParams = (params: {
 	[key: string]: string;
 }): EventData => {
-	const values: EventData = {
+	const eventData: EventData = {
 		description: "",
 		hosts: "",
 		location: "",
@@ -23,20 +23,20 @@ export const buildEventDataFromParams = (params: {
 		startTime: "",
 	};
 
-	for (const key in Object.keys(values)) {
+	Object.keys(eventData).forEach((key) => {
 		const searchValue = params[key];
 		if (!searchValue) {
-			continue;
+			return;
 		}
 
-		values[key as keyof EventData] = searchValue;
-	}
+		eventData[key as keyof EventData] = searchValue;
+	});
 
 	if (DEV) {
-		return testVals;
+		//return testVals;
 	}
 
-	return values;
+	return eventData;
 };
 
 export const buildSlotDataFromParams = (params: {

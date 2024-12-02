@@ -1,18 +1,31 @@
+"use client";
+
+import { useActionState } from "react";
 import Form from "next/form";
+import { usePathname } from "next/navigation";
 import { EventData } from "@/@types/event";
 import { WizardMode } from "@/@types/wizard-mode";
+import { DiscordIcon } from "@/components/icons/discord";
+import LoadingIndicator from "@/components/loading-indicator";
 import { Step } from "@/components/manage-event-wizard";
+import { loginAction } from "@/components/plan-event-form/login-action";
 
 type Props = {
 	code: string | null;
 	eventData: EventData;
+	loggedIn: boolean;
 	mode: WizardMode;
 };
 
-const PlanEventForm = ({ code, eventData, mode }: Props) => {
+const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
+	const pathname = usePathname();
+	const [, login, isPending] = useActionState(loginAction, { path: pathname });
+
+	const action = loggedIn ? `/plan#${Step.PLAN_FOOD}` : login;
+
 	return (
 		<Form
-			action={`/plan#${Step.PLAN_FOOD}`}
+			action={action}
 			className="form-control mx-2 w-full lg:w-3/4 2xl:w-10/12"
 			name="create-event-form"
 		>
@@ -132,7 +145,13 @@ const PlanEventForm = ({ code, eventData, mode }: Props) => {
 			</div>
 
 			<button className="btn btn-primary my-6 w-full" type="submit">
-				Next
+				{isPending && <LoadingIndicator size={10} />}
+				{loggedIn && !isPending && "Next"}
+				{!loggedIn && !isPending && (
+					<>
+						Continue with Discord <DiscordIcon className="size-4" />
+					</>
+				)}
 			</button>
 		</Form>
 	);

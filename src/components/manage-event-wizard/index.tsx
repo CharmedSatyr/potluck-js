@@ -13,6 +13,7 @@ type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
 	eventDataPromise: Promise<EventData[]>;
+	loggedIn: boolean;
 	mode: WizardMode;
 	slotsPromise: Promise<SlotData[]>;
 };
@@ -54,6 +55,7 @@ const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
 	eventDataPromise,
+	loggedIn,
 	mode,
 	slotsPromise,
 }: Props) => {
@@ -74,7 +76,12 @@ const ManageEventWizard = ({
 					className="carousel-item flex w-full justify-center"
 					id={Step.CREATE_EVENT}
 				>
-					<PlanEventForm code={code} eventData={eventData} mode={mode} />
+					<PlanEventForm
+						code={code}
+						eventData={eventData}
+						loggedIn={loggedIn}
+						mode={mode}
+					/>
 				</div>
 
 				<div

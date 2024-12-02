@@ -1,12 +1,10 @@
 import createEvent from "@/actions/db/create-event";
 import createSlots from "@/actions/db/create-slots";
-import { auth, signIn } from "@/auth";
-import { DiscordIcon } from "@/components/icons/discord";
+import { auth } from "@/auth";
 import {
 	buildEventDataFromParams,
 	buildSlotDataFromParams,
 } from "@/utilities/build-data-from-params";
-import Form from "next/form";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -26,26 +24,8 @@ const Page = async ({ searchParams }: Props) => {
 	}
 
 	if (!session?.user?.id) {
-		return (
-			<Form
-				action={async () => {
-					"use server";
-					await signIn("discord", {
-						redirectTo: "/plan/confirm".concat("?", search.toString()),
-					});
-				}}
-				className="flex w-1/4 w-full flex-col items-center justify-center rounded-xl bg-base-300 p-8 text-center"
-			>
-				<h1 className="mb-0 text-4xl">Click below to sign in</h1>
-				<p>
-					<span className="font-bold text-secondary">{eventData.name}</span>{" "}
-					will be created once you&apos;re back.
-				</p>
-				<button className="btn btn-accent flex items-center" type="submit">
-					Sign In with Discord <DiscordIcon className="size-4" />
-				</button>
-			</Form>
-		);
+		// TODO: Add some error messaging via toast
+		redirect("/plan".concat("?", search.toString()));
 	}
 
 	const [{ code }] = await createEvent({
@@ -54,14 +34,14 @@ const Page = async ({ searchParams }: Props) => {
 	});
 
 	if (!code) {
-		// TODO: Add some error messaging.
+		// TODO: Add some error messaging via toast
 		redirect("/plan".concat("?", search.toString()));
 	}
 
 	const slotData = buildSlotDataFromParams(params);
 
 	if (slotData.length > 0) {
-		const slots = await createSlots({
+		await createSlots({
 			code,
 			slots: slotData as [
 				{ count: number; item: string },

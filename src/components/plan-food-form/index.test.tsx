@@ -10,7 +10,6 @@ import PlanFoodForm from "@/components/plan-food-form";
 import { Slot } from "@/db/schema/slot";
 
 jest.mock("@/actions/db/delete-slot");
-jest.mock("@/components/plan-food-form/submit-actions");
 
 describe("PlanFoodForm", () => {
 	const committedUsersBySlot = new Map();
