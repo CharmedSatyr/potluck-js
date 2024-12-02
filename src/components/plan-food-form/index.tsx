@@ -159,39 +159,44 @@ const PlanFoodForm = ({
 
 			<input
 				autoComplete="off"
-				defaultValue={eventData.name}
 				hidden
 				name="name"
+				readOnly
 				required
 				type="text"
+				value={eventData.name}
 			/>
 			<input
-				defaultValue={eventData.startDate}
 				hidden
 				name="startDate"
+				readOnly
 				required
 				type="date"
+				value={eventData.startDate}
 			/>
 			<input
-				defaultValue={eventData.startTime}
 				hidden
 				name="startTime"
+				readOnly
 				required
 				type="time"
+				value={eventData.startTime}
 			/>
 			<input
-				defaultValue={eventData.location}
 				hidden
 				name="location"
+				readOnly
 				required
 				type="text"
+				value={eventData.location}
 			/>
-			<input defaultValue={eventData.hosts} hidden name="hosts" type="text" />
+			<input hidden name="hosts" readOnly type="text" value={eventData.hosts} />
 			<input
-				defaultValue={eventData.description}
 				hidden
 				name="description"
+				readOnly
 				type="text"
+				value={eventData.description}
 			/>
 
 			<button
