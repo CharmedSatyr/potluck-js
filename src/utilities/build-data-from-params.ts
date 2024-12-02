@@ -79,5 +79,5 @@ export const buildSlotDataFromParams = (params: {
 		builder.set(index, currentEntry);
 	}
 
-	return Array.from(builder.values());
+	return Array.from(builder.values()).filter((slot) => slot.count && slot.item);
 };

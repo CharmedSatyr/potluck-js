@@ -7,7 +7,7 @@ import deleteSlot from "@/actions/db/delete-slot";
 import { EventData } from "@/@types/event";
 import { MAX_SLOTS } from "@/constants/max-slots";
 import { SlotData } from "@/@types/slot";
-import { schema as slotSchema } from "@/validation/slot.schema"
+import { schema as slotSchema } from "@/validation/slot.schema";
 
 type Props = {
 	committedUsersBySlot: Map<string, JSX.Element>;

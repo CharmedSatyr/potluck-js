@@ -27,9 +27,9 @@ const ProgressIndicator = () => {
 
 	useEffect(() => {
 		if (!anchor) {
-			scrollToAnchor(Step.CREATE_EVENT)
+			scrollToAnchor(Step.CREATE_EVENT);
 		}
-	}, [anchor])
+	}, [anchor]);
 
 	/* Add a hover state to make it clearer you can click. */
 	return (
