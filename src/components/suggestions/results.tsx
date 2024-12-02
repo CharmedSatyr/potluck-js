@@ -75,8 +75,6 @@ const Results = ({
 							setExpanded(false);
 
 							populate(suggestions.slots);
-
-							reset();
 						}}
 						type="button"
 					>
