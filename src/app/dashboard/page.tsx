@@ -68,7 +68,7 @@ const HostingTable = async () => {
 										</span>
 									</Link>
 								</td>
-								<td>{event.name}</td>
+								<td>{event.title}</td>
 								<td>{event.startDate}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 								<td className="hidden md:table-cell">
@@ -124,7 +124,7 @@ const AttendingTable = async () => {
 										</span>
 									</Link>
 								</td>
-								<td>{event.name}</td>
+								<td>{event.title}</td>
 								<td>{event.startDate}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 							</tr>

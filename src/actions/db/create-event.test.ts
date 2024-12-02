@@ -25,9 +25,9 @@ describe("createEvent", () => {
 		description: "This is a valid test event",
 		hosts: "John Doe",
 		location: "123 Test St",
-		name: "Test Event",
 		startDate: "2024-12-31",
 		startTime: "12:30:00",
+		title: "Test Event",
 	};
 
 	it("should insert valid data into the database and return the event code on success", async () => {
@@ -49,9 +49,9 @@ describe("createEvent", () => {
 			description: "This description is too long".repeat(20),
 			hosts: "Hosts".repeat(70),
 			location: "",
-			name: "",
 			startDate: "1999-12-31",
 			startTime: "25:61:00",
+			title: "",
 		};
 
 		const error = new ZodError([
@@ -89,15 +89,6 @@ describe("createEvent", () => {
 				path: ["location"],
 			},
 			{
-				code: "too_small",
-				minimum: 1,
-				type: "string",
-				inclusive: true,
-				exact: false,
-				message: "Name required.",
-				path: ["name"],
-			},
-			{
 				code: "custom",
 				message: "Date must be within the next year.",
 				path: ["startDate"],
@@ -106,6 +97,15 @@ describe("createEvent", () => {
 				code: "custom",
 				message: "Time required.",
 				path: ["startTime"],
+			},
+			{
+				code: "too_small",
+				minimum: 1,
+				type: "string",
+				inclusive: true,
+				exact: false,
+				message: "Title required.",
+				path: ["title"],
 			},
 		]);
 

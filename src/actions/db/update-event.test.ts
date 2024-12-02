@@ -28,9 +28,9 @@ describe("updateEvent", () => {
 		description: "Updated description",
 		hosts: "Jane Doe",
 		location: "456 Test St",
-		name: "Updated Event",
 		startDate: "2024-12-31",
 		startTime: "14:00:00",
+		title: "Updated Event",
 	};
 
 	it("should update the event in the database and return the updated code on success", async () => {
@@ -58,9 +58,9 @@ describe("updateEvent", () => {
 			description: "This description is too long".repeat(20),
 			hosts: "Hosts".repeat(70),
 			location: "",
-			name: "",
 			startDate: "1999-12-31",
 			startTime: "25:61:00",
+			title: "",
 		};
 
 		const error = new ZodError([
@@ -107,15 +107,6 @@ describe("updateEvent", () => {
 				path: ["location"],
 			},
 			{
-				code: "too_small",
-				minimum: 1,
-				type: "string",
-				inclusive: true,
-				exact: false,
-				message: "Name required.",
-				path: ["name"],
-			},
-			{
 				code: "custom",
 				message: "Date must be within the next year.",
 				path: ["startDate"],
@@ -124,6 +115,15 @@ describe("updateEvent", () => {
 				code: "custom",
 				message: "Time required.",
 				path: ["startTime"],
+			},
+			{
+				code: "too_small",
+				minimum: 1,
+				type: "string",
+				inclusive: true,
+				exact: false,
+				message: "Title required.",
+				path: ["title"],
 			},
 		]);
 

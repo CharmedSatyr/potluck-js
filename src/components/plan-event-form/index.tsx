@@ -51,15 +51,14 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 
 			<div>
 				<label className="label label-text" htmlFor="name-input">
-					Event Name
+					Event Title
 				</label>
 				<input
-					autoComplete="off"
 					className="input input-bordered w-full text-sm md:text-base"
-					defaultValue={eventData.name}
+					defaultValue={eventData.title}
 					id="name-input"
 					maxLength={256}
-					name="name"
+					name="title"
 					placeholder="Untitled event"
 					required
 					type="text"

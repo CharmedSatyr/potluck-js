@@ -20,7 +20,7 @@ export const generateItemSuggestions = async (
 	const prompt = `
   A user needs assistance planning their potluck event. Here are the details:
   
-  - **Event Name**: ${eventData.name}
+  - **Event Title**: ${eventData.title}
   - **Description**: ${eventData.description}
   - **Hosted by**: ${eventData.hosts}
   - **Location**: ${eventData.location}

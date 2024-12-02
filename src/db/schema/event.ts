@@ -38,9 +38,9 @@ export const event = pgTable(
 		hosts: varchar("hosts", { length: 256 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 256 }).notNull(),
-		name: varchar("name", { length: 256 }).notNull(),
 		startDate: date("startDate").notNull(),
 		startTime: time("startTime", { withTimezone: false }).notNull(),
+		title: varchar("title", { length: 256 }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
@@ -56,7 +56,7 @@ export type EventUserValues = Pick<
 	| "description"
 	| "hosts"
 	| "location"
-	| "name"
 	| "startDate"
 	| "startTime"
+	| "title"
 >;

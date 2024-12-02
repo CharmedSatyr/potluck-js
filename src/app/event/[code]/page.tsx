@@ -28,7 +28,7 @@ const Container = ({ children }: PropsWithChildren) => (
 
 const EventTitleSection = ({ code }: { code: string }) => (
 	<section className="w-full">
-		<EventHeader code={code} name="Something's Happening..." />
+		<EventHeader code={code} title="Something's Happening..." />
 		<p>Sign in to see all the details!</p>
 	</section>
 );

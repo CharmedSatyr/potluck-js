@@ -17,12 +17,6 @@ export const schema = z.strictObject({
 		.min(1, { message: "Location required." })
 		.max(256)
 		.optional(),
-	name: z
-		.string()
-		.trim()
-		.min(1, { message: "Name required." })
-		.max(256)
-		.optional(),
 	startDate: z
 		.string({ message: "Date required." })
 		.trim()
@@ -39,6 +33,12 @@ export const schema = z.strictObject({
 		.refine((val) => /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(val), {
 			message: "Time required.",
 		})
+		.optional(),
+	title: z
+		.string()
+		.trim()
+		.min(1, { message: "Title required." })
+		.max(256)
 		.optional(),
 }) satisfies z.ZodType<
 	Partial<EventUserValues> & Required<Pick<Event, "code" | "createdBy">>

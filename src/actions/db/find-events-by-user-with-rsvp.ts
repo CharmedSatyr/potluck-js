@@ -14,24 +14,24 @@ const findEventsByUserWithRsvp = async (
 		code: Event["code"];
 		description: Event["location"];
 		location: Event["location"];
-		name: Event["name"];
 		startDate: Event["startDate"];
 		startTime: Event["startTime"];
+		title: Event["title"];
 	}[]
 > => {
 	try {
 		schema.parse(data);
 
-		const { code, name, startDate, startTime, location, description } = event;
+		const { code, startDate, startTime, location, description, title } = event;
 
 		return await db
 			.select({
 				code,
 				description,
 				location,
-				name,
 				startDate,
 				startTime,
+				title,
 			})
 			.from(rsvp)
 			.where(eq(rsvp.createdBy, data.id))

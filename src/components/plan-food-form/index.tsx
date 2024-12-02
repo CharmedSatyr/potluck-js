@@ -158,13 +158,12 @@ const PlanFoodForm = ({
 			</div>
 
 			<input
-				autoComplete="off"
 				hidden
-				name="name"
+				name="title"
 				readOnly
 				required
 				type="text"
-				value={eventData.name}
+				value={eventData.title}
 			/>
 			<input
 				hidden

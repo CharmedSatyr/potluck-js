@@ -6,9 +6,9 @@ const testVals: EventData = {
 	description: "A beautiful walk in the park.",
 	hosts: "Winston Churchill and Elon Musk",
 	location: "123 Main Street",
-	name: "Test Event",
 	startDate: "2025-01-09",
 	startTime: "12:00",
+	title: "Test Event",
 };
 
 export const buildEventDataFromParams = async (
@@ -20,9 +20,9 @@ export const buildEventDataFromParams = async (
 		description: "",
 		hosts: "",
 		location: "",
-		name: "",
 		startDate: "",
 		startTime: "",
+		title: "",
 	};
 
 	const params = await paramsPromise;

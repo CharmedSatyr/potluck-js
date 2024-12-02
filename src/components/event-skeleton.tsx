@@ -17,11 +17,17 @@ type Props = {
 	code: string;
 };
 
-export const EventHeader = ({ code, name }: { code: string; name: string }) => {
+export const EventHeader = ({
+	code,
+	title,
+}: {
+	code: string;
+	title: string;
+}) => {
 	return (
 		<>
 			<h1 className="mb-4 text-5xl font-bold text-primary md:text-6xl">
-				{name}
+				{title}
 			</h1>
 			<div className="font-bold">
 				Event Code: <CopyLinkButton text={code} />
@@ -34,13 +40,13 @@ const EventSkeleton = async ({ code }: Props) => {
 	const [event] = await findEvent({ code });
 	const [creator] = await findUserByEventCode({ code });
 
-	const { description, hosts, location, name, startDate, startTime } = event;
+	const { description, hosts, location, startDate, startTime, title } = event;
 
 	const isPassed = eventIsPassed(startDate);
 
 	return (
 		<div className="w-full">
-			<EventHeader code={code} name={name} />
+			<EventHeader code={code} title={title} />
 
 			<p className="flex items-center gap-2">
 				<CalendarIcon className="h-4 w-4" /> {formatStartDate(startDate)} at{" "}
