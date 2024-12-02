@@ -39,7 +39,7 @@ const Page = async ({ searchParams }: Props) => {
 				<h1 className="mb-0 text-4xl">Click below to sign in</h1>
 				<p>
 					<span className="font-bold text-secondary">{eventData.name}</span>{" "}
-					will be created once you're back.
+					will be created once you&apos;re back.
 				</p>
 				<button className="btn btn-accent flex items-center" type="submit">
 					Sign In with Discord <DiscordIcon className="size-4" />

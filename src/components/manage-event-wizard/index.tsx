@@ -29,7 +29,7 @@ const ProgressIndicator = () => {
 		if (!anchor) {
 			scrollToAnchor(Step.CREATE_EVENT);
 		}
-	}, [anchor]);
+	}, [anchor, scrollToAnchor]);
 
 	/* Add a hover state to make it clearer you can click. */
 	return (

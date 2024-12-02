@@ -1,6 +1,5 @@
 import findEvent from "@/actions/db/find-event";
 import ManageEventWizard from "@/components/manage-event-wizard";
-import { updateEventAction } from "./submit-actions";
 import findSlots from "@/actions/db/find-slots";
 import committedUsersBySlot from "@/components/committed-users-by-slot";
 import { Suspense } from "react";
@@ -32,10 +31,8 @@ const EditEventPage = async ({ params }: Props) => {
 						code={code}
 						committedUsersBySlotPromise={committedUsersBySlot(code)}
 						eventDataPromise={findEvent({ code })}
-						loggedIn={loggedIn}
 						mode="edit"
 						slotsPromise={findSlots({ code })}
-						submitAction={updateEventAction}
 					/>
 				</Suspense>
 			</ErrorBoundary>
