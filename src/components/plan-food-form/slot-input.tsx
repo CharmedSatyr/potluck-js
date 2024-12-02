@@ -6,13 +6,13 @@ type Props = {
 	change: (index: number, value: string, count: string) => void;
 	count: string;
 	hasCommitments: boolean;
-	id: string;
+	id?: string;
 	index: number;
 	item: string;
-	remove: (index: number, id: string) => void;
+	remove: (index: number, id?: string) => void;
 };
 
-const CourseInput = ({
+const SlotInput = ({
 	change,
 	count,
 	hasCommitments,
@@ -107,15 +107,17 @@ const CourseInput = ({
 					</button>
 				</div>
 			</div>
-			<input
-				className="hidden"
-				defaultValue={id}
-				name={`id-${index}`}
-				required
-				type="text"
-			/>
+			{id && (
+				<input
+					className="hidden"
+					defaultValue={id}
+					name={`id-${index}`}
+					required
+					type="text"
+				/>
+			)}
 		</div>
 	);
 };
 
-export default CourseInput;
+export default SlotInput;

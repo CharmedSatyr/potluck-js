@@ -12,7 +12,7 @@ import { User, user } from "@/db/schema/auth/user";
 type CommitmentWithDetails = {
 	commitmentId: Commitment["id"];
 	description: Commitment["description"];
-	item: Slot["course"];
+	item: Slot["item"];
 	quantity: Commitment["quantity"];
 	slotId: Slot["id"];
 	user: {
@@ -34,7 +34,7 @@ const findCommitmentsWithDetails = async (
 			.select({
 				commitmentId: commitment.id,
 				description: commitment.description,
-				item: slot.course,
+				item: slot.item,
 				quantity: commitment.quantity,
 				slotId: slot.id,
 				user: {

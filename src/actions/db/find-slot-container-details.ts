@@ -11,7 +11,7 @@ import { User, user } from "@/db/schema/auth/user";
 
 type SlotContainerDetails = {
 	slotId: Slot["id"];
-	item: Slot["course"];
+	item: Slot["item"];
 	requestedCount: Slot["count"];
 	totalCommitments: number;
 	users: {
@@ -49,7 +49,7 @@ const findSlotContainerDetails = async (
 		const slots = await db
 			.select({
 				slotId: slot.id,
-				item: slot.course,
+				item: slot.item,
 				requestedCount: slot.count,
 				totalCommitments: sum(commitment.quantity).mapWith(Number),
 			})

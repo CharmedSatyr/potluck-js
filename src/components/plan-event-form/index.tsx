@@ -1,91 +1,42 @@
 "use client";
 
-import { useActionState, useCallback, useEffect } from "react";
-import useAnchor from "@/hooks/use-anchor";
-import { usePathname, useSearchParams } from "next/navigation";
-import {
-	PlanEventFormData,
-	PlanEventFormState,
-} from "@/app/plan/submit-actions.schema";
-import WarningAlert from "@/components/warning-alert";
+import { useActionState } from "react";
+import Form from "next/form";
+import { usePathname } from "next/navigation";
+import { EventData } from "@/@types/event";
+import { WizardMode } from "@/@types/wizard-mode";
 import { DiscordIcon } from "@/components/icons/discord";
+import LoadingIndicator from "@/components/loading-indicator";
 import { Step } from "@/components/manage-event-wizard";
-import LoadingIndicator from "../loading-indicator";
+import { loginAction } from "@/components/plan-event-form/login-action";
+import { oneYearFromToday, today } from "@/utilities/date";
 
 type Props = {
 	code: string | null;
-	eventData: PlanEventFormData;
+	eventData: EventData;
 	loggedIn: boolean;
-	mode: "create" | "edit";
-	submitAction: (
-		prevState: PlanEventFormState,
-		formData: FormData
-	) => Promise<PlanEventFormState>;
+	mode: WizardMode;
 };
 
-const PlanEventForm = ({
-	code,
-	eventData,
-	loggedIn,
-	mode,
-	submitAction,
-}: Props) => {
-	const path = usePathname();
-	const searchParams = useSearchParams();
-	const [anchor, scrollToAnchor] = useAnchor();
+const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
+	const pathname = usePathname();
+	const [, login, isPending] = useActionState(loginAction, { path: pathname });
 
-	const createQueryString = useCallback(
-		(name: string, value: string) => {
-			const params = new URLSearchParams(searchParams.toString());
-			params.set(name, value);
-
-			return params.toString();
-		},
-		[searchParams]
-	);
-
-	const [state, submit, isPending] = useActionState<
-		PlanEventFormState,
-		FormData
-	>(submitAction, {
-		fields: eventData,
-		message: "",
-		next: false,
-		path,
-		success: false,
-	});
-
-	useEffect(() => {
-		if (!code || !state) {
-			return;
+	const determineAction = () => {
+		if (mode === "create") {
+			return loggedIn ? `/plan#${Step.PLAN_FOOD}` : login;
 		}
 
-		state.code = code;
-	}, [code, state]);
-
-	useEffect(() => {
-		if (anchor === Step.PLAN_FOOD) {
-			scrollToAnchor(Step.PLAN_FOOD);
-			return;
+		if (mode === "edit") {
+			return `/event/${code}/edit#${Step.PLAN_FOOD}`;
 		}
 
-		if (!state?.next) {
-			return;
-		}
-
-		if (!state?.code) {
-			return;
-		}
-
-		state.next = false;
-
-		const query = "?" + createQueryString("code", state.code);
-		scrollToAnchor(Step.PLAN_FOOD, query);
-	}, [anchor, createQueryString, scrollToAnchor, state]);
+		return "";
+	};
 
 	return (
-		<form
-			action={submit}
+		<Form
+			action={determineAction()}
 			className="form-control mx-2 w-full lg:w-3/4 2xl:w-10/12"
 			name="create-event-form"
 		>
@@ -104,8 +55,8 @@ const PlanEventForm = ({
 				</label>
 				<input
 					autoComplete="off"
-					className={`input input-bordered w-full text-sm md:text-base ${state?.errors?.fieldErrors?.name ? "input-warning" : ""}`}
-					defaultValue={state?.fields.name}
+					className="input input-bordered w-full text-sm md:text-base"
+					defaultValue={eventData.name}
 					id="name-input"
 					maxLength={256}
 					name="name"
@@ -113,7 +64,6 @@ const PlanEventForm = ({
 					required
 					type="text"
 				/>
-				<WarningAlert text={state?.errors?.fieldErrors.name?.join(" ")} />
 			</div>
 
 			<div className="my-2 flex justify-between">
@@ -124,14 +74,13 @@ const PlanEventForm = ({
 					<input
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-date"
-						defaultValue={state?.fields.startDate}
+						defaultValue={eventData.startDate}
+						max={oneYearFromToday}
+						min={today}
 						name="startDate"
 						id="date-input"
 						required
 						type="date"
-					/>
-					<WarningAlert
-						text={state?.errors?.fieldErrors.startDate?.join(" ")}
 					/>
 				</div>
 
@@ -142,15 +91,12 @@ const PlanEventForm = ({
 					<input
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-time"
-						defaultValue={state?.fields.startTime}
+						defaultValue={eventData.startTime}
 						id="time-input"
 						name="startTime"
 						required
 						step={60}
 						type="time"
-					/>
-					<WarningAlert
-						text={state?.errors?.fieldErrors.startTime?.join(" ")}
 					/>
 				</div>
 			</div>
@@ -161,7 +107,7 @@ const PlanEventForm = ({
 				</label>
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
-					defaultValue={state?.fields.location}
+					defaultValue={eventData.location}
 					id="location-input"
 					maxLength={256}
 					name="location"
@@ -169,7 +115,6 @@ const PlanEventForm = ({
 					required
 					type="text"
 				/>
-				<WarningAlert text={state?.errors?.fieldErrors.location?.join(" ")} />
 			</div>
 
 			<div className="my-2">
@@ -182,7 +127,7 @@ const PlanEventForm = ({
 					</span>
 					<input
 						className="w-full"
-						defaultValue={state?.fields.hosts}
+						defaultValue={eventData.hosts}
 						id="hosts-input"
 						maxLength={256}
 						name="hosts"
@@ -190,7 +135,6 @@ const PlanEventForm = ({
 						type="text"
 					/>
 				</div>
-				<WarningAlert text={state?.errors?.fieldErrors.hosts?.join(" ")} />
 			</div>
 
 			<div className="my-2">
@@ -203,7 +147,7 @@ const PlanEventForm = ({
 					</span>
 					<input
 						className="w-full"
-						defaultValue={state?.fields.description}
+						defaultValue={eventData.description}
 						id="description-input"
 						maxLength={256}
 						name="description"
@@ -211,25 +155,18 @@ const PlanEventForm = ({
 						type="text"
 					/>
 				</div>
-				<WarningAlert
-					text={state?.errors?.fieldErrors.description?.join(" ")}
-				/>
 			</div>
 
-			<button
-				className="btn btn-primary my-6 w-full"
-				disabled={isPending || anchor === Step.PLAN_FOOD}
-				type="submit"
-			>
+			<button className="btn btn-primary my-6 w-full" type="submit">
 				{isPending && <LoadingIndicator size={10} />}
 				{loggedIn && !isPending && "Next"}
 				{!loggedIn && !isPending && (
 					<>
-						Sign In with Discord <DiscordIcon className="size-4" />
+						Continue with Discord <DiscordIcon className="size-4" />
 					</>
 				)}
 			</button>
-		</form>
+		</Form>
 	);
 };
 

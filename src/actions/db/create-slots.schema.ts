@@ -5,12 +5,12 @@ import { code } from "@/validation/code.schema";
 
 export const schema = z
 	.strictObject({
-		code: code,
+		code,
 		slots: z
 			.array(
 				z.strictObject({
 					count: z.number().positive(),
-					course: z.string().trim().min(1),
+					item: z.string().trim().min(1),
 				})
 			)
 			.nonempty(),

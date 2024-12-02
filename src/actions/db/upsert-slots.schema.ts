@@ -3,9 +3,10 @@ import { code } from "@/validation/code.schema";
 import { Event } from "@/db/schema/event";
 import { CustomizableSlotValues, Slot } from "@/db/schema/slot";
 
-type CustomizableSlotValuesWithId = CustomizableSlotValues & {
-	id: Slot["id"];
-};
+type CustomizableSlotValuesWithId = CustomizableSlotValues &
+	Partial<{
+		id: Slot["id"];
+	}>;
 
 export const schema = z
 	.strictObject({
@@ -14,8 +15,8 @@ export const schema = z
 			.array(
 				z.strictObject({
 					count: z.number().positive(),
-					course: z.string().trim().min(1),
-					id: z.string().trim().uuid(),
+					id: z.string().trim().uuid().optional(),
+					item: z.string().trim().min(1),
 				})
 			)
 			.nonempty(),

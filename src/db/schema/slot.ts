@@ -8,15 +8,15 @@ import {
 import { event } from "@/db/schema/event";
 
 export const slot = pgTable("slot", {
-	course: varchar("course", { length: 256 }).notNull(),
 	count: integer("count").notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
-	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	eventId: uuid("event_id")
 		.references(() => event.id, { onDelete: "cascade" })
 		.notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
+	item: varchar("item", { length: 256 }).notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
@@ -24,4 +24,4 @@ export const slot = pgTable("slot", {
 
 export type Slot = typeof slot.$inferSelect;
 
-export type CustomizableSlotValues = Pick<Slot, "course" | "count">;
+export type CustomizableSlotValues = Pick<Slot, "count" | "item">;

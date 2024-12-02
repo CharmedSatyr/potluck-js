@@ -1,4 +1,4 @@
-import updateSlots from "@/actions/db/update-slots";
+import upsertSlots from "@/actions/db/upsert-slots";
 import findEvent from "@/actions/db/find-event";
 import db from "@/db/connection";
 import { slot } from "@/db/schema/slot";
@@ -7,7 +7,7 @@ import { ZodError } from "zod";
 jest.mock("@/db/connection");
 jest.mock("@/actions/db/find-event");
 
-describe("updateSlots", () => {
+describe("upsertSlots", () => {
 	let errorLogger: jest.SpyInstance;
 
 	beforeAll(() => {
@@ -27,22 +27,22 @@ describe("updateSlots", () => {
 	const validData: any = {
 		code: "CODE1",
 		slots: [
-			{ count: 5, course: "Apple", id },
-			{ count: 3, course: "Banana", id },
+			{ count: 5, item: "Apple", id },
+			{ count: 3, item: "Banana", id },
 		],
 	};
 
 	const invalidData: any = {
 		code: "CODE1",
-		slots: [{ count: 0, course: "" }],
+		slots: [{ count: 0, item: "" }],
 	};
 
 	it("should insert slots into the database and return the created ids on success", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: "123" }]);
 
 		const returning = [
-			{ count: 5, course: "Apple", id },
-			{ count: 3, course: "Banana", id },
+			{ count: 5, item: "Apple", id },
+			{ count: 3, item: "Banana", id },
 		];
 
 		(db.insert as jest.Mock).mockReturnValueOnce({
@@ -53,7 +53,7 @@ describe("updateSlots", () => {
 			}),
 		});
 
-		const result = await updateSlots(validData);
+		const result = await upsertSlots(validData);
 
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.insert).toHaveBeenCalledWith(slot);
@@ -63,7 +63,7 @@ describe("updateSlots", () => {
 	it("should return an empty array if event is not found", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([]);
 
-		const result = await updateSlots(validData);
+		const result = await upsertSlots(validData);
 
 		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(result).toEqual([]);
@@ -87,18 +87,11 @@ describe("updateSlots", () => {
 				inclusive: true,
 				exact: false,
 				message: "String must contain at least 1 character(s)",
-				path: ["slots", 0, "course"],
-			},
-			{
-				code: "invalid_type",
-				expected: "string",
-				received: "undefined",
-				path: ["slots", 0, "id"],
-				message: "Required",
+				path: ["slots", 0, "item"],
 			},
 		]);
 
-		const result = await updateSlots(invalidData);
+		const result = await upsertSlots(invalidData);
 
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
@@ -115,7 +108,7 @@ describe("updateSlots", () => {
 			}),
 		});
 
-		const result = await updateSlots(validData);
+		const result = await upsertSlots(validData);
 
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(new Error("DB Error"));

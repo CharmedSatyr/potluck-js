@@ -15,39 +15,26 @@ const scrollToAnchor = (id: string, query: string = ""): void => {
 };
 
 const useAnchor = (): [string, (id: string, query?: string) => void] => {
-	const [mounted, setMounted] = useState<boolean>(false);
 	const [anchor, setAnchor] = useState<string>("#");
 
-	useEffect(() => {
-		if (mounted) {
+	const handleHashChange = (hash: string) => {
+		if (hash === window.location.hash) {
 			return;
 		}
 
-		setMounted(true);
 		setAnchor(window.location.hash);
-	}, [mounted]);
+	};
 
+	/**
+	 * TODO: Find a better way.
+	 * hashchange and popstate events don't fire
+	 * on next/Form action submit with hash.
+	 */
 	useEffect(() => {
-		if (!mounted) {
-			return;
-		}
+		const interval = setInterval(() => handleHashChange(anchor), 500);
 
-		if (typeof window === "undefined") {
-			return;
-		}
-
-		const handleAnchorChange = (event: HashChangeEvent) => {
-			if (!event.newURL) {
-				return;
-			}
-
-			setAnchor(new URL(event.newURL).hash);
-		};
-
-		window.addEventListener("hashchange", handleAnchorChange, true);
-
-		return () => window.removeEventListener("hashchange", handleAnchorChange);
-	}, [mounted]);
+		return () => clearInterval(interval);
+	}, [anchor]);
 
 	return [anchor.split("#")[1], scrollToAnchor];
 };

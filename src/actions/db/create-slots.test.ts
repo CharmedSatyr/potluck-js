@@ -25,14 +25,14 @@ describe("createSlots", () => {
 	const validData: any = {
 		code: "CODE1",
 		slots: [
-			{ count: 5, course: "Math 101" },
-			{ count: 3, course: "Science 202" },
+			{ count: 5, item: "Banana" },
+			{ count: 3, item: "Apple" },
 		],
 	};
 
 	const invalidData: any = {
 		code: "CODE1",
-		slots: [{ count: 5, course: 123 }],
+		slots: [{ count: 5, item: 123 }],
 	};
 
 	it("should insert slots into the database and return the created ids on success", async () => {
@@ -66,7 +66,7 @@ describe("createSlots", () => {
 				code: "invalid_type",
 				expected: "string",
 				received: "number",
-				path: ["slots", 0, "course"],
+				path: ["slots", 0, "item"],
 				message: "Expected string, received number",
 			},
 		]);

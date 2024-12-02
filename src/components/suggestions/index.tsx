@@ -3,23 +3,23 @@ import { Dispatch, SetStateAction, useState } from "react";
 import Results from "@/components/suggestions/results";
 import Prompt from "@/components/suggestions/prompt";
 import FailureWarning from "@/components/suggestions/failure-warning";
+import { EventData } from "@/@types/event";
+import { SlotData } from "@/@types/slot";
 
 type Props = {
 	attendees: string;
-	code: string;
 	hookReturn: {
 		suggestions: string;
 		fetchSuggestions: () => Promise<void>;
 		pending: boolean;
 		reset: () => void;
 	};
-	populate: (items: { count: number; id: string; item: string }[]) => void;
+	populate: (items: SlotData[]) => void;
 	setAttendees: Dispatch<SetStateAction<string>>;
 };
 
 const Suggestions = ({
 	attendees,
-	code,
 	hookReturn,
 	populate,
 	setAttendees,
@@ -27,11 +27,6 @@ const Suggestions = ({
 	const { suggestions: result, fetchSuggestions, pending, reset } = hookReturn;
 
 	// TODO: Use a form/useActionState?
-
-	if (!code) {
-		return null;
-	}
-
 	if (result && !pending) {
 		try {
 			const suggestions = JSON.parse(result);
@@ -59,17 +54,21 @@ const Suggestions = ({
 
 // TODO: not unknown.
 const SuggestionsContainer = ({
-	code,
+	eventData,
 	populate,
 }: {
-	code: string;
-	populate: (items: { count: number; id: string; item: string }[]) => void;
+	eventData: EventData;
+	populate: (items: SlotData[]) => void;
 }) => {
 	const [attendees, setAttendees] = useState<string>("0");
-	const hookReturn = useSlotSuggestions(code, Number(attendees));
+	const hookReturn = useSlotSuggestions(eventData, Number(attendees));
+
+	if (!eventData) {
+		return null;
+	}
 
 	return (
-		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
+		<div className="rounded-xl bg-base-300 shadow-xl md:p-4">
 			<div
 				className="transition-all duration-300 ease-in-out"
 				style={{
@@ -78,7 +77,6 @@ const SuggestionsContainer = ({
 			>
 				<Suggestions
 					attendees={attendees}
-					code={code}
 					hookReturn={hookReturn}
 					populate={populate}
 					setAttendees={setAttendees}

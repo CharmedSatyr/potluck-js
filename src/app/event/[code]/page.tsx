@@ -18,13 +18,12 @@ import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-detai
 import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
+import { EventData } from "@/@types/event";
 
 type Props = { params: Promise<{ code: string }> };
 
 const Container = ({ children }: PropsWithChildren) => (
-	<main className="container flex h-full w-full flex-wrap lg:w-3/4 2xl:w-1/2">
-		{children}
-	</main>
+	<main className="container flex h-full w-full flex-wrap">{children}</main>
 );
 
 const EventTitleSection = ({ code }: { code: string }) => (
@@ -68,21 +67,31 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 	</section>
 );
 
-const ManageEventSection = ({ code }: { code: string }) => (
-	<section className="flex w-full flex-col gap-2 md:w-1/3 md:items-end md:justify-start">
-		<SlideIn>
-			<Link
-				className="btn btn-accent mb-2 w-full md:w-28"
-				href={`/event/${code}/edit`}
-			>
-				Edit
-			</Link>
-		</SlideIn>
-		<SlideIn>
-			<DeleteEventForm code={code} redirect={true} />
-		</SlideIn>
-	</section>
-);
+const ManageEventSection = ({
+	code,
+	eventData,
+}: {
+	code: string;
+	eventData: EventData;
+}) => {
+	const eventDataToParams = new URLSearchParams(eventData).toString();
+
+	return (
+		<section className="flex w-full flex-col gap-2 md:w-1/3 md:items-end md:justify-start">
+			<SlideIn>
+				<Link
+					className="btn btn-accent mb-2 w-full md:w-28"
+					href={`/event/${code}/edit?${eventDataToParams}`}
+				>
+					Edit
+				</Link>
+			</SlideIn>
+			<SlideIn>
+				<DeleteEventForm code={code} redirect={true} />
+			</SlideIn>
+		</section>
+	);
+};
 
 // TODO: Delete commitments if someone changes RSVP to No.
 const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
@@ -126,10 +135,16 @@ const PassedView = ({ code }: { code: string }) => (
 	</Container>
 );
 
-const HostView = async ({ code }: { code: string }) => (
+const HostView = async ({
+	code,
+	eventData,
+}: {
+	code: string;
+	eventData: EventData;
+}) => (
 	<Container>
 		<EventSection code={code} />
-		<ManageEventSection code={code} />
+		<ManageEventSection code={code} eventData={eventData} />
 		<FoodPlanSection code={code} />
 		<AttendeesSection code={code} />
 	</Container>
@@ -170,7 +185,7 @@ const EventPage = async ({ params }: Props) => {
 	}
 
 	if (event.createdBy === session.user.id) {
-		return <HostView code={code} />;
+		return <HostView code={code} eventData={event} />;
 	}
 
 	const [rsvpResponse] = await findUserEventRsvp({
