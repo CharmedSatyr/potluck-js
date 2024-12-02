@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { readStreamableValue } from "ai/rsc";
 import { generateItemSuggestions as generateSlotSuggestions } from "@/actions/ai/generate-slot-suggestions";
-import findEvent from "@/actions/db/find-event";
 import { EventData } from "@/@types/event";
 
 const useSlotSuggestions = (eventData: EventData, attendees: number) => {
