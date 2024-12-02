@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, use, useState } from "react";
+import { Suspense, use, useEffect, useState } from "react";
 import PlanEventForm from "@/components/plan-event-form";
 import PlanFoodForm from "@/components/plan-food-form";
 import Suggestions from "@/components/suggestions";
@@ -24,6 +24,12 @@ export enum Step {
 
 const ProgressIndicator = () => {
 	const [anchor, scrollToAnchor] = useAnchor();
+
+	useEffect(() => {
+		if (!anchor) {
+			scrollToAnchor(Step.CREATE_EVENT)
+		}
+	}, [anchor])
 
 	/* Add a hover state to make it clearer you can click. */
 	return (
