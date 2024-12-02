@@ -36,7 +36,7 @@ const StartCta = () => {
 const Home = () => {
 	return (
 		<main>
-			<div className="hero h-full bg-base-300 py-10 xl:flex">
+			<div className="hero h-full rounded-xl bg-base-300 py-10 xl:flex">
 				<div className="hero-content rounded-xl text-center">
 					<div className="flex-col xl:mx-10 xl:w-1/2">
 						<h1 className="mb-0 text-4xl font-bold leading-tight sm:text-5xl">

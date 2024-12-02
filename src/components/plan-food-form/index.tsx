@@ -45,10 +45,6 @@ const PlanFoodForm = ({
 	});
 
 	useEffect(() => {
-		const current = slots.filter(
-			(slot) => slot.count !== "0" && slot.item !== ""
-		);
-
 		const suggested = suggestedSlots.map((slot) => {
 			return { ...slot, count: slot.count.toString(), key: uuidv4() };
 		});
@@ -57,8 +53,11 @@ const PlanFoodForm = ({
 			return;
 		}
 
-		setSlots([...current, ...suggested]);
-	}, [setSlots, slots, suggestedSlots]);
+		setSlots((state) => [
+			...state.filter((slot) => slot.count !== "0" && slot.item !== ""),
+			...suggested,
+		]);
+	}, [setSlots, suggestedSlots]);
 
 	const addSlot = () => {
 		if (slots.length >= MAX_SLOTS) {
