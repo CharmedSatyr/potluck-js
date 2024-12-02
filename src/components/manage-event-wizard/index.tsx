@@ -94,7 +94,7 @@ const ManageEventWizard = ({
 					<h1 className="text-primary">Plan the Food</h1>
 
 					<Suspense>
-						{eventData && (
+						{loggedIn && eventData && (
 							<Suggestions
 								eventData={eventData}
 								populate={populateSuggestedSlots}
