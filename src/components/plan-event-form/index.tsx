@@ -9,6 +9,7 @@ import { DiscordIcon } from "@/components/icons/discord";
 import LoadingIndicator from "@/components/loading-indicator";
 import { Step } from "@/components/manage-event-wizard";
 import { loginAction } from "@/components/plan-event-form/login-action";
+import { oneYearFromToday, today } from "@/utilities/date";
 
 type Props = {
 	code: string | null;
@@ -64,6 +65,8 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-date"
 						defaultValue={eventData.startDate}
+						max={oneYearFromToday}
+						min={today}
 						name="startDate"
 						id="date-input"
 						required
