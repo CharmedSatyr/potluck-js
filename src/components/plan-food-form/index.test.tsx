@@ -8,7 +8,6 @@ import {
 import userEvent from "@testing-library/user-event";
 import PlanFoodForm from "@/components/plan-food-form";
 import { Slot } from "@/db/schema/slot";
-import submitSlots from "@/components/plan-food-form/submit-actions";
 
 jest.mock("@/actions/db/delete-slot");
 jest.mock("@/components/plan-food-form/submit-actions");
@@ -16,14 +15,6 @@ jest.mock("@/components/plan-food-form/submit-actions");
 describe("PlanFoodForm", () => {
 	const committedUsersBySlot = new Map();
 	const slots: Slot[] = [];
-
-	beforeEach(() => {
-		(submitSlots as jest.Mock).mockReturnValue({
-			code: "CODE1",
-			message: "",
-			success: true,
-		});
-	});
 
 	it.todo("These tests broke after adding ai. Unsure why.");
 
