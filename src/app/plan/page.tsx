@@ -1,55 +1,31 @@
-import ManageEventWizard from "@/components/manage-event-wizard";
-import { auth } from "@/auth";
-import { DEV } from "@/utilities/current-env";
 import { Suspense } from "react";
+import ManageEventWizard from "@/components/manage-event-wizard";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
-import ErrorBoundary from "@/components/error-boundary";
-import { EventData } from "@/@types/event";
+import { buildEventDataFromParams } from "@/utilities/build-data-from-params";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
 };
 
-const StartPage = async ({ searchParams }: Props) => {
-	const session = await auth();
-	const loggedIn = Boolean(session?.user?.id);
-
+const PlanPage = async ({ searchParams }: Props) => {
 	const params = await searchParams;
 	const { code } = params;
 
-	const values: EventData = {
-		description: "",
-		hosts: "",
-		location: DEV ? "123 Main Street" : "",
-		name: DEV ? "Test Event" : "",
-		startDate: DEV ? "2025-01-09" : "",
-		startTime: DEV ? "12:00" : "",
-	};
-
-	for (const key in values) {
-		const searchValue = params[key];
-		if (!searchValue) {
-			continue;
-		}
-		values[key as keyof EventData] = searchValue;
-	}
+	const values = buildEventDataFromParams(params);
 
 	return (
 		<main className="flex h-full w-full flex-col items-center">
-			<ErrorBoundary>
-				<Suspense fallback={<PlanEventFormFallback />}>
-					<ManageEventWizard
-						code={code}
-						committedUsersBySlotPromise={Promise.resolve(new Map())}
-						eventDataPromise={Promise.resolve([values])}
-						loggedIn={loggedIn}
-						mode="create"
-						slotsPromise={Promise.resolve([])}
-					/>
-				</Suspense>
-			</ErrorBoundary>
+			<Suspense fallback={<PlanEventFormFallback />}>
+				<ManageEventWizard
+					code={code}
+					committedUsersBySlotPromise={Promise.resolve(new Map())}
+					eventDataPromise={Promise.resolve([values])}
+					mode="create"
+					slotsPromise={Promise.resolve([])}
+				/>
+			</Suspense>
 		</main>
 	);
 };
 
-export default StartPage;
+export default PlanPage;
