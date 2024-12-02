@@ -9,7 +9,6 @@ export const suggestionsSchema = z.strictObject({
 		.array(
 			z.strictObject({
 				count: z.number().max(999),
-				id: z.string().uuid(),
 				item: z.string().trim().max(500),
 			})
 		)
