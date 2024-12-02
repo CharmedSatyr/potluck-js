@@ -4,6 +4,7 @@ import Results from "@/components/suggestions/results";
 import Prompt from "@/components/suggestions/prompt";
 import FailureWarning from "@/components/suggestions/failure-warning";
 import { EventData } from "@/@types/event";
+import { SlotData } from "@/@types/slot";
 
 type Props = {
 	attendees: string;
@@ -13,7 +14,7 @@ type Props = {
 		pending: boolean;
 		reset: () => void;
 	};
-	populate: (items: { count: number; id: string; item: string }[]) => void;
+	populate: (items: SlotData[]) => void;
 	setAttendees: Dispatch<SetStateAction<string>>;
 };
 
@@ -57,17 +58,17 @@ const SuggestionsContainer = ({
 	populate,
 }: {
 	eventData: EventData;
-	populate: (items: { count: number; id: string; item: string }[]) => void;
+	populate: (items: SlotData[]) => void;
 }) => {
 	const [attendees, setAttendees] = useState<string>("0");
 	const hookReturn = useSlotSuggestions(eventData, Number(attendees));
 
-	if (eventData) {
+	if (!eventData) {
 		return null;
 	}
 
 	return (
-		<div className="rounded-xl bg-base-300 p-4 shadow-xl">
+		<div className="rounded-xl bg-base-300 shadow-xl md:p-4">
 			<div
 				className="transition-all duration-300 ease-in-out"
 				style={{

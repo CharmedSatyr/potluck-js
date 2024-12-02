@@ -3,13 +3,14 @@ import { z } from "zod";
 import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { SlotData } from "@/@types/slot";
 
 const Results = ({
 	populate,
 	reset,
 	suggestions,
 }: {
-	populate: (items: { count: number; id: string; item: string }[]) => void;
+	populate: (items: SlotData[]) => void;
 	reset: () => void;
 	suggestions: z.infer<typeof suggestionsSchema>;
 }) => {
@@ -58,7 +59,7 @@ const Results = ({
 						</thead>
 						<tbody>
 							{suggestions.slots.map((slot, i) => (
-								<tr key={slot.id}>
+								<tr key={slot.item}>
 									<th>{i + 1}</th>
 									<td>{slot.item}</td>
 									<td>{slot.count}</td>
