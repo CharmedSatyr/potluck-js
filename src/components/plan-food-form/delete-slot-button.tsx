@@ -2,9 +2,9 @@ import { useRef } from "react";
 
 type Props = {
 	hasCommitments: boolean;
-	id: string;
+	id?: string;
 	index: number;
-	remove: (index: number, id: string) => void;
+	remove: (index: number, id?: string) => void;
 };
 
 const DynamicButton = ({
