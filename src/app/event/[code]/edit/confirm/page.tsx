@@ -1,10 +1,11 @@
-import createEvent from "@/actions/db/create-event";
-import createSlots from "@/actions/db/create-slots";
+import updateEvent from "@/actions/db/update-event";
+import upsertSlots from "@/actions/db/upsert-slots";
 import { auth } from "@/auth";
 import {
 	buildEventDataFromParams,
 	buildSlotDataFromParams,
 } from "@/utilities/build-data-from-params";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -15,47 +16,43 @@ type Props = {
 const Page = async ({ params, searchParams }: Props) => {
 	const session = await auth();
 
-	const search = await searchParams;
-
 	const { code } = await params;
-
-	const queryString = "?" + new URLSearchParams(search).toString();
 
 	if (!session?.user?.id) {
 		// TODO: Add some error messaging via toast
 		redirect(`/event/${code}`);
 	}
 
-	/*
-    const [eventData] = await buildEventDataFromParams(searchParams);
-    /
-    const [{ code }] = await createEvent({
-        ...eventData,
-        createdBy: session.user.id,
-    });
+	const [eventData] = await buildEventDataFromParams(searchParams);
 
-    if (!code) {
-        // TODO: Add some error messaging via toast
-        redirect("/plan".concat(queryString));
-    }
+	const [result] = await updateEvent({
+		...eventData,
+		code,
+		createdBy: session.user.id,
+	});
 
-    const slotData = await buildSlotDataFromParams(searchParams);
+	if (!result.code) {
+		// TODO: Add some error messaging via toast
+		redirect(`/event/${code}`);
+	}
 
-    if (slotData.length > 0) {
-        await createSlots({
-            code,
-            slots: slotData as [
-                { count: number; item: string },
-                ...{ count: number; item: string }[],
-            ],
-        });
+	const slotData = await buildSlotDataFromParams(searchParams);
 
-        // TODO: Add handling if problem adding slots.
-    }
-        */
+	if (slotData.length > 0) {
+		await upsertSlots({
+			code,
+			slots: slotData as [
+				{ count: number; id?: string; item: string },
+				...{ count: number; id?: string; item: string }[],
+			],
+		});
 
-	// redirect(`/event/${code}`);
-	return <div>Working...</div>;
+		// TODO: Add handling if problem adding slots.
+	}
+
+	revalidatePath(`/event/${code}`, "page");
+
+	redirect(`/event/${code}`);
 };
 
 export default Page;

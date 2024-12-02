@@ -81,13 +81,6 @@ describe("upsertSlots", () => {
 				path: ["slots", 0, "count"],
 			},
 			{
-				code: "invalid_type",
-				expected: "string",
-				received: "undefined",
-				path: ["slots", 0, "id"],
-				message: "Required",
-			},
-			{
 				code: "too_small",
 				minimum: 1,
 				type: "string",
