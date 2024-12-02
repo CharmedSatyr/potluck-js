@@ -31,7 +31,7 @@ const deleteEventAction = async (
 	revalidatePath("/my-events", "page");
 
 	if (prevState.redirect) {
-		redirect("/");
+		redirect("/dashboard");
 	}
 
 	return {
