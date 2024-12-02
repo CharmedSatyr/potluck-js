@@ -1,7 +1,10 @@
 import { Suspense } from "react";
 import ManageEventWizard from "@/components/manage-event-wizard";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
-import { buildEventDataFromParams } from "@/utilities/build-data-from-params";
+import {
+	buildEventDataFromParams,
+	buildSlotDataFromParams,
+} from "@/utilities/build-data-from-params";
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
@@ -11,7 +14,8 @@ const PlanPage = async ({ searchParams }: Props) => {
 	const params = await searchParams;
 	const { code } = params;
 
-	const values = buildEventDataFromParams(params);
+	const eventData = buildEventDataFromParams(params);
+	const slotData = buildSlotDataFromParams(params);
 
 	return (
 		<main className="flex h-full w-full flex-col items-center">
@@ -19,9 +23,9 @@ const PlanPage = async ({ searchParams }: Props) => {
 				<ManageEventWizard
 					code={code}
 					committedUsersBySlotPromise={Promise.resolve(new Map())}
-					eventDataPromise={Promise.resolve([values])}
+					eventDataPromise={Promise.resolve([eventData])}
 					mode="create"
-					slotsPromise={Promise.resolve([])}
+					slotsPromise={Promise.resolve(slotData)}
 				/>
 			</Suspense>
 		</main>
