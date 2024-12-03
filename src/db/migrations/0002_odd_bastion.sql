@@ -1,1 +1,0 @@
-ALTER TABLE "event" RENAME COLUMN "name" TO "title";

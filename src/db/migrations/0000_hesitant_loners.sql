@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS "event" (
 	"hosts" varchar(256) NOT NULL,
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"location" varchar(256) NOT NULL,
-	"name" varchar(256) NOT NULL,
 	"startDate" date NOT NULL,
 	"startTime" time NOT NULL,
+	"title" varchar(256) NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "event_code_unique" UNIQUE("code")
 );
@@ -65,12 +65,14 @@ CREATE TABLE IF NOT EXISTS "rsvp" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "slot" (
-	"course" varchar(256) NOT NULL,
 	"count" integer NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"event_id" uuid NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"item" varchar(256) NOT NULL,
+	"order" serial NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "slot_order_unique" UNIQUE("order")
 );
 --> statement-breakpoint
 DO $$ BEGIN

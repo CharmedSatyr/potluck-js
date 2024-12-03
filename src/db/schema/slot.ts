@@ -4,7 +4,7 @@ import {
 	timestamp,
 	pgTable,
 	integer,
-	smallserial,
+	serial,
 } from "drizzle-orm/pg-core";
 import { event } from "@/db/schema/event";
 
@@ -18,7 +18,7 @@ export const slot = pgTable("slot", {
 		.notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	item: varchar("item", { length: 256 }).notNull(),
-	order: smallserial("order").notNull().unique(),
+	order: serial("order").notNull().unique(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
