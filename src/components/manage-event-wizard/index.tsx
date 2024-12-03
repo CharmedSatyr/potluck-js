@@ -4,7 +4,9 @@ import { Suspense, use, useEffect, useState } from "react";
 import PlanEventForm, {
 	PlanEventFormFallback,
 } from "@/components/plan-event-form";
-import PlanFoodForm from "@/components/plan-food-form";
+import PlanFoodForm, {
+	PlanFoodFormFallback,
+} from "@/components/plan-food-form";
 import Suggestions from "@/components/suggestions";
 import useAnchor from "@/hooks/use-anchor";
 import { EventData } from "@/@types/event";
@@ -106,7 +108,7 @@ const ManageEventWizard = ({
 						)}
 					</Suspense>
 
-					<Suspense>
+					<Suspense fallback={<PlanFoodFormFallback />}>
 						<PlanFoodForm
 							code={code}
 							committedUsersBySlotPromise={committedUsersBySlotPromise}

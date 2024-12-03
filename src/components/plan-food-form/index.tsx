@@ -112,7 +112,7 @@ const PlanFoodForm = ({
 	return (
 		<form
 			action={determineAction()}
-			className="form-control mx-2 w-full md:w-11/12 lg:w-9/12 2xl:w-7/12"
+			className="form-control mx-2 w-full"
 			data-testid="plan-food-form"
 		>
 			<h2>Create Signup Slots</h2>
@@ -210,3 +210,21 @@ const PlanFoodForm = ({
 };
 
 export default PlanFoodForm;
+
+export const PlanFoodFormFallback = () => {
+	return (
+		<div className="flex w-full flex-col gap-4">
+			<div className="skeleton h-14 w-5/12" />
+			<div className="flex justify-between gap-2">
+				<div className="skeleton h-14 w-1/12" />
+				<div className="skeleton h-14 w-7/12" />
+				<div className="skeleton h-14 w-3/12" />
+			</div>
+			<div className="flex justify-between gap-2">
+				<div className="skeleton h-14 w-4/12" />
+				<div className="skeleton h-14 w-4/12" />
+			</div>
+			<div className="skeleton h-14 w-full" />
+		</div>
+	);
+};

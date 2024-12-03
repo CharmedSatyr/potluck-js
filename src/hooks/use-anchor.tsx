@@ -14,6 +14,7 @@ const scrollToAnchor = (id: string, query: string = ""): void => {
 	);
 };
 
+/** @deprecated Only use one instance of this because multiple instances may conflict with each other. */
 const useAnchor = (): [string, (id: string, query?: string) => void] => {
 	const [anchor, setAnchor] = useState<string>("#");
 
