@@ -77,7 +77,7 @@ export default EventSkeleton;
 export const EventSkeletonFallback = () => {
 	return (
 		<div className="mb-2 flex w-full flex-col gap-4">
-			<div className="skeleton h-12 w-3/4" />
+			<div className="skeleton h-12 w-3/4 md:h-16" />
 			<div className="skeleton h-8 w-1/2" />
 			<div className="flex gap-2">
 				<div className="skeleton h-8 w-8 shrink-0 rounded-full"></div>
