@@ -180,9 +180,9 @@ export const PlanEventFormFallback = () => {
 			<div className="flex justify-around gap-2">
 				<div className="skeleton h-14 w-full" />
 			</div>
-			<div className="flex justify-around gap-2">
-				<div className="skeleton h-14 w-1/2" />
-				<div className="skeleton h-14 w-1/2" />
+			<div className="flex justify-between gap-2">
+				<div className="skeleton h-14 w-5/12" />
+				<div className="skeleton h-14 w-5/12" />
 			</div>
 			<div className="flex justify-around gap-2">
 				<div className="skeleton h-14 w-full" />
