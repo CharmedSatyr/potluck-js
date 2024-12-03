@@ -6,6 +6,9 @@ import { createStreamableValue } from "ai/rsc";
 import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { EventData } from "@/@types/event";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 export const generateItemSuggestions = async (
 	eventData: EventData,
 	attendees: number
