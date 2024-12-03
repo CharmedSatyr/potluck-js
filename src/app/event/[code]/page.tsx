@@ -78,15 +78,16 @@ const ManageEventSection = ({
 	code: string;
 	eventData: EventData;
 }) => {
-	const eventDataToParams = new URLSearchParams(eventData).toString();
-
 	return (
 		<section className="my my-4 flex w-full flex-col gap-2 md:my-0 md:w-1/3 md:items-end md:justify-start">
 			<Suspense fallback={<RsvpFormFallback />}>
 				<SlideIn>
 					<Link
 						className="btn btn-accent mb-2 w-full md:w-28"
-						href={`/event/${code}/edit?${eventDataToParams}`}
+						href={{
+							pathname: `/event/${code}/edit`,
+							query: eventData,
+						}}
 					>
 						Edit
 					</Link>
