@@ -32,6 +32,10 @@ const ProgressIndicator = () => {
 		if (!anchor) {
 			scrollToAnchor(Step.CREATE_EVENT);
 		}
+
+		if (anchor === Step.PLAN_FOOD) {
+			scrollToAnchor(Step.PLAN_FOOD);
+		}
 	}, [anchor, scrollToAnchor]);
 
 	/* Add a hover state to make it clearer you can click. */
