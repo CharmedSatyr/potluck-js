@@ -2,6 +2,7 @@ import Link from "next/link";
 import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
 import Image from "next/image";
+import potluckQuest from "../../public/static/potluck-quest";
 
 const CreateEventButton = () => (
 	<Link href="/plan" className="btn btn-primary text-xl">
@@ -54,8 +55,11 @@ const Home = () => {
 						<div className="flex w-full justify-center xl:hidden">
 							<Image
 								alt={`${siteMetadata.title} logo`}
+								blurDataURL={potluckQuest}
 								className="max-w-sm rounded-lg shadow-2xl"
-								src="/static/potluck-quest.png"
+								placeholder="blur"
+								priority
+								src="/static/potluck-quest.webp"
 								width="250"
 								height="250"
 							/>
