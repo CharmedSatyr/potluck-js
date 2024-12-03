@@ -157,7 +157,7 @@ describe("ItemInput", () => {
 		expect(handleChange).toHaveBeenLastCalledWith(0, "Sample Item", "0");
 	});
 
-	it("limits the count to a maximum of 99", () => {
+	it("limits the count to a maximum of 1000", () => {
 		render(
 			<SlotInput
 				change={handleChange}
@@ -173,11 +173,11 @@ describe("ItemInput", () => {
 		const incrementButton = screen.getAllByRole("button")[3];
 		const countInput = screen.getByRole("spinbutton");
 
-		fireEvent.change(countInput, { target: { value: "99" } });
+		fireEvent.change(countInput, { target: { value: "1000" } });
 
 		fireEvent.click(incrementButton);
 
-		expect(countInput).toHaveValue(99);
-		expect(handleChange).toHaveBeenCalledWith(0, "Sample Item", "99");
+		expect(countInput).toHaveValue(1000);
+		expect(handleChange).toHaveBeenCalledWith(0, "Sample Item", "1000");
 	});
 });

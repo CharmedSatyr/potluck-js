@@ -40,7 +40,7 @@ const ProgressIndicator = () => {
 		}
 	}, [anchor, scrollToAnchor]);
 
-	/* Add a hover state to make it clearer you can click. */
+	/* TODO: Add a hover state to make it clearer you can click. */
 	return (
 		<div className="steps my-8 w-full">
 			<button

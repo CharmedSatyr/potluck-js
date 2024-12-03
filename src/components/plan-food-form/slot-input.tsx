@@ -80,7 +80,7 @@ const SlotInput = ({
 						defaultValue={count}
 						id={`count-${index}`}
 						inputMode="numeric"
-						max="99"
+						max="1000" // Arbitrary
 						min="0"
 						name={`count-${index}`}
 						onChange={(e) =>
