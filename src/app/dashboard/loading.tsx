@@ -1,4 +1,4 @@
-import { TableFallback } from "./page";
+import { TableFallback } from "@/app/dashboard/table-fallback";
 
 const Loading = () => (
 	<div className="flex w-full flex-col gap-8">
