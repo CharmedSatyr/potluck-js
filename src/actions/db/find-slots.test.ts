@@ -32,7 +32,9 @@ describe("findSlots", () => {
 
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockResolvedValueOnce(mockSlots),
+				where: jest.fn().mockReturnValueOnce({
+					orderBy: jest.fn(() => Promise.resolve(mockSlots)),
+				}),
 			}),
 		});
 
@@ -81,7 +83,9 @@ describe("findSlots", () => {
 
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockRejectedValueOnce(error),
+				where: jest.fn().mockReturnValueOnce({
+					orderBy: jest.fn().mockRejectedValueOnce(error),
+				}),
 			}),
 		});
 

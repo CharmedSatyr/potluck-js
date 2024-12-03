@@ -56,7 +56,8 @@ const findSlotContainerDetails = async (
 			.from(slot)
 			.where(eq(slot.eventId, event.id))
 			.leftJoin(commitment, eq(commitment.slotId, slot.id))
-			.groupBy(slot.id);
+			.groupBy(slot.id)
+			.orderBy(slot.order);
 
 		// TODO: `users` and `slots` queries should be combined.
 		// There is a known issue where column references

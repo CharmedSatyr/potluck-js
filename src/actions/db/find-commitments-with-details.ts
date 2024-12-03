@@ -46,7 +46,8 @@ const findCommitmentsWithDetails = async (
 			.from(slot)
 			.where(eq(slot.eventId, event.id))
 			.innerJoin(commitment, eq(commitment.slotId, slot.id))
-			.innerJoin(user, eq(commitment.createdBy, user.id));
+			.innerJoin(user, eq(commitment.createdBy, user.id))
+			.orderBy(slot.order);
 	} catch (err) {
 		console.error(err);
 
