@@ -27,22 +27,22 @@ describe("upsertSlots", () => {
 	const validData: any = {
 		code: "CODE1",
 		slots: [
-			{ count: 5, item: "Apple", id },
-			{ count: 3, item: "Banana", id },
+			{ count: 5, item: "Apple", id, order: 1 },
+			{ count: 3, item: "Banana", id, order: 2 },
 		],
 	};
 
 	const invalidData: any = {
 		code: "CODE1",
-		slots: [{ count: 0, item: "" }],
+		slots: [{ count: 0, item: "", order: "apple" }],
 	};
 
 	it("should insert slots into the database and return the created ids on success", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: "123" }]);
 
 		const returning = [
-			{ count: 5, item: "Apple", id },
-			{ count: 3, item: "Banana", id },
+			{ count: 5, item: "Apple", id, order: 1 },
+			{ count: 3, item: "Banana", id, order: 2 },
 		];
 
 		(db.insert as jest.Mock).mockReturnValueOnce({
@@ -88,6 +88,13 @@ describe("upsertSlots", () => {
 				exact: false,
 				message: "String must contain at least 1 character(s)",
 				path: ["slots", 0, "item"],
+			},
+			{
+				code: "invalid_type",
+				expected: "number",
+				received: "nan",
+				path: ["slots", 0, "order"],
+				message: "Expected number, received nan",
 			},
 		]);
 

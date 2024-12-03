@@ -60,7 +60,7 @@ const Results = ({
 						<tbody>
 							{suggestions.slots.map((slot, i) => (
 								<tr key={slot.item}>
-									<th>{i + 1}</th>
+									<th>{slot.order}</th>
 									<td>{slot.item}</td>
 									<td>{slot.count}</td>
 								</tr>

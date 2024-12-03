@@ -1,3 +1,4 @@
+import { NonEmptySlotDataArray } from "@/@types/slot";
 import createEvent from "@/actions/db/create-event";
 import createSlots from "@/actions/db/create-slots";
 import { auth } from "@/auth";
@@ -39,10 +40,7 @@ const Page = async ({ searchParams }: Props) => {
 	if (slotData.length > 0) {
 		await createSlots({
 			code,
-			slots: slotData as [
-				{ count: number; item: string },
-				...{ count: number; item: string }[],
-			],
+			slots: slotData as NonEmptySlotDataArray,
 		});
 
 		// TODO: Add handling if problem adding slots.

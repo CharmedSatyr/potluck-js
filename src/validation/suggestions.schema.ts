@@ -10,9 +10,10 @@ export const suggestionsSchema = z.strictObject({
 			z.strictObject({
 				count: z.number().max(999),
 				item: z.string().trim().max(500),
+				order: z.number().positive(),
 			})
 		)
 		.describe(
-			"A list of types and counts of items the host should request from attendees."
+			"An ordered list of types and counts of items the host should request from attendees."
 		),
 });
