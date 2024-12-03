@@ -51,12 +51,16 @@ export const generateItemSuggestions = async (
 			schema: suggestionsSchema,
 		});
 
+		console.log("partialObjectStream:", partialObjectStream);
+
 		for await (const partialObject of partialObjectStream) {
+			console.log("partialObject:", partialObject);
 			stream.update(partialObject);
 		}
 
 		stream.done();
 	})();
 
+	console.log("stream", JSON.stringify(stream));
 	return { object: stream.value };
 };
