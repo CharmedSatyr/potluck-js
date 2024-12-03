@@ -1,5 +1,5 @@
-import { CustomizableSlotValues } from "@/db/schema/slot";
 import { z } from "zod";
+import { SlotData } from "@/@types/slot";
 import { Event } from "@/db/schema/event";
 import { code } from "@/validation/code.schema";
 
@@ -17,5 +17,5 @@ export const schema = z
 	})
 	.required() satisfies z.ZodType<{
 	code: Event["code"];
-	slots: CustomizableSlotValues[];
+	slots: SlotData[];
 }>;

@@ -1,12 +1,8 @@
 import { z } from "zod";
 import { code } from "@/validation/code.schema";
 import { Event } from "@/db/schema/event";
-import { CustomizableSlotValues, Slot } from "@/db/schema/slot";
-
-type CustomizableSlotValuesWithId = CustomizableSlotValues &
-	Partial<{
-		id: Slot["id"];
-	}>;
+import { Slot } from "@/db/schema/slot";
+import { SlotData } from "@/@types/slot";
 
 export const schema = z
 	.strictObject({
@@ -23,5 +19,5 @@ export const schema = z
 	})
 	.required() satisfies z.ZodType<{
 	code: Event["code"];
-	slots: CustomizableSlotValuesWithId[];
+	slots: SlotData[];
 }>;
