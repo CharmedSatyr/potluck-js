@@ -1,6 +1,3 @@
-// TODO: Use event page's loading.tsx
-import { PlanEventFormFallback } from "@/components/plan-event-form";
+import EventLoadingPage from "@/app/event/[code]/loading";
 
-const Loading = () => <PlanEventFormFallback />;
-
-export default Loading;
+export default EventLoadingPage;

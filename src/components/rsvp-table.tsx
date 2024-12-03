@@ -77,20 +77,21 @@ export default RsvpTable;
 export const RsvpTableFallback = () => {
 	return (
 		<div className="flex w-full flex-col gap-4">
+			<div className="skeleton h-12 w-1/4" />
 			<div className="flex justify-around gap-2">
-				<div className="skeleton h-8 w-1/3" />
-				<div className="skeleton h-8 w-1/3" />
-				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
 			</div>
 			<div className="flex justify-around gap-2">
-				<div className="skeleton h-8 w-1/3" />
-				<div className="skeleton h-8 w-1/3" />
-				<div className="skeleton h-8 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
 			</div>
-			<div className="flex justify-around gap-2">
-				<div className="skeleton h-8 w-1/3" />
-				<div className="skeleton h-8 w-1/3" />
-				<div className="skeleton h-8 w-1/3" />
+			<div className="justify16around flex gap-2">
+				<div className="skeleton h-16 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
+				<div className="skeleton h-16 w-1/3" />
 			</div>
 		</div>
 	);
