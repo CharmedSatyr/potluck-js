@@ -1,7 +1,6 @@
 "use server";
 
 import { streamObject } from "ai";
-import { openai } from "@ai-sdk/openai";
 import { createStreamableValue } from "ai/rsc";
 import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { EventData } from "@/@types/event";
@@ -13,6 +12,10 @@ export const generateItemSuggestions = async (
 	eventData: EventData,
 	attendees: number
 ) => {
+	const openai = require("@ai-sdk/openai").configure({
+		apiKey: process.env.OPENAI_API_KEY,
+	});
+
 	const stream = createStreamableValue();
 
 	const system = `
