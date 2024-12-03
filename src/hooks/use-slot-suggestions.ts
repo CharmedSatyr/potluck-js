@@ -14,17 +14,21 @@ const useSlotSuggestions = (eventData: EventData, attendees: number) => {
 	const fetchSuggestions = async () => {
 		setPending(true);
 
-		const { object } = await generateSlotSuggestions(eventData, attendees);
+		try {
+			const { object } = await generateSlotSuggestions(eventData, attendees);
 
-		for await (const partialObject of readStreamableValue(object)) {
-			if (!partialObject) {
-				return;
+			for await (const partialObject of readStreamableValue(object)) {
+				if (!partialObject) {
+					return;
+				}
+
+				setSuggestions(JSON.stringify(partialObject, null, 2));
 			}
-
-			setSuggestions(JSON.stringify(partialObject, null, 2));
+		} catch (err) {
+			console.log(err, suggestions);
+		} finally {
+			setPending(false);
 		}
-
-		setPending(false);
 	};
 
 	return { suggestions, fetchSuggestions, pending, reset };
