@@ -2,5 +2,7 @@ import { Event } from "@/db/schema/event";
 
 export type EventData = Pick<
 	Event,
-	"startDate" | "startTime" | "hosts" | "location" | "description" | "title"
+	"description" | "hosts" | "location" | "startDate" | "startTime" | "title"
 >;
+
+export type EventDataWithCtx = Pick<Event, "createdBy" | "id"> & EventData;
