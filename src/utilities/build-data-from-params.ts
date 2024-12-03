@@ -73,7 +73,7 @@ export const buildSlotDataFromParams = async (
 		const currentEntry = builder.get(index) ?? {
 			count: 0,
 			item: "",
-			order: Number(i),
+			order: Number(i) + 1,
 		};
 
 		if (field === "count") {
