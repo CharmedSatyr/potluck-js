@@ -114,7 +114,7 @@ export default RsvpForm;
 
 export const RsvpFormFallback = () => {
 	return (
-		<div className="mt-4 flex w-full flex-col gap-4 md:float-right md:mt-0 md:max-w-40">
+		<div className="flex w-full flex-col gap-4 md:float-right md:max-w-40">
 			<div className="skeleton h-12 w-full" />
 			<div className="skeleton h-12 w-full" />
 			<div className="skeleton h-12 w-full" />

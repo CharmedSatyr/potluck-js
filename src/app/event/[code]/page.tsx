@@ -28,8 +28,12 @@ const Container = ({ children }: PropsWithChildren) => (
 
 const EventTitleSection = ({ code }: { code: string }) => (
 	<section className="w-full">
-		<EventHeader code={code} title="Something's Happening..." />
-		<p>Sign in to see all the details!</p>
+		<Suspense>
+			<SlideIn>
+				<EventHeader code={code} title="Something's Happening..." />
+				<p>Sign in to see all the details!</p>
+			</SlideIn>
+		</Suspense>
 	</section>
 );
 
@@ -43,27 +47,27 @@ const EventSection = ({ code }: { code: string }) => (
 
 const AttendeesSection = ({ code }: { code: string }) => (
 	<section className="w-full">
-		<SlideIn>
-			<h2>Attendees</h2>
-			<Suspense fallback={<RsvpTableFallback />}>
+		<Suspense fallback={<RsvpTableFallback />}>
+			<SlideIn>
+				<h2>Attendees</h2>
 				<RsvpTable code={code} />
-			</Suspense>
-		</SlideIn>
+			</SlideIn>
+		</Suspense>
 	</section>
 );
 
 const CommitmentsSection = async ({ code }: { code: string }) => (
-	<section className="w-full">
-		<SlideIn>
-			<h2>On the Menu</h2>
-			<Suspense fallback={<CommitmentsTableFallback />}>
+	<section className="my-4 w-full">
+		<Suspense fallback={<CommitmentsTableFallback />}>
+			<SlideIn>
+				<h2 className="m-0 p-0">On the Menu</h2>
 				<CommitmentsTable
 					commitmentsWithDetails={await findCommitmentsWithDetails({
 						code,
 					})}
 				/>
-			</Suspense>
-		</SlideIn>
+			</SlideIn>
+		</Suspense>
 	</section>
 );
 
@@ -77,25 +81,27 @@ const ManageEventSection = ({
 	const eventDataToParams = new URLSearchParams(eventData).toString();
 
 	return (
-		<section className="flex w-full flex-col gap-2 md:w-1/3 md:items-end md:justify-start">
-			<SlideIn>
-				<Link
-					className="btn btn-accent mb-2 w-full md:w-28"
-					href={`/event/${code}/edit?${eventDataToParams}`}
-				>
-					Edit
-				</Link>
-			</SlideIn>
-			<SlideIn>
-				<DeleteEventForm code={code} redirect={true} />
-			</SlideIn>
+		<section className="my my-4 flex w-full flex-col gap-2 md:my-0 md:w-1/3 md:items-end md:justify-start">
+			<Suspense fallback={<RsvpFormFallback />}>
+				<SlideIn>
+					<Link
+						className="btn btn-accent mb-2 w-full md:w-28"
+						href={`/event/${code}/edit?${eventDataToParams}`}
+					>
+						Edit
+					</Link>
+				</SlideIn>
+				<SlideIn>
+					<DeleteEventForm code={code} redirect={true} />
+				</SlideIn>
+			</Suspense>
 		</section>
 	);
 };
 
 // TODO: Delete commitments if someone changes RSVP to No.
 const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
-	<section className="w-full md:w-1/3">
+	<section className="my-4 w-full md:my-0 md:w-1/3">
 		<Suspense fallback={<RsvpFormFallback />}>
 			<RsvpForm
 				code={code}
@@ -109,14 +115,17 @@ const RsvpSection = ({ code, userId }: { code: string; userId: string }) => (
 );
 
 const FoodPlanSection = ({ code }: { code: string }) => {
+	// The weird margins account for fallback spacing.
 	return (
-		<section className="w-full">
-			<SlideIn>
-				<h2>On the Menu</h2>
-				<Suspense fallback={<SlotManagerFallback />}>
-					<SlotManager code={code} />
-				</Suspense>
-			</SlideIn>
+		<section className="my-10 w-full">
+			<Suspense fallback={<SlotManagerFallback />}>
+				<SlideIn>
+					<div className="-my-10">
+						<h2>On the Menu</h2>
+						<SlotManager code={code} />
+					</div>
+				</SlideIn>
+			</Suspense>
 		</section>
 	);
 };
