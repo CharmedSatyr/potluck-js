@@ -20,6 +20,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -38,6 +39,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={1}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -58,6 +60,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -78,6 +81,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -98,6 +102,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -120,6 +125,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -144,6 +150,7 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
+				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -165,6 +172,7 @@ describe("ItemInput", () => {
 				hasCommitments={false}
 				id={id}
 				index={0}
+				order={1}
 				item="Sample Item"
 				remove={handleRemove}
 			/>
