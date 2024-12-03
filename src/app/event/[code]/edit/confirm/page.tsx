@@ -1,3 +1,4 @@
+import { NonEmptySlotDataArray } from "@/@types/slot";
 import updateEvent from "@/actions/db/update-event";
 import upsertSlots from "@/actions/db/upsert-slots";
 import { auth } from "@/auth";
@@ -41,10 +42,7 @@ const Page = async ({ params, searchParams }: Props) => {
 	if (slotData.length > 0) {
 		await upsertSlots({
 			code,
-			slots: slotData as [
-				{ count: number; id?: string; item: string },
-				...{ count: number; id?: string; item: string }[],
-			],
+			slots: slotData as NonEmptySlotDataArray,
 		});
 
 		// TODO: Add handling if problem adding slots.

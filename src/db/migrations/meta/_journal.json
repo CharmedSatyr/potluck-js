@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1731555662185,
-      "tag": "0000_goofy_juggernaut",
+      "when": 1733244477854,
+      "tag": "0000_hesitant_loners",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1733059073308,
-      "tag": "0001_optimal_menace",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1733175990830,
-      "tag": "0002_odd_bastion",
+      "when": 1733244739936,
+      "tag": "0001_pale_the_initiative",
       "breakpoints": true
     }
   ]

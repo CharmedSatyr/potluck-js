@@ -44,7 +44,9 @@ describe("findCommitments", () => {
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
 				where: jest.fn().mockReturnValueOnce({
-					innerJoin: jest.fn().mockResolvedValueOnce([mockCommitment]),
+					innerJoin: jest.fn().mockReturnValueOnce({
+						orderBy: jest.fn().mockResolvedValueOnce([mockCommitment]),
+					}),
 				}),
 			}),
 		});
@@ -104,7 +106,9 @@ describe("findCommitments", () => {
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
 				where: jest.fn().mockReturnValueOnce({
-					innerJoin: jest.fn().mockRejectedValueOnce(error),
+					innerJoin: jest.fn().mockReturnValueOnce({
+						orderBy: jest.fn().mockRejectedValueOnce(error),
+					}),
 				}),
 			}),
 		});

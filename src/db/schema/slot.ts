@@ -17,11 +17,10 @@ export const slot = pgTable("slot", {
 		.notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	item: varchar("item", { length: 256 }).notNull(),
+	order: integer("order").notNull().default(1000),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.notNull()
 		.defaultNow(),
 });
 
 export type Slot = typeof slot.$inferSelect;
-
-export type CustomizableSlotValues = Pick<Slot, "count" | "item">;

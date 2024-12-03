@@ -45,7 +45,9 @@ describe("findCommitmentsWithDetails", () => {
 			from: jest.fn(() => ({
 				where: jest.fn(() => ({
 					innerJoin: jest.fn(() => ({
-						innerJoin: jest.fn(() => Promise.resolve(commitmentsWithDetails)),
+						innerJoin: jest.fn(() => ({
+							orderBy: jest.fn(() => Promise.resolve(commitmentsWithDetails)),
+						})),
 					})),
 				})),
 			})),

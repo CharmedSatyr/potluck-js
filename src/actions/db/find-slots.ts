@@ -17,7 +17,11 @@ const findSlots = async (data: z.infer<typeof schema>): Promise<Slot[]> => {
 			return [];
 		}
 
-		return await db.select().from(slot).where(eq(slot.eventId, event.id));
+		return await db
+			.select()
+			.from(slot)
+			.where(eq(slot.eventId, event.id))
+			.orderBy(slot.order);
 	} catch (err) {
 		console.error(err);
 

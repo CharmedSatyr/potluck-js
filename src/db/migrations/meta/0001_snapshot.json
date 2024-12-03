@@ -1,6 +1,6 @@
 {
-  "id": "17e9221e-0fe4-4221-ad2c-47f15e1372c1",
-  "prevId": "e481ae83-3362-421d-8304-d31add549267",
+  "id": "d5bdf76b-e19f-488b-8858-27a88efed461",
+  "prevId": "79d1b7b2-8aea-474a-b08d-5536272fdcaa",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -335,12 +335,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "startDate": {
           "name": "startDate",
           "type": "date",
@@ -350,6 +344,12 @@
         "startTime": {
           "name": "startTime",
           "type": "time",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
         },
@@ -537,6 +537,13 @@
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1000
         },
         "updated_at": {
           "name": "updated_at",

@@ -1,1 +1,0 @@
-ALTER TABLE "slot" RENAME COLUMN "course" TO "item";

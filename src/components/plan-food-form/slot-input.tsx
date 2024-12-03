@@ -9,6 +9,7 @@ type Props = {
 	id?: string;
 	index: number;
 	item: string;
+	order: number;
 	remove: (index: number, id?: string) => void;
 };
 
@@ -19,6 +20,7 @@ const SlotInput = ({
 	id,
 	index,
 	item,
+	order,
 	remove,
 }: Props) => {
 	const itemRef = useRef<HTMLInputElement>(null);

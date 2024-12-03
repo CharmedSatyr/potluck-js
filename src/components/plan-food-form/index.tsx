@@ -2,7 +2,6 @@
 
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import SlotInput from "@/components/plan-food-form/slot-input";
-import { v4 as uuidv4 } from "uuid";
 import deleteSlot from "@/actions/db/delete-slot";
 import { EventData } from "@/@types/event";
 import { MAX_SLOTS } from "@/constants/max-slots";
@@ -30,33 +29,35 @@ const PlanFoodForm = ({
 	const committedUsersBySlot = use(committedUsersBySlotPromise);
 
 	const [slots, setSlots] = useState<
-		{ count: string; id?: string; item: string; key: string }[]
+		{ count: string; id?: string; item: string; order: number }[]
 	>(() => {
 		if (prevSlots.length > 0) {
 			return prevSlots.map((slot) => ({
 				count: slot.count.toString(),
 				id: slot.id,
 				item: slot.item,
-				key: uuidv4(),
+				order: slot.order,
 			}));
 		}
 
-		return [{ count: "0", item: "", key: uuidv4() }];
+		return [{ count: "0", item: "", order: 1 }];
 	});
 
 	useEffect(() => {
 		const suggested = suggestedSlots.map((slot) => {
-			return { ...slot, count: slot.count.toString(), key: uuidv4() };
+			return { ...slot, count: slot.count.toString() };
 		});
 
 		if (!suggested.length) {
 			return;
 		}
 
-		setSlots((state) => [
-			...state.filter((slot) => slot.count !== "0" && slot.item !== ""),
-			...suggested,
-		]);
+		setSlots((state) =>
+			[
+				...state.filter((slot) => slot.count !== "0" && slot.item !== ""),
+				...suggested,
+			].map((slot, i) => ({ ...slot, order: i + 1 }))
+		);
 	}, [setSlots, suggestedSlots]);
 
 	const addSlot = () => {
@@ -64,12 +65,16 @@ const PlanFoodForm = ({
 			return;
 		}
 
-		setSlots([...slots, { count: "0", item: "", key: uuidv4() }]);
+		setSlots([...slots, { count: "0", item: "", order: slots.length + 1 }]);
 	};
 
 	const removeSlot = useCallback(
 		async (index: number, id?: string) => {
-			setSlots(slots.filter((_, i) => i !== index));
+			setSlots(
+				slots
+					.filter((_, i) => i !== index)
+					.map((slot, i) => ({ ...slot, order: i + 1 }))
+			);
 
 			if (!id) {
 				return;
@@ -118,14 +123,12 @@ const PlanFoodForm = ({
 			<h2>Create Signup Slots</h2>
 
 			{slots.map((slot, index) => (
-				<div key={slot.key}>
+				<div key={slot.order}>
 					<SlotInput
+						{...slot}
 						change={handleSlotChange}
-						count={slot.count}
 						hasCommitments={committedUsersBySlot.has(slot.id ?? "")}
-						id={slot.id}
 						index={index}
-						item={slot.item}
 						remove={removeSlot}
 					/>
 					{committedUsersBySlot.has(slot.id ?? "") && (
