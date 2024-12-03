@@ -8,9 +8,10 @@ import { Suspense } from "react";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
 
-const TableFallback = () => {
+export const TableFallback = () => {
 	return (
 		<div className="flex w-full flex-col gap-4">
+			<div className="skeleton h-12 w-1/4" />
 			<div className="flex justify-around gap-2">
 				<div className="skeleton h-12 w-2/3" />
 				<div className="skeleton h-12 w-1/6" />
