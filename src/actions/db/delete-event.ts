@@ -15,7 +15,7 @@ const deleteEvent = async (
 
 		const [result] = await findEvent({ code: data.code });
 
-		if (!event) {
+		if (!result) {
 			return [];
 		}
 
