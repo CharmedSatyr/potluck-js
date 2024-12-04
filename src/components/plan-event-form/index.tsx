@@ -10,6 +10,7 @@ import LoadingIndicator from "@/components/loading-indicator";
 import { Step } from "@/components/manage-event-wizard";
 import { loginAction } from "@/components/plan-event-form/login-action";
 import { oneYearFromToday, today } from "@/utilities/date";
+import enterToNextRef from "@/utilities/enter-to-next-ref";
 
 type Props = {
 	code: string | null;
@@ -31,16 +32,6 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 	useEffect(() => {
 		titleRef.current?.focus();
 	}, []);
-
-	const handleKeyDown = (
-		event: React.KeyboardEvent<HTMLInputElement>,
-		nextRef: React.RefObject<HTMLInputElement>
-	) => {
-		if (event.key === "Enter") {
-			event.preventDefault(); // Prevent form submission
-			nextRef.current?.focus();
-		}
-	};
 
 	const determineAction = () => {
 		if (mode === "create") {
@@ -80,7 +71,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					id="name-input"
 					maxLength={256}
 					name="title"
-					onKeyDown={(e) => handleKeyDown(e, startDateRef)}
+					onKeyDown={(e) => enterToNextRef(e, startDateRef)}
 					placeholder="Untitled event"
 					ref={titleRef}
 					required
@@ -101,7 +92,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						max={oneYearFromToday}
 						min={today}
 						name="startDate"
-						onKeyDown={(e) => handleKeyDown(e, startTimeRef)}
+						onKeyDown={(e) => enterToNextRef(e, startTimeRef)}
 						ref={startDateRef}
 						id="date-input"
 						required
@@ -120,7 +111,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						enterKeyHint="next"
 						id="time-input"
 						name="startTime"
-						onKeyDown={(e) => handleKeyDown(e, locationRef)}
+						onKeyDown={(e) => enterToNextRef(e, locationRef)}
 						ref={startTimeRef}
 						required
 						step={60}
@@ -140,7 +131,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					id="location-input"
 					maxLength={256}
 					name="location"
-					onKeyDown={(e) => handleKeyDown(e, hostsRef)}
+					onKeyDown={(e) => enterToNextRef(e, hostsRef)}
 					placeholder="Place name, address, or link"
 					ref={locationRef}
 					required
@@ -163,7 +154,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						id="hosts-input"
 						maxLength={256}
 						name="hosts"
-						onKeyDown={(e) => handleKeyDown(e, descriptionRef)}
+						onKeyDown={(e) => enterToNextRef(e, descriptionRef)}
 						ref={hostsRef}
 						placeholder="Defaults to Discord username"
 						type="text"

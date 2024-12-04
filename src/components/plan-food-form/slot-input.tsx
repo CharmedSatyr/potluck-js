@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import DeleteSlotButton from "./delete-slot-button";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import enterToNextRef from "@/utilities/enter-to-next-ref";
 
 type Props = {
 	change: (index: number, value: string, count: string) => void;
@@ -44,12 +45,14 @@ const SlotInput = ({
 				<input
 					className="input-text input input-bordered text-sm sm:text-base"
 					id={`item-${index}`}
+					enterKeyHint="next"
 					maxLength={256}
 					minLength={1}
 					name={`item-${index}`}
 					onChange={(e) =>
 						change(index, e.target.value, countRef.current?.value ?? "0")
 					}
+					onKeyDown={(e) => enterToNextRef(e, countRef)}
 					ref={itemRef}
 					required
 					type="text"
@@ -80,6 +83,7 @@ const SlotInput = ({
 					<input
 						className="input join-item input-bordered max-w-20"
 						defaultValue={count}
+						enterKeyHint="next"
 						id={`count-${index}`}
 						inputMode="numeric"
 						max="1000" // Arbitrary
