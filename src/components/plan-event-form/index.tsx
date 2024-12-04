@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import Form from "next/form";
 import { usePathname } from "next/navigation";
 import { EventData } from "@/@types/event";
@@ -21,6 +21,26 @@ type Props = {
 const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 	const pathname = usePathname();
 	const [, login, isPending] = useActionState(loginAction, { path: pathname });
+	const descriptionRef = useRef<HTMLInputElement>(null);
+	const hostsRef = useRef<HTMLInputElement>(null);
+	const locationRef = useRef<HTMLInputElement>(null);
+	const startDateRef = useRef<HTMLInputElement>(null);
+	const startTimeRef = useRef<HTMLInputElement>(null);
+	const titleRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		titleRef.current?.focus();
+	}, []);
+
+	const handleKeyDown = (
+		event: React.KeyboardEvent<HTMLInputElement>,
+		nextRef: React.RefObject<HTMLInputElement>
+	) => {
+		if (event.key === "Enter") {
+			event.preventDefault(); // Prevent form submission
+			nextRef.current?.focus();
+		}
+	};
 
 	const determineAction = () => {
 		if (mode === "create") {
@@ -56,10 +76,13 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
 					defaultValue={eventData.title}
+					enterKeyHint="next"
 					id="name-input"
 					maxLength={256}
 					name="title"
+					onKeyDown={(e) => handleKeyDown(e, startDateRef)}
 					placeholder="Untitled event"
+					ref={titleRef}
 					required
 					type="text"
 				/>
@@ -74,9 +97,12 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-date"
 						defaultValue={eventData.startDate}
+						enterKeyHint="next"
 						max={oneYearFromToday}
 						min={today}
 						name="startDate"
+						onKeyDown={(e) => handleKeyDown(e, startTimeRef)}
+						ref={startDateRef}
 						id="date-input"
 						required
 						type="date"
@@ -91,8 +117,11 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-time"
 						defaultValue={eventData.startTime}
+						enterKeyHint="next"
 						id="time-input"
 						name="startTime"
+						onKeyDown={(e) => handleKeyDown(e, locationRef)}
+						ref={startTimeRef}
 						required
 						step={60}
 						type="time"
@@ -107,10 +136,13 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
 					defaultValue={eventData.location}
+					enterKeyHint="next"
 					id="location-input"
 					maxLength={256}
 					name="location"
+					onKeyDown={(e) => handleKeyDown(e, hostsRef)}
 					placeholder="Place name, address, or link"
+					ref={locationRef}
 					required
 					type="text"
 				/>
@@ -127,9 +159,12 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					<input
 						className="w-full"
 						defaultValue={eventData.hosts}
+						enterKeyHint="next"
 						id="hosts-input"
 						maxLength={256}
 						name="hosts"
+						onKeyDown={(e) => handleKeyDown(e, descriptionRef)}
+						ref={hostsRef}
 						placeholder="Defaults to Discord username"
 						type="text"
 					/>
@@ -147,10 +182,12 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					<input
 						className="w-full"
 						defaultValue={eventData.description}
+						enterKeyHint="next"
 						id="description-input"
 						maxLength={256}
 						name="description"
 						placeholder="Add a description of your event"
+						ref={descriptionRef}
 						type="text"
 					/>
 				</div>
