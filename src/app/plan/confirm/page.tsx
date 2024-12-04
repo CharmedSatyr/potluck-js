@@ -25,12 +25,12 @@ const Page = async ({ searchParams }: Props) => {
 	}
 
 	const [eventData] = await buildEventDataFromParams(searchParams);
-	const [{ code }] = await createEvent({
+	const [result] = await createEvent({
 		...eventData,
 		createdBy: session.user.id,
 	});
 
-	if (!code) {
+	if (!result?.code) {
 		// TODO: Add some error messaging via toast
 		redirect("/plan".concat(queryString));
 	}
@@ -39,14 +39,14 @@ const Page = async ({ searchParams }: Props) => {
 
 	if (slotData.length > 0) {
 		await createSlots({
-			code,
+			code: result.code,
 			slots: slotData as NonEmptySlotDataArray,
 		});
 
 		// TODO: Add handling if problem adding slots.
 	}
 
-	redirect(`/event/${code}`);
+	redirect(`/event/${result.code}`);
 };
 
 export default Page;
