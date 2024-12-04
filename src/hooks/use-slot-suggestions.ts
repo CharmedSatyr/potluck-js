@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { readStreamableValue } from "ai/rsc";
-import { generateItemSuggestions as generateSlotSuggestions } from "@/actions/ai/generate-slot-suggestions";
+import { generateSlotSuggestions } from "@/actions/ai/generate-slot-suggestions";
 import { EventData } from "@/@types/event";
 
 const useSlotSuggestions = (eventData: EventData, attendees: number) => {
@@ -25,7 +25,7 @@ const useSlotSuggestions = (eventData: EventData, attendees: number) => {
 				setSuggestions(JSON.stringify(partialObject, null, 2));
 			}
 		} catch (err) {
-			console.log(err, suggestions);
+			console.error(err);
 		} finally {
 			setPending(false);
 		}

@@ -5,11 +5,17 @@ import { createStreamableValue } from "ai/rsc";
 import { openai } from "@ai-sdk/openai";
 import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { EventData } from "@/@types/event";
+import { auth } from "@/auth";
 
-export const generateItemSuggestions = async (
+export const generateSlotSuggestions = async (
 	eventData: EventData,
 	attendees: number
 ) => {
+	const session = await auth();
+	if (!session?.user?.id) {
+		throw new Error("Not authenticated");
+	}
+
 	const stream = createStreamableValue();
 
 	const system = `
