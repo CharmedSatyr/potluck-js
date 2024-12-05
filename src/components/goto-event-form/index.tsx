@@ -33,6 +33,7 @@ const GotoEventForm = () => {
 					maxLength={EVENT_CODE_LENGTH}
 					name="code"
 					placeholder="238JK"
+					type="search"
 				/>
 			</div>
 			<button

@@ -53,7 +53,7 @@ const SlotInput = ({
 					onKeyDown={(e) => enterToNextRef(e, countRef)}
 					ref={itemRef}
 					required
-					type="text"
+					type="search"
 					value={item}
 				/>
 			</div>

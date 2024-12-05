@@ -75,7 +75,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					placeholder="What's this adventure?"
 					ref={titleRef}
 					required
-					type="text"
+					type="search"
 				/>
 			</div>
 
@@ -135,7 +135,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					placeholder="Place name, address, or link"
 					ref={locationRef}
 					required
-					type="text"
+					type="search"
 				/>
 			</div>
 
@@ -157,7 +157,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						onKeyDown={(e) => enterToNextRef(e, descriptionRef)}
 						ref={hostsRef}
 						placeholder="Discord username if blank"
-						type="text"
+						type="search"
 					/>
 				</div>
 			</div>
@@ -179,7 +179,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						name="description"
 						placeholder="Additional info or vibe text"
 						ref={descriptionRef}
-						type="text"
+						type="search"
 					/>
 				</div>
 			</div>

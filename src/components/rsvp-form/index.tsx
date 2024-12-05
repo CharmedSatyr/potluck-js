@@ -102,7 +102,7 @@ const RsvpForm = ({ code, currentRsvpPromise }: Props) => {
 					id="rsvp-message"
 					maxLength={256}
 					name="message"
-					type="text"
+					type="search"
 				/>
 				<WarningAlert text={state.message} />
 			</div>

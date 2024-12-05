@@ -18,7 +18,7 @@ describe("GotoEventForm", () => {
 	});
 
 	it("renders the form and submit button", async () => {
-		const input = screen.getByRole("textbox");
+		const input = screen.getByRole("searchbox");
 
 		const button = screen.getByRole("button", { name: /Find an Event/i });
 
@@ -32,7 +32,7 @@ describe("GotoEventForm", () => {
 	it("displays an error message when the event code does not exist", async () => {
 		(findEvent as jest.Mock).mockResolvedValueOnce([]);
 
-		const input = screen.getByRole("textbox");
+		const input = screen.getByRole("searchbox");
 
 		const button = screen.getByRole("button", { name: /Find an Event/i });
 
@@ -48,7 +48,7 @@ describe("GotoEventForm", () => {
 	});
 
 	it("disables the button while pending", async () => {
-		const input = screen.getByRole("textbox");
+		const input = screen.getByRole("searchbox");
 
 		const button = screen.getByRole("button", { name: /Find an Event/i });
 
@@ -66,7 +66,7 @@ describe("GotoEventForm", () => {
 			{ code: "CODE1", message: "", success: true },
 		]);
 
-		const input = screen.getByRole("textbox");
+		const input = screen.getByRole("searchbox");
 
 		fireEvent.change(input, { target: { value: "CODE1" } });
 

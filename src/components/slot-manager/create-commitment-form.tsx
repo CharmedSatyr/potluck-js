@@ -109,7 +109,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 						maxLength={256}
 						name="description"
 						placeholder="Add a description"
-						type="text"
+						type="search"
 					/>
 				</div>
 			</div>
