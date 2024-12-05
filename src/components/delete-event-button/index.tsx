@@ -58,6 +58,7 @@ const DeleteEventForm = ({ className, code, redirect }: Props) => {
 						<button
 							aria-label="Cancel"
 							className="btn btn-sm"
+							disabled={isPending}
 							type="button"
 							onClick={() => dialogRef.current?.close()}
 						>
@@ -66,6 +67,7 @@ const DeleteEventForm = ({ className, code, redirect }: Props) => {
 						<button
 							aria-label="Delete Slot"
 							className="btn btn-error btn-sm"
+							disabled={isPending}
 							type="submit"
 						>
 							{isPending ? <LoadingIndicator size={8} /> : "Delete Event"}
