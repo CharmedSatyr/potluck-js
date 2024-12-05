@@ -1,6 +1,9 @@
 import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { z } from "zod";
-import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import {
+	InformationCircleIcon,
+	SparklesIcon,
+} from "@heroicons/react/24/outline";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { SlotData } from "@/@types/slot";
@@ -30,7 +33,7 @@ const Results = ({
 
 			<div className="collapse-title flex w-full items-center justify-between">
 				<div className="flex items-center bg-gradient-to-r from-yellow-100 to-orange-400 bg-clip-text text-xl font-medium text-transparent">
-					<BoltIcon className="mr-2 inline size-5 text-yellow-200" />
+					<SparklesIcon className="inline size-5 text-yellow-200" />
 					Suggestions <div className="badge badge-info ml-2">beta</div>
 				</div>
 				<div>

@@ -101,7 +101,7 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const disableButtons =
+	const noEvent =
 		!eventData.title ||
 		!eventData.startTime ||
 		!eventData.startDate ||
@@ -151,14 +151,14 @@ const PlanFoodForm = ({
 			<div className="mb-4 flex justify-between">
 				<button
 					className="btn btn-secondary w-1/3"
-					disabled={disableButtons || slots.length >= MAX_SLOTS}
+					disabled={noEvent || slots.length >= MAX_SLOTS}
 					onClick={addSlot}
 					type="button"
 				>
 					Add Slot
 				</button>
 				<button
-					className={`btn btn-accent w-1/3 ${disableButtons ? "btn-disabled pointer-events-none" : ""}`}
+					className={`btn btn-accent w-1/3 ${noEvent ? "btn-disabled pointer-events-none" : ""}`}
 					formNoValidate={true}
 				>
 					Skip for Now
@@ -208,7 +208,7 @@ const PlanFoodForm = ({
 
 			<button
 				className="btn btn-primary w-full"
-				disabled={disableButtons || !slotsValid}
+				disabled={noEvent || !slotsValid}
 				type="submit"
 			>
 				Save and Continue

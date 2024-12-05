@@ -1,5 +1,5 @@
 import LoadingIndicator from "@/components/loading-indicator";
-import { BoltIcon } from "@heroicons/react/24/outline";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
@@ -45,7 +45,7 @@ const Prompt = ({
 						<LoadingIndicator size={6} />
 					) : (
 						<>
-							<BoltIcon className="size-5" />
+							<SparklesIcon className="size-5" />
 							Ask AI
 						</>
 					)}
