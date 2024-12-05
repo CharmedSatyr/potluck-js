@@ -118,7 +118,7 @@ const PlanFoodForm = ({
 	return (
 		<Form
 			action={determineAction()}
-			className="form-control mx-2 w-full"
+			className="form-control w-full"
 			data-testid="plan-food-form"
 		>
 			<h2>Create Signup Slots</h2>

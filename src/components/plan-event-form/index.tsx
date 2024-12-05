@@ -48,7 +48,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 	return (
 		<Form
 			action={determineAction()}
-			className="form-control mx-2 w-full lg:w-3/4 2xl:w-10/12"
+			className="form-control w-full"
 			name="create-event-form"
 		>
 			{mode === "create" && (
