@@ -3,6 +3,9 @@ import GotoEventForm from "@/components/goto-event-form";
 import siteMetadata from "@/data/site-metadata";
 import Image from "next/image";
 import potluckQuest from "../../public/static/potluck-quest";
+import genPageMetadata from "@/seo";
+
+export const metadata = genPageMetadata({ title: "Home" });
 
 const CreateEventButton = () => (
 	<Link href="/plan" className="btn btn-primary text-xl">

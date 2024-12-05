@@ -7,6 +7,9 @@ import {
 	buildEventDataFromParams,
 	buildSlotDataFromParams,
 } from "@/utilities/build-data-from-params";
+import genPageMetadata from "@/seo";
+
+export const metadata = genPageMetadata({ title: "Plan" });
 
 type Props = {
 	searchParams: Promise<{ [key: string]: string }>;

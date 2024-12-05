@@ -7,6 +7,21 @@ import { redirect } from "next/navigation";
 import ErrorBoundary from "@/components/error-boundary";
 import { buildEventDataFromParams } from "@/utilities/build-data-from-params";
 import findSlots from "@/actions/db/find-slots";
+import genPageMetadata from "@/seo";
+import { Metadata } from "next";
+
+type MetadataProps = {
+	params: Promise<{ code: string }>;
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export const generateMetadata = async ({
+	params: paramsPromise,
+}: MetadataProps): Promise<Metadata> => {
+	const params = await paramsPromise;
+
+	return genPageMetadata({ title: `Edit ${params?.code}` });
+};
 
 type Props = {
 	params: Promise<{ code: string }>;

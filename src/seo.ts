@@ -15,7 +15,7 @@ const genPageMetadata = ({
 	image,
 	...rest
 }: PageSEOProps): Metadata => ({
-	title,
+	title: `${title} | ${siteMetadata.title}`,
 	openGraph: {
 		title: `${title} | ${siteMetadata.title}`,
 		description: description ?? siteMetadata.description,

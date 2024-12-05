@@ -6,8 +6,22 @@ import {
 	buildEventDataFromParams,
 	buildSlotDataFromParams,
 } from "@/utilities/build-data-from-params";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+import genPageMetadata from "@/seo";
+
+type MetadataProps = {
+	params: Promise<{ code: string }>;
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export const generateMetadata = async ({
+	params: paramsPromise,
+}: MetadataProps): Promise<Metadata> => {
+	const params = await paramsPromise;
+
+	return genPageMetadata({ title: `${params?.code}` });
+};
 
 type Props = {
 	params: Promise<{ code: string }>;

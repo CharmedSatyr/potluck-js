@@ -8,6 +8,9 @@ import { Suspense } from "react";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
 import { TableFallback } from "@/app/dashboard/table-fallback";
+import genPageMetadata from "@/seo";
+
+export const metadata = genPageMetadata({ title: "Dashboard" });
 
 const HostingTable = async () => {
 	const session = await auth();

@@ -19,6 +19,21 @@ import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
 import { EventData } from "@/@types/event";
+import genPageMetadata from "@/seo";
+import { Metadata } from "next";
+
+type MetadataProps = {
+	params: Promise<{ code: string }>;
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export const generateMetadata = async ({
+	params: paramsPromise,
+}: MetadataProps): Promise<Metadata> => {
+	const params = await paramsPromise;
+
+	return genPageMetadata({ title: `${params?.code}` });
+};
 
 type Props = { params: Promise<{ code: string }> };
 
