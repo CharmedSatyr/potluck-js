@@ -44,7 +44,7 @@ const DeleteEventForm = ({ className, code, redirect }: Props) => {
 				type="button"
 				onClick={() => dialogRef.current?.showModal()}
 			>
-				{isPending ? <LoadingIndicator size={10} /> : "Delete"}
+				{isPending ? <LoadingIndicator size={8} /> : "Delete"}
 			</button>
 			<dialog ref={dialogRef} className="modal modal-bottom sm:modal-middle">
 				<div className="modal-box">
