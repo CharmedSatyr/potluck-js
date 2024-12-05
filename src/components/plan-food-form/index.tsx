@@ -101,7 +101,11 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const disableButtons = !eventData;
+	const disableButtons =
+		!eventData.title ||
+		!eventData.startTime ||
+		!eventData.startDate ||
+		!eventData.location;
 
 	const determineAction = () => {
 		if (mode === "create") {

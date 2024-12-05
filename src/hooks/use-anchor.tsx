@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const scrollToAnchor = (id: string, query: string = ""): void => {
+export const scrollToAnchor = (id: string, query: string = ""): void => {
 	const el = document.getElementById(id);
 	el?.scrollIntoView({ behavior: "smooth" });
 	window.history.pushState(null, "", `${query}#${id}`);

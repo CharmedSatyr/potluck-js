@@ -8,7 +8,7 @@ import PlanFoodForm, {
 	PlanFoodFormFallback,
 } from "@/components/plan-food-form";
 import Suggestions from "@/components/suggestions";
-import useAnchor from "@/hooks/use-anchor";
+import useAnchor, { scrollToAnchor } from "@/hooks/use-anchor";
 import { EventData } from "@/@types/event";
 import { SlotData } from "@/@types/slot";
 import { WizardMode } from "@/@types/wizard-mode";
@@ -101,15 +101,25 @@ const ManageEventWizard = ({
 
 					<Suspense>
 						{loggedIn &&
-							eventData.title &&
-							eventData.startDate &&
-							eventData.startTime &&
-							eventData.location && (
-								<Suggestions
-									eventData={eventData}
-									populate={populateSuggestedSlots}
-								/>
-							)}
+						eventData.title &&
+						eventData.startDate &&
+						eventData.startTime &&
+						eventData.location ? (
+							<Suggestions
+								eventData={eventData}
+								populate={populateSuggestedSlots}
+							/>
+						) : (
+							<div>
+								<button
+									className="link"
+									onClick={() => scrollToAnchor(Step.CREATE_EVENT)}
+								>
+									Create an Event
+								</button>{" "}
+								to continue.
+							</div>
+						)}
 					</Suspense>
 
 					<Suspense fallback={<PlanFoodFormFallback />}>
