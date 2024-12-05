@@ -70,7 +70,7 @@ const DeleteEventForm = ({ className, code, redirect }: Props) => {
 							disabled={isPending}
 							type="submit"
 						>
-							{isPending ? <LoadingIndicator size={8} /> : "Delete Event"}
+							{isPending ? <LoadingIndicator size={8} /> : "Delete"}
 						</button>
 					</div>
 				</div>
