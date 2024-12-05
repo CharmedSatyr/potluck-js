@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
@@ -7,6 +7,11 @@ import siteMetadata from "@/data/site-metadata";
 import NavBar from "@/components/nav-bar";
 
 dotenv.config();
+
+export const viewport: Viewport = {
+	colorScheme: "dark",
+	themeColor: "#212121",
+};
 
 const inter = Inter({ subsets: ["latin"] });
 
