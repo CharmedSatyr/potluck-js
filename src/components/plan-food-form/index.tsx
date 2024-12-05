@@ -8,6 +8,7 @@ import { MAX_SLOTS } from "@/constants/max-slots";
 import { SlotData } from "@/@types/slot";
 import { schema as slotSchema } from "@/validation/slot.schema";
 import { WizardMode } from "@/@types/wizard-mode";
+import Form from "next/form";
 
 type Props = {
 	code: string | null;
@@ -115,7 +116,7 @@ const PlanFoodForm = ({
 	};
 
 	return (
-		<form
+		<Form
 			action={determineAction()}
 			className="form-control mx-2 w-full"
 			data-testid="plan-food-form"
@@ -208,7 +209,7 @@ const PlanFoodForm = ({
 			>
 				Save and Continue
 			</button>
-		</form>
+		</Form>
 	);
 };
 
