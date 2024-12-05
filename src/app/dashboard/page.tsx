@@ -9,6 +9,7 @@ import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
 import { TableFallback } from "@/app/dashboard/table-fallback";
 import genPageMetadata from "@/seo";
+import { formatStartDate } from "@/utilities/format-start-date";
 
 export const metadata = genPageMetadata({ title: "Dashboard" });
 
@@ -51,7 +52,7 @@ const HostingTable = async () => {
 									</Link>
 								</td>
 								<td>{event.title}</td>
-								<td>{event.startDate}</td>
+								<td>{formatStartDate(event.startDate)}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 								<td className="hidden md:table-cell">
 									<DeleteEventForm
