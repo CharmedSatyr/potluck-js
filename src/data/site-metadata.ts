@@ -1,6 +1,7 @@
 const siteMetadata = {
 	author: "Joseph Wolfe",
-	description: "A potluck organizer",
+	description:
+		"Potluck Quest makes it easy to plan shared meals with your friends.",
 	github: "https://www.github.com/CharmedSatyr",
 	headerTitle: "Joseph Wolfe",
 	linkedin: "https://www.linkedin.com/in/joseph-wolfe",
