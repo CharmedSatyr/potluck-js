@@ -42,7 +42,7 @@ const HostingTable = async () => {
 	}
 
 	return (
-		<div className="max-h-96 overflow-x-auto">
+		<div className="overflow-x-auto">
 			<table className="table table-pin-rows table-sm md:table-lg">
 				<thead>
 					<tr>
@@ -95,7 +95,7 @@ const AttendingTable = async () => {
 	}
 
 	return (
-		<div className="max-h-96 overflow-x-auto">
+		<div className="overflow-x-auto">
 			<table className="table table-pin-rows table-sm md:table-lg">
 				<thead>
 					<tr>
