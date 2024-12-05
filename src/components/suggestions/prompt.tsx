@@ -16,7 +16,7 @@ const Prompt = ({
 	setAttendees,
 }: Props) => {
 	return (
-		<aside className="rounded-xl bg-base-300 p-6 text-center">
+		<aside className="rounded-xl bg-base-300 p-4 text-center md:p-6">
 			<h3 className="mb-4 mt-0">Need help planning your meal?</h3>
 
 			<div className="flex items-end justify-center">

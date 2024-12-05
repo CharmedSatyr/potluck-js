@@ -48,7 +48,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 	return (
 		<Form
 			action={determineAction()}
-			className="form-control w-full"
+			className="form-control w-11/12"
 			name="create-event-form"
 		>
 			{mode === "create" && (
@@ -72,7 +72,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					maxLength={256}
 					name="title"
 					onKeyDown={(e) => enterToNextRef(e, startDateRef)}
-					placeholder="Untitled event"
+					placeholder="What's this adventure?"
 					ref={titleRef}
 					required
 					type="text"
@@ -156,7 +156,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						name="hosts"
 						onKeyDown={(e) => enterToNextRef(e, descriptionRef)}
 						ref={hostsRef}
-						placeholder="Defaults to Discord username"
+						placeholder="Discord username if blank"
 						type="text"
 					/>
 				</div>
@@ -177,7 +177,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						id="description-input"
 						maxLength={256}
 						name="description"
-						placeholder="Add a description of your event"
+						placeholder="Additional info or vibe text"
 						ref={descriptionRef}
 						type="text"
 					/>
