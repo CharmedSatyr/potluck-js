@@ -33,7 +33,7 @@ const Results = ({
 
 			<div className="collapse-title flex w-full items-center justify-between">
 				<div className="flex items-center bg-gradient-to-r from-yellow-100 to-orange-400 bg-clip-text text-xl font-medium text-transparent">
-					<SparklesIcon className="inline size-5 text-yellow-200" />
+					<SparklesIcon className="mr-1 inline size-5 text-yellow-200" />
 					Suggestions <div className="badge badge-info ml-2">beta</div>
 				</div>
 				<div>
