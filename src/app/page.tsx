@@ -46,7 +46,8 @@ const Home = () => {
 
 						<p className="mb-0">
 							<span className="text-primary">{siteMetadata.title}</span> makes
-							it easy for you and your friends to plan shared meals.{" "}
+							it easy to plan shared meals when everyone&apos;s invited to
+							contribute a dish.{" "}
 							<span className="text-info">In active development</span> by and
 							for tabletop gamers who enjoy cooking and eating with their
 							friends.
