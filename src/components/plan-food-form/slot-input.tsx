@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import DeleteSlotButton from "./delete-slot-button";
+import DeleteSlotButton from "@/components/plan-food-form/delete-slot-button";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import enterToNextRef from "@/utilities/enter-to-next-ref";
 

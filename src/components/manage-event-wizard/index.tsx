@@ -100,12 +100,16 @@ const ManageEventWizard = ({
 					<h1 className="text-primary">Plan the Food</h1>
 
 					<Suspense>
-						{loggedIn && eventData && (
-							<Suggestions
-								eventData={eventData}
-								populate={populateSuggestedSlots}
-							/>
-						)}
+						{loggedIn &&
+							eventData.title &&
+							eventData.startDate &&
+							eventData.startTime &&
+							eventData.location && (
+								<Suggestions
+									eventData={eventData}
+									populate={populateSuggestedSlots}
+								/>
+							)}
 					</Suspense>
 
 					<Suspense fallback={<PlanFoodFormFallback />}>
