@@ -1,6 +1,8 @@
 import { suggestionsSchema } from "@/validation/suggestions.schema";
 import { z } from "zod";
 import {
+	ArrowPathIcon,
+	BarsArrowDownIcon,
 	InformationCircleIcon,
 	SparklesIcon,
 } from "@heroicons/react/24/outline";
@@ -81,6 +83,7 @@ const Results = ({
 						}}
 						type="button"
 					>
+						<BarsArrowDownIcon className="size-4" />
 						Use Suggestions
 					</button>
 					<button
@@ -88,6 +91,7 @@ const Results = ({
 						onClick={reset}
 						type="button"
 					>
+						<ArrowPathIcon className="size-4" />
 						Reset
 					</button>
 				</div>
