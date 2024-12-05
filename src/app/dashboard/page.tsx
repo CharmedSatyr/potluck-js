@@ -13,6 +13,21 @@ import { formatStartDate } from "@/utilities/format-start-date";
 
 export const metadata = genPageMetadata({ title: "Dashboard" });
 
+const EventCodeButton = ({
+	code,
+	passed,
+}: {
+	code: string;
+	passed: boolean;
+}) => (
+	<Link
+		className={`btn btn-sm font-bold ${passed ? "btn-ghost btn-outline" : "btn-success"}`}
+		href={`/event/${code}`}
+	>
+		{code}
+	</Link>
+);
+
 const HostingTable = async () => {
 	const session = await auth();
 	const hosted = await findEventsByUser({ createdBy: session!.user!.id! });
@@ -44,12 +59,8 @@ const HostingTable = async () => {
 
 						return (
 							<tr key={event.id} className={passed ? "bg-base-300" : ""}>
-								<td className="font-bold">
-									<Link className="btn btn-sm" href={`/event/${event.code}`}>
-										<span className={passed ? "text-error" : "text-success"}>
-											{event.code}
-										</span>
-									</Link>
+								<td>
+									<EventCodeButton code={event.code} passed={passed} />
 								</td>
 								<td>{event.title}</td>
 								<td>{formatStartDate(event.startDate)}</td>
@@ -100,15 +111,11 @@ const AttendingTable = async () => {
 
 						return (
 							<tr key={event.code} className={passed ? "bg-base-300" : ""}>
-								<td className="font-bold">
-									<Link className="btn btn-sm" href={`/event/${event.code}`}>
-										<span className={passed ? "text-error" : "text-success"}>
-											{event.code}
-										</span>
-									</Link>
+								<td>
+									<EventCodeButton code={event.code} passed={passed} />
 								</td>
 								<td>{event.title}</td>
-								<td>{event.startDate}</td>
+								<td>{formatStartDate(event.startDate)}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 							</tr>
 						);
