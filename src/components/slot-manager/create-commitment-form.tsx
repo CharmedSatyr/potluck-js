@@ -36,7 +36,11 @@ const CountInput = ({
 					}}
 					type="button"
 				>
-					<MinusIcon className="h-4 w-4 text-gray-900 dark:text-white" />
+					<MinusIcon
+						className="h-4 w-4 text-white"
+						fill="white"
+						title="Subtract one"
+					/>
 				</button>
 				<input
 					className="input join-item input-bordered max-w-20"
@@ -58,7 +62,11 @@ const CountInput = ({
 					}}
 					type="button"
 				>
-					<PlusIcon className="h-4 w-4 text-gray-900 dark:text-white" />
+					<PlusIcon
+						className="h-4 w-4 text-white"
+						fill="white"
+						title="Add one"
+					/>
 				</button>
 			</div>
 		</div>
