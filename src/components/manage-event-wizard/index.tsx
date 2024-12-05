@@ -31,7 +31,8 @@ const ProgressIndicator = () => {
 	const [anchor, scrollToAnchor] = useAnchor();
 
 	useEffect(() => {
-		if (!anchor) {
+		// TODO: This doesn't help with side-scrolling on mobile.
+		if (!anchor || anchor === Step.CREATE_EVENT) {
 			scrollToAnchor(Step.CREATE_EVENT);
 		}
 

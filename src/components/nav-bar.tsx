@@ -7,7 +7,7 @@ import signOutAndRevalidate from "@/actions/auth/sign-out-and-revalidate";
 import { PropsWithChildren } from "react";
 import {
 	ArrowRightStartOnRectangleIcon,
-	CalendarDateRangeIcon,
+	PencilSquareIcon,
 	TableCellsIcon,
 } from "@heroicons/react/24/outline";
 import signInWithDiscordAndRevalidate from "@/actions/auth/sign-in-with-discord-and-revalidate";
@@ -27,7 +27,7 @@ const LoggedOutContent = () => {
 
 const CreateEventLink = () => (
 	<Link href="/plan" className="text-nowrap no-underline">
-		<CalendarDateRangeIcon className="size-4" />
+		<PencilSquareIcon className="size-4" />
 		Create Event
 	</Link>
 );
