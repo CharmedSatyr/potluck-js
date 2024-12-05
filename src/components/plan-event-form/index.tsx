@@ -11,6 +11,7 @@ import { Step } from "@/components/manage-event-wizard";
 import { loginAction } from "@/components/plan-event-form/login-action";
 import { oneYearFromToday, today } from "@/utilities/date";
 import enterToNextRef from "@/utilities/enter-to-next-ref";
+import Link from "next/link";
 
 type Props = {
 	code: string | null;
@@ -55,8 +56,14 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 				<h1 className="mb-4 text-primary">Create an Event</h1>
 			)}
 			{mode === "edit" && (
-				<h1 className="mb-4 text-primary">
-					Edit Event: <span className="text-secondary">{code}</span>
+				<h1 className="mb-4 flex items-center text-primary">
+					Now Editing
+					<Link
+						href={`/event/${code}`}
+						className="btn btn-secondary btn-sm ml-2 text-xl"
+					>
+						{code}
+					</Link>
 				</h1>
 			)}
 
