@@ -67,7 +67,7 @@ const EventSkeleton = async ({ code }: Props) => {
 			</p>
 			<p>{description}</p>
 
-			{isPassed && <WarningAlert text="This event takes place in the past." />}
+			{isPassed && <WarningAlert text="This event date is in the past." />}
 		</div>
 	);
 };
