@@ -22,13 +22,13 @@ const Avatars = ({ users }: { users: Props["users"] }) => {
 			<div key={id} className="indicator">
 				<Image
 					alt={`Avatar for user ${name}`}
-					className="avatar my-0 size-8 rounded-full border md:size-10"
+					className="avatar my-0 size-8 rounded-full border"
 					src={image} // TODO: Use a static import
 					height={40}
 					title={`${name} is bringing ${commitments}`}
 					width={40}
 				/>
-				<span className="badge indicator-item badge-primary badge-sm md:badge-md">
+				<span className="badge indicator-item badge-primary badge-sm">
 					{commitments}
 				</span>
 			</div>
