@@ -104,7 +104,7 @@ const CreateCommitmentForm = ({ commitmentsStillNeeded, slotId }: Props) => {
 					</span>
 					<input
 						aria-label="item-description"
-						className="text-sm"
+						className="w-full text-sm"
 						defaultValue={state?.fields.hosts}
 						maxLength={256}
 						name="description"
