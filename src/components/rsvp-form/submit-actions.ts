@@ -4,6 +4,7 @@ import formSchema from "@/components/rsvp-form/submit-actions.schema";
 import upsertRsvp from "@/actions/db/upsert-rsvp";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import deleteUserEventCommitments from "@/actions/db/delete-user-event-commitments";
 
 export type RsvpFormState = {
 	code: string;
@@ -58,6 +59,13 @@ const submitAction = async (
 			message: ERROR_MESSAGE,
 			success: result.success,
 		};
+	}
+
+	if (response === "no") {
+		await deleteUserEventCommitments({
+			createdBy: session.user.id,
+			code: prevState.code,
+		});
 	}
 
 	// TODO: We can probably just revalidate tag.
