@@ -37,7 +37,7 @@ export const buildEventDataFromParams = async (
 	});
 
 	if (DEV) {
-		//return [testVals];
+		return [testVals];
 	}
 
 	return [eventData];
