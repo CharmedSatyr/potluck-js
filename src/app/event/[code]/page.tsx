@@ -14,7 +14,6 @@ import RsvpForm, { RsvpFormFallback } from "@/components/rsvp-form";
 import Link from "next/link";
 import { PropsWithChildren, Suspense } from "react";
 import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
-import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
@@ -76,11 +75,7 @@ const CommitmentsSection = async ({ code }: { code: string }) => (
 		<Suspense fallback={<CommitmentsTableFallback />}>
 			<SlideIn>
 				<h2 className="m-0 p-0">On the Menu</h2>
-				<CommitmentsTable
-					commitmentsWithDetails={await findCommitmentsWithDetails({
-						code,
-					})}
-				/>
+				<CommitmentsTable code={code} />
 			</SlideIn>
 		</Suspense>
 	</section>

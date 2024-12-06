@@ -1,40 +1,25 @@
-import DeleteCommitmentForm from "@/components/slot-manager/delete-commitment-form";
 import { auth } from "@/auth";
 import Image from "next/image";
+import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 
 type Props = {
-	commitmentsWithDetails: {
-		commitmentId: string;
-		description: string;
-		item: string;
-		quantity: number;
-		user: {
-			id: string | null;
-			image: string | null;
-			name: string | null;
-		};
-	}[];
+	code: string;
 };
 
-const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
+const CommitmentsTable = async ({ code }: Props) => {
+	const commitmentsWithDetails = await findCommitmentsWithDetails({ code });
+
 	if (!commitmentsWithDetails?.length) {
 		return <p>No plans yet!</p>;
 	}
-
-	const session = await auth();
-
-	const singleItem = commitmentsWithDetails.every(
-		(c) => c.item === commitmentsWithDetails[0].item
-	);
 
 	return (
 		<div className="overflow-x-auto">
 			<table className="table table-sm md:table-md">
 				<thead>
 					<tr>
-						<th></th>
 						<th>User</th>
-						{!singleItem && <th>Item</th>}
+						<th>Item</th>
 						<th className="md:hidden">#</th>
 						<th className="hidden md:block">Quantity</th>
 						<th>Description</th>
@@ -45,11 +30,6 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 						return (
 							<tr key={c.commitmentId}>
 								<td>
-									{c.user.id === session?.user?.id && (
-										<DeleteCommitmentForm id={c.commitmentId} />
-									)}
-								</td>
-								<td className="text-center">
 									<Image
 										alt={`${c.user.name}'s Avatar`}
 										className="avatar my-0 rounded-full border"
@@ -59,7 +39,7 @@ const CommitmentsTable = async ({ commitmentsWithDetails }: Props) => {
 									/>{" "}
 									{c.user.name}
 								</td>
-								{!singleItem && <td>{c.item}</td>}
+								<td>{c.item}</td>
 								<td>{c.quantity}</td>
 								<td>{c.description}</td>
 							</tr>
