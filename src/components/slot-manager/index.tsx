@@ -1,12 +1,12 @@
 import SlotContainer from "@/components/slot-manager/slot-container";
 import CreateCommitmentForm from "@/components/slot-manager/create-commitment-form";
 import findSlotContainerDetails from "@/actions/db/find-slot-container-details";
-import CommitmentsTable, {
-	CommitmentsTableFallback,
-} from "@/components/commitments-table";
 import findCommitmentsWithDetails from "@/actions/db/find-commitments-with-details";
 import { Suspense } from "react";
 import SlideIn from "@/components/slide-in";
+import CommitmentsBySlotTable, {
+	CommitmentsBySlotTableFallback,
+} from "@/components/commitments-by-slot-table";
 
 type Props = {
 	code: string;
@@ -42,15 +42,15 @@ const SlotManager = async ({ code }: Props) => {
 							</label>
 
 							{totalCommitments > 0 ? (
-								<SlideIn>
-									<Suspense fallback={<CommitmentsTableFallback />}>
-										<CommitmentsTable
+								<Suspense fallback={<CommitmentsBySlotTableFallback />}>
+									<SlideIn>
+										<CommitmentsBySlotTable
 											commitmentsWithDetails={commitmentsWithDetails.filter(
 												(c) => c.slotId === slotId
 											)}
 										/>
-									</Suspense>
-								</SlideIn>
+									</SlideIn>
+								</Suspense>
 							) : (
 								<div className="ml-2">
 									<p className="my-2">None yet. Be the first!</p>
