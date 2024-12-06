@@ -84,7 +84,6 @@ const SlotInput = ({
 					</button>
 					<input
 						className="input join-item input-bordered max-w-20"
-						defaultValue={count}
 						enterKeyHint="next"
 						id={`count-${index}`}
 						inputMode="numeric"
@@ -97,6 +96,7 @@ const SlotInput = ({
 						ref={countRef}
 						required
 						type="number"
+						value={count}
 					/>
 					<button
 						aria-label={`increment-count-${index}-button`}

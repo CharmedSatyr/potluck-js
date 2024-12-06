@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import SlotInput from "@/components/plan-food-form/slot-input";
+import userEvent from "@testing-library/user-event";
 
 describe("ItemInput", () => {
 	beforeEach(() => {
@@ -20,7 +21,6 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -39,7 +39,6 @@ describe("ItemInput", () => {
 				id={id}
 				index={1}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -60,7 +59,6 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -81,7 +79,6 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -102,7 +99,6 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -120,20 +116,17 @@ describe("ItemInput", () => {
 		render(
 			<SlotInput
 				change={handleChange}
-				count="1"
+				count="2"
 				hasCommitments={false}
 				id={id}
 				index={0}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
 
 		const decrementButton = screen.getAllByRole("button")[2];
 		const countInput = screen.getByRole("spinbutton");
-
-		fireEvent.change(countInput, { target: { value: "2" } });
 
 		fireEvent.click(decrementButton);
 
@@ -150,7 +143,6 @@ describe("ItemInput", () => {
 				id={id}
 				index={0}
 				item="Sample Item"
-				order={1}
 				remove={handleRemove}
 			/>
 		);
@@ -168,11 +160,10 @@ describe("ItemInput", () => {
 		render(
 			<SlotInput
 				change={handleChange}
-				count="1"
+				count="1000"
 				hasCommitments={false}
 				id={id}
 				index={0}
-				order={1}
 				item="Sample Item"
 				remove={handleRemove}
 			/>
@@ -180,8 +171,6 @@ describe("ItemInput", () => {
 
 		const incrementButton = screen.getAllByRole("button")[3];
 		const countInput = screen.getByRole("spinbutton");
-
-		fireEvent.change(countInput, { target: { value: "1000" } });
 
 		fireEvent.click(incrementButton);
 
