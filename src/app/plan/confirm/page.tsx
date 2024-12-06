@@ -15,7 +15,7 @@ type Props = {
 	searchParams: Promise<{ [key: string]: string }>;
 };
 
-const Page = async ({ searchParams }: Props) => {
+const PlanConfirmPage = async ({ searchParams }: Props) => {
 	const session = await auth();
 
 	const params = await searchParams;
@@ -34,6 +34,7 @@ const Page = async ({ searchParams }: Props) => {
 	});
 
 	if (!result?.code) {
+		console.warn("No code created for new event:", JSON.stringify(eventData));
 		// TODO: Add some error messaging via toast
 		redirect("/plan".concat(queryString));
 	}
@@ -41,15 +42,24 @@ const Page = async ({ searchParams }: Props) => {
 	const slotData = await buildSlotDataFromParams(searchParams);
 
 	if (slotData.length > 0) {
-		await createSlots({
+		const slots = await createSlots({
 			code: result.code,
 			slots: slotData as NonEmptySlotDataArray,
 		});
 
-		// TODO: Add handling if problem adding slots.
+		// TODO: Add more handling if problem adding slots.
+		if (slots.length !== slotData.length) {
+			console.warn(
+				"Failed to create slots.",
+				"eventData:",
+				JSON.stringify(eventData),
+				"slotData:",
+				JSON.stringify(slotData)
+			);
+		}
 	}
 
 	redirect(`/event/${result.code}`);
 };
 
-export default Page;
+export default PlanConfirmPage;
