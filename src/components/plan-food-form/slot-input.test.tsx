@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import SlotInput from "@/components/plan-food-form/slot-input";
-import userEvent from "@testing-library/user-event";
 
 describe("ItemInput", () => {
 	beforeEach(() => {
