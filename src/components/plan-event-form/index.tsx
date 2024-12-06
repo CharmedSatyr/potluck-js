@@ -23,12 +23,12 @@ type Props = {
 const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 	const pathname = usePathname();
 	const [, login, isPending] = useActionState(loginAction, { path: pathname });
-	const descriptionRef = useRef<HTMLInputElement>(null);
-	const hostsRef = useRef<HTMLInputElement>(null);
-	const locationRef = useRef<HTMLInputElement>(null);
-	const startDateRef = useRef<HTMLInputElement>(null);
-	const startTimeRef = useRef<HTMLInputElement>(null);
-	const titleRef = useRef<HTMLInputElement>(null);
+	const descriptionRef = useRef<HTMLInputElement | null>(null);
+	const hostsRef = useRef<HTMLInputElement | null>(null);
+	const locationRef = useRef<HTMLInputElement | null>(null);
+	const startDateRef = useRef<HTMLInputElement | null>(null);
+	const startTimeRef = useRef<HTMLInputElement | null>(null);
+	const titleRef = useRef<HTMLInputElement | null>(null);
 
 	useEffect(() => {
 		titleRef.current?.focus();
