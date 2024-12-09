@@ -49,11 +49,10 @@ const Home = () => {
 
 						<p className="mb-0">
 							<span className="text-primary">{siteMetadata.title}</span> makes
-							it easy to plan shared meals when everyone&apos;s invited to
-							contribute a dish.{" "}
-							<span className="text-info">In active development</span> by and
-							for tabletop gamers who enjoy cooking and eating with their
-							friends.
+							it easier to plan events when everyone&apos;s invited to
+							contribute a dish—from birthdays to holidays to game nights.{" "}
+							<span className="text-info">In active development</span> by
+							tabletop gamers who enjoy cooking and eating with their friends.
 						</p>
 
 						<div className="flex w-full justify-center xl:hidden">
