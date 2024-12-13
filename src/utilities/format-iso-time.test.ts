@@ -16,18 +16,8 @@ describe("formatIsoTime", () => {
 		expect(formatIsoTime("00:00")).toBe("00:00:00");
 	});
 
-	it("throws an error if the input is not a string or has an incorrect length", () => {
-		expect(() => formatIsoTime("123")).toThrow(
-			"Invalid time passed to formatIsoTime"
-		);
-		expect(() => formatIsoTime("123456789")).toThrow(
-			"Invalid time passed to formatIsoTime"
-		);
-		expect(() => formatIsoTime(123 as unknown as string)).toThrow(
-			"Invalid time passed to formatIsoTime"
-		);
-		expect(() => formatIsoTime(null as unknown as string)).toThrow(
-			"Invalid time passed to formatIsoTime"
-		);
+	it("returns the time without action if the input is not a string or has an incorrect length", () => {
+		// Since this fn is used in zod schemas, don't throw because safeParse is expected to not throw.
+		expect(formatIsoTime(undefined as any)).toBeUndefined();
 	});
 });

@@ -4,7 +4,8 @@ const formatIsoTime = (time: string) => {
 	}
 
 	if (typeof time !== "string" || (time.length !== 5 && time.length !== 8)) {
-		throw new Error(`Invalid time passed to formatIsoTime: ${String(time)}`);
+		console.warn(`Invalid time passed to formatIsoTime: ${String(time)}`);
+		return time;
 	}
 
 	if (time.length === 8) {
