@@ -63,7 +63,7 @@ const EventSkeleton = async ({ code }: Props) => {
 					height="20"
 					width="20"
 				/>
-				Hosted by {hosts}
+				Hosted by {hosts || creator.name}
 			</p>
 			<p>{description}</p>
 
