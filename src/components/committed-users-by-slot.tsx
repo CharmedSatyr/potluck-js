@@ -38,7 +38,7 @@ const Avatars = ({ committedUsers }: Props) => {
 /** @deprecated */
 const CommittedUsersBySlot = async (
 	code: string
-): Promise<Map<string, JSX.Element>> => {
+): Promise<Map<string, React.JSX.Element>> => {
 	if (!code) {
 		return new Map();
 	}

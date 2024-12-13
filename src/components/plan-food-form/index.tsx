@@ -12,7 +12,7 @@ import Form from "next/form";
 
 type Props = {
 	code: string | null;
-	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
+	committedUsersBySlotPromise: Promise<Map<string, React.JSX.Element>>;
 	eventData: EventData;
 	mode: WizardMode;
 	slots: SlotData[];

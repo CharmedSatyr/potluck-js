@@ -15,7 +15,7 @@ import { WizardMode } from "@/@types/wizard-mode";
 
 type Props = {
 	code: string | null;
-	committedUsersBySlotPromise: Promise<Map<string, JSX.Element>>;
+	committedUsersBySlotPromise: Promise<Map<string, React.JSX.Element>>;
 	eventDataPromise: Promise<EventData[]>;
 	loggedIn: boolean;
 	mode: WizardMode;
