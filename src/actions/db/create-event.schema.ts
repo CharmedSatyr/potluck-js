@@ -31,6 +31,6 @@ export const schema = z
 			.refine((val) => /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(val), {
 				message: "Time required.",
 			}),
-		title: z.string().trim().min(1, { message: "Title required." }).max(256),
+		title: z.string().trim().min(1, { message: "Title required." }).max(100),
 	})
 	.required() satisfies z.ZodType<EventUserValues>;

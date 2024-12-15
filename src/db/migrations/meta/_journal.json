@@ -15,6 +15,13 @@
       "when": 1733244739936,
       "tag": "0001_pale_the_initiative",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734266276885,
+      "tag": "0002_military_maggott",
+      "breakpoints": true
     }
   ]
 }

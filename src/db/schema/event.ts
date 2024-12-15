@@ -40,7 +40,7 @@ export const event = pgTable(
 		location: varchar("location", { length: 256 }).notNull(),
 		startDate: date("startDate").notNull(),
 		startTime: time("startTime", { withTimezone: false }).notNull(),
-		title: varchar("title", { length: 256 }).notNull(),
+		title: varchar("title", { length: 100 }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
 			.defaultNow(),
