@@ -1,7 +1,7 @@
 export const formatStartTime = (startTime: string) => {
-	const timeString = "13:00:00";
-	const [hours, minutes, seconds] = timeString.split(":").map(Number);
-	const date = new Date(0, 0, 0, hours, minutes, seconds); // Create a Date object
+	const [hours, minutes, seconds] = startTime.split(":").map(Number);
+	const date = new Date();
+	date.setHours(hours, minutes, seconds);
 
 	const options: Intl.DateTimeFormatOptions = {
 		hour: "numeric",
