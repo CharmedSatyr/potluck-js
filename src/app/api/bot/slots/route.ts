@@ -1,3 +1,4 @@
+import findSlotsWithNeeded from "@/actions/db/find-slots-with-needed";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
@@ -5,11 +6,14 @@ export const GET = async (request: NextRequest) => {
 
 	const code = searchParams.get("code");
 
-	return NextResponse.json(
-		{
-			message: `Received code ${code}`,
-			success: true,
-		},
-		{ status: 200 }
-	);
+	if (!code) {
+		return NextResponse.json(
+			{ message: "Event code required" },
+			{ status: 400 }
+		);
+	}
+
+	const slots = await findSlotsWithNeeded({ code });
+
+	return NextResponse.json({ slots }, { status: 200 });
 };
