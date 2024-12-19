@@ -15,7 +15,7 @@ export const commitment = pgTable("commitment", {
 	createdBy: uuid("user_id")
 		.references(() => user.id, { onDelete: "cascade" })
 		.notNull(),
-	description: varchar("description", { length: 256 }).notNull(),
+	description: varchar("description", { length: 100 }).notNull(),
 	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	quantity: integer("quantity").notNull(),
 	slotId: uuid("slot_id")

@@ -1,0 +1,1 @@
+ALTER TABLE "commitment" ALTER COLUMN "description" SET DATA TYPE varchar(100);
