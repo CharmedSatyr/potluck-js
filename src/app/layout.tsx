@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
+// TODO: Use @next/env
 import * as dotenv from "dotenv";
 import siteMetadata from "@/data/site-metadata";
 import NavBar from "@/components/nav-bar";
