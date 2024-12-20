@@ -17,7 +17,9 @@ describe("formatIsoTime", () => {
 	});
 
 	it("returns the time without action if the input is not a string or has an incorrect length", () => {
+		const warnLog = jest.spyOn(console, "warn").mockImplementation(() => {});
 		// Since this fn is used in zod schemas, don't throw because safeParse is expected to not throw.
 		expect(formatIsoTime(undefined as any)).toBeUndefined();
+		expect(warnLog).toHaveBeenCalled();
 	});
 });
