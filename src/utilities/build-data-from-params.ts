@@ -1,15 +1,5 @@
 import { EventData } from "@/@types/event";
 import { SlotData } from "@/@types/slot";
-import { DEV } from "@/utilities/current-env";
-
-const testVals: EventData = {
-	description: "A beautiful walk in the park.",
-	hosts: "Winston Churchill and Elon Musk",
-	location: "123 Main Street",
-	startDate: "2025-01-09",
-	startTime: "12:00",
-	title: "Test Event",
-};
 
 export const buildEventDataFromParams = async (
 	paramsPromise: Promise<{
@@ -35,10 +25,6 @@ export const buildEventDataFromParams = async (
 
 		eventData[key as keyof EventData] = searchValue;
 	});
-
-	if (DEV) {
-		return [testVals];
-	}
 
 	return [eventData];
 };
