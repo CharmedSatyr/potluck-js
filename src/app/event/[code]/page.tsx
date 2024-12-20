@@ -88,6 +88,9 @@ const ManageEventSection = ({
 	code: string;
 	eventData: EventData;
 }) => {
+	const { description, hosts, location, startDate, startTime, title } =
+		eventData;
+
 	return (
 		<section className="my my-4 flex w-full flex-col gap-2 md:my-0 md:w-1/3 md:items-end md:justify-start">
 			<Suspense fallback={<RsvpFormFallback />}>
@@ -96,7 +99,14 @@ const ManageEventSection = ({
 						className="btn btn-accent mb-2 w-full md:w-28"
 						href={{
 							pathname: `/event/${code}/edit`,
-							query: eventData,
+							query: {
+								description,
+								hosts,
+								location,
+								startDate,
+								startTime,
+								title,
+							},
 						}}
 					>
 						Edit
