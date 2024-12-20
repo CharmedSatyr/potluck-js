@@ -28,11 +28,10 @@ export enum Step {
 }
 
 const ProgressIndicator = () => {
-	const [anchor, scrollToAnchor] = useAnchor();
+	const [anchor = Step.CREATE_EVENT, scrollToAnchor] = useAnchor();
 
 	useEffect(() => {
-		// TODO: This doesn't help with side-scrolling on mobile.
-		if (!anchor || anchor === Step.CREATE_EVENT) {
+		if (anchor === Step.CREATE_EVENT) {
 			scrollToAnchor(Step.CREATE_EVENT);
 		}
 
