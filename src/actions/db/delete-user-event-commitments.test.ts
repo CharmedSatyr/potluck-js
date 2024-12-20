@@ -16,6 +16,10 @@ describe("deleteUserEventCommitments", () => {
 		{ id: "dced935b-dbd7-4996-872a-39cc5cb2fd98" },
 	];
 
+	beforeEach(() => {
+		jest.spyOn(console, "error").mockImplementation(() => {});
+	});
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
