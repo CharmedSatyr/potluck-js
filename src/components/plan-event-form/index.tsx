@@ -76,7 +76,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					defaultValue={eventData.title}
 					enterKeyHint="next"
 					id="name-input"
-					maxLength={256}
+					maxLength={100}
 					name="title"
 					onKeyDown={(e) => enterToNextRef(e, startDateRef)}
 					placeholder="What's this adventure?"
@@ -136,7 +136,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					defaultValue={eventData.location}
 					enterKeyHint="next"
 					id="location-input"
-					maxLength={256}
+					maxLength={100}
 					name="location"
 					onKeyDown={(e) => enterToNextRef(e, hostsRef)}
 					placeholder="Place name, address, or link"
@@ -159,7 +159,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						defaultValue={eventData.hosts}
 						enterKeyHint="next"
 						id="hosts-input"
-						maxLength={256}
+						maxLength={100}
 						name="hosts"
 						onKeyDown={(e) => enterToNextRef(e, descriptionRef)}
 						ref={hostsRef}
