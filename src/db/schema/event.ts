@@ -34,10 +34,10 @@ export const event = pgTable(
 		createdBy: uuid("user_id")
 			.references(() => user.id, { onDelete: "cascade" })
 			.notNull(),
-		description: text("description").notNull(),
-		hosts: varchar("hosts", { length: 256 }).notNull(),
+		description: varchar("description", { length: 256 }).notNull(),
+		hosts: varchar("hosts", { length: 100 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
-		location: varchar("location", { length: 256 }).notNull(),
+		location: varchar("location", { length: 100 }).notNull(),
 		startDate: date("startDate").notNull(),
 		startTime: time("startTime", { withTimezone: false }).notNull(),
 		title: varchar("title", { length: 100 }).notNull(),
