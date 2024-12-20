@@ -30,7 +30,7 @@ export const POST = async (request: NextRequest) => {
 	});
 
 	if (!createdBy) {
-		return NextResponse.json({ status: 401 });
+		return NextResponse.json(null, { status: 401 });
 	}
 
 	const [result] = await createCommitment({
@@ -41,8 +41,8 @@ export const POST = async (request: NextRequest) => {
 	});
 
 	if (!result?.id) {
-		return NextResponse.json({ status: 500 });
+		return NextResponse.json(null, { status: 500 });
 	}
 
-	return NextResponse.json({ status: 200 });
+	return NextResponse.json(null, { status: 200 });
 };
