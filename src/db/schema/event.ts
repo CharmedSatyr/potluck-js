@@ -2,7 +2,6 @@ import {
 	date,
 	index,
 	pgTable,
-	text,
 	timestamp,
 	time,
 	uuid,
@@ -45,7 +44,7 @@ export const event = pgTable(
 			.notNull()
 			.defaultNow(),
 	},
-	(table) => ({ codeIdx: index("code_idx").on(table.code) })
+	(table) => [index("code_idx").on(table.code)]
 );
 
 export type Event = typeof event.$inferSelect;
