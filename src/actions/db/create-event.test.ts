@@ -72,11 +72,11 @@ describe("createEvent", () => {
 			},
 			{
 				code: "too_big",
-				maximum: 256,
+				maximum: 100,
 				type: "string",
 				inclusive: true,
 				exact: false,
-				message: "String must contain at most 256 character(s)",
+				message: "String must contain at most 100 character(s)",
 				path: ["hosts"],
 			},
 			{
