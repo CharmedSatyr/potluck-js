@@ -2,10 +2,8 @@ import { ZodError } from "zod";
 import updateEvent from "@/actions/db/update-event";
 import db from "@/db/connection";
 import { event } from "@/db/schema/event";
-import findEvent from "@/actions/db/find-event";
 
 jest.mock("@/db/connection");
-jest.mock("@/actions/db/find-event");
 
 describe("updateEvent", () => {
 	let errorLogger: jest.SpyInstance;
@@ -34,8 +32,6 @@ describe("updateEvent", () => {
 	};
 
 	it("should update the event in the database and return the updated code on success", async () => {
-		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
-
 		(db.update as jest.Mock).mockReturnValueOnce({
 			set: jest.fn().mockReturnValueOnce({
 				where: jest.fn().mockReturnValueOnce({
@@ -46,7 +42,6 @@ describe("updateEvent", () => {
 
 		const result = await updateEvent(validData);
 
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.update).toHaveBeenCalledWith(event);
 		expect(result).toEqual([{ code: "CODE1" }]);
 	});
@@ -135,8 +130,6 @@ describe("updateEvent", () => {
 	});
 
 	it("should return an empty array and log an error if db update fails", async () => {
-		(findEvent as jest.Mock).mockResolvedValueOnce([{ id: 1 }]);
-
 		const error = new Error("DB Error");
 
 		(db.update as jest.Mock).mockReturnValueOnce({
@@ -149,7 +142,6 @@ describe("updateEvent", () => {
 
 		const result = await updateEvent(validData);
 
-		expect(findEvent).toHaveBeenCalledWith({ code: validData.code });
 		expect(db.update).toHaveBeenCalledWith(event);
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
