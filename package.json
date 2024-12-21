@@ -20,7 +20,7 @@
 		"@heroicons/react": "^2.2.0",
 		"@neondatabase/serverless": "^0.10.4",
 		"@next/env": "^15.1.2",
-		"ai": "^4.0.20",
+		"ai": "^4.0.21",
 		"dotenv": "^16.4.7",
 		"drizzle-orm": "^0.38.2",
 		"next": "^15.1.2",
