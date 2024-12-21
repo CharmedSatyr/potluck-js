@@ -26,9 +26,7 @@ export const EventHeader = ({
 }) => {
 	return (
 		<>
-			<h1 className="mb-4 text-5xl font-bold text-primary md:text-6xl">
-				{title}
-			</h1>
+			<h1 className="mb-4 text-5xl font-bold text-primary">{title}</h1>
 			<div className="font-bold">
 				Event Code: <CopyLinkButton text={code} />
 			</div>
