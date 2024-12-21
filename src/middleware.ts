@@ -30,13 +30,13 @@ export const middleware = async (request: NextRequest) => {
 	const { origin, pathname } = request.nextUrl;
 
 	// Protected routes
-	if (!isAuthenticated()) {
+	if (!(await isAuthenticated())) {
 		return NextResponse.redirect(origin.concat("/oauth"));
 	}
 
 	// Creator-only routes
 	if (
-		!isCreator(pathname) &&
+		!(await isCreator(pathname)) &&
 		(pathname.endsWith("/edit") || pathname.endsWith("/confirm"))
 	) {
 		return NextResponse.redirect(origin.concat("/oauth"));
