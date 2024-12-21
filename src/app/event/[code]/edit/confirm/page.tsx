@@ -33,17 +33,12 @@ const Page = async ({ params, searchParams }: Props) => {
 
 	const { code } = await params;
 
-	if (!session?.user?.id) {
-		// TODO: Add some error messaging via toast
-		redirect(`/event/${code}`);
-	}
-
 	const [eventData] = await buildEventDataFromParams(searchParams);
 
 	const [result] = await updateEvent({
 		...eventData,
 		code,
-		createdBy: session.user.id,
+		createdBy: session!.user!.id!,
 	});
 
 	if (!result.code) {
