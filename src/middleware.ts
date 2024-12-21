@@ -3,26 +3,43 @@ import type { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import findEventCreatedBy from "@/actions/db/find-event-created-by";
 
-export const middleware = async (request: NextRequest) => {
-	const { origin, pathname, search } = request.nextUrl;
-
+const isAuthenticated = async () => {
 	const session = await auth();
 
-	if (!session?.user?.id) {
-		return NextResponse.redirect(origin.concat("/oauth").concat(search));
-	}
+	return Boolean(session?.user?.id);
+};
+
+const isCreator = async (pathname: string) => {
+	const session = await auth();
 
 	// pathname ends with /event/:code/edit or /event/:code/edit/confirm
 	const match = pathname.match(/^\/event\/([^/]+)\/edit(\/confirm)?$/);
 
-	if (match) {
-		const code = match[1];
+	if (!match) {
+		return false;
+	}
 
-		const [createdBy] = await findEventCreatedBy({ code });
+	const code = match[1];
 
-		if (createdBy?.id !== session?.user?.id) {
-			return NextResponse.redirect(origin.concat("/oauth").concat(search));
-		}
+	const [createdBy] = await findEventCreatedBy({ code });
+
+	return createdBy?.id === session?.user?.id;
+};
+
+export const middleware = async (request: NextRequest) => {
+	const { origin, pathname } = request.nextUrl;
+
+	// Protected routes
+	if (!isAuthenticated()) {
+		return NextResponse.redirect(origin.concat("/oauth"));
+	}
+
+	// Creator-only routes
+	if (
+		!isCreator(pathname) &&
+		(pathname.endsWith("/edit") || pathname.endsWith("/confirm"))
+	) {
+		return NextResponse.redirect(origin.concat("/oauth"));
 	}
 
 	return NextResponse.next();
