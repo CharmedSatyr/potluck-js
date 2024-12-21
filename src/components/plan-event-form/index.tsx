@@ -55,6 +55,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 			{mode === "create" && (
 				<h1 className="mb-4 text-primary">Create an Event</h1>
 			)}
+
 			{mode === "edit" && (
 				<h1 className="mb-4 flex items-center text-primary">
 					Now Editing
