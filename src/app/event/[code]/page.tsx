@@ -17,7 +17,7 @@ import findUserEventRsvp from "@/actions/db/find-user-event-rsvp";
 import { notFound } from "next/navigation";
 import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
-import { EventData } from "@/@types/event";
+import { EventDataWithCtx } from "@/@types/event";
 import genPageMetadata from "@/seo";
 import { Metadata } from "next";
 
@@ -86,7 +86,7 @@ const ManageEventSection = ({
 	eventData,
 }: {
 	code: string;
-	eventData: EventData;
+	eventData: EventDataWithCtx;
 }) => {
 	const { description, hosts, location, startDate, startTime, title } =
 		eventData;
@@ -170,11 +170,12 @@ const HostView = async ({
 	eventData,
 }: {
 	code: string;
-	eventData: EventData;
+	eventData: EventDataWithCtx;
 }) => (
 	<Container>
 		<EventSection code={code} />
 		<ManageEventSection code={code} eventData={eventData} />
+		{/* TODO: <RsvpSection code={code} userId={eventData.createdBy} /> */}
 		<FoodPlanSection code={code} />
 		<AttendeesSection code={code} />
 	</Container>
