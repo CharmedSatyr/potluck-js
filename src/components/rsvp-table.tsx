@@ -12,6 +12,10 @@ const RsvpTable = async ({ code }: Props) => {
 
 	const rsvpsWithDetails = await findRsvpsWithDetails({ code });
 
+	if (rsvpsWithDetails.length === 0) {
+		return <div>No attendees yet. RSVP to join the party!</div>;
+	}
+
 	const hostIdx = rsvpsWithDetails.findIndex(
 		(rsvp) => rsvp.user.id === creator.id
 	);
