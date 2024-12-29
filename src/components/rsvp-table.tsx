@@ -10,20 +10,24 @@ type Props = {
 const RsvpTable = async ({ code }: Props) => {
 	const [creator] = await findUserByEventCode({ code });
 
-	const rsvpsWithDetails = [
-		{
-			id: "1",
-			message: (
-				<span className="flex items-center gap-1">
-					<CheckBadgeIcon className="text-primary" height="20" width="20" />
-					Event Host
-				</span>
-			),
-			response: "yes",
-			user: { image: creator.image, name: creator.name },
-		},
-		...(await findRsvpsWithDetails({ code })),
-	];
+	const rsvpsWithDetails = await findRsvpsWithDetails({ code });
+
+	const hostIdx = rsvpsWithDetails.findIndex(
+		(rsvp) => rsvp.user.id === creator.id
+	);
+
+	if (hostIdx >= 0) {
+		const [host] = rsvpsWithDetails.splice(hostIdx, 1);
+
+		host.message = (
+			<span className="flex items-center gap-1">
+				<CheckBadgeIcon className="text-primary" height="20" width="20" />
+				Event Host
+			</span>
+		) as unknown as string; // TODO: Massage the client type.
+
+		rsvpsWithDetails.unshift(host);
+	}
 
 	return (
 		<div className="overflow-x-auto">

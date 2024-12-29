@@ -14,7 +14,7 @@ const findUserByEventCode = async (data: z.infer<typeof schema>) => {
 		const [event] = await findEvent({ code: data.code });
 
 		return await db
-			.select({ image: user.image, name: user.name })
+			.select({ id: user.id, image: user.image, name: user.name })
 			.from(user)
 			.where(eq(user.id, event.createdBy));
 	} catch (err) {

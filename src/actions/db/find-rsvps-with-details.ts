@@ -9,11 +9,11 @@ import { schema } from "@/actions/db/find-rsvps-with-details.schema";
 import { User, user } from "@/db/schema/auth/user";
 
 type RsvpsWithDetails = {
-	createdBy: Rsvp["createdBy"];
 	id: Rsvp["id"];
 	message: Rsvp["message"];
 	response: Rsvp["response"];
 	user: {
+		id: User["id"];
 		image: User["image"];
 		name: User["name"];
 	};
@@ -33,11 +33,11 @@ const findRsvpsWithDetails = async (
 
 		return await db
 			.select({
-				createdBy: rsvp.createdBy,
 				id: rsvp.id,
 				message: rsvp.message,
 				response: rsvp.response,
 				user: {
+					id: user.id,
 					image: user.image,
 					name: user.name,
 				},

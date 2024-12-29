@@ -21,7 +21,11 @@ describe("findUserByEventCode", () => {
 		jest.clearAllMocks();
 	});
 
-	const user = { name: "Jane Doe", image: "https://discord.image" };
+	const user = {
+		id: "68eeb747-321c-437d-b49c-c10b925b384b",
+		name: "Jane Doe",
+		image: "https://discord.image",
+	};
 	const event = {
 		code: "CODE1",
 		createdBy: "68eeb747-321c-437d-b49c-c10b925b384b",
@@ -40,6 +44,7 @@ describe("findUserByEventCode", () => {
 
 		expect(findEvent).toHaveBeenCalledWith({ code: "CODE1" });
 		expect(db.select).toHaveBeenCalledWith({
+			id: dbUser.id,
 			image: dbUser.image,
 			name: dbUser.name,
 		});
@@ -52,7 +57,6 @@ describe("findUserByEventCode", () => {
 		const result = await findUserByEventCode({ code: "BAD99" });
 
 		expect(findEvent).toHaveBeenCalledWith({ code: "BAD99" });
-		//expect(db.select).not.toHaveBeenCalled();
 		expect(result).toEqual([]);
 	});
 
@@ -79,6 +83,7 @@ describe("findUserByEventCode", () => {
 
 		expect(findEvent).toHaveBeenCalledWith({ code: "CODE1" });
 		expect(db.select).toHaveBeenCalledWith({
+			id: dbUser.id,
 			image: dbUser.image,
 			name: dbUser.name,
 		});
