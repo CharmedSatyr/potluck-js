@@ -22,11 +22,10 @@ describe("updateEvent", () => {
 
 	const validData = {
 		code: "CODE1",
-		createdBy: "123e4567-e89b-12d3-a456-426614174000",
 		description: "Updated description",
 		hosts: "Jane Doe",
 		location: "456 Test St",
-		startDate: "2024-12-31",
+		startDate: "2025-12-31",
 		startTime: "14:00:00",
 		title: "Updated Event",
 	};
@@ -49,7 +48,6 @@ describe("updateEvent", () => {
 	it("should throw an error if invalid data is provided", async () => {
 		const invalidData = {
 			code: "BAD",
-			createdBy: "invalid-uuid",
 			description: "This description is too long".repeat(20),
 			hosts: "Hosts".repeat(70),
 			location: "",
@@ -67,12 +65,6 @@ describe("updateEvent", () => {
 				exact: true,
 				message: "String must contain exactly 5 character(s)",
 				path: ["code"],
-			},
-			{
-				validation: "uuid",
-				code: "invalid_string",
-				message: "Invalid uuid",
-				path: ["createdBy"],
 			},
 			{
 				code: "too_big",

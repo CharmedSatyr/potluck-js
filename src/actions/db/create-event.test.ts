@@ -25,7 +25,7 @@ describe("createEvent", () => {
 		description: "This is a valid test event",
 		hosts: "John Doe",
 		location: "123 Test St",
-		startDate: "2024-12-31",
+		startDate: "2025-12-31",
 		startTime: "12:30:00",
 		title: "Test Event",
 	};
