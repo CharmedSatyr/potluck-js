@@ -1,8 +1,10 @@
 import createEvent from "@/actions/db/create-event";
 import { schema as createEventSchema } from "@/actions/db/create-event.schema";
+import { schema as updateEventSchema } from "@/actions/db/update-event.schema";
 import findUserIdByProviderAccountId from "@/actions/db/find-user-id-by-provider-account-id";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import updateEvent from "@/actions/db/update-event";
 
 export const POST = async (request: NextRequest) => {
 	const data = await request.json();
@@ -68,6 +70,51 @@ export const POST = async (request: NextRequest) => {
 			code: result.code,
 			message: "Event created",
 			success: true,
+		},
+		{ status: 200 }
+	);
+};
+
+export const PUT = async (request: NextRequest) => {
+	const data = await request.json();
+
+	const parsed = updateEventSchema.safeParse(data);
+
+	if (!parsed.success) {
+		return NextResponse.json(
+			{
+				errors: parsed.error.flatten().fieldErrors,
+				message: "Invalid parameters",
+			},
+			{ status: 400 }
+		);
+	}
+
+	const { code, description, location, startDate, startTime, title } =
+		parsed.data;
+
+	const [result] = await updateEvent({
+		code,
+		description,
+		location,
+		startDate,
+		startTime,
+		title,
+	});
+
+	if (!result?.code) {
+		return NextResponse.json(
+			{
+				message: "Failed to update event",
+			},
+			{ status: 500 }
+		);
+	}
+
+	return NextResponse.json(
+		{
+			code,
+			message: "Event updated",
 		},
 		{ status: 200 }
 	);

@@ -8,7 +8,6 @@ futureDate.setFullYear(futureDate.getFullYear() + 1);
 
 export const schema = z.strictObject({
 	code: z.string().trim().length(EVENT_CODE_LENGTH),
-	createdBy: z.string().trim().uuid(),
 	description: z.string().trim().max(256).optional(),
 	hosts: z.string().trim().max(256).optional(),
 	location: z
@@ -41,5 +40,5 @@ export const schema = z.strictObject({
 		.max(256)
 		.optional(),
 }) satisfies z.ZodType<
-	Partial<EventUserValues> & Required<Pick<Event, "code" | "createdBy">>
+	Partial<EventUserValues> & Required<Pick<Event, "code">>
 >;

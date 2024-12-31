@@ -1,7 +1,6 @@
 import { NonEmptySlotDataArray } from "@/@types/slot";
 import updateEvent from "@/actions/db/update-event";
 import upsertSlots from "@/actions/db/upsert-slots";
-import { auth } from "@/auth";
 import {
 	buildEventDataFromParams,
 	buildSlotDataFromParams,
@@ -29,8 +28,6 @@ type Props = {
 };
 
 const Page = async ({ params, searchParams }: Props) => {
-	const session = await auth();
-
 	const { code } = await params;
 
 	const [eventData] = await buildEventDataFromParams(searchParams);
@@ -38,7 +35,6 @@ const Page = async ({ params, searchParams }: Props) => {
 	const [result] = await updateEvent({
 		...eventData,
 		code,
-		createdBy: session!.user!.id!,
 	});
 
 	if (!result.code) {
