@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import findUsers from "@/actions/db/find-users";
 import db from "@/db/connection";
+import { user } from "@/db/schema/auth/user";
 
 jest.mock("@/db/connection");
 
@@ -27,21 +28,33 @@ describe("findUsers", () => {
 	};
 
 	it("should return the users from the database when valid data is provided", async () => {
-		const mockDbResponse = [
-			{ id: "123e4567-e89b-12d3-a456-426614174000", name: "User One" },
-			{ id: "987e6543-a21c-45f7-b654-876543210000", name: "User Two" },
+		const response = [
+			{
+				id: "123e4567-e89b-12d3-a456-426614174000",
+				image: "https://user1.img",
+				name: "User One",
+			},
+			{
+				id: "987e6543-a21c-45f7-b654-876543210000",
+				image: "https://user2.img",
+				name: "User Two",
+			},
 		];
 
 		(db.select as jest.Mock).mockReturnValueOnce({
 			from: jest.fn().mockReturnValueOnce({
-				where: jest.fn().mockResolvedValueOnce(mockDbResponse),
+				where: jest.fn().mockResolvedValueOnce(response),
 			}),
 		});
 
 		const result = await findUsers(validData);
 
-		expect(db.select).toHaveBeenCalledWith();
-		expect(result).toEqual(mockDbResponse);
+		expect(db.select).toHaveBeenCalledWith({
+			id: user.id,
+			image: user.image,
+			name: user.name,
+		});
+		expect(result).toEqual(response);
 	});
 
 	it("should return an empty array and log an error if invalid data is provided", async () => {
@@ -100,7 +113,11 @@ describe("findUsers", () => {
 
 		const result = await findUsers(validData);
 
-		expect(db.select).toHaveBeenCalledWith();
+		expect(db.select).toHaveBeenCalledWith({
+			id: user.id,
+			image: user.image,
+			name: user.name,
+		});
 		expect(result).toEqual([]);
 		expect(errorLogger).toHaveBeenCalledWith(error);
 	});
