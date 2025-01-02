@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EventUserValues } from "@/db/schema/event";
+import { EventUserValues } from "@/@types/event";
 import { createdBy } from "@/validation/createdBy.schema";
 import { location } from "@/validation/location.schema";
 import { title } from "@/validation/title.schema";

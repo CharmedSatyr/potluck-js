@@ -2,7 +2,8 @@
 
 import { z } from "zod";
 import db from "@/db/connection";
-import { Event, event } from "@/db/schema/event";
+import { event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 import { schema } from "@/actions/db/create-event.schema";
 
 const createEvent = async (

@@ -6,13 +6,10 @@ import {
 	time,
 	uuid,
 	varchar,
-	bigint,
 	integer,
 } from "drizzle-orm/pg-core";
-import { user } from "./auth/user";
-import { sql } from "drizzle-orm";
-
-export const EVENT_CODE_LENGTH = 5;
+import { user } from "@/db/schema/auth/user";
+import { EVENT_CODE_LENGTH } from "@/constants/event-code-length";
 
 const createCode = (): string =>
 	Math.random()
@@ -51,16 +48,3 @@ export const event = pgTable(
 	},
 	(table) => [index("code_idx").on(table.code)]
 );
-
-export type Event = typeof event.$inferSelect;
-
-export type EventUserValues = Pick<
-	Event,
-	| "createdBy"
-	| "description"
-	| "hosts"
-	| "location"
-	| "startDate"
-	| "startTime"
-	| "title"
->;

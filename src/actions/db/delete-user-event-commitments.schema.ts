@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 import { Commitment } from "@/db/schema/commitment";
 import { code } from "@/validation/code.schema";
 

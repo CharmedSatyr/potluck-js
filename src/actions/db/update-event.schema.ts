@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Event, EVENT_CODE_LENGTH, EventUserValues } from "@/db/schema/event";
+import { EVENT_CODE_LENGTH } from "@/constants/event-code-length";
+import { Event, EventUserValues } from "@/@types/event";
 import formatIsoTime from "@/utilities/format-iso-time";
 
 const currentDate = new Date();

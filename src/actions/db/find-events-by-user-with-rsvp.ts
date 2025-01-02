@@ -2,9 +2,10 @@
 
 import { z } from "zod";
 import { desc, eq } from "drizzle-orm";
+import { Event } from "@/@types/event";
 import { schema } from "@/actions/db/find-events-by-user-with-rsvp.schema";
 import db from "@/db/connection";
-import { Event, event } from "@/db/schema/event";
+import { event } from "@/db/schema/event";
 import { rsvp } from "@/db/schema/rsvp";
 
 const findEventsByUserWithRsvp = async (

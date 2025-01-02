@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import findEventExistsRedirect from "@/components/goto-event-form/find-event-exists-redirect";
-import { EVENT_CODE_LENGTH } from "@/db/schema/event";
+import { EVENT_CODE_LENGTH } from "@/constants/event-code-length";
 import LoadingIndicator from "../loading-indicator";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import WarningAlert from "../warning-alert";

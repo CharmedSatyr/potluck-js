@@ -1,4 +1,6 @@
-import { Event } from "@/db/schema/event";
+import { event } from "@/db/schema/event";
+
+export type Event = typeof event.$inferSelect;
 
 export type EventData = Pick<
 	Event,
@@ -6,3 +8,14 @@ export type EventData = Pick<
 >;
 
 export type EventDataWithCtx = Pick<Event, "createdBy" | "id"> & EventData;
+
+export type EventUserValues = Pick<
+	Event,
+	| "createdBy"
+	| "description"
+	| "hosts"
+	| "location"
+	| "startDate"
+	| "startTime"
+	| "title"
+>;
