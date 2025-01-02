@@ -46,5 +46,10 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-	matcher: ["/plan/confirm", "/event/:code/edit", "/event/:code/edit/confirm"],
+	matcher: [
+		"/dashboard",
+		"/event/:code/edit",
+		"/event/:code/edit/confirm",
+		"/plan/confirm",
+	],
 };

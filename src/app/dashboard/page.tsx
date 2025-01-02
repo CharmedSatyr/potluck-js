@@ -1,7 +1,6 @@
 import findEventsByUser from "@/actions/db/find-events-by-user";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import eventIsPassed from "@/utilities/event-is-passed";
 import findEventsByUserWithRsvp from "@/actions/db/find-events-by-user-with-rsvp";
 import { Suspense } from "react";
@@ -127,12 +126,6 @@ const AttendingTable = async () => {
 };
 
 const DashboardPage = async () => {
-	const session = await auth();
-
-	if (!session?.user?.id) {
-		redirect("/");
-	}
-
 	return (
 		<main className="w-full">
 			<h1 className="text-primary">Dashboard</h1>
