@@ -39,7 +39,7 @@ const findEvent = async (
 			.where(eq(event.code, data.code))
 			.limit(1);
 	} catch (err) {
-		console.error(err);
+		console.warn(err);
 
 		return [];
 	}

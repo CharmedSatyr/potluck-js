@@ -5,14 +5,14 @@ import db from "@/db/connection";
 jest.mock("@/db/connection");
 
 describe("findEvent", () => {
-	let errorLogger: jest.SpyInstance;
+	let warnLogger: jest.SpyInstance;
 
 	beforeAll(() => {
-		errorLogger = jest.spyOn(console, "error").mockImplementation(() => {});
+		warnLogger = jest.spyOn(console, "warn").mockImplementation(() => {});
 	});
 
 	afterAll(() => {
-		errorLogger.mockRestore();
+		warnLogger.mockRestore();
 	});
 
 	beforeEach(() => {
@@ -59,7 +59,7 @@ describe("findEvent", () => {
 
 		expect(db.select).not.toHaveBeenCalled();
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(error);
+		expect(warnLogger).toHaveBeenCalledWith(error);
 	});
 
 	it("should return an empty array and log an error if db retrieval fails", async () => {
@@ -77,6 +77,6 @@ describe("findEvent", () => {
 
 		expect(db.select).toHaveBeenCalled();
 		expect(result).toEqual([]);
-		expect(errorLogger).toHaveBeenCalledWith(error);
+		expect(warnLogger).toHaveBeenCalledWith(error);
 	});
 });
