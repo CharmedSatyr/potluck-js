@@ -38,8 +38,8 @@ export const event = pgTable(
 		hosts: varchar("hosts", { length: 100 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 100 }).notNull(),
-		startDate: date("startDate").notNull(),
-		startTime: time("startTime", { withTimezone: false }).notNull(),
+		startDate: date("startDate"),
+		startTime: time("startTime", { withTimezone: false }),
 		startUtcMs: integer("start_utc_ms").notNull().default(0),
 		title: varchar("title", { length: 100 }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
