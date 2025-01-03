@@ -37,7 +37,7 @@ export const middleware = async (request: NextRequest) => {
 	// Creator-only routes
 	if (
 		!(await isCreator(pathname)) &&
-		(pathname.endsWith("/edit") || pathname.endsWith("/confirm"))
+		(pathname.endsWith("/edit") || pathname.endsWith("/edit/confirm"))
 	) {
 		return NextResponse.redirect(origin.concat("/oauth"));
 	}
