@@ -23,10 +23,10 @@ describe("updateEvent", () => {
 	const validData = {
 		code: "CODE1",
 		description: "Updated description",
+		endUtcMs: 1766649600000,
 		hosts: "Jane Doe",
 		location: "456 Test St",
-		startDate: "2025-12-31",
-		startTime: "14:00:00",
+		startUtcMs: 1766649600000,
 		title: "Updated Event",
 	};
 
@@ -49,10 +49,10 @@ describe("updateEvent", () => {
 		const invalidData = {
 			code: "BAD",
 			description: "This description is too long".repeat(20),
+			endUtcMs: 1,
 			hosts: "Hosts".repeat(70),
 			location: "",
-			startDate: "1999-12-31",
-			startTime: "25:61:00",
+			startUtcMs: 0,
 			title: "",
 		};
 
@@ -76,12 +76,17 @@ describe("updateEvent", () => {
 				path: ["description"],
 			},
 			{
+				code: "custom",
+				message: "Event end must be between 1/3/2025 and 1/3/2026",
+				path: ["endUtcMs"],
+			},
+			{
 				code: "too_big",
-				maximum: 256,
+				maximum: 100,
 				type: "string",
 				inclusive: true,
 				exact: false,
-				message: "String must contain at most 256 character(s)",
+				message: "String must contain at most 100 character(s)",
 				path: ["hosts"],
 			},
 			{
@@ -95,13 +100,8 @@ describe("updateEvent", () => {
 			},
 			{
 				code: "custom",
-				message: "Date must be within the next year.",
-				path: ["startDate"],
-			},
-			{
-				code: "custom",
-				message: "Time required.",
-				path: ["startTime"],
+				message: "Event start must be between 1/3/2025 and 1/3/2026",
+				path: ["startUtcMs"],
 			},
 			{
 				code: "too_small",
