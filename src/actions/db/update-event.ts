@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import db from "@/db/connection";
-import { Event, event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
+import { event } from "@/db/schema/event";
 import { schema } from "@/actions/db/update-event.schema";
 
 const updateEvent = async (

@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { Event } from "@/@types/event";
 import { code } from "@/validation/code.schema";
-import { Event } from "@/db/schema/event";
 import { Rsvp } from "@/db/schema/rsvp";
 import { User } from "@/db/schema/auth/user";
 

@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import Results from "@/components/suggestions/results";
 import Prompt from "@/components/suggestions/prompt";
 import FailureWarning from "@/components/suggestions/failure-warning";
-import { EventData } from "@/@types/event";
+import { EventData, EventInput } from "@/@types/event";
 import { SlotData } from "@/@types/slot";
 
 type Props = {
@@ -54,16 +54,16 @@ const Suggestions = ({
 
 // TODO: not unknown.
 const SuggestionsContainer = ({
-	eventData,
+	eventInput,
 	populate,
 }: {
-	eventData: EventData;
+	eventInput: EventInput;
 	populate: (items: SlotData[]) => void;
 }) => {
 	const [attendees, setAttendees] = useState<string>("0");
-	const hookReturn = useSlotSuggestions(eventData, Number(attendees));
+	const hookReturn = useSlotSuggestions(eventInput, Number(attendees));
 
-	if (!eventData) {
+	if (!eventInput) {
 		return null;
 	}
 

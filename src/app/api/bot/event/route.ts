@@ -31,7 +31,7 @@ export const POST = async (request: NextRequest) => {
 		);
 	}
 
-	const { discordUserId, title, startDate, startTime, location, description } =
+	const { discordUserId, title, startUtcMs, endUtcMs, location, description } =
 		parsed.data;
 
 	const [createdBy] = await findUserIdByProviderAccountId({
@@ -50,12 +50,12 @@ export const POST = async (request: NextRequest) => {
 
 	const [result] = await createEvent({
 		createdBy: createdBy.id,
-		title,
-		startDate,
-		startTime,
-		location,
 		description,
+		endUtcMs,
+		location,
 		hosts: "",
+		startUtcMs,
+		title,
 	});
 
 	if (!result?.code) {
@@ -93,15 +93,15 @@ export const PUT = async (request: NextRequest) => {
 		);
 	}
 
-	const { code, description, location, startDate, startTime, title } =
+	const { code, description, endUtcMs, location, startUtcMs, title } =
 		parsed.data;
 
 	const [result] = await updateEvent({
 		code,
 		description,
+		endUtcMs,
 		location,
-		startDate,
-		startTime,
+		startUtcMs,
 		title,
 	});
 

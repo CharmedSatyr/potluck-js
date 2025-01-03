@@ -9,14 +9,14 @@ import PlanFoodForm, {
 } from "@/components/plan-food-form";
 import Suggestions from "@/components/suggestions";
 import useAnchor, { scrollToAnchor } from "@/hooks/use-anchor";
-import { EventData } from "@/@types/event";
+import { EventData, EventInput } from "@/@types/event";
 import { SlotData } from "@/@types/slot";
 import { WizardMode } from "@/@types/wizard-mode";
 
 type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, React.JSX.Element>>;
-	eventDataPromise: Promise<EventData[]>;
+	eventInputPromise: Promise<EventInput>;
 	loggedIn: boolean;
 	mode: WizardMode;
 	slotsPromise: Promise<SlotData[]>;
@@ -62,12 +62,12 @@ const ProgressIndicator = () => {
 const ManageEventWizard = ({
 	code,
 	committedUsersBySlotPromise,
-	eventDataPromise,
+	eventInputPromise,
 	loggedIn,
 	mode,
 	slotsPromise,
 }: Props) => {
-	const [eventData] = use(eventDataPromise);
+	const eventInput = use(eventInputPromise);
 	const slots = use(slotsPromise);
 
 	const [suggestedSlots, setSuggestedSlots] = useState<SlotData[]>([]);
@@ -75,6 +75,8 @@ const ManageEventWizard = ({
 	const populateSuggestedSlots = (items: SlotData[]) => {
 		setSuggestedSlots(items);
 	};
+
+	const { title, startDate, startTime, location } = eventInput;
 
 	return (
 		<>
@@ -86,7 +88,7 @@ const ManageEventWizard = ({
 					<Suspense fallback={<PlanEventFormFallback />}>
 						<PlanEventForm
 							code={code}
-							eventData={eventData}
+							eventInput={eventInput}
 							loggedIn={loggedIn}
 							mode={mode}
 						/>
@@ -100,13 +102,9 @@ const ManageEventWizard = ({
 					<h1 className="text-primary">Plan the Food</h1>
 
 					<Suspense>
-						{loggedIn &&
-						eventData.title &&
-						eventData.startDate &&
-						eventData.startTime &&
-						eventData.location ? (
+						{loggedIn && title && startDate && startTime && location ? (
 							<Suggestions
-								eventData={eventData}
+								eventInput={eventInput}
 								populate={populateSuggestedSlots}
 							/>
 						) : (
@@ -126,7 +124,7 @@ const ManageEventWizard = ({
 						<PlanFoodForm
 							code={code}
 							committedUsersBySlotPromise={committedUsersBySlotPromise}
-							eventData={eventData}
+							eventInput={eventInput}
 							mode={mode}
 							slots={slots}
 							suggestedSlots={suggestedSlots}

@@ -2,12 +2,13 @@ import { NonEmptySlotDataArray } from "@/@types/slot";
 import updateEvent from "@/actions/db/update-event";
 import upsertSlots from "@/actions/db/upsert-slots";
 import {
-	buildEventDataFromParams,
+	buildEventInputFromParams,
 	buildSlotDataFromParams,
-} from "@/utilities/build-data-from-params";
+} from "@/utilities/build-from-params";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import genPageMetadata from "@/seo";
+import { eventInputToData } from "@/utilities/event-input-to-data";
 
 type MetadataProps = {
 	params: Promise<{ code: string }>;
@@ -30,7 +31,12 @@ type Props = {
 const Page = async ({ params, searchParams }: Props) => {
 	const { code } = await params;
 
-	const [eventData] = await buildEventDataFromParams(searchParams);
+	const eventInput = await buildEventInputFromParams(searchParams);
+	const eventData = eventInputToData(eventInput);
+
+	if (Object.values(eventData).filter((value) => Boolean(value)).length === 0) {
+		redirect(`/event/${code}`);
+	}
 
 	const [result] = await updateEvent({
 		...eventData,

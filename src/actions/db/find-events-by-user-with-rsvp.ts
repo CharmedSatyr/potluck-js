@@ -2,9 +2,10 @@
 
 import { z } from "zod";
 import { desc, eq } from "drizzle-orm";
+import { Event } from "@/@types/event";
 import { schema } from "@/actions/db/find-events-by-user-with-rsvp.schema";
 import db from "@/db/connection";
-import { Event, event } from "@/db/schema/event";
+import { event } from "@/db/schema/event";
 import { rsvp } from "@/db/schema/rsvp";
 
 const findEventsByUserWithRsvp = async (
@@ -14,29 +15,27 @@ const findEventsByUserWithRsvp = async (
 		code: Event["code"];
 		description: Event["location"];
 		location: Event["location"];
-		startDate: Event["startDate"];
-		startTime: Event["startTime"];
+		startUtcMs: Event["startUtcMs"];
 		title: Event["title"];
 	}[]
 > => {
 	try {
 		schema.parse(data);
 
-		const { code, startDate, startTime, location, description, title } = event;
+		const { code, description, location, startUtcMs, title } = event;
 
 		return await db
 			.select({
 				code,
 				description,
 				location,
-				startDate,
-				startTime,
+				startUtcMs,
 				title,
 			})
 			.from(rsvp)
 			.where(eq(rsvp.createdBy, data.id))
 			.innerJoin(event, eq(event.id, rsvp.eventId))
-			.orderBy(desc(event.startDate), desc(event.startTime));
+			.orderBy(desc(event.startUtcMs));
 	} catch (err) {
 		console.error(err);
 

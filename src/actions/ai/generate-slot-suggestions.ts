@@ -4,17 +4,20 @@ import { streamObject } from "ai";
 import { createStreamableValue } from "ai/rsc";
 import { openai } from "@ai-sdk/openai";
 import { suggestionsSchema } from "@/validation/suggestions.schema";
-import { EventData } from "@/@types/event";
+import { EventInput } from "@/@types/event";
 import { auth } from "@/auth";
 
 export const generateSlotSuggestions = async (
-	eventData: EventData,
+	eventInput: EventInput,
 	attendees: number
 ) => {
 	const session = await auth();
 	if (!session?.user?.id) {
 		throw new Error("Not authenticated");
 	}
+
+	const { description, hosts, location, startDate, startTime, title } =
+		eventInput;
 
 	const stream = createStreamableValue();
 
@@ -26,11 +29,11 @@ export const generateSlotSuggestions = async (
 	const prompt = `
   A user needs assistance planning their potluck event. Here are the details:
   
-  - **Event Title**: ${eventData.title}
-  - **Description**: ${eventData.description}
-  - **Hosted by**: ${eventData.hosts}
-  - **Location**: ${eventData.location}
-  - **Start Time**: ${eventData.startTime} on ${eventData.startDate}
+  - **Event Title**: ${title}
+  - **Description**: ${description}
+  - **Hosted by**: ${hosts}
+  - **Location**: ${location}
+  - **Start Time**: ${startTime} on ${startDate}
   - **Number of Attendees**: ${attendees}
 
   Based on these details:

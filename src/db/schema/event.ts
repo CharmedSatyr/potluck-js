@@ -6,10 +6,11 @@ import {
 	time,
 	uuid,
 	varchar,
+	integer,
+	bigint,
 } from "drizzle-orm/pg-core";
-import { user } from "./auth/user";
-
-export const EVENT_CODE_LENGTH = 5;
+import { user } from "@/db/schema/auth/user";
+import { EVENT_CODE_LENGTH } from "@/constants/event-code-length";
 
 const createCode = (): string =>
 	Math.random()
@@ -34,11 +35,11 @@ export const event = pgTable(
 			.references(() => user.id, { onDelete: "cascade" })
 			.notNull(),
 		description: varchar("description", { length: 256 }).notNull(),
+		endUtcMs: bigint("end_utc_ms", { mode: "number" }).notNull(),
 		hosts: varchar("hosts", { length: 100 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 100 }).notNull(),
-		startDate: date("startDate").notNull(),
-		startTime: time("startTime", { withTimezone: false }).notNull(),
+		startUtcMs: bigint("start_utc_ms", { mode: "number" }).notNull(),
 		title: varchar("title", { length: 100 }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
@@ -46,16 +47,3 @@ export const event = pgTable(
 	},
 	(table) => [index("code_idx").on(table.code)]
 );
-
-export type Event = typeof event.$inferSelect;
-
-export type EventUserValues = Pick<
-	Event,
-	| "createdBy"
-	| "description"
-	| "hosts"
-	| "location"
-	| "startDate"
-	| "startTime"
-	| "title"
->;

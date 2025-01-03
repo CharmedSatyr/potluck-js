@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { code } from "@/validation/code.schema";
-import { Event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 import { SlotData } from "@/@types/slot";
+import { code } from "@/validation/code.schema";
 import { schema as slotSchema } from "@/validation/slot.schema";
 
 export const schema = z

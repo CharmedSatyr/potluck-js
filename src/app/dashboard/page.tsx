@@ -8,7 +8,7 @@ import SlideIn from "@/components/slide-in";
 import DeleteEventForm from "@/components/delete-event-button";
 import { TableFallback } from "@/app/dashboard/table-fallback";
 import genPageMetadata from "@/seo";
-import { formatStartDate } from "@/utilities/format-start-date";
+import DateCellContents from "@/app/dashboard/date-cell-contents";
 
 export const metadata = genPageMetadata({ title: "Dashboard" });
 
@@ -54,7 +54,7 @@ const HostingTable = async () => {
 				</thead>
 				<tbody>
 					{hosted.map((event) => {
-						const passed = eventIsPassed(event.startDate);
+						const passed = eventIsPassed(event.startUtcMs);
 
 						return (
 							<tr key={event.id} className={passed ? "bg-base-300" : ""}>
@@ -62,7 +62,9 @@ const HostingTable = async () => {
 									<EventCodeButton code={event.code} passed={passed} />
 								</td>
 								<td>{event.title}</td>
-								<td>{formatStartDate(event.startDate)}</td>
+								<td>
+									<DateCellContents startUtcMs={event.startUtcMs} />
+								</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 								<td className="hidden md:table-cell">
 									<DeleteEventForm
@@ -106,7 +108,7 @@ const AttendingTable = async () => {
 				</thead>
 				<tbody>
 					{rsvps.map((event) => {
-						const passed = eventIsPassed(event.startDate);
+						const passed = eventIsPassed(event.startUtcMs);
 
 						return (
 							<tr key={event.code} className={passed ? "bg-base-300" : ""}>
@@ -114,7 +116,9 @@ const AttendingTable = async () => {
 									<EventCodeButton code={event.code} passed={passed} />
 								</td>
 								<td>{event.title}</td>
-								<td>{formatStartDate(event.startDate)}</td>
+								<td>
+									<DateCellContents startUtcMs={event.startUtcMs} />
+								</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 							</tr>
 						);

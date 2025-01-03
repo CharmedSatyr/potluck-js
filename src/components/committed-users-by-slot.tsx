@@ -20,11 +20,11 @@ const Avatars = ({ committedUsers }: Props) => {
 					alt={`Avatar for user ${user.name}`}
 					className="avatar my-0 rounded-full border"
 					src={user.image}
-					height={40}
+					height={30}
 					title={`${user.name} is bringing ${user.count}`}
-					width={40}
+					width={30}
 				/>
-				<span className="badge indicator-item badge-primary badge-sm md:badge-md">
+				<span className="badge indicator-item badge-primary badge-sm">
 					{user.count}
 				</span>
 			</div>

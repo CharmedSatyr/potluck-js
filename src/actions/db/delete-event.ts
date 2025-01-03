@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { schema } from "@/actions/db/delete-event.schema";
 import db from "@/db/connection";
-import { Event, event } from "@/db/schema/event";
+import { event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 import { eq } from "drizzle-orm";
 
 const deleteEvent = async (

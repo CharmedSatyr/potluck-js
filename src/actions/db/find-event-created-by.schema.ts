@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { code } from "@/validation/code.schema";
-import { Event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 
 export const schema = z
 	.strictObject({

@@ -1,5 +1,5 @@
 import { CommitmentsTableFallback } from "@/components/commitments-table";
-import { EventSkeletonFallback } from "@/components/event-skeleton";
+import { EventSkeletonFallback } from "@/components/event-skeleton/event-skeleton";
 import { PlanFoodFormFallback } from "@/components/plan-food-form";
 import { RsvpFormFallback } from "@/components/rsvp-form";
 import { RsvpTableFallback } from "@/components/rsvp-table";

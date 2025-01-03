@@ -23,10 +23,10 @@ describe("createEvent", () => {
 	const validData = {
 		createdBy: "123e4567-e89b-12d3-a456-426614174000",
 		description: "This is a valid test event",
+		endUtcMs: 1766649600001,
 		hosts: "John Doe",
 		location: "123 Test St",
-		startDate: "2025-12-31",
-		startTime: "12:30:00",
+		startUtcMs: 1766649600000,
 		title: "Test Event",
 	};
 
@@ -47,10 +47,10 @@ describe("createEvent", () => {
 		const invalidData = {
 			createdBy: "invalid-uuid",
 			description: "This description is too long".repeat(20),
+			endUtcMs: 2,
 			hosts: "Hosts".repeat(70),
 			location: "",
-			startDate: "1999-12-31",
-			startTime: "25:61:00",
+			startUtcMs: 1,
 			title: "",
 		};
 
@@ -69,6 +69,11 @@ describe("createEvent", () => {
 				exact: false,
 				message: "String must contain at most 256 character(s)",
 				path: ["description"],
+			},
+			{
+				code: "custom",
+				message: "Event end must be between 1/3/2025 and 1/3/2026",
+				path: ["endUtcMs"],
 			},
 			{
 				code: "too_big",
@@ -90,13 +95,8 @@ describe("createEvent", () => {
 			},
 			{
 				code: "custom",
-				message: "Date must be within the next year.",
-				path: ["startDate"],
-			},
-			{
-				code: "custom",
-				message: "Time required.",
-				path: ["startTime"],
+				message: "Event start must be between 1/3/2025 and 1/3/2026",
+				path: ["startUtcMs"],
 			},
 			{
 				code: "too_small",

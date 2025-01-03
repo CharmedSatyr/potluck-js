@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 
 export const schema = z
 	.strictObject({

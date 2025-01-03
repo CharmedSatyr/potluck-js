@@ -6,6 +6,7 @@ import "@/app/globals.css";
 import * as dotenv from "dotenv";
 import siteMetadata from "@/data/site-metadata";
 import NavBar from "@/components/nav-bar";
+import { Settings } from "luxon";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
 	description: siteMetadata.description,
 	title: siteMetadata.title,
 };
+
+Settings.defaultZone = "utc";
 
 const RootLayout = async ({
 	children,

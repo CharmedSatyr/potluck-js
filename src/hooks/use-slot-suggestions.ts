@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { readStreamableValue } from "ai/rsc";
 import { generateSlotSuggestions } from "@/actions/ai/generate-slot-suggestions";
-import { EventData } from "@/@types/event";
+import { EventData, EventInput } from "@/@types/event";
 
-const useSlotSuggestions = (eventData: EventData, attendees: number) => {
+const useSlotSuggestions = (eventInput: EventInput, attendees: number) => {
 	const [pending, setPending] = useState(false);
 	const [suggestions, setSuggestions] = useState<string>("");
 
@@ -15,7 +15,7 @@ const useSlotSuggestions = (eventData: EventData, attendees: number) => {
 		setPending(true);
 
 		try {
-			const { object } = await generateSlotSuggestions(eventData, attendees);
+			const { object } = await generateSlotSuggestions(eventInput, attendees);
 
 			for await (const partialObject of readStreamableValue(object)) {
 				if (!partialObject) {

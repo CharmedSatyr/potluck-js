@@ -2,9 +2,10 @@
 
 import { z } from "zod";
 import { desc, eq } from "drizzle-orm";
+import { Event } from "@/@types/event";
 import { schema } from "@/actions/db/find-events-by-user.schema";
 import db from "@/db/connection";
-import { Event, event } from "@/db/schema/event";
+import { event } from "@/db/schema/event";
 
 const findEventsByUser = async (
 	data: z.infer<typeof schema>
@@ -16,7 +17,7 @@ const findEventsByUser = async (
 			.select()
 			.from(event)
 			.where(eq(event.createdBy, data.createdBy))
-			.orderBy(desc(event.startDate), desc(event.startTime));
+			.orderBy(desc(event.startUtcMs));
 	} catch (err) {
 		console.error(err);
 

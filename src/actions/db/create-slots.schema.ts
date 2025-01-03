@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SlotData } from "@/@types/slot";
-import { Event } from "@/db/schema/event";
+import { Event } from "@/@types/event";
 import { code } from "@/validation/code.schema";
 import { schema as slotSchema } from "@/validation/slot.schema";
 

@@ -3,7 +3,7 @@
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import SlotInput from "@/components/plan-food-form/slot-input";
 import deleteSlot from "@/actions/db/delete-slot";
-import { EventData } from "@/@types/event";
+import { EventData, EventInput } from "@/@types/event";
 import { MAX_SLOTS } from "@/constants/max-slots";
 import { SlotData } from "@/@types/slot";
 import { schema as slotSchema } from "@/validation/slot.schema";
@@ -13,7 +13,7 @@ import Form from "next/form";
 type Props = {
 	code: string | null;
 	committedUsersBySlotPromise: Promise<Map<string, React.JSX.Element>>;
-	eventData: EventData;
+	eventInput: EventInput;
 	mode: WizardMode;
 	slots: SlotData[];
 	suggestedSlots: SlotData[];
@@ -22,7 +22,7 @@ type Props = {
 const PlanFoodForm = ({
 	code,
 	committedUsersBySlotPromise,
-	eventData,
+	eventInput,
 	mode,
 	slots: prevSlots,
 	suggestedSlots,
@@ -101,11 +101,17 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const noEvent =
-		!eventData.title ||
-		!eventData.startTime ||
-		!eventData.startDate ||
-		!eventData.location;
+	const {
+		title,
+		startTime,
+		startDate,
+		location,
+		hosts,
+		description,
+		timezone,
+	} = eventInput;
+
+	const noEvent = !title || !startTime || !startDate || !location;
 
 	const determineAction = () => {
 		if (mode === "create") {
@@ -165,46 +171,18 @@ const PlanFoodForm = ({
 				</button>
 			</div>
 
-			<input
-				hidden
-				name="title"
-				readOnly
-				required
-				type="text"
-				value={eventData.title}
-			/>
-			<input
-				hidden
-				name="startDate"
-				readOnly
-				required
-				type="date"
-				value={eventData.startDate}
-			/>
-			<input
-				hidden
-				name="startTime"
-				readOnly
-				required
-				type="time"
-				value={eventData.startTime}
-			/>
-			<input
-				hidden
-				name="location"
-				readOnly
-				required
-				type="text"
-				value={eventData.location}
-			/>
-			<input hidden name="hosts" readOnly type="text" value={eventData.hosts} />
-			<input
-				hidden
-				name="description"
-				readOnly
-				type="text"
-				value={eventData.description}
-			/>
+			{Object.entries(eventInput)
+				.filter(([_key, value]) => value !== "")
+				.map(([key, value]) => (
+					<input
+						key={key}
+						hidden
+						name={key}
+						readOnly
+						type="text"
+						value={value}
+					/>
+				))}
 
 			<button
 				className="btn btn-primary w-full"

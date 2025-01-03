@@ -1,32 +1,34 @@
-import { EventData } from "@/@types/event";
+import { EventInput } from "@/@types/event";
 import { SlotData } from "@/@types/slot";
+import { DEFAULT_TIMEZONE } from "@/constants/default-timezone";
 
-export const buildEventDataFromParams = async (
+export const buildEventInputFromParams = async (
 	paramsPromise: Promise<{
 		[key: string]: string;
 	}>
-): Promise<EventData[]> => {
-	const eventData: EventData = {
+): Promise<EventInput> => {
+	const eventInput: EventInput = {
 		description: "",
 		hosts: "",
 		location: "",
 		startDate: "",
 		startTime: "",
 		title: "",
+		timezone: DEFAULT_TIMEZONE,
 	};
 
 	const params = await paramsPromise;
 
-	Object.keys(eventData).forEach((key) => {
+	Object.keys(eventInput).forEach((key) => {
 		const searchValue = params[key];
 		if (!searchValue) {
 			return;
 		}
 
-		eventData[key as keyof EventData] = searchValue;
+		eventInput[key as keyof EventInput] = searchValue;
 	});
 
-	return [eventData];
+	return eventInput;
 };
 
 export const buildSlotDataFromParams = async (

@@ -3,11 +3,12 @@ import createEvent from "@/actions/db/create-event";
 import createSlots from "@/actions/db/create-slots";
 import { auth } from "@/auth";
 import {
-	buildEventDataFromParams,
+	buildEventInputFromParams,
 	buildSlotDataFromParams,
-} from "@/utilities/build-data-from-params";
+} from "@/utilities/build-from-params";
 import { redirect } from "next/navigation";
 import genPageMetadata from "@/seo";
+import { eventInputToData } from "@/utilities/event-input-to-data";
 
 export const metadata = genPageMetadata({ title: "Plan" });
 
@@ -18,24 +19,19 @@ type Props = {
 const PlanConfirmPage = async ({ searchParams }: Props) => {
 	const session = await auth();
 
-	const params = await searchParams;
+	const eventInput = await buildEventInputFromParams(searchParams);
+	const eventData = eventInputToData(eventInput);
 
-	const queryString = "?" + new URLSearchParams(params).toString();
-
-	if (!session?.user?.id) {
-		// TODO: Add some error messaging via toast
-		redirect("/plan".concat(queryString));
-	}
-
-	const [eventData] = await buildEventDataFromParams(searchParams);
 	const [result] = await createEvent({
 		...eventData,
-		createdBy: session.user.id,
+		createdBy: session!.user!.id!, // Guaranteed by middleware
 	});
 
 	if (!result?.code) {
 		console.warn("No code created for new event:", JSON.stringify(eventData));
 		// TODO: Add some error messaging via toast
+		const params = await searchParams;
+		const queryString = "?" + new URLSearchParams(params).toString();
 		redirect("/plan".concat(queryString));
 	}
 

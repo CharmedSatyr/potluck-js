@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import Form from "next/form";
 import { usePathname } from "next/navigation";
-import { EventData } from "@/@types/event";
+import { EventInput } from "@/@types/event";
 import { WizardMode } from "@/@types/wizard-mode";
 import { DiscordIcon } from "@/components/icons/discord";
 import LoadingIndicator from "@/components/loading-indicator";
@@ -12,23 +12,27 @@ import { loginAction } from "@/components/plan-event-form/login-action";
 import { oneYearFromToday, today } from "@/utilities/date";
 import enterToNextRef from "@/utilities/enter-to-next-ref";
 import Link from "next/link";
+import useTimezone from "@/hooks/use-timezone";
 
 type Props = {
 	code: string | null;
-	eventData: EventData;
+	eventInput: EventInput;
 	loggedIn: boolean;
 	mode: WizardMode;
 };
 
-const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
+const PlanEventForm = ({ code, eventInput, loggedIn, mode }: Props) => {
 	const pathname = usePathname();
 	const [, login, isPending] = useActionState(loginAction, { path: pathname });
+
 	const descriptionRef = useRef<HTMLInputElement | null>(null);
 	const hostsRef = useRef<HTMLInputElement | null>(null);
 	const locationRef = useRef<HTMLInputElement | null>(null);
 	const startDateRef = useRef<HTMLInputElement | null>(null);
 	const startTimeRef = useRef<HTMLInputElement | null>(null);
 	const titleRef = useRef<HTMLInputElement | null>(null);
+
+	const timezone = useTimezone();
 
 	useEffect(() => {
 		titleRef.current?.focus();
@@ -74,7 +78,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 				</label>
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
-					defaultValue={eventData.title}
+					defaultValue={eventInput.title}
 					enterKeyHint="next"
 					id="name-input"
 					maxLength={100}
@@ -95,7 +99,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					<input
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-date"
-						defaultValue={eventData.startDate}
+						defaultValue={eventInput.startDate}
 						enterKeyHint="next"
 						max={oneYearFromToday}
 						min={today}
@@ -115,7 +119,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					<input
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-time"
-						defaultValue={eventData.startTime}
+						defaultValue={eventInput.startTime}
 						enterKeyHint="next"
 						id="time-input"
 						name="startTime"
@@ -126,6 +130,8 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 						type="time"
 					/>
 				</div>
+
+				<input hidden readOnly type="text" value={timezone} />
 			</div>
 
 			<div className="my-2">
@@ -134,7 +140,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 				</label>
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
-					defaultValue={eventData.location}
+					defaultValue={eventInput.location}
 					enterKeyHint="next"
 					id="location-input"
 					maxLength={100}
@@ -157,7 +163,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					</span>
 					<input
 						className="w-full"
-						defaultValue={eventData.hosts}
+						defaultValue={eventInput.hosts}
 						enterKeyHint="next"
 						id="hosts-input"
 						maxLength={100}
@@ -180,7 +186,7 @@ const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
 					</span>
 					<input
 						className="w-full"
-						defaultValue={eventData.description}
+						defaultValue={eventInput.description}
 						enterKeyHint="next"
 						id="description-input"
 						maxLength={256}

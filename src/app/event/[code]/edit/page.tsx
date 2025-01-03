@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
 import { auth } from "@/auth";
 import ErrorBoundary from "@/components/error-boundary";
-import { buildEventDataFromParams } from "@/utilities/build-data-from-params";
+import { buildEventInputFromParams } from "@/utilities/build-from-params";
 import findSlots from "@/actions/db/find-slots";
 import genPageMetadata from "@/seo";
 import { Metadata } from "next";
@@ -39,7 +39,7 @@ const EditEventPage = async ({ params, searchParams }: Props) => {
 					<ManageEventWizard
 						code={code}
 						committedUsersBySlotPromise={committedUsersBySlot(code)}
-						eventDataPromise={buildEventDataFromParams(searchParams)}
+						eventInputPromise={buildEventInputFromParams(searchParams)}
 						loggedIn={loggedIn}
 						mode="edit"
 						slotsPromise={findSlots({ code })}
