@@ -57,7 +57,7 @@ const SlotContainer = ({
 			/>
 
 			<div className="collapse-title flex w-full items-center justify-between">
-				<div className="font-bold md:w-6/12">{item}</div>
+				<div className="md:w-6/12">{item}</div>
 
 				<div className="hidden sm:flex sm:gap-4">
 					<Avatars users={users} />
