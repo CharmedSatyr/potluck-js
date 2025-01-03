@@ -12,6 +12,7 @@ import { loginAction } from "@/components/plan-event-form/login-action";
 import { oneYearFromToday, today } from "@/utilities/date";
 import enterToNextRef from "@/utilities/enter-to-next-ref";
 import Link from "next/link";
+import useTimezone from "@/hooks/use-timezone";
 
 type Props = {
 	code: string | null;
@@ -20,20 +21,18 @@ type Props = {
 	mode: WizardMode;
 };
 
-const PlanEventForm = ({
-	code,
-	eventInput,
-	loggedIn,
-	mode,
-}: Props) => {
+const PlanEventForm = ({ code, eventInput, loggedIn, mode }: Props) => {
 	const pathname = usePathname();
 	const [, login, isPending] = useActionState(loginAction, { path: pathname });
+
 	const descriptionRef = useRef<HTMLInputElement | null>(null);
 	const hostsRef = useRef<HTMLInputElement | null>(null);
 	const locationRef = useRef<HTMLInputElement | null>(null);
 	const startDateRef = useRef<HTMLInputElement | null>(null);
 	const startTimeRef = useRef<HTMLInputElement | null>(null);
 	const titleRef = useRef<HTMLInputElement | null>(null);
+
+	const timezone = useTimezone();
 
 	useEffect(() => {
 		titleRef.current?.focus();
@@ -131,6 +130,8 @@ const PlanEventForm = ({
 						type="time"
 					/>
 				</div>
+
+				<input hidden readOnly type="text" value={timezone} />
 			</div>
 
 			<div className="my-2">

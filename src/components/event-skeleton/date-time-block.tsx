@@ -1,6 +1,6 @@
 "use client";
 
-import { useDateTimeView } from "@/hooks/use-date-time-view";
+import { useLocalDateTime } from "@/hooks/use-local-date-time";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 
 type Props = {
@@ -8,12 +8,12 @@ type Props = {
 };
 
 const DateTimeBlock = ({ startUtcMs }: Props) => {
-	const { date, time } = useDateTimeView(startUtcMs);
+	const { date, time, offsetNameShort } = useLocalDateTime(startUtcMs);
 
 	return (
 		<p className="flex items-center gap-2">
 			<CalendarIcon className="h-4 w-4" /> {date} at{" "}
-			<ClockIcon className="h-4 w-4" /> {time}
+			<ClockIcon className="h-4 w-4" /> {time} {offsetNameShort}
 		</p>
 	);
 };

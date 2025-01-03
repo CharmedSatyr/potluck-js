@@ -101,8 +101,15 @@ const PlanFoodForm = ({
 		[slots]
 	);
 
-	const { title, startTime, startDate, location, hosts, description } =
-		eventInput;
+	const {
+		title,
+		startTime,
+		startDate,
+		location,
+		hosts,
+		description,
+		timezone,
+	} = eventInput;
 
 	const noEvent = !title || !startTime || !startDate || !location;
 
@@ -164,39 +171,18 @@ const PlanFoodForm = ({
 				</button>
 			</div>
 
-			<input hidden name="title" readOnly required type="text" value={title} />
-			<input
-				hidden
-				name="startDate"
-				readOnly
-				required
-				type="date"
-				value={startDate}
-			/>
-			<input
-				hidden
-				name="startTime"
-				readOnly
-				required
-				type="time"
-				value={startTime}
-			/>
-			<input
-				hidden
-				name="location"
-				readOnly
-				required
-				type="text"
-				value={location}
-			/>
-			<input hidden name="hosts" readOnly type="text" value={hosts} />
-			<input
-				hidden
-				name="description"
-				readOnly
-				type="text"
-				value={description}
-			/>
+			{Object.entries(eventInput)
+				.filter(([_key, value]) => value !== "")
+				.map(([key, value]) => (
+					<input
+						key={key}
+						hidden
+						name={key}
+						readOnly
+						type="text"
+						value={value}
+					/>
+				))}
 
 			<button
 				className="btn btn-primary w-full"

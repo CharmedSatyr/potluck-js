@@ -1,13 +1,13 @@
 "use client";
 
-import { useDateTimeView } from "@/hooks/use-date-time-view";
+import { useLocalDateTime } from "@/hooks/use-local-date-time";
 
 type Props = {
 	startUtcMs: number;
 };
 
 const DateCellContents = ({ startUtcMs }: Props) => {
-	const { date } = useDateTimeView(startUtcMs);
+	const { date } = useLocalDateTime(startUtcMs);
 
 	return <>{date}</>;
 };

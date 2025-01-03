@@ -20,6 +20,7 @@ import DeleteEventForm from "@/components/delete-event-button";
 import { EventDataWithCtx } from "@/@types/event";
 import genPageMetadata from "@/seo";
 import { Metadata } from "next";
+import EditLink from "./edit-link";
 
 type MetadataProps = {
 	params: Promise<{ code: string }>;
@@ -88,28 +89,11 @@ const ManageEventSection = ({
 	code: string;
 	eventData: EventDataWithCtx;
 }) => {
-	const { description, endUtcMs, hosts, location, startUtcMs, title } =
-		eventData;
-
 	return (
 		<section className="my my-4 flex w-full flex-col gap-2 md:my-0 md:w-1/3 md:items-end md:justify-start">
 			<Suspense fallback={<RsvpFormFallback />}>
 				<SlideIn>
-					<Link
-						className="btn btn-accent mb-2 w-full md:w-28"
-						href={{
-							pathname: `/event/${code}/edit`,
-							query: {
-								description,
-								hosts,
-								location,
-								startUtcMs,
-								title,
-							},
-						}}
-					>
-						Edit
-					</Link>
+					<EditLink code={code} eventData={eventData} />
 				</SlideIn>
 				<SlideIn>
 					<DeleteEventForm code={code} redirect={true} />
