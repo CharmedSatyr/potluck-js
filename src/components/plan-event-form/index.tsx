@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import Form from "next/form";
 import { usePathname } from "next/navigation";
-import { EventData } from "@/@types/event";
+import { EventInput } from "@/@types/event";
 import { WizardMode } from "@/@types/wizard-mode";
 import { DiscordIcon } from "@/components/icons/discord";
 import LoadingIndicator from "@/components/loading-indicator";
@@ -15,12 +15,17 @@ import Link from "next/link";
 
 type Props = {
 	code: string | null;
-	eventData: EventData;
+	eventInput: EventInput;
 	loggedIn: boolean;
 	mode: WizardMode;
 };
 
-const PlanEventForm = ({ code, eventData, loggedIn, mode }: Props) => {
+const PlanEventForm = ({
+	code,
+	eventInput: eventData,
+	loggedIn,
+	mode,
+}: Props) => {
 	const pathname = usePathname();
 	const [, login, isPending] = useActionState(loginAction, { path: pathname });
 	const descriptionRef = useRef<HTMLInputElement | null>(null);

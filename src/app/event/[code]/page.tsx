@@ -3,7 +3,7 @@ import SlotManager, { SlotManagerFallback } from "@/components/slot-manager";
 import EventSkeleton, {
 	EventHeader,
 	EventSkeletonFallback,
-} from "@/components/event-skeleton";
+} from "@/components/event-skeleton/event-skeleton";
 import { auth } from "@/auth";
 import eventIsPassed from "@/utilities/event-is-passed";
 import CommitmentsTable, {
@@ -88,7 +88,7 @@ const ManageEventSection = ({
 	code: string;
 	eventData: EventDataWithCtx;
 }) => {
-	const { description, hosts, location, startDate, startTime, title } =
+	const { description, endUtcMs, hosts, location, startUtcMs, title } =
 		eventData;
 
 	return (
@@ -103,8 +103,7 @@ const ManageEventSection = ({
 								description,
 								hosts,
 								location,
-								startDate,
-								startTime,
+								startUtcMs,
 								title,
 							},
 						}}
@@ -211,7 +210,7 @@ const EventPage = async ({ params }: Props) => {
 		return <LoggedOutView code={code} />;
 	}
 
-	if (eventIsPassed(event.startDate)) {
+	if (eventIsPassed(event.startUtcMs)) {
 		return <PassedView code={code} />;
 	}
 

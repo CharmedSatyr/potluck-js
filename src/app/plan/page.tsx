@@ -4,9 +4,9 @@ import ManageEventWizard from "@/components/manage-event-wizard";
 import { PlanEventFormFallback } from "@/components/plan-event-form";
 import ErrorBoundary from "@/components/error-boundary";
 import {
-	buildEventDataFromParams,
+	buildEventInputFromParams,
 	buildSlotDataFromParams,
-} from "@/utilities/build-data-from-params";
+} from "@/utilities/build-from-params";
 import genPageMetadata from "@/seo";
 
 export const metadata = genPageMetadata({ title: "Plan" });
@@ -26,7 +26,7 @@ const PlanPage = async ({ searchParams }: Props) => {
 					<ManageEventWizard
 						code={null}
 						committedUsersBySlotPromise={Promise.resolve(new Map())}
-						eventDataPromise={buildEventDataFromParams(searchParams)}
+						eventInputPromise={buildEventInputFromParams(searchParams)}
 						loggedIn={loggedIn}
 						mode="create"
 						slotsPromise={buildSlotDataFromParams(searchParams)}

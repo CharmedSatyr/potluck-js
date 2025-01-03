@@ -1,17 +1,11 @@
-import { auth } from "@/auth";
 import CopyLinkButton from "@/components/copy-link-button";
 import Image from "next/image";
-import {
-	CalendarIcon,
-	ClockIcon,
-	MapPinIcon,
-} from "@heroicons/react/24/outline";
+import { MapPinIcon } from "@heroicons/react/24/outline";
 import WarningAlert from "@/components/warning-alert";
 import findEvent from "@/actions/db/find-event";
 import findUserByEventCode from "@/actions/db/find-user-by-event-code";
 import eventIsPassed from "@/utilities/event-is-passed";
-import { formatStartDate } from "@/utilities/format-start-date";
-import { formatStartTime } from "@/utilities/format-start-time";
+import DateTimeBlock from "@/components/event-skeleton/date-time-block";
 
 type Props = {
 	code: string;
@@ -38,18 +32,15 @@ const EventSkeleton = async ({ code }: Props) => {
 	const [event] = await findEvent({ code });
 	const [creator] = await findUserByEventCode({ code });
 
-	const { description, hosts, location, startDate, startTime, title } = event;
+	const { description, hosts, location, startUtcMs, title } = event;
 
-	const isPassed = eventIsPassed(startDate);
+	const isPassed = eventIsPassed(startUtcMs);
 
 	return (
 		<div className="w-full">
 			<EventHeader code={code} title={title} />
 
-			<p className="flex items-center gap-2">
-				<CalendarIcon className="h-4 w-4" /> {formatStartDate(startDate)} at{" "}
-				<ClockIcon className="h-4 w-4" /> {formatStartTime(startTime)}
-			</p>
+			<DateTimeBlock startUtcMs={startUtcMs} />
 			<p className="flex items-center gap-2">
 				<MapPinIcon className="h-4 w-4" /> {location}
 			</p>

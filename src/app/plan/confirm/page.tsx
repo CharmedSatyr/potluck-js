@@ -3,11 +3,12 @@ import createEvent from "@/actions/db/create-event";
 import createSlots from "@/actions/db/create-slots";
 import { auth } from "@/auth";
 import {
-	buildEventDataFromParams,
+	buildEventInputFromParams,
 	buildSlotDataFromParams,
-} from "@/utilities/build-data-from-params";
+} from "@/utilities/build-from-params";
 import { redirect } from "next/navigation";
 import genPageMetadata from "@/seo";
+import { eventInputToData } from "@/utilities/event-input-to-data";
 
 export const metadata = genPageMetadata({ title: "Plan" });
 
@@ -27,7 +28,9 @@ const PlanConfirmPage = async ({ searchParams }: Props) => {
 		redirect("/plan".concat(queryString));
 	}
 
-	const [eventData] = await buildEventDataFromParams(searchParams);
+	const eventInput = await buildEventInputFromParams(searchParams);
+	const eventData = eventInputToData(eventInput);
+
 	const [result] = await createEvent({
 		...eventData,
 		createdBy: session.user.id,
