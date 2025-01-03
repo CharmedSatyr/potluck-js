@@ -54,7 +54,7 @@ const HostingTable = async () => {
 				</thead>
 				<tbody>
 					{hosted.map((event) => {
-						const passed = eventIsPassed(event.startDate);
+						const passed = eventIsPassed(event.startUtcMs);
 
 						return (
 							<tr key={event.id} className={passed ? "bg-base-300" : ""}>
@@ -62,7 +62,7 @@ const HostingTable = async () => {
 									<EventCodeButton code={event.code} passed={passed} />
 								</td>
 								<td>{event.title}</td>
-								<td>{formatStartDate(event.startDate)}</td>
+								<td>{formatStartDate(event.startUtcMs)}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 								<td className="hidden md:table-cell">
 									<DeleteEventForm
@@ -106,7 +106,7 @@ const AttendingTable = async () => {
 				</thead>
 				<tbody>
 					{rsvps.map((event) => {
-						const passed = eventIsPassed(event.startDate);
+						const passed = eventIsPassed(event.startUtcMs);
 
 						return (
 							<tr key={event.code} className={passed ? "bg-base-300" : ""}>
@@ -114,7 +114,7 @@ const AttendingTable = async () => {
 									<EventCodeButton code={event.code} passed={passed} />
 								</td>
 								<td>{event.title}</td>
-								<td>{formatStartDate(event.startDate)}</td>
+								<td>{formatStartDate(event.startUtcMs)}</td>
 								<td className="hidden md:table-cell">{event.location}</td>
 							</tr>
 						);
