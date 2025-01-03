@@ -7,6 +7,7 @@ import {
 	uuid,
 	varchar,
 	integer,
+	bigint,
 } from "drizzle-orm/pg-core";
 import { user } from "@/db/schema/auth/user";
 import { EVENT_CODE_LENGTH } from "@/constants/event-code-length";
@@ -34,13 +35,11 @@ export const event = pgTable(
 			.references(() => user.id, { onDelete: "cascade" })
 			.notNull(),
 		description: varchar("description", { length: 256 }).notNull(),
-		endUtcMs: integer("end_utc_ms").notNull().default(0),
+		endUtcMs: bigint("end_utc_ms", { mode: "number" }).notNull(),
 		hosts: varchar("hosts", { length: 100 }).notNull(),
 		id: uuid("id").primaryKey().notNull().defaultRandom(),
 		location: varchar("location", { length: 100 }).notNull(),
-		startDate: date("startDate"),
-		startTime: time("startTime", { withTimezone: false }),
-		startUtcMs: integer("start_utc_ms").notNull().default(0),
+		startUtcMs: bigint("start_utc_ms", { mode: "number" }).notNull(),
 		title: varchar("title", { length: 100 }).notNull(),
 		updatedAt: timestamp("updated_at", { withTimezone: true })
 			.notNull()
