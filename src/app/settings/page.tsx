@@ -7,11 +7,6 @@ const SettingsPage = async ({ searchParams }: Props) => {
 	const params = await searchParams;
 	const setup = params["setup"];
 
-	/*
-	const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	const allTimezoneValues = Intl.supportedValuesOf("timeZone");
-	*/
-
 	return (
 		<section className="w-full">
 			<h1 className="text-primary">Settings</h1>
