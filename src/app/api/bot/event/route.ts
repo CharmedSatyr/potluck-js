@@ -93,15 +93,15 @@ export const PUT = async (request: NextRequest) => {
 		);
 	}
 
-	const { code, description, location, startDate, startTime, title } =
+	const { code, description, endUtcMs, location, startUtcMs, title } =
 		parsed.data;
 
 	const [result] = await updateEvent({
 		code,
 		description,
+		endUtcMs,
 		location,
-		startDate,
-		startTime,
+		startUtcMs,
 		title,
 	});
 
