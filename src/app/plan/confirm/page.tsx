@@ -19,26 +19,19 @@ type Props = {
 const PlanConfirmPage = async ({ searchParams }: Props) => {
 	const session = await auth();
 
-	const params = await searchParams;
-
-	const queryString = "?" + new URLSearchParams(params).toString();
-
-	if (!session?.user?.id) {
-		// TODO: Add some error messaging via toast
-		redirect("/plan".concat(queryString));
-	}
-
 	const eventInput = await buildEventInputFromParams(searchParams);
 	const eventData = eventInputToData(eventInput);
 
 	const [result] = await createEvent({
 		...eventData,
-		createdBy: session.user.id,
+		createdBy: session!.user!.id!, // Guaranteed by middleware
 	});
 
 	if (!result?.code) {
 		console.warn("No code created for new event:", JSON.stringify(eventData));
 		// TODO: Add some error messaging via toast
+		const params = await searchParams;
+		const queryString = "?" + new URLSearchParams(params).toString();
 		redirect("/plan".concat(queryString));
 	}
 

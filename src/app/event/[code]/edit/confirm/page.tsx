@@ -34,6 +34,10 @@ const Page = async ({ params, searchParams }: Props) => {
 	const eventInput = await buildEventInputFromParams(searchParams);
 	const eventData = eventInputToData(eventInput);
 
+	if (Object.values(eventData).filter((value) => Boolean(value)).length === 0) {
+		redirect(`/event/${code}`);
+	}
+
 	const [result] = await updateEvent({
 		...eventData,
 		code,
