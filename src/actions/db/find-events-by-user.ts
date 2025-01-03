@@ -17,7 +17,7 @@ const findEventsByUser = async (
 			.select()
 			.from(event)
 			.where(eq(event.createdBy, data.createdBy))
-			.orderBy(desc(event.startDate), desc(event.startTime));
+			.orderBy(desc(event.startUtcMs));
 	} catch (err) {
 		console.error(err);
 

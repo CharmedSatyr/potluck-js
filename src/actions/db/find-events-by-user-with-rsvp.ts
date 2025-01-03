@@ -35,7 +35,7 @@ const findEventsByUserWithRsvp = async (
 			.from(rsvp)
 			.where(eq(rsvp.createdBy, data.id))
 			.innerJoin(event, eq(event.id, rsvp.eventId))
-			.orderBy(desc(event.startDate), desc(event.startTime));
+			.orderBy(desc(event.startUtcMs));
 	} catch (err) {
 		console.error(err);
 
