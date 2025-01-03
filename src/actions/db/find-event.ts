@@ -16,11 +16,11 @@ const findEvent = async (
 		const {
 			createdBy,
 			description,
+			endUtcMs,
 			hosts,
 			id,
 			location,
-			startDate,
-			startTime,
+			startUtcMs,
 			title,
 		} = event;
 
@@ -28,11 +28,11 @@ const findEvent = async (
 			.select({
 				createdBy,
 				description,
+				endUtcMs,
 				hosts,
 				id,
 				location,
-				startDate,
-				startTime,
+				startUtcMs,
 				title,
 			})
 			.from(event)
