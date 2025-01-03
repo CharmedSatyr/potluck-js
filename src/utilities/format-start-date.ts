@@ -1,11 +1,9 @@
-export const formatStartDate = (startDate: string) => {
-	const date = new Date(startDate);
+import { DateTime } from "luxon";
 
-	const options: Intl.DateTimeFormatOptions = {
+export const formatStartDate = (startUtcMs: number) => {
+	return DateTime.fromMillis(startUtcMs).toLocaleString({
 		year: "numeric",
 		month: "long",
 		day: "numeric",
-	};
-
-	return new Intl.DateTimeFormat("en-US", options).format(date);
+	});
 };
