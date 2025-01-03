@@ -22,7 +22,7 @@ type Props = {
 
 const PlanEventForm = ({
 	code,
-	eventInput: eventData,
+	eventInput,
 	loggedIn,
 	mode,
 }: Props) => {
@@ -79,7 +79,7 @@ const PlanEventForm = ({
 				</label>
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
-					defaultValue={eventData.title}
+					defaultValue={eventInput.title}
 					enterKeyHint="next"
 					id="name-input"
 					maxLength={100}
@@ -100,7 +100,7 @@ const PlanEventForm = ({
 					<input
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-date"
-						defaultValue={eventData.startDate}
+						defaultValue={eventInput.startDate}
 						enterKeyHint="next"
 						max={oneYearFromToday}
 						min={today}
@@ -120,7 +120,7 @@ const PlanEventForm = ({
 					<input
 						className="input input-bordered w-full text-sm md:text-base"
 						data-testid="start-time"
-						defaultValue={eventData.startTime}
+						defaultValue={eventInput.startTime}
 						enterKeyHint="next"
 						id="time-input"
 						name="startTime"
@@ -139,7 +139,7 @@ const PlanEventForm = ({
 				</label>
 				<input
 					className="input input-bordered w-full text-sm md:text-base"
-					defaultValue={eventData.location}
+					defaultValue={eventInput.location}
 					enterKeyHint="next"
 					id="location-input"
 					maxLength={100}
@@ -162,7 +162,7 @@ const PlanEventForm = ({
 					</span>
 					<input
 						className="w-full"
-						defaultValue={eventData.hosts}
+						defaultValue={eventInput.hosts}
 						enterKeyHint="next"
 						id="hosts-input"
 						maxLength={100}
@@ -185,7 +185,7 @@ const PlanEventForm = ({
 					</span>
 					<input
 						className="w-full"
-						defaultValue={eventData.description}
+						defaultValue={eventInput.description}
 						enterKeyHint="next"
 						id="description-input"
 						maxLength={256}
